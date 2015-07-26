@@ -49,6 +49,7 @@
     DSDevice.debug = false;
 
     var vm = this;
+    vm.configured = [];
 
 
     /**
@@ -69,9 +70,13 @@
         .then(function(devices) {
           devices.forEach(function(device) {
             device.name = (device.name === 'Name') ? device.deviceClass.name : device.name;
-          });
 
-          vm.configured = devices;
+            if(device.deviceClass.classType === 'device' || device.deviceClass.classType === 'gateway') {
+              vm.configured.push(device);
+            } else {
+              $log.log('device removed', device);
+            }
+          });
         });
     }
 
