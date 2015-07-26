@@ -21,42 +21,35 @@
  * SOFTWARE.                                                                           *
  *                                                                                     *
  * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
-
-
-/**
- * @ngdoc overview
- * @name guh
- *
- * @description
- * Module container for whole app.
- *
- */
-
+ 
 (function() {
   'use strict';
 
   angular
-    .module('guh', [
-      // Libraries
-      'ui.router',
+    .module('guh.ui')
+    .directive('guhTab', guhTab);
 
-      // Configuration
-      'guh.config',
-      
-      // Utilities
-      'guh.utils',
+    guhTab.$inject = ['$log'];
 
-      // Services (guh-libjs)
-      'guh.api',
-      'guh.models',
+    function guhTab($log) {
+      var directive = {
+        link: tabLink,
+        require: '^guhTabset',
+        restrict: 'E',
+        scope: {
+          heading: '@'
+        },
+        templateUrl: 'app/shared/ui/tabs/tab.html',
+        transclude: true
+      };
 
-      // Directives
-      'guh.ui',
+      return directive;
 
-      // App
-      'guh.moods',
-      'guh.devices',
-      'guh.services'
-    ]);
+
+      function tabLink(scope, element, attrs, tabsetCtrl) {
+        scope.active = false;
+        tabsetCtrl.addTab(scope);
+      }
+    }
 
 }());

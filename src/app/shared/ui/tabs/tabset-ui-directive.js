@@ -21,42 +21,67 @@
  * SOFTWARE.                                                                           *
  *                                                                                     *
  * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
-
-
-/**
- * @ngdoc overview
- * @name guh
- *
- * @description
- * Module container for whole app.
- *
- */
-
+ 
 (function() {
   'use strict';
 
   angular
-    .module('guh', [
-      // Libraries
-      'ui.router',
+    .module('guh.ui')
+    .directive('guhTabset', guhTabset);
 
-      // Configuration
-      'guh.config',
-      
-      // Utilities
-      'guh.utils',
+    guhTabset.$inject = ['$log'];
 
-      // Services (guh-libjs)
-      'guh.api',
-      'guh.models',
+    function guhTabset($log) {
+      var directive = {
+        controller: tabsetCtrl,
+        controllerAs: 'tabset',
+        link: tabsetLink,
+        restrict: 'E',
+        scope: {},
+        templateUrl: 'app/shared/ui/tabs/tabset.html',
+        transclude: true
+      };
 
-      // Directives
-      'guh.ui',
+      return directive;
 
-      // App
-      'guh.moods',
-      'guh.devices',
-      'guh.services'
-    ]);
+
+      function tabsetCtrl() {
+        /* jshint validthis: true */
+        var vm = this;
+
+        /*
+         * Variables
+         */
+        vm.tabs = [];
+
+        /*
+         * Methods
+         */
+        vm.addTab = addTab;
+        vm.selectTab = selectTab;
+
+        function addTab(tab) {
+          vm.tabs.push(tab);
+
+          // Set first tab active
+          if(vm.tabs.length === 1) {
+            tab.active = true;
+          }
+        }
+
+        function selectTab(selectedTab) {
+          angular.forEach(vm.tabs, function(tab) {
+            if(tab.active && tab !== selectedTab) {
+              tab.active = false;
+            }
+          });
+
+          selectedTab.active = true;
+        }
+      }
+
+
+      function tabsetLink(scope, element, attrs) {}
+    }
 
 }());

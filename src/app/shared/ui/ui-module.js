@@ -25,10 +25,10 @@
 
 /**
  * @ngdoc overview
- * @name guh
+ * @name guh.ui
  *
  * @description
- * Module container for whole app.
+ * Module for user interface components.
  *
  */
 
@@ -36,27 +36,6 @@
   'use strict';
 
   angular
-    .module('guh', [
-      // Libraries
-      'ui.router',
-
-      // Configuration
-      'guh.config',
-      
-      // Utilities
-      'guh.utils',
-
-      // Services (guh-libjs)
-      'guh.api',
-      'guh.models',
-
-      // Directives
-      'guh.ui',
-
-      // App
-      'guh.moods',
-      'guh.devices',
-      'guh.services'
-    ]);
+    .module('guh.ui', []);
 
 }());

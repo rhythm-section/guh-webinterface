@@ -21,23 +21,4 @@
 -->
 
 
-<!-- Device state -->
-<guh-tabset id="device-state">
-  <!-- States -->
-  <guh-tab heading="States">
-    <p ng-if="device.states.length === 0">This device doesn't has any states.</p>
-    <p ng-repeat="state in device.states | orderBy: 'name' track by $index">{{ state.stateType.name }}: {{ state.value }}</p>
-  </guh-tab>
-
-  <!-- Events -->
-  <guh-tab heading="Events">
-    <p ng-if="device.deviceClass.eventTypes.length === 0">This device doesn't has any events.</p>
-    <p ng-repeat="eventType in device.deviceClass.eventTypes | orderBy: 'name' track by $index">{{ eventType.name }}</p>
-  </guh-tab>
-</guh-tabset>
-
-
-<!-- Actions -->
-<div id="device-control">
-
-</div>
+<div ng-transclude class="tab" ng-show="active"></div>

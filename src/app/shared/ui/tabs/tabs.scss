@@ -23,40 +23,35 @@
  * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 
 
-/**
- * @ngdoc overview
- * @name guh
- *
- * @description
- * Module container for whole app.
- *
- */
+.tabset {
+  @include rem(margin, 2.4, 0);
+  @include rem(padding, 0, 2.4);
 
-(function() {
-  'use strict';
+  ul {
+    @include display(flex);
+    @include flex-wrap(nowrap);
+  }
 
-  angular
-    .module('guh', [
-      // Libraries
-      'ui.router',
+  li {
+    @include flex(1);
+    @include flex-grow(1);
+  }
 
-      // Configuration
-      'guh.config',
-      
-      // Utilities
-      'guh.utils',
+  a {
+    background-color: #eee;
+    color: #000;
+    display: block;
+    @include rem(padding, 0.9, 1.8);
+    text-align: center;
+    text-decoration: none;
 
-      // Services (guh-libjs)
-      'guh.api',
-      'guh.models',
+    &.active {
+      background-color: #ddd;
+    }
+  }
+}
 
-      // Directives
-      'guh.ui',
-
-      // App
-      'guh.moods',
-      'guh.devices',
-      'guh.services'
-    ]);
-
-}());
+.tab {
+  background-color: #ddd;
+  @include rem(padding, 1.8);
+}
