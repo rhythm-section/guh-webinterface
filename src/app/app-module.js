@@ -22,6 +22,16 @@
  *                                                                                     *
  * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 
+
+/**
+ * @ngdoc overview
+ * @name guh
+ *
+ * @description
+ * Module container for whole app.
+ *
+ */
+
 (function() {
   'use strict';
 
