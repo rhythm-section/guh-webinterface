@@ -22,21 +22,25 @@
  *                                                                                     *
  * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 
+
+/**
+ * @ngdoc interface
+ * @name guh.moods.controller:MoodsDetailCtrl
+ *
+ * @description
+ * Load and show details of certain mood.
+ *
+ */
+
 (function(){
   'use strict';
 
   angular
-    .module('guh')
-    .controller('AppCtrl', AppCtrl);
+    .module('guh.moods')
+    .controller('MoodsDetailCtrl', MoodsDetailCtrl);
 
-  AppCtrl.$inject = ['$log', '$scope', '$state'];
+  MoodsDetailCtrl.$inject = ['$log'];
 
-  function AppCtrl($log, $scope, $state) {
-
-    var vm = this;
-    
-    vm.$state = $state;
-
-  }
+  function MoodsDetailCtrl($log) {}
 
 }());

@@ -20,16 +20,13 @@
   SOFTWARE.
 -->
 
-<header>
-  <h1>Room/Tag</h1>
-</header>
 
-<nav>
-  <ul>
-    <li><a ng-class="{ active: app.$state.includes('guh.devices') }" ui-sref="guh.devices.master">Devices</a></li>
-    <li><a ng-class="{ active: app.$state.includes('guh.services') }" ui-sref="guh.services.master">Services</a></li>
-    <li><a ng-class="{ active: app.$state.includes('guh.moods') }" ui-sref="guh.moods.master">Moods</a></li>
-  </ul>
-</nav>
+<!-- Header -->
+<div id="device-header">
+  <div class="description">
+    <h2 class="name hero" hero-id="name">{{ device.name }}</h2>
+    <p>{{ device.deviceClass.vendor.name }}, {{ device.deviceClass.name }}</p>
+  </div>
+</div>
 
-<div ui-view id="content"></div>
+<ng-include src="device.templateUrl" ng-if="device.templateReady"></ng-include>

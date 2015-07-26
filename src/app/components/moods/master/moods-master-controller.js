@@ -22,21 +22,25 @@
  *                                                                                     *
  * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 
+
+/**
+ * @ngdoc interface
+ * @name guh.moods.controller:MoodsMasterCtrl
+ *
+ * @description
+ * Load and list configured moods.
+ *
+ */
+
 (function(){
   'use strict';
 
   angular
-    .module('guh')
-    .controller('AppCtrl', AppCtrl);
+    .module('guh.moods')
+    .controller('MoodsMasterCtrl', MoodsMasterCtrl);
 
-  AppCtrl.$inject = ['$log', '$scope', '$state'];
+  MoodsMasterCtrl.$inject = ['$log'];
 
-  function AppCtrl($log, $scope, $state) {
-
-    var vm = this;
-    
-    vm.$state = $state;
-
-  }
+  function MoodsMasterCtrl($log) {}
 
 }());

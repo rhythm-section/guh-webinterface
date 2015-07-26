@@ -22,21 +22,20 @@
  *                                                                                     *
  * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 
-(function(){
+
+/**
+ * @ngdoc overview
+ * @name guh.devices
+ *
+ * @description
+ * Module for device component of the app.
+ *
+ */
+
+(function() {
   'use strict';
 
   angular
-    .module('guh')
-    .controller('AppCtrl', AppCtrl);
-
-  AppCtrl.$inject = ['$log', '$scope', '$state'];
-
-  function AppCtrl($log, $scope, $state) {
-
-    var vm = this;
-    
-    vm.$state = $state;
-
-  }
+    .module('guh.devices', []);
 
 }());

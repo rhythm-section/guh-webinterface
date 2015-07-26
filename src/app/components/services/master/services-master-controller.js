@@ -22,21 +22,25 @@
  *                                                                                     *
  * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 
+
+/**
+ * @ngdoc interface
+ * @name guh.services.controller:ServicesMasterCtrl
+ *
+ * @description
+ * Load and list configured services.
+ *
+ */
+
 (function(){
   'use strict';
 
   angular
-    .module('guh')
-    .controller('AppCtrl', AppCtrl);
+    .module('guh.services')
+    .controller('ServicesMasterCtrl', ServicesMasterCtrl);
 
-  AppCtrl.$inject = ['$log', '$scope', '$state'];
+  ServicesMasterCtrl.$inject = ['$log'];
 
-  function AppCtrl($log, $scope, $state) {
-
-    var vm = this;
-    
-    vm.$state = $state;
-
-  }
+  function ServicesMasterCtrl($log) {}
 
 }());

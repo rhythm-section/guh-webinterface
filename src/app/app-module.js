@@ -48,7 +48,12 @@
 
       // Services (guh-libjs)
       'guh.api',
-      'guh.models'
+      'guh.models',
+
+      // App
+      'guh.moods',
+      'guh.devices',
+      'guh.services'
     ]);
 
 }());

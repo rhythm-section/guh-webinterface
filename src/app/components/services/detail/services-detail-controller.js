@@ -22,21 +22,25 @@
  *                                                                                     *
  * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 
+
+/**
+ * @ngdoc interface
+ * @name guh.services.controller:ServicesDetailCtrl
+ *
+ * @description
+ * Load and show details of certain service.
+ *
+ */
+
 (function(){
   'use strict';
 
   angular
-    .module('guh')
-    .controller('AppCtrl', AppCtrl);
+    .module('guh.services')
+    .controller('ServicesDetailCtrl', ServicesDetailCtrl);
 
-  AppCtrl.$inject = ['$log', '$scope', '$state'];
+  ServicesDetailCtrl.$inject = ['$log'];
 
-  function AppCtrl($log, $scope, $state) {
-
-    var vm = this;
-    
-    vm.$state = $state;
-
-  }
+  function ServicesDetailCtrl($log) {}
 
 }());
