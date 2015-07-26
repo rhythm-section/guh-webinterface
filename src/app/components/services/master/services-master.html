@@ -21,4 +21,11 @@
 -->
 
 
-
+<ul class="tiles">
+  <li class="item" ng-repeat="service in services.configured | orderBy: 'name' track by $index">
+    <a ui-sref="guh.services.detail({ deviceId: service.id })">
+      <h2 class="name hero" hero-id="name">{{ service.name }}</h2>
+      <p>{{ service.deviceClass.vendor.name }}, {{ service.deviceClass.name }}</p>
+    </a>
+  </li>
+</ul>
