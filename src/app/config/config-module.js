@@ -23,23 +23,19 @@
  * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 
 
-/*
- * Plugins
+/**
+ * @ngdoc overview
+ * @name guh.config
+ *
+ * @description
+ * Configuration data for the app.
+ *
  */
-var requireDir = require('require-dir');
 
+(function() {
+  'use strict';
 
-/*
- * Tasks
- */
-var pipes = requireDir('./gulp/pipes', {
-  recurse: true
-});
+  angular
+    .module('guh.config', []);
 
-
-/*
- * Tasks
- */
-requireDir('./gulp/tasks', {
-  recurse: true
-});
+}());

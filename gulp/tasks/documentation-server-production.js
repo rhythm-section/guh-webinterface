@@ -26,20 +26,32 @@
 /*
  * Plugins
  */
-var requireDir = require('require-dir');
+
+var gulp = require('gulp');
+var runSequence = require('run-sequence');
+var browserSyncDocs = require('browser-sync').create('documentation-server');
+var argsParser = require('../utils/args-parser');
 
 
 /*
- * Tasks
+ * Configuration
  */
-var pipes = requireDir('./gulp/pipes', {
-  recurse: true
-});
+
+var pathConfig = require('../config/gulp').paths;
+var browserSyncConfig = require('../config/gulp').browserSync.documentation;
 
 
 /*
- * Tasks
+ * Task
+ * 
  */
-requireDir('./gulp/tasks', {
-  recurse: true
+
+gulp.task('documentation-server-production', function(done) {
+  browserSyncConfig.server = {
+    baseDir: pathConfig.dest.production + '/docs'
+  };
+
+  browserSyncDocs.init(null, browserSyncConfig);
+
+  done();
 });

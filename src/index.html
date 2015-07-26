@@ -1,5 +1,8 @@
+<!DOCTYPE HTML>
+<!-- Doctype has to be firs: http://stackoverflow.com/questions/941100/can-comments-appear-before-the-doctype-declaration -->
+
 <!-- 
-  Copyright (c) 2015 guh
+  Copyright (C) 2015 Lukas Mayerhofer <lukas.mayerhofer@guh.guru>
   
   Permission is hereby granted, free of charge, to any person obtaining a copy
   of this software and associated documentation files (the "Software"), to deal
@@ -20,53 +23,25 @@
   SOFTWARE.
 -->
 
-<!doctype html>
-
-<html class="no-js" ng-app="guh">
-
+<html ng-app="guh">
 <head>
   <meta charset="utf-8">
-  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, minimum-scale=1, user-scalable=no">
   
   <title>guh</title>
 
-  <!-- Styles: app -->
-  <link type="text/css" rel="stylesheet" href="app.min.css">
+  <!-- app:css -->
+  <!-- endinject -->
 </head>
 
-<body>
-  <div id="app-wrapper" ui-view="app"></div>
+<body guh-toggle-grid="show">
+  <div id="main" ui-view></div>
 
-  <!-- Scripts: vendor -->
-  <script src="assets/lib/lodash/dist/lodash.compat.min.js"></script>
-  <script src="assets/lib/angular/angular.min.js"></script>
-  <script src="assets/lib/angular-messages/angular-messages.min.js"></script>
-  <!-- <script src="assets/lib/angular-sanitize/angular-sanitize.min.js"></script> -->
-  <script src="assets/lib/angular-ui-router/release/angular-ui-router.min.js"></script>
-  <script src="assets/lib/restangular/dist/restangular.min.js"></script>
+  <!-- vendor:js -->
+  <!-- endinject -->
 
-  <script src="assets/lib/reconnectingWebsocket/reconnecting-websocket.min.js"></script>
-  <script src="assets/lib/js-data/dist/js-data.js"></script>
-  <script src="assets/lib/js-data-angular/dist/js-data-angular.js"></script>
-
-
-  <!--<script type="text/javascript" src="components/api/api.js"></script>
-  <script type="text/javascript" src="components/api/api-devices-service.js"></script>
-
-  <script type="text/javascript" src="components/models/models.js"></script>
-  <script type="text/javascript" src="components/models/models-device-service.js"></script>
-
-  <script type="text/javascript" src="app/app.js"></script>
-  <script type="text/javascript" src="app/app-controller.js"></script>
-
-  <script type="text/javascript" src="app/devices/devices.js"></script>
-  <script type="text/javascript" src="app/devices/list/devices-list-controller.js"></script>-->
-
-  <!-- Scripts: app -->
-  <script type="text/javascript" src="app.min.js"></script>
-  <!-- <script type="text/javascript" src="app/app.js"></script> -->
-  <!-- <script type="text/javascript" src="app/app-controller.js"></script> -->
+  <!-- app:js -->
+  <!-- endinject -->
 </body>
-
 </html>

@@ -22,24 +22,25 @@
  *                                                                                     *
  * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 
-
 /*
  * Plugins
  */
-var requireDir = require('require-dir');
+
+var gulp = require('gulp');
 
 
 /*
- * Tasks
+ * Pipes
  */
-var pipes = requireDir('./gulp/pipes', {
-  recurse: true
-});
+
+var builtVendorScriptsProduction = require('../pipes/built-vendor-scripts-production');
 
 
 /*
- * Tasks
+ * Task
+ * 
  */
-requireDir('./gulp/tasks', {
-  recurse: true
+
+gulp.task('build-vendor-scripts-production', function() {
+  return builtVendorScriptsProduction.getPipe();
 });

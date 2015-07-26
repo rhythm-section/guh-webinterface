@@ -26,20 +26,68 @@
 /*
  * Plugins
  */
-var requireDir = require('require-dir');
+
+var colors = require('colors');
 
 
 /*
- * Tasks
+ * Configuration
  */
-var pipes = requireDir('./gulp/pipes', {
-  recurse: true
-});
+
+var colorConfig = require('../config/gulp').colors;
+
+// Set color theme
+colorDefinitions = {
+  debug: 'blue',
+  error: 'red',
+  info: 'green',
+  warn: 'yellow'
+};
+colors.setTheme(colorDefinitions);
 
 
 /*
- * Tasks
+ * Methods
  */
-requireDir('./gulp/tasks', {
-  recurse: true
-});
+
+var getLine = function(message, character, padding) {
+  var i = 0;
+  var length = message.length + padding;
+  var line = '';
+
+  for(i; i < length; i++) {
+    line = line + character;
+  }
+
+  return line;
+};
+
+var debug = function(message) {
+  console.log(colors.debug(message));
+};
+
+var error = function(message) {
+  console.log(colors.error(message));
+};
+
+var info = function(message) {
+  // console.log('\n');
+  console.log(colors.info(message));
+  // console.log(colors.info(getLine(message, '-', 1)));
+};
+
+var warn = function(message) {
+  console.log(colors.warn(message));
+};
+
+
+/*
+ * Module
+ */
+
+module.exports = {
+  debug: debug,
+  error: error,
+  info: info,
+  warn: warn
+};

@@ -26,20 +26,57 @@
 /*
  * Plugins
  */
-var requireDir = require('require-dir');
+
+var gulp = require('gulp');
+var jshint = require('gulp-jshint');
+var es = require('event-stream');
+var concat = require('gulp-concat');
+var uglify = require('gulp-uglify');
+var rename = require('gulp-rename');
+var size = require('gulp-size');
+var sourcemaps = require('gulp-sourcemaps');
 
 
 /*
- * Tasks
+ * Pipes
  */
-var pipes = requireDir('./gulp/pipes', {
-  recurse: true
-});
+
+var validatedAppScripts = require('../pipes/validated-app-scripts');
+var scriptedTemplates = require('../pipes/scripted-templates');
+var orderedAppScripts = require('../pipes/ordered-app-scripts');
 
 
 /*
- * Tasks
+ * Configuration
  */
-requireDir('./gulp/tasks', {
-  recurse: true
-});
+
+var pathConfig = require('../config/gulp').paths;
+var jshintConfig = require('../config/gulp').jshint;
+var concatConfig = require('../config/gulp').concat;
+var uglifyConfig = require('../config/gulp').uglify;
+var renameConfig = require('../config/gulp').rename;
+var sizeConfig = require('../config/gulp').size;
+
+
+/*
+ * Pipe
+ */
+
+module.exports = {
+  getPipe: function() {
+    var scriptedTemplatesPipe = scriptedTemplates.getPipe();
+    var validatedAppScriptsPipe = validatedAppScripts.getPipe();
+    var orderedAppScriptsPipe = orderedAppScripts.getPipe();
+
+    return es.merge(scriptedTemplatesPipe, validatedAppScriptsPipe)
+      .pipe(orderedAppScriptsPipe)
+      .pipe(sourcemaps.init())
+        .pipe(concat('app.js', concatConfig))
+        .pipe(size(sizeConfig))
+        .pipe(uglify(uglifyConfig))
+        .pipe(size(sizeConfig))
+        .pipe(rename(renameConfig))
+      .pipe(sourcemaps.write('./maps'))
+      .pipe(gulp.dest(pathConfig.dest.production));
+  }
+};

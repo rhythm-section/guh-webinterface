@@ -26,20 +26,27 @@
 /*
  * Plugins
  */
-var requireDir = require('require-dir');
+
+var gulp = require('gulp');
+var ignore = require('gulp-ignore');
+var mainBowerFiles = require('main-bower-files');
 
 
 /*
- * Tasks
+ * Configuration
  */
-var pipes = requireDir('./gulp/pipes', {
-  recurse: true
-});
+
+var pathConfig = require('../config/gulp').paths;
 
 
 /*
- * Tasks
+ * Pipe
  */
-requireDir('./gulp/tasks', {
-  recurse: true
-});
+
+module.exports = {
+  getPipe: function() {
+    return gulp.src(mainBowerFiles())
+      .pipe(ignore.exclude('*.map'))
+      .pipe(gulp.dest(pathConfig.libs.development));
+  }
+};

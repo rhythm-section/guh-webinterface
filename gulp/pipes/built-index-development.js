@@ -26,20 +26,46 @@
 /*
  * Plugins
  */
-var requireDir = require('require-dir');
+
+var gulp = require('gulp');
+var inject = require('gulp-inject');
+
+/*
+ * Pipes
+ */
+
+var builtStylesDevelopment = require('../pipes/built-styles-development');
+var orderedAppScripts = require('../pipes/ordered-app-scripts');
+var orderedVendorScripts = require('../pipes/ordered-vendor-scripts');
+var builtAppScriptsDevelopment = require('../pipes/built-app-scripts-development');
+var builtVendorScriptsDevelopment = require('../pipes/built-vendor-scripts-development');
+var validatedIndex = require('../pipes/validated-index');
 
 
 /*
- * Tasks
+ * Configuration
  */
-var pipes = requireDir('./gulp/pipes', {
-  recurse: true
-});
+
+var pathConfig = require('../config/gulp').paths;
+var injectConfig = require('../config/gulp').inject;
 
 
 /*
- * Tasks
+ * Pipe
  */
-requireDir('./gulp/tasks', {
-  recurse: true
-});
+
+module.exports = {
+  getPipe: function() {
+    var stylesPipe = builtStylesDevelopment.getPipe();
+    var orderedVendorScriptsPipe = builtVendorScriptsDevelopment.getPipe().pipe(orderedVendorScripts.getPipe());
+    var orderedAppScriptsPipe = builtAppScriptsDevelopment.getPipe().pipe(orderedAppScripts.getPipe());
+
+    return validatedIndex.getPipe()
+      // Write first to get relative path for inject
+      .pipe(gulp.dest(pathConfig.dest.development))
+      .pipe(inject(stylesPipe, injectConfig.app))
+      .pipe(inject(orderedVendorScriptsPipe, injectConfig.vendor))
+      .pipe(inject(orderedAppScriptsPipe, injectConfig.app))
+      .pipe(gulp.dest(pathConfig.dest.development));
+  }
+};

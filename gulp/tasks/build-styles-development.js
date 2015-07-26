@@ -26,20 +26,26 @@
 /*
  * Plugins
  */
-var requireDir = require('require-dir');
+
+var gulp = require('gulp');
+var browserSync = require('browser-sync').get('app-server');
+var gulpIf = require('gulp-if');
+var argsParser = require('../utils/args-parser');
 
 
 /*
- * Tasks
+ * Pipes
  */
-var pipes = requireDir('./gulp/pipes', {
-  recurse: true
-});
+
+var builtStylesDevelopment = require('../pipes/built-styles-development');
 
 
 /*
- * Tasks
+ * Task
+ * 
  */
-requireDir('./gulp/tasks', {
-  recurse: true
+
+gulp.task('build-styles-development', function() {
+  return builtStylesDevelopment.getPipe()
+    .pipe( gulpIf(argsParser.isWatch(), browserSync.reload({ stream: true })) );
 });

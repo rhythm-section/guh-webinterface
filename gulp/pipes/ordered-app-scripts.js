@@ -26,20 +26,16 @@
 /*
  * Plugins
  */
-var requireDir = require('require-dir');
+
+var angularFilesort = require('gulp-angular-filesort');
 
 
 /*
- * Tasks
+ * Pipe
  */
-var pipes = requireDir('./gulp/pipes', {
-  recurse: true
-});
 
-
-/*
- * Tasks
- */
-requireDir('./gulp/tasks', {
-  recurse: true
-});
+module.exports = {
+  getPipe: function() {
+    return angularFilesort();
+  }
+};

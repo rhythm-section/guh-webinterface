@@ -1,64 +1,70 @@
 {
-  "name": "guh_angular",
+  "name": "guh-webinterface",
   "version": "0.1.0",
   "authors": [
     "Lukas Mayerhofer <lukas.mayerhofer@guh.guru>"
   ],
-  "description": "Webapp of guh (gear up your home)",
+  "description": "Webinterface of guh (gear up your home)",
   "main": "gulpfile.js",
   "license": "MIT",
   "homepage": "http://www.guh.guru",
   "private": true,
   "ignore": [
     "**/.*",
+    "**/*_test.js",
     "node_modules",
-    "bower_components",
-    "test",
-    "tests"
+    "bower_components"
   ],
   "dependencies": {
-    "angular": "~1.3.4",
-    "angular-ui-router": "~0.2.13",
-    "restangular": "~1.4.0",
-    "angular-sanitize": "~1.3.8",
-    "angular-messages": "~1.3.8",
-    "js-data-angular": "~2.2.3",
-    "js-data": "~1.7.0",
-    "reconnectingWebsocket": "~1.0.0"
+    "angular": "~1.4.3",
+    "angular-hotkeys": "chieffancypants/angular-hotkeys#~1.4.5",
+    "angular-ui-router": "~0.2.15",
+    "guh-libjs": "file:///Users/Lukas/Documents/Arbeit/guh/Interface/guh/guh-libjs/.git/",
+    "lodash": "~3.10.0",
+    "js-data": "~2.2.3",
+    "js-data-angular": "~3.0.0",
+    "reconnectingWebsocket": "~1.0.0",
+    "angular-animate": "~1.4.3",
+    "angular-messages": "~1.4.3",
+    "angular-sanitize": "~1.4.3"
   },
-  "devDependencies": {
-    "angular-mocks": "~1.3.4"
-  },
+  "devDependencies": {},
   "overrides": {
     "angular": {
-      "main": [
-        "./angular.min.js",
-        "./angular.min.js.map"
-      ]
+      "main": "./angular.js"
+    },
+    "angular-animate": {
+      "main": "./angular-animate.js"
+    },
+    "angular-hotkeys": {
+      "main": "./build/hotkeys.js"
     },
     "angular-messages": {
-      "main": [
-        "./angular-messages.min.js",
-        "./angular-messages.min.js.map"
-      ]
-    },
-    "angular-ui-router": {
-      "main": "./release/angular-ui-router.min.js"
-    },
-    "lodash": {
-      "main": "./dist/lodash.compat.min.js"
-    },
-    "restangular": {
-      "main": "./dist/restangular.min.js"
+      "main": "./angular-messages.js"
     },
     "angular-sanitize": {
-      "main": [
-        "./angular-sanitize.min.js",
-        "./angular-sanitize.min.js.map"
-      ]
+      "main": "./angular-sanitize.js"
+    },
+    "angular-ui-router": {
+      "main": "./release/angular-ui-router.js"
+    },
+    "guh-libjs": {
+      "main": "./dist/guh-libjs.js"
+    },
+    "js-data": {
+      "main": {
+        "development": "./dist/js-data.js",
+        "production": "./dist/js-data.js"
+      }
+    },
+    "js-data-angular": {
+      "main": "./dist/js-data-angular.js"
+    },
+    "lodash": {
+      "main": "./lodash.js"
     },
     "reconnectingWebsocket": {
-      "main": "./reconnecting-websocket.min.js"
+      "main": "./reconnecting-websocket.js"
     }
   }
 }

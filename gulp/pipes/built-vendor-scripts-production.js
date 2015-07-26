@@ -26,20 +26,43 @@
 /*
  * Plugins
  */
-var requireDir = require('require-dir');
+
+var gulp = require('gulp');
+var ignore = require('gulp-ignore');
+var mainBowerFiles = require('main-bower-files');
+var concat = require('gulp-concat');
+var uglify = require('gulp-uglify');
+var rename = require('gulp-rename');
+var size = require('gulp-size');
+var sourcemaps = require('gulp-sourcemaps');
 
 
 /*
- * Tasks
+ * Configuration
  */
-var pipes = requireDir('./gulp/pipes', {
-  recurse: true
-});
+
+var pathConfig = require('../config/gulp').paths;
+var concatConfig = require('../config/gulp').concat;
+var uglifyConfig = require('../config/gulp').uglify;
+var renameConfig = require('../config/gulp').rename;
+var sizeConfig = require('../config/gulp').size;
 
 
 /*
- * Tasks
+ * Pipe
  */
-requireDir('./gulp/tasks', {
-  recurse: true
-});
+
+module.exports = {
+  getPipe: function() {
+    return gulp.src(mainBowerFiles())
+      .pipe(ignore.exclude('*.map'))
+      .pipe(sourcemaps.init())
+        .pipe(concat('vendor.js', concatConfig))
+        .pipe(size(sizeConfig))
+        .pipe(uglify(uglifyConfig))
+        .pipe(size(sizeConfig))
+        .pipe(rename(renameConfig))
+      .pipe(sourcemaps.write('./maps'))
+      .pipe(gulp.dest(pathConfig.libs.production));
+  }
+};

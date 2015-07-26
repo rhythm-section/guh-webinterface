@@ -26,20 +26,64 @@
 /*
  * Plugins
  */
-var requireDir = require('require-dir');
+
+var gulp = require('gulp');
+var del = require('del');
+var logger = require('../utils/logger');
 
 
 /*
- * Tasks
+ * Configuration
  */
-var pipes = requireDir('./gulp/pipes', {
-  recurse: true
-});
+
+var pathConfig = require('../config/gulp').paths;
+var cleanConfig = require('../config/gulp').clean;
 
 
 /*
- * Tasks
+ * Methods
  */
-requireDir('./gulp/tasks', {
-  recurse: true
+
+// Get pretty print version from array
+var getPrettyFromArray = function(array) {
+  return array.join('\n');
+};
+
+// Get pretty print version from object
+var getPrettyFromObject = function(object) {
+  var array = Object.keys(object).map(function(key) {
+    return object[key];
+  });
+
+  return getPrettyFromArray(array);
+};
+
+
+/*
+ * Task
+ * Removes folders of previous runs
+ */
+
+gulp.task('clean', function(done) {
+  del(
+    // Patterns
+    [
+      pathConfig.dest.development,
+      pathConfig.dest.production
+    ],
+
+    // Options
+    cleanConfig,
+
+    // Callback
+    function(error, paths) {
+      if(error) {
+        logger.error(error);
+      } else if(paths.length > 0) {
+        logger.info('Successful deleted folder:\n' + getPrettyFromArray(paths));
+      } else {
+        logger.warn('There was nothing to delete. Wanted to delete:\n' + getPrettyFromObject(pathConfig.dest));
+      }
+      done();
+    });
 });

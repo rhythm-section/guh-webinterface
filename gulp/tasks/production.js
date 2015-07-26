@@ -26,20 +26,32 @@
 /*
  * Plugins
  */
-var requireDir = require('require-dir');
+
+var gulp = require('gulp');
+var runSequence = require('run-sequence');
+var argsParser = require('../utils/args-parser');
+var logger = require('../utils/logger');
 
 
 /*
- * Tasks
+ * Task
  */
-var pipes = requireDir('./gulp/pipes', {
-  recurse: true
-});
 
-
-/*
- * Tasks
- */
-requireDir('./gulp/tasks', {
-  recurse: true
+gulp.task('production', function(done) {
+  // Setting node envrionment
+  process.env.NODE_ENV = 'production';
+  
+  runSequence(
+    'copy-fonts-production',
+    [
+      'build-styles-production',
+      'build-vendor-scripts-production',
+      'build-app-scripts-production',
+      'document-app-scripts-production'
+    ],
+    'build-index-production',
+    argsParser.isServer() ? 'app-server' : 'noop',
+    argsParser.isWatch() ? 'watch-production' : 'noop',
+    done
+  );
 });

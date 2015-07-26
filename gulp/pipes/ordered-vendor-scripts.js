@@ -26,20 +26,23 @@
 /*
  * Plugins
  */
-var requireDir = require('require-dir');
+
+var order = require('gulp-order');
 
 
 /*
- * Tasks
+ * Configuration
  */
-var pipes = requireDir('./gulp/pipes', {
-  recurse: true
-});
+
+var orderConfig = require('../config/gulp').order;
 
 
 /*
- * Tasks
+ * Pipe
  */
-requireDir('./gulp/tasks', {
-  recurse: true
-});
+
+module.exports = {
+  getPipe: function() {
+    return order(orderConfig);
+  }
+};

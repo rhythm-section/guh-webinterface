@@ -26,20 +26,29 @@
 /*
  * Plugins
  */
-var requireDir = require('require-dir');
+
+var gulp = require('gulp');
+var sass = require('gulp-sass');
+var browserSync = require('browser-sync');
 
 
 /*
- * Tasks
+ * Configuration
  */
-var pipes = requireDir('./gulp/pipes', {
-  recurse: true
-});
+
+var pathConfig = require('../config/gulp').paths;
+var sassConfig = require('../config/gulp').sass;
 
 
 /*
- * Tasks
+ * Pipe
  */
-requireDir('./gulp/tasks', {
-  recurse: true
-});
+
+module.exports = {
+  getPipe: function() {
+    return gulp.src(pathConfig.styles)
+      .pipe(sass(sassConfig))
+      .pipe(gulp.dest(pathConfig.dest.development))
+      .pipe(browserSync.stream());
+  }
+};

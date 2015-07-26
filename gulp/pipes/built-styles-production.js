@@ -26,20 +26,40 @@
 /*
  * Plugins
  */
-var requireDir = require('require-dir');
+
+var gulp = require('gulp');
+var sass = require('gulp-sass');
+var minifyCss = require('gulp-minify-css');
+var sourcemaps = require('gulp-sourcemaps');
+var rename = require('gulp-rename');
+var size = require('gulp-size');
 
 
 /*
- * Tasks
+ * Configuration
  */
-var pipes = requireDir('./gulp/pipes', {
-  recurse: true
-});
+
+var pathConfig = require('../config/gulp').paths;
+var sassConfig = require('../config/gulp').sass;
+var minifyCssConfig = require('../config/gulp').minifyCss;
+var renameConfig = require('../config/gulp').rename;
+var sizeConfig = require('../config/gulp').size;
 
 
 /*
- * Tasks
+ * Pipe
  */
-requireDir('./gulp/tasks', {
-  recurse: true
-});
+
+module.exports = {
+  getPipe: function() {
+    return gulp.src(pathConfig.styles)
+      .pipe(sourcemaps.init())
+        .pipe(sass(sassConfig))
+        .pipe(size(sizeConfig))
+        .pipe(minifyCss(minifyCssConfig))
+        .pipe(size(sizeConfig))
+        .pipe(rename(renameConfig))
+      .pipe(sourcemaps.write('./maps'))
+      .pipe(gulp.dest(pathConfig.dest.production));
+  }
+};

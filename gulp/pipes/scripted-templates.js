@@ -26,20 +26,41 @@
 /*
  * Plugins
  */
-var requireDir = require('require-dir');
+
+var gulp = require('gulp');
+var htmlhint = require('gulp-htmlhint');
+var htmlmin = require('gulp-htmlmin');
+var ngHtml2Js = require('gulp-ng-html2js');
+var debug = require('gulp-debug');
+
+/*
+ * Pipes
+ */
+
+var validatedTemplates = require('../pipes/validated-templates');
 
 
 /*
- * Tasks
+ * Configuration
  */
-var pipes = requireDir('./gulp/pipes', {
-  recurse: true
-});
+
+var pathConfig = require('../config/gulp').paths;
+var jshintConfig = require('../config/gulp').jshint;
+var htmlminConfig = require('../config/gulp').htmlmin;
+var ngHtml2JsConfig = require('../config/gulp').ngHtml2Js;
 
 
 /*
- * Tasks
+ * Pipe
  */
-requireDir('./gulp/tasks', {
-  recurse: true
-});
+
+module.exports = {
+  getPipe: function() {
+    return validatedTemplates.getPipe()
+      .pipe(htmlhint.failReporter())
+      .pipe(htmlmin(htmlminConfig))
+      .pipe(debug())
+      .pipe(ngHtml2Js(ngHtml2JsConfig))
+      .pipe(gulp.dest(pathConfig.dest.production));
+  }
+};

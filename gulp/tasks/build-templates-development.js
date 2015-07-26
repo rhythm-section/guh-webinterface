@@ -22,24 +22,37 @@
  *                                                                                     *
  * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 
-
 /*
  * Plugins
  */
-var requireDir = require('require-dir');
+
+var gulp = require('gulp');
+var browserSync = require('browser-sync').get('app-server');
+var gulpIf = require('gulp-if');
+var argsParser = require('../utils/args-parser');
 
 
 /*
- * Tasks
+ * Pipes
  */
-var pipes = requireDir('./gulp/pipes', {
-  recurse: true
-});
+
+var validatedTemplates = require('../pipes/validated-templates');
 
 
 /*
- * Tasks
+ * Configuration
  */
-requireDir('./gulp/tasks', {
-  recurse: true
+
+var pathConfig = require('../config/gulp').paths;
+
+
+/*
+ * Task
+ * 
+ */
+
+gulp.task('build-templates-development', function() {
+  return validatedTemplates.getPipe()
+    .pipe(gulp.dest(pathConfig.dest.development))
+    .pipe( gulpIf(argsParser.isWatch(), browserSync.reload({ stream: true })) );
 });

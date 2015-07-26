@@ -26,20 +26,77 @@
 /*
  * Plugins
  */
-var requireDir = require('require-dir');
+
+var yargs = require('yargs');
+var logger = require('../utils/logger');
 
 
 /*
- * Tasks
+ * Configuration
  */
-var pipes = requireDir('./gulp/pipes', {
-  recurse: true
-});
+
+// Defaults
+var argsParserConfig = require('../config/gulp').argsParser;
+
+// Parsing arguments passed to gulp command
+var args = yargs
+  .alias('e', 'environment')
+  .alias('d', 'documentation')
+  .alias('s', 'server')
+  .alias('w', 'watch')
+  .alias('t', 'test')
+  .alias('p', 'proxy')
+  .argv;
 
 
 /*
- * Tasks
+ * Methods
  */
-requireDir('./gulp/tasks', {
-  recurse: true
-});
+
+var getArgs = function() {
+  return args;
+};
+
+var getEnvironment = function() {
+  if(args.environment === undefined || args.environment === true) {
+    logger.info('Environment not defined. Using default: "' + argsParserConfig.defaultEnvironment + '"');
+    return argsParserConfig.defaultEnvironment;
+  } else {
+    return args.environment;  
+  }  
+};
+
+var getProxyServer = function() {
+  if(args.proxy === undefined) {
+    logger.info('Guh host address not defined. Using default: "' + argsParserConfig.defaultProxyServer + '"');
+    return argsParserConfig.defaultProxyServer;
+  } else {
+    return args.proxy;
+  }
+};
+
+var isDocumentationServer = function() {
+  return !!args.documentation;
+};
+
+var isServer = function() {
+  return !!args.server;
+};
+
+var isWatch = function() {
+  return !!args.watch;
+};
+
+
+/*
+ * Module
+ */
+
+module.exports = {
+  getArgs: getArgs,
+  getEnvironment: getEnvironment,
+  getProxyServer: getProxyServer,
+  isDocumentationServer: isDocumentationServer,
+  isServer: isServer,
+  isWatch: isWatch
+};

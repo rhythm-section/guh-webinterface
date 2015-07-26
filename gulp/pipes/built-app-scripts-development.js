@@ -26,20 +26,31 @@
 /*
  * Plugins
  */
-var requireDir = require('require-dir');
+
+var gulp = require('gulp');
 
 
 /*
- * Tasks
+ * Pipes
  */
-var pipes = requireDir('./gulp/pipes', {
-  recurse: true
-});
+
+var validatedAppScripts = require('../pipes/validated-app-scripts');
 
 
 /*
- * Tasks
+ * Configuration
  */
-requireDir('./gulp/tasks', {
-  recurse: true
-});
+
+var pathConfig = require('../config/gulp').paths;
+
+
+/*
+ * Pipe
+ */
+
+module.exports = {
+  getPipe: function() {
+    return validatedAppScripts.getPipe()
+      .pipe(gulp.dest(pathConfig.dest.development));
+  }
+};

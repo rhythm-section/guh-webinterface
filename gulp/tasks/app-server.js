@@ -26,20 +26,52 @@
 /*
  * Plugins
  */
-var requireDir = require('require-dir');
+
+var gulp = require('gulp');
+var runSequence = require('run-sequence');
+var browserSyncApp = require('browser-sync').create('app-server');
+var argsParser = require('../utils/args-parser');
 
 
 /*
- * Tasks
+ * Configuration
  */
-var pipes = requireDir('./gulp/pipes', {
-  recurse: true
-});
+
+var pathConfig = require('../config/gulp').paths;
+var browserSyncConfig = require('../config/gulp').browserSync.app;
 
 
 /*
- * Tasks
+ * Methods
  */
-requireDir('./gulp/tasks', {
-  recurse: true
+
+// Get pretty print version from array
+var getPrettyFromArray = function(array) {
+  return array.join('\n');
+};
+
+// Get pretty print version from object
+var getPrettyFromObject = function(object) {
+  var array = Object.keys(object).map(function(key) {
+    return object[key];
+  });
+
+  return getPrettyFromArray(array);
+};
+
+
+/*
+ * Task
+ * 
+ */
+
+gulp.task('app-server', function(done) {
+  var proxyServer = argsParser.getProxyServer();
+
+  // Set proxy server (Default set inside config/gulp.js)
+  browserSyncConfig.proxy = proxyServer;
+
+  browserSyncApp.init(null, browserSyncConfig);
+
+  done();
 });

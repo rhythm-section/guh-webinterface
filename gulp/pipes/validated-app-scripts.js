@@ -26,20 +26,27 @@
 /*
  * Plugins
  */
-var requireDir = require('require-dir');
+
+var gulp = require('gulp');
+var jshint = require('gulp-jshint');
 
 
 /*
- * Tasks
+ * Configuration
  */
-var pipes = requireDir('./gulp/pipes', {
-  recurse: true
-});
+
+var pathConfig = require('../config/gulp').paths;
+var jshintConfig = require('../config/gulp').jshint;
 
 
 /*
- * Tasks
+ * Pipe
  */
-requireDir('./gulp/tasks', {
-  recurse: true
-});
+
+module.exports = {
+  getPipe: function() {
+    return gulp.src(pathConfig.scripts)
+      .pipe(jshint(jshintConfig))
+      .pipe(jshint.reporter('jshint-stylish'));
+  }
+};

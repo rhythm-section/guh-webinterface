@@ -26,20 +26,13 @@
 /*
  * Plugins
  */
-var requireDir = require('require-dir');
+
+var gulp = require('gulp');
 
 
 /*
- * Tasks
+ * Task
+ * No operation = empty function
  */
-var pipes = requireDir('./gulp/pipes', {
-  recurse: true
-});
 
-
-/*
- * Tasks
- */
-requireDir('./gulp/tasks', {
-  recurse: true
-});
+gulp.task('noop', function() {});

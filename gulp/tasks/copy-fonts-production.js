@@ -22,24 +22,25 @@
  *                                                                                     *
  * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 
-
 /*
  * Plugins
  */
-var requireDir = require('require-dir');
+
+var gulp = require('gulp');
 
 
 /*
- * Tasks
+ * Pipes
  */
-var pipes = requireDir('./gulp/pipes', {
-  recurse: true
-});
+
+var copiedFontsProduction = require('../pipes/copied-fonts-production');
 
 
 /*
- * Tasks
+ * Task
+ * 
  */
-requireDir('./gulp/tasks', {
-  recurse: true
+
+gulp.task('copy-fonts-production', function() {
+  return copiedFontsProduction.getPipe();
 });

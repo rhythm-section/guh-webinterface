@@ -22,24 +22,26 @@
  *                                                                                     *
  * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 
-
 /*
  * Plugins
  */
-var requireDir = require('require-dir');
+
+var gulp = require('gulp');
+var logger = require('../utils/logger');
 
 
 /*
- * Tasks
+ * Pipes
  */
-var pipes = requireDir('./gulp/pipes', {
-  recurse: true
-});
+
+var validatedAppScripts = require('../pipes/validated-app-scripts');
 
 
 /*
- * Tasks
+ * Task
+ * Runs jshint for all scripts inside app folder
  */
-requireDir('./gulp/tasks', {
-  recurse: true
+
+gulp.task('validate-app-scripts', function(done) {
+  return validatedAppScripts.getPipe();
 });

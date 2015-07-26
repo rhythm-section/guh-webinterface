@@ -22,24 +22,13 @@
  *                                                                                     *
  * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 
+(function() {
+  'use strict';
 
-/*
- * Plugins
- */
-var requireDir = require('require-dir');
+  angular
+    .module('guh.config')
+    .constant('libs', {
+      '_': window._
+    });
 
-
-/*
- * Tasks
- */
-var pipes = requireDir('./gulp/pipes', {
-  recurse: true
-});
-
-
-/*
- * Tasks
- */
-requireDir('./gulp/tasks', {
-  recurse: true
-});
+}());

@@ -26,20 +26,22 @@
 /*
  * Plugins
  */
-var requireDir = require('require-dir');
+
+var gulp = require('gulp');
+var runSequence = require('run-sequence');
+var argsParser = require('../utils/args-parser');
 
 
 /*
- * Tasks
+ * Task
  */
-var pipes = requireDir('./gulp/pipes', {
-  recurse: true
-});
 
+gulp.task('default', function(done) {
+  var environment = argsParser.getEnvironment();
 
-/*
- * Tasks
- */
-requireDir('./gulp/tasks', {
-  recurse: true
+  runSequence(
+    'clean',
+    environment,
+    done
+  );
 });

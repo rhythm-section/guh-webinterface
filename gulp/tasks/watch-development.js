@@ -26,20 +26,33 @@
 /*
  * Plugins
  */
-var requireDir = require('require-dir');
+
+var gulp = require('gulp');
+var runSequence = require('run-sequence');
+var logger = require('../utils/logger');
 
 
 /*
- * Tasks
+ * Configuration
  */
-var pipes = requireDir('./gulp/pipes', {
-  recurse: true
-});
+
+var pathConfig = require('../config/gulp').paths;
 
 
 /*
- * Tasks
+ * Task
  */
-requireDir('./gulp/tasks', {
-  recurse: true
+
+gulp.task('watch-development', function(done) {
+  // Styles
+  gulp.watch(pathConfig.sass, ['build-styles-development']);
+
+  // Scripts
+  gulp.watch(pathConfig.scripts, ['build-app-scripts-development', 'document-app-scripts-development']);
+
+  // Templates
+  gulp.watch(pathConfig.templates, ['build-templates-development']);
+
+  // Index
+  gulp.watch(pathConfig.index, ['build-index-development']);
 });

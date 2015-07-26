@@ -26,20 +26,37 @@
 /*
  * Plugins
  */
-var requireDir = require('require-dir');
+
+var gulp = require('gulp');
+var browserSync = require('browser-sync').create('app-server');
+var runSequence = require('run-sequence');
+var argsParser = require('../utils/args-parser');
+var logger = require('../utils/logger');
 
 
 /*
- * Tasks
+ * Task
  */
-var pipes = requireDir('./gulp/pipes', {
-  recurse: true
-});
 
+gulp.task('development', function(done) {
+  // Setting node envrionment
+  process.env.NODE_ENV = 'development';
 
-/*
- * Tasks
- */
-requireDir('./gulp/tasks', {
-  recurse: true
+  console.log('isWatch', argsParser.isWatch());
+
+  runSequence(
+    'copy-fonts-development',
+    [
+      'build-templates-development',
+      'build-styles-development',
+      'build-vendor-scripts-development',
+      'build-app-scripts-development',
+      'document-app-scripts-development'
+    ],
+    'build-index-development',
+    argsParser.isDocumentationServer() ? 'documentation-server-development' : 'noop',
+    argsParser.isServer() ? 'app-server' : 'noop',
+    argsParser.isWatch() ? 'watch-development' : 'noop',
+    done
+  );
 });

@@ -26,20 +26,33 @@
 /*
  * Plugins
  */
-var requireDir = require('require-dir');
+
+var gulp = require('gulp');
+var jshint = require('gulp-jshint');
+var ngdocs = require('gulp-ngdocs');
 
 
 /*
- * Tasks
+ * Configuration
  */
-var pipes = requireDir('./gulp/pipes', {
-  recurse: true
-});
+
+var pathConfig = require('../config/gulp').paths;
+var ngdocsConfig = require('../config/gulp').ngdocs;
 
 
 /*
- * Tasks
+ * Pipe
  */
-requireDir('./gulp/tasks', {
-  recurse: true
-});
+
+module.exports = {
+  getPipe: function() {
+    return ngdocs.sections({
+        app: {
+          glob: pathConfig.scripts,
+          api: true,
+          title: 'App Documentation'
+        }
+      })
+      .pipe(ngdocs.process(ngdocsConfig));
+  }
+};

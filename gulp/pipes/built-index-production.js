@@ -26,20 +26,45 @@
 /*
  * Plugins
  */
-var requireDir = require('require-dir');
+
+var gulp = require('gulp');
+var inject = require('gulp-inject');
 
 
 /*
- * Tasks
+ * Pipes
  */
-var pipes = requireDir('./gulp/pipes', {
-  recurse: true
-});
+
+var builtStylesProduction = require('../pipes/built-styles-production');
+var builtAppScriptsProduction = require('../pipes/built-app-scripts-production');
+var builtVendorScriptsProduction = require('../pipes/built-vendor-scripts-production');
+var validatedIndex = require('../pipes/validated-index');
 
 
 /*
- * Tasks
+ * Configuration
  */
-requireDir('./gulp/tasks', {
-  recurse: true
-});
+
+var pathConfig = require('../config/gulp').paths;
+var injectConfig = require('../config/gulp').inject;
+
+
+/*
+ * Pipe
+ */
+
+module.exports = {
+  getPipe: function() {
+    var stylesPipe = builtStylesProduction.getPipe();
+    var vendorScriptsPipe = builtVendorScriptsProduction.getPipe();
+    var appScriptsPipe = builtAppScriptsProduction.getPipe();
+
+    return validatedIndex.getPipe()
+      // Write first to get relative path for inject
+      .pipe(gulp.dest(pathConfig.dest.production))
+      .pipe(inject(stylesPipe, injectConfig.app))
+      .pipe(inject(vendorScriptsPipe, injectConfig.vendor))
+      .pipe(inject(appScriptsPipe, injectConfig.app))
+      .pipe(gulp.dest(pathConfig.dest.production));
+  }
+};

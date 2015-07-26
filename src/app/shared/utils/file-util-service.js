@@ -22,24 +22,39 @@
  *                                                                                     *
  * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 
+(function() {
+  'use strict';
 
-/*
- * Plugins
- */
-var requireDir = require('require-dir');
+  angular
+    .module('guh.utils')
+    .factory('File', FileFactory);
+
+  FileFactory.$inject = ['$log', '$q', 'app'];
+
+  function FileFactory($log, $q, app) {
+    
+    var File = {
+      checkFile: checkFile
+    };
+
+    return File;
 
 
-/*
- * Tasks
- */
-var pipes = requireDir('./gulp/pipes', {
-  recurse: true
-});
+    /*
+     * Public method: checkFile(path, file)
+     */
+    function checkFile(path, file) {
+      var request = new XMLHttpRequest();
 
+      request.open('HEAD', path + file, false);
+      request.send();
 
-/*
- * Tasks
- */
-requireDir('./gulp/tasks', {
-  recurse: true
-});
+      if(request.status === 200) {
+        return true;
+      } else {
+        return false;
+      }
+    }
+  }
+
+}());
