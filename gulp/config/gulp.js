@@ -35,7 +35,7 @@ var neat = require('node-neat');
  * Configuration
  */
 
-var config = './config';
+var config = './gulp/config';
 var src = './src';
 var developmentDest = './dist';
 var productionDest = './dist';

@@ -23,35 +23,60 @@
  * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 
 
-.tabset {
-  @include rem(margin, 2.4, 0);
+.tiles {
+  @include align-items(center);
+  @include display(flex);
+  @include flex-wrap(wrap);
+  @include justify-content(space-between);
   @include rem(padding, 0, 2.4);
+  width: 100%;
 
-  ul {
-    @include display(flex);
-    @include flex-wrap(nowrap);
-  }
-
-  li {
-    @include flex(1);
-    @include flex-grow(1);
-  }
-
-  a {
-    background-color: #eee;
-    color: #000;
-    display: block;
-    @include rem(padding, 0.9, 1.8);
+  h2,
+  p {
+    @include rem(height, 2.4);
+    overflow: hidden;  
     text-align: center;
-    text-decoration: none;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    width: 100%;
+  }
 
-    &.active {
-      background-color: #ddd;
-    }
+  h2 {
+    @include rem(font-size, 1.6);
+    @include rem(line-height, 2.4);
+  }
+
+  p {
+    color: #676767;
+    @include rem(font-size, 1.2);
+    letter-spacing: 0.1em;
+    padding-left: 0.1em;
+    text-transform: uppercase;
   }
 }
 
-.tab {
-  background-color: #ddd;
-  @include rem(padding, 1.8);
+.tiles > .item {
+  margin-bottom: 2%;
+  position: relative;
+  width: 23.5%;
+
+  &:before {
+    content: "";
+    display: block;
+    padding-top: 100%;
+  }
+
+  a {
+    background-color: #fff;
+    border: 1px solid #eee;
+    color: #000;
+    display: block;
+    height: 100%;
+    @include rem(padding, 1.8);
+    position: absolute;
+      left: 0;
+      top: 0;
+    text-decoration: none;
+    width: 100%;
+  }
 }

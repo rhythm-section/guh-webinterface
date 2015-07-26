@@ -23,35 +23,27 @@
  * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 
 
-.tabset {
-  @include rem(margin, 2.4, 0);
-  @include rem(padding, 0, 2.4);
-
-  ul {
-    @include display(flex);
-    @include flex-wrap(nowrap);
-  }
-
-  li {
-    @include flex(1);
-    @include flex-grow(1);
-  }
-
-  a {
-    background-color: #eee;
-    color: #000;
-    display: block;
-    @include rem(padding, 0.9, 1.8);
-    text-align: center;
-    text-decoration: none;
-
-    &.active {
-      background-color: #ddd;
-    }
-  }
+html {
+  box-sizing: border-box;
+  font-size: 62.5%;
 }
 
-.tab {
-  background-color: #ddd;
-  @include rem(padding, 1.8);
+*,
+*:before,
+*:after {
+  box-sizing: inherit;
+}
+
+body {
+  font-family: 'Ubuntu';
+  @include rem(font-size, 1.6);
+  @include rem(line-height, 2.4);
+  font-weight: 400;
+}
+
+h1 {
+  @include rem(font-size, 3.2);
+  @include rem(line-height, 4.8);
+  @include rem(margin, 2.4, 0);
+  text-align: center;
 }
