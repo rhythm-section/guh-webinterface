@@ -19,7 +19,7 @@
     "angular": "~1.4.3",
     "angular-hotkeys": "chieffancypants/angular-hotkeys#~1.4.5",
     "angular-ui-router": "~0.2.15",
-    "guh-libjs": "file:///Users/Lukas/Documents/Arbeit/guh/Interface/guh/guh-libjs/.git/",
+    "guh-libjs": "guh/guh-libjs",
     "lodash": "~3.10.0",
     "js-data": "~2.2.3",
     "js-data-angular": "~3.0.0",
