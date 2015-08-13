@@ -50,7 +50,7 @@ gulp.task('production', function(done) {
       'document-app-scripts-production'
     ],
     'build-index-production',
-    argsParser.isServer() ? 'app-server' : 'noop',
+    argsParser.isServer() ? 'app-server-production' : 'noop',
     argsParser.isWatch() ? 'watch-production' : 'noop',
     done
   );
