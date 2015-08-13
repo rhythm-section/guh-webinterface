@@ -28,24 +28,40 @@
  */
 
 var gulp = require('gulp');
-var browserSync = require('browser-sync').get('app-server');
-var gulpIf = require('gulp-if');
-var argsParser = require('../utils/args-parser');
+var mainBowerFiles = require('main-bower-files');
+var sass = require('gulp-sass');
+var browserSync = require('browser-sync');
+var minifyCss = require('gulp-minify-css');
+var sourcemaps = require('gulp-sourcemaps');
+var rename = require('gulp-rename');
+var size = require('gulp-size');
 
 
 /*
- * Pipes
+ * Configuration
  */
 
-var builtStylesDevelopment = require('../pipes/built-styles-development');
+var pathConfig = require('../config/gulp').paths;
+var mainBowerFilesConfig = require('../config/gulp').mainBowerFiles.styles;
+var sassConfig = require('../config/gulp').sass;
+var minifyCssConfig = require('../config/gulp').minifyCss;
+var renameConfig = require('../config/gulp').rename;
+var sizeConfig = require('../config/gulp').size;
 
 
 /*
- * Task
- * 
+ * Pipe
  */
 
-gulp.task('build-styles-development', function() {
-  return builtStylesDevelopment.getPipe()
-    .pipe( gulpIf(argsParser.isWatch(), browserSync.reload({ stream: true })) );
-});
+module.exports = {
+  getPipe: function() {
+    return gulp.src(mainBowerFiles(mainBowerFilesConfig))
+      .pipe(sourcemaps.init())
+        .pipe(size(sizeConfig))
+        .pipe(minifyCss(minifyCssConfig))
+        .pipe(size(sizeConfig))
+        .pipe(rename(renameConfig))
+      .pipe(sourcemaps.write('./maps'))
+      .pipe(gulp.dest(pathConfig.libs.production));
+  }
+};

@@ -28,24 +28,27 @@
  */
 
 var gulp = require('gulp');
-var browserSync = require('browser-sync').get('app-server');
-var gulpIf = require('gulp-if');
-var argsParser = require('../utils/args-parser');
+var mainBowerFiles = require('main-bower-files');
+var sass = require('gulp-sass');
+var browserSync = require('browser-sync');
 
 
 /*
- * Pipes
+ * Configuration
  */
 
-var builtStylesProduction = require('../pipes/built-styles-production');
+var pathConfig = require('../config/gulp').paths;
+var mainBowerFilesConfig = require('../config/gulp').mainBowerFiles.styles;
+var sassConfig = require('../config/gulp').sass;
 
 
 /*
- * Task
- * 
+ * Pipe
  */
 
-gulp.task('build-styles-production', function() {
-  return builtStylesProduction.getPipe()
-    .pipe( gulpIf(argsParser.isWatch(), browserSync.reload({ stream: true })) );
-});
+module.exports = {
+  getPipe: function() {
+    return gulp.src(mainBowerFiles(mainBowerFilesConfig))
+      .pipe(gulp.dest(pathConfig.libs.development));
+  }
+};

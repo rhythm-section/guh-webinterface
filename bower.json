@@ -26,7 +26,8 @@
     "reconnectingWebsocket": "~1.0.0",
     "angular-animate": "~1.4.3",
     "angular-messages": "~1.4.3",
-    "angular-sanitize": "~1.4.3"
+    "angular-sanitize": "~1.4.3",
+    "ngDialog": "~0.4.0"
   },
   "devDependencies": {},
   "overrides": {
@@ -53,7 +54,7 @@
     },
     "js-data": {
       "main": {
-        "development": "./dist/js-data.js",
+        "development": "./dist/js-data-debug.js",
         "production": "./dist/js-data.js"
       }
     },
@@ -63,8 +64,17 @@
     "lodash": {
       "main": "./lodash.js"
     },
+    "ngDialog": {
+      "main": [
+        "./css/ngDialog.css",
+        "./js/ngDialog.js"
+      ]
+    },
     "reconnectingWebsocket": {
       "main": "./reconnecting-websocket.js"
     }
+  },
+  "resolutions": {
+    "angular": "~1.4.3"
   }
 }

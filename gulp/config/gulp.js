@@ -129,6 +129,15 @@ module.exports = {
 
   jshint: config + '/jshint.js',
 
+  mainBowerFiles: {
+    styles: {
+      filter: /\.css$/i
+    },
+    scripts: {
+      filter: /\.js$/i
+    }
+  },
+
   minifyCss: {},
 
   ngdocs: {
@@ -151,8 +160,10 @@ module.exports = {
     'angular-ui-router.js',
     'reconnecting-websocket.js',
     'js-data.js',
+    'js-data-debug.js',
     'js-data-angular.js',
     'guh-libjs.js',
+    'ngDialog.js',
     'hotkeys.js'
   ],
 

@@ -37,6 +37,7 @@ var mainBowerFiles = require('main-bower-files');
  */
 
 var pathConfig = require('../config/gulp').paths;
+var mainBowerFilesConfig = require('../config/gulp').mainBowerFiles.scripts;
 
 
 /*
@@ -45,7 +46,7 @@ var pathConfig = require('../config/gulp').paths;
 
 module.exports = {
   getPipe: function() {
-    return gulp.src(mainBowerFiles())
+    return gulp.src(mainBowerFiles(mainBowerFilesConfig))
       .pipe(ignore.exclude('*.map'))
       .pipe(gulp.dest(pathConfig.libs.development));
   }

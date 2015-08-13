@@ -42,6 +42,7 @@ var sourcemaps = require('gulp-sourcemaps');
  */
 
 var pathConfig = require('../config/gulp').paths;
+var mainBowerFilesConfig = require('../config/gulp').mainBowerFiles.scripts;
 var concatConfig = require('../config/gulp').concat;
 var uglifyConfig = require('../config/gulp').uglify;
 var renameConfig = require('../config/gulp').rename;
@@ -54,7 +55,7 @@ var sizeConfig = require('../config/gulp').size;
 
 module.exports = {
   getPipe: function() {
-    return gulp.src(mainBowerFiles())
+    return gulp.src(mainBowerFiles(mainBowerFilesConfig))
       .pipe(ignore.exclude('*.map'))
       .pipe(sourcemaps.init())
         .pipe(concat('vendor.js', concatConfig))

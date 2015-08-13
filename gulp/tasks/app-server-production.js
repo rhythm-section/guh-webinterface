@@ -46,7 +46,7 @@ var browserSyncConfig = require('../config/gulp').browserSync.app;
  * 
  */
 
-gulp.task('app-server-development', function(done) {
+gulp.task('app-server-production', function(done) {
   browserSyncConfig.server = {
     baseDir: pathConfig.dest.development + '/'
   };

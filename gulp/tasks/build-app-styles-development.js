@@ -28,36 +28,24 @@
  */
 
 var gulp = require('gulp');
-var browserSync = require('browser-sync').create('app-server');
-var runSequence = require('run-sequence');
+var browserSync = require('browser-sync').get('app-server');
+var gulpIf = require('gulp-if');
 var argsParser = require('../utils/args-parser');
-var logger = require('../utils/logger');
+
+
+/*
+ * Pipes
+ */
+
+var builtAppStylesDevelopment = require('../pipes/built-app-styles-development');
 
 
 /*
  * Task
+ * 
  */
 
-gulp.task('development', function(done) {
-  // Setting node envrionment
-  process.env.NODE_ENV = 'development';
-
-  console.log('isWatch', argsParser.isWatch());
-
-  runSequence(
-    'copy-fonts-development',
-    [
-      'build-templates-development',
-      'build-vendor-styles-development',
-      'build-app-styles-development',
-      'build-vendor-scripts-development',
-      'build-app-scripts-development',
-      'document-app-scripts-development'
-    ],
-    'build-index-development',
-    argsParser.isDocumentationServer() ? 'documentation-server-development' : 'noop',
-    argsParser.isServer() ? 'app-server-development' : 'noop',
-    argsParser.isWatch() ? 'watch-development' : 'noop',
-    done
-  );
+gulp.task('build-app-styles-development', function() {
+  return builtAppStylesDevelopment.getPipe()
+    .pipe( gulpIf(argsParser.isWatch(), browserSync.reload({ stream: true })) );
 });

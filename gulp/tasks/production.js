@@ -44,7 +44,8 @@ gulp.task('production', function(done) {
   runSequence(
     'copy-fonts-production',
     [
-      'build-styles-production',
+      'build-vendor-styles-production',
+      'build-app-styles-production',
       'build-vendor-scripts-production',
       'build-app-scripts-production',
       'document-app-scripts-production'

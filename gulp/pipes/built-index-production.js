@@ -35,7 +35,8 @@ var inject = require('gulp-inject');
  * Pipes
  */
 
-var builtStylesProduction = require('../pipes/built-styles-production');
+var builtVendorStylesProduction = require('../pipes/built-vendor-styles-production');
+var builtAppStylesProduction = require('../pipes/built-app-styles-production');
 var builtAppScriptsProduction = require('../pipes/built-app-scripts-production');
 var builtVendorScriptsProduction = require('../pipes/built-vendor-scripts-production');
 var validatedIndex = require('../pipes/validated-index');
@@ -55,14 +56,16 @@ var injectConfig = require('../config/gulp').inject;
 
 module.exports = {
   getPipe: function() {
-    var stylesPipe = builtStylesProduction.getPipe();
+    var vendorStylesPipe = builtVendorStylesProduction.getPipe();
+    var appStylesPipe = builtAppStylesProduction.getPipe();
     var vendorScriptsPipe = builtVendorScriptsProduction.getPipe();
     var appScriptsPipe = builtAppScriptsProduction.getPipe();
 
     return validatedIndex.getPipe()
       // Write first to get relative path for inject
       .pipe(gulp.dest(pathConfig.dest.production))
-      .pipe(inject(stylesPipe, injectConfig.app))
+      .pipe(inject(vendorStylesPipe, injectConfig.vendor))
+      .pipe(inject(appStylesPipe, injectConfig.app))
       .pipe(inject(vendorScriptsPipe, injectConfig.vendor))
       .pipe(inject(appScriptsPipe, injectConfig.app))
       .pipe(gulp.dest(pathConfig.dest.production));
