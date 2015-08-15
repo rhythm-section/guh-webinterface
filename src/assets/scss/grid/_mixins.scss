@@ -30,9 +30,6 @@
  */
 
 @mixin grid-gradient($baseline-stop, $height, $values...) {
-  @debug $baseline-stop;
-  @debug $height;
-  @debug $values;
   background-image: -webkit-linear-gradient(bottom, $baseline-stop), -webkit-linear-gradient(left, $values);
   background-image: -moz-linear-gradient(bottom, $baseline-stop), -moz-linear-gradient(left, $values);
   background-image: -ms-linear-gradient(bottom, $baseline-stop), -ms-linear-gradient(left, $values);
