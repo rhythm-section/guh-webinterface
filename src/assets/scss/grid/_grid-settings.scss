@@ -24,58 +24,27 @@
 
 
 /*
- * Libraries
+ * General (Baseline- & Neat-Grid)
  *
  */
 
-@import "bourbon";
+$visual-grid: false;  // Deactivated because grid is drawn with own mixin (grid-gradient)
+$visual-grid-overlay: true;
+$visual-grid-index: front;
+$visual-grid-opacity: 0.4;
 
 
 /*
- * App SASS
+ * Baseline-Grid
  *
  */
 
-@import "../assets/scss/functions";
-@import "../assets/scss/mixins";
-@import "../assets/scss/variables";
+$visual-grid-baseline-color: #ccc;
 
 
 /*
- * Grid
+ * Neat-Grid
  *
  */
 
-@import "../assets/scss/grid/grid";
-
-
-/*
- * Reset
- *
- */
-
-@import "../assets/scss/app/reset";
-
-
-/*
- * Components
- *
- */
-
-@import "../assets/scss/components/tiles";
-
-
-/*
- * Directives (Shared UI)
- */
-
-@import "../app/shared/ui/tabs/tabs";
-
-
-/*
- * App specific
- *
- */
-
-@import "../assets/scss/app/base";
-@import "../assets/scss/app/layout";
+$visual-grid-color: #eee;

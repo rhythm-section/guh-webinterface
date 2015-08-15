@@ -24,58 +24,47 @@
 
 
 /*
- * Libraries
+ * Create gradient single stop for baseline
  *
  */
 
-@import "bourbon";
+@function baseline-stop($visual-grid-baseline, $color: $visual-grid-baseline-color, $opacity: $visual-grid-opacity) {
+  $transparent: transparent;
+
+  $values: (rgba($color, $opacity) 0, $transparent 0);
+  $values: append($values, $transparent $visual-grid-baseline - 1, comma);
+  $values: append($values, rgba($color, $opacity) $visual-grid-baseline - 1, comma);
+  $values: append($values, rgba($color, $opacity) $visual-grid-baseline, comma);
+
+  @return $values;
+}
 
 
 /*
- * App SASS
+ * Create gradient single stop for striped background
+ * Code from bourbon-neat/app/assets/stylesheets/functions/_private.scss
  *
  */
+// @function gradient-stops($grid-columns, $color: $visual-grid-color) {
+//   $transparent: transparent;
 
-@import "../assets/scss/functions";
-@import "../assets/scss/mixins";
-@import "../assets/scss/variables";
+//   $column-width: flex-grid(1, $grid-columns);
+//   $gutter-width: flex-gutter($grid-columns);
+//   $column-offset: $column-width;
 
+//   $values: ($transparent 0, $color 0);
 
-/*
- * Grid
- *
- */
+//   @for $i from 1 to $grid-columns*2 {
+//     @if is-even($i) {
+//       $values: append($values, $transparent $column-offset, comma);
+//       $values: append($values, $color $column-offset, comma);
+//       $column-offset: $column-offset + $column-width;
+//     } @else {
+//       $values: append($values, $color $column-offset, comma);
+//       $values: append($values, $transparent $column-offset, comma);
+//       $column-offset: $column-offset + $gutter-width;
+//     }
+//   }
 
-@import "../assets/scss/grid/grid";
-
-
-/*
- * Reset
- *
- */
-
-@import "../assets/scss/app/reset";
-
-
-/*
- * Components
- *
- */
-
-@import "../assets/scss/components/tiles";
-
-
-/*
- * Directives (Shared UI)
- */
-
-@import "../app/shared/ui/tabs/tabs";
-
-
-/*
- * App specific
- *
- */
-
-@import "../assets/scss/app/base";
-@import "../assets/scss/app/layout";
+//   @return $values;
+// }

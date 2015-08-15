@@ -41,6 +41,10 @@ body {
   font-weight: 400;
 }
 
+.grid-overlay {
+  @include grid-overlay();
+}
+
 h1 {
   @include rem(font-size, 3.2);
   @include rem(line-height, 4.8);

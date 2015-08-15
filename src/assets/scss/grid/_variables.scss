@@ -24,58 +24,33 @@
 
 
 /*
- * Libraries
+ * Breakpoints
  *
  */
 
-@import "bourbon";
-
-
-/*
- * App SASS
- *
- */
-
-@import "../assets/scss/functions";
-@import "../assets/scss/mixins";
-@import "../assets/scss/variables";
-
-
-/*
- * Grid
- *
- */
-
-@import "../assets/scss/grid/grid";
-
-
-/*
- * Reset
- *
- */
-
-@import "../assets/scss/app/reset";
-
-
-/*
- * Components
- *
- */
-
-@import "../assets/scss/components/tiles";
-
-
-/*
- * Directives (Shared UI)
- */
-
-@import "../app/shared/ui/tabs/tabs";
-
-
-/*
- * App specific
- *
- */
-
-@import "../assets/scss/app/base";
-@import "../assets/scss/app/layout";
+$breakpoints: (
+  xs: (
+    line-height: 27,
+    media-query: new-breakpoint(max-width em(480px), 4)
+  ),
+  s: (
+    line-height: 27,
+    media-query: new-breakpoint(min-width em(481px) max-width em(640), 4)
+  ),
+  m: (
+    line-height: 27,
+    media-query: new-breakpoint(min-width em(641) max-width em(1024px), 4)
+  ),
+  l: (
+    line-height: 27,
+    media-query: new-breakpoint(min-width em(1025) max-width em(1280), 4)
+  ),
+  xl: (
+    line-height: 27,
+    media-query: new-breakpoint(min-width em(1281) max-width em(1440), 4)
+  ),
+  xxl: (
+    line-height: 27,
+    media-query: new-breakpoint(min-width em(1441px), 16)
+  )
+);

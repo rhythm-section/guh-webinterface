@@ -24,58 +24,26 @@
 
 
 /*
+ * Grid settings
+ *
+ */
+
+@import "grid-settings";
+
+
+/*
  * Libraries
  *
  */
 
-@import "bourbon";
+@import "neat";
 
 
 /*
- * App SASS
+ * Grid SASS
  *
  */
 
-@import "../assets/scss/functions";
-@import "../assets/scss/mixins";
-@import "../assets/scss/variables";
-
-
-/*
- * Grid
- *
- */
-
-@import "../assets/scss/grid/grid";
-
-
-/*
- * Reset
- *
- */
-
-@import "../assets/scss/app/reset";
-
-
-/*
- * Components
- *
- */
-
-@import "../assets/scss/components/tiles";
-
-
-/*
- * Directives (Shared UI)
- */
-
-@import "../app/shared/ui/tabs/tabs";
-
-
-/*
- * App specific
- *
- */
-
-@import "../assets/scss/app/base";
-@import "../assets/scss/app/layout";
+@import "variables";
+@import "functions";
+@import "mixins";

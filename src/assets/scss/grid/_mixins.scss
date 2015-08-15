@@ -1,0 +1,95 @@
+/* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
+ *                                                                                     *
+ * Copyright (C) 2015 Lukas Mayerhofer <lukas.mayerhofer@guh.guru>                     *
+ *                                                                                     *
+ * Permission is hereby granted, free of charge, to any person obtaining a copy        *
+ * of this software and associated documentation files (the "Software"), to deal       *
+ * in the Software without restriction, including without limitation the rights        *
+ * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell           *
+ * copies of the Software, and to permit persons to whom the Software is               *
+ * furnished to do so, subject to the following conditions:                            *
+ *                                                                                     *
+ * The above copyright notice and this permission notice shall be included in all      *
+ * copies or substantial portions of the Software.                                     *
+ *                                                                                     *
+ * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR          *
+ * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,            *
+ * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE         *
+ * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER              *
+ * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,       *
+ * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE       *
+ * SOFTWARE.                                                                           *
+ *                                                                                     *
+ * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
+
+
+/*
+ * Create gradient according to baseline- & column-stops
+ * The standard visual-grid from bourbon-neat is not used. Instead it is integrated in this grid-gradient-mixin (columns + baseline)
+ *
+ */
+
+@mixin grid-gradient($baseline-stop, $height, $values...) {
+  @debug $baseline-stop;
+  @debug $height;
+  @debug $values;
+  background-image: -webkit-linear-gradient(bottom, $baseline-stop), -webkit-linear-gradient(left, $values);
+  background-image: -moz-linear-gradient(bottom, $baseline-stop), -moz-linear-gradient(left, $values);
+  background-image: -ms-linear-gradient(bottom, $baseline-stop), -ms-linear-gradient(left, $values);
+  background-image: -o-linear-gradient(bottom, $baseline-stop), -o-linear-gradient(left, $values);
+  background-image: unquote("linear-gradient(to bottom, #{$baseline-stop})"), unquote("linear-gradient(to left, #{$values})");
+  background-position: center top;
+  background-repeat: repeat;
+  background-size: 100% $height;
+}
+
+
+/* 
+ * Append grid to element
+ *
+ */
+
+@mixin grid-overlay($baseline-color: $visual-grid-baseline-color) {
+  @if $visual-grid-overlay == true {
+    // Set gradient & size for each breakpoint
+    @each $item, $breakpoint in $breakpoints {
+      @if $breakpoint {
+        $visual-grid-line-height: map-get($breakpoint, line-height) * 1px;
+        $gradient-height: $visual-grid-line-height;
+        $media-query: map-get($breakpoint, media-query);
+        $baseline-stop: baseline-stop($visual-grid-line-height, $baseline-color);
+
+        @include media($media-query) {
+          @include grid-gradient($baseline-stop, $gradient-height, gradient-stops($grid-columns));
+        }
+      }
+    }
+
+    // Full height
+    &:before {
+      content: "";
+      // display: table;
+
+      display: inline-block;
+      height: 100%;
+      left: 0;
+      margin: 0 auto;
+      max-width: $max-width;
+      opacity: $visual-grid-opacity;
+      pointer-events: none;
+      position: fixed;
+      right: 0;
+      width: 100%;
+    }
+
+    // Behind content
+    @if $visual-grid-index == back {
+      z-index: -1;
+    }
+
+    // In front of content
+    @else if $visual-grid-index == front {
+      z-index: 9999;
+    }
+  }
+}
