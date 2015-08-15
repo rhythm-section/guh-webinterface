@@ -39,6 +39,7 @@ var config = './gulp/config';
 var src = './src';
 var developmentDest = './dist';
 var productionDest = './dist';
+var svgType = '';
 
 
 module.exports = {
@@ -65,13 +66,24 @@ module.exports = {
     scripts: src + '/app/**/*.js',
     styles: src + '/app/app.scss',
     sass: [src + '/assets/**/*.scss', src + '/app/**/*.scss'],
-    svg: src + '/assets/**/*.svg'
+    svg: {
+      vendor: src + '/assets/svg/vendor/*.svg',
+      ui: src + '/assets/svg/ui/*.svg'
+    }
   },
 
   // Utils
   argsParser: {
     defaultEnvironment: 'development',
     defaultProxyServer: 'localhost:3000'
+  },
+
+  // Functions
+  dynamic: {
+    setSvgType: function(type) {
+      svgType = type;
+      console.log('svgType', type, svgType);
+    }
   },
 
   // Plugins
@@ -181,6 +193,26 @@ module.exports = {
   },
 
   sourcemaps: {},
+
+  svgSprite: {
+    mode: {
+      css: {
+        // dest: 'assets',
+        example: true,
+        render: {
+          css: true
+        }
+        // Sprite attribute set inside gulp pipe with following structure:
+        // sprite: 'svg/<vendor|ui>.css-<revision>.svg'
+      },
+      symbol: {
+        dest: 'assets',
+        example: true
+        // Sprite attribute set inside gulp pipe with following structure:
+        // sprite: 'svg/<vendor|ui>.symbol-<revision>.svg'
+      }
+    }
+  },
 
   uglify: {
     mangle: false

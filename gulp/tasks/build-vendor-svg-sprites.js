@@ -28,38 +28,28 @@
  */
 
 var gulp = require('gulp');
-var browserSync = require('browser-sync').create('app-server');
-var runSequence = require('run-sequence');
-var argsParser = require('../utils/args-parser');
-var logger = require('../utils/logger');
+
+
+/*
+ * Pipes
+ */
+
+var builtVendorSvgSprites = require('../pipes/built-vendor-svg-sprites');
+
+
+/*
+ * Configuration
+ */
+
+var pathConfig = require('../config/gulp').paths;
 
 
 /*
  * Task
+ * 
  */
 
-gulp.task('development', function(done) {
-  // Setting node envrionment
-  process.env.NODE_ENV = 'development';
-
-  console.log('isWatch', argsParser.isWatch());
-
-  runSequence(
-    'copy-fonts-development',
-    'build-ui-svg-sprites',
-    'build-vendor-svg-sprites',
-    [
-      'build-templates-development',
-      'build-vendor-styles-development',
-      'build-app-styles-development',
-      'build-vendor-scripts-development',
-      'build-app-scripts-development',
-      'document-app-scripts-development'
-    ],
-    'build-index-development',
-    argsParser.isDocumentationServer() ? 'documentation-server-development' : 'noop',
-    argsParser.isServer() ? 'app-server-development' : 'noop',
-    argsParser.isWatch() ? 'watch-development' : 'noop',
-    done
-  );
+gulp.task('build-vendor-svg-sprites', function() {
+  return builtVendorSvgSprites.getPipe()
+    .pipe(gulp.dest(pathConfig.dest.development));
 });

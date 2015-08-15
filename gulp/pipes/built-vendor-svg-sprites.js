@@ -28,38 +28,47 @@
  */
 
 var gulp = require('gulp');
-var browserSync = require('browser-sync').create('app-server');
-var runSequence = require('run-sequence');
-var argsParser = require('../utils/args-parser');
-var logger = require('../utils/logger');
+var plumber = require('gulp-plumber');
+var svgSprite = require('gulp-svg-sprite');
+var gulpIgnore = require('gulp-ignore');
+var size = require('gulp-size');
 
 
 /*
- * Task
+ * Configuration
  */
 
-gulp.task('development', function(done) {
-  // Setting node envrionment
-  process.env.NODE_ENV = 'development';
+var pathConfig = require('../config/gulp').paths;
+var svgSpriteConfig = require('../config/gulp').svgSprite;
+var sizeConfig = require('../config/gulp').size;
+var dynamicConfig = require('../config/gulp').dynamic;
 
-  console.log('isWatch', argsParser.isWatch());
 
-  runSequence(
-    'copy-fonts-development',
-    'build-ui-svg-sprites',
-    'build-vendor-svg-sprites',
-    [
-      'build-templates-development',
-      'build-vendor-styles-development',
-      'build-app-styles-development',
-      'build-vendor-scripts-development',
-      'build-app-scripts-development',
-      'document-app-scripts-development'
-    ],
-    'build-index-development',
-    argsParser.isDocumentationServer() ? 'documentation-server-development' : 'noop',
-    argsParser.isServer() ? 'app-server-development' : 'noop',
-    argsParser.isWatch() ? 'watch-development' : 'noop',
-    done
-  );
-});
+/*
+ * Pipes
+ */
+
+
+/*
+ * Pipe
+ */
+
+module.exports = {
+  getPipe: function() {
+    // Set output filepath + filename for css-files
+    svgSpriteConfig.mode.css.dest = 'assets/css/vendor';
+    svgSpriteConfig.mode.symbol.dest = 'assets/svg/vendor';
+
+    // Set prefix
+    svgSpriteConfig.mode.css.prefix = '.vendor-%s';
+
+    // Set output filepath + filename for svg-files
+    svgSpriteConfig.mode.css.sprite = '../../svg/vendor.css.svg';
+    svgSpriteConfig.mode.symbol.sprite = '../vendor/vendor.symbol.svg';
+
+    return gulp.src(pathConfig.svg.vendor)
+      .pipe(plumber())
+      .pipe(svgSprite(svgSpriteConfig))
+      .pipe(size(sizeConfig));
+  }
+};

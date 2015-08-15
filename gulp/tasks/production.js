@@ -43,6 +43,8 @@ gulp.task('production', function(done) {
   
   runSequence(
     'copy-fonts-production',
+    'build-ui-svg-sprites',
+    'build-vendor-svg-sprites',
     [
       'build-vendor-styles-production',
       'build-app-styles-production',
