@@ -45,7 +45,7 @@ var pathConfig = require('../config/gulp').paths;
 
 gulp.task('watch-development', function(done) {
   // Styles
-  gulp.watch(pathConfig.sass, ['build-styles-development']);
+  gulp.watch(pathConfig.sass, ['build-app-styles-development', 'build-vendor-styles-development']);
 
   // Scripts
   gulp.watch(pathConfig.scripts, ['build-app-scripts-development', 'document-app-scripts-development']);

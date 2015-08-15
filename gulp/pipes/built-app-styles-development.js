@@ -28,6 +28,7 @@
  */
 
 var gulp = require('gulp');
+var plumber = require('gulp-plumber');
 var sass = require('gulp-sass');
 var browserSync = require('browser-sync');
 
@@ -47,6 +48,7 @@ var sassConfig = require('../config/gulp').sass;
 module.exports = {
   getPipe: function() {
     return gulp.src(pathConfig.styles)
+      .pipe(plumber())
       .pipe(sass(sassConfig))
       .pipe(gulp.dest(pathConfig.dest.development))
       .pipe(browserSync.stream());

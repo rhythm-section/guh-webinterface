@@ -28,6 +28,7 @@
  */
 
 var gulp = require('gulp');
+var plumber = require('gulp-plumber');
 var sass = require('gulp-sass');
 var minifyCss = require('gulp-minify-css');
 var sourcemaps = require('gulp-sourcemaps');
@@ -53,6 +54,7 @@ var sizeConfig = require('../config/gulp').size;
 module.exports = {
   getPipe: function() {
     return gulp.src(pathConfig.styles)
+      .pipe(plumber())
       .pipe(sourcemaps.init())
         .pipe(sass(sassConfig))
         .pipe(size(sizeConfig))
