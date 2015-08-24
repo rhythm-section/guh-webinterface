@@ -48,7 +48,8 @@ var browserSyncConfig = require('../config/gulp').browserSync.documentation;
 
 gulp.task('documentation-server-production', function(done) {
   browserSyncConfig.server = {
-    baseDir: pathConfig.dest.production + '/docs'
+    // baseDir: pathConfig.dest.production + '/docs'
+    baseDir: pathConfig.docs.production
   };
 
   browserSyncDocs.init(null, browserSyncConfig);

@@ -51,8 +51,8 @@ module.exports = {
       production: productionDest
     },
     docs: {
-      development: developmentDest + '/docs',
-      production: productionDest + '/docs'
+      development: './docs',
+      production: './docs'
     },
 
     fonts: src + '/assets/fonts/**/*',

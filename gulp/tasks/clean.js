@@ -68,6 +68,8 @@ gulp.task('clean', function(done) {
   del(
     // Patterns
     [
+      pathConfig.docs.development,
+      pathConfig.docs.production,
       pathConfig.dest.development,
       pathConfig.dest.production
     ],
