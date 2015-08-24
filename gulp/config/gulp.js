@@ -65,7 +65,7 @@ module.exports = {
     templates: [src + '/**/*.html', '!' + src + '/index.html'],
     scripts: src + '/app/**/*.js',
     styles: src + '/app/app.scss',
-    sass: [src + '/assets/**/*.scss', src + '/app/**/*.scss'],
+    sass: [src + '/assets/scss/**/*.scss', src + '/app/**/*.scss'],
     svg: {
       vendor: src + '/assets/svg/vendor/*.svg',
       ui: src + '/assets/svg/ui/*.svg'
@@ -185,7 +185,8 @@ module.exports = {
 
   sass: {
     errLogToConsole: true,
-    includePaths: neat.includePaths
+    includePaths: neat.includePaths,
+    precision: 8
   },
 
   size: {
