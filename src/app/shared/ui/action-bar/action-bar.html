@@ -15,23 +15,24 @@
   IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
   FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
   AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
-  LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+  LIABILITY, WHETHER IN AN ActionType OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
   OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
   SOFTWARE.
 -->
 
 
-<nav class="app">
-  <ul>
-    <li><a ng-class="{ active: app.$state.includes('guh.devices') }" ui-sref="guh.devices.master">Devices</a></li>
-    <li><a ng-class="{ active: app.$state.includes('guh.services') }" ui-sref="guh.services.master">Services</a></li>
-    <li><a ng-class="{ active: app.$state.includes('guh.moods') }" ui-sref="guh.moods.master">Moods</a></li>
-  </ul>
-</nav>
-
-<header class="app">
-  <!-- <h1>Device/Service/Mood Name</h1> -->
-  <guh-action-bar></guh-action-bar>
-</header>
-
-<div ui-view class="app content"></div>
+<div class="action-bar">
+  <button ng-show="actionBar.showAdd" ng-click="actionBar.openAddModal()">
+    <span>Add</span>
+    <svg class="icon">
+      <use xlink:href="./assets/svg/ui/ui.symbol.svg#plus"></use>
+    </svg>
+  </button>
+  
+  <button ng-show="actionBar.showEdit" ng-click="actionBar.openEditModal()">
+    <span>Edit</span>
+    <svg class="icon">
+      <use xlink:href="./assets/svg/ui/ui.symbol.svg#edit"></use>
+    </svg>
+  </button>
+</div>
