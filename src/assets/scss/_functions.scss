@@ -32,3 +32,11 @@
 @function strip-unit($num) {
   @return $num / ($num * 0 + 1);
 }
+
+/*
+ * Helper function to get colors from map
+ *
+ */
+@function get-color($key: 'primary') {
+  @return map-get($colors, $key);
+}

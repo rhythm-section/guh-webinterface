@@ -32,3 +32,21 @@
 @include font-face('Ubuntu Light', '/assets/fonts/Ubuntu/Ubuntu-Light', 300, normal);
 @include font-face('Ubuntu', '/assets/fonts/Ubuntu/Ubuntu-Regular', 400, normal);
 @include font-face('Ubuntu Bold', '/assets/fonts/Ubuntu/Ubuntu-Bold', 700, normal);
+
+
+/*
+ * Colors
+ *
+ */
+
+$c-green: #7cc09a;
+$c-turquoise: #57baae;
+$c-grey: #676767;
+$c-black: #000;
+$c-white: #fff;
+
+$colors: (
+  "background": rgba($c-white, 0.05),
+  "foreground": $c-white
+);
+
