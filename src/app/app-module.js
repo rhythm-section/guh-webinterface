@@ -37,6 +37,9 @@
 
   angular
     .module('guh', [
+      // Angular
+      'ngMessages',
+
       // Libraries
       'ui.router',
 
