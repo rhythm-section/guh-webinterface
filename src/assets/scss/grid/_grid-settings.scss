@@ -31,7 +31,7 @@
 $visual-grid: false;  // Deactivated because grid is drawn with own mixin (grid-gradient)
 $visual-grid-overlay: true;
 $visual-grid-index: front;
-$visual-grid-opacity: 0.4;
+$visual-grid-opacity: 0.3;
 
 
 /*
@@ -39,7 +39,7 @@ $visual-grid-opacity: 0.4;
  *
  */
 
-$visual-grid-baseline-color: #ccc;
+$visual-grid-baseline-color: #000;
 
 
 /*
@@ -47,4 +47,5 @@ $visual-grid-baseline-color: #ccc;
  *
  */
 
-$visual-grid-color: #eee;
+$visual-grid-color: #fff;
+$max-width: em(1920)

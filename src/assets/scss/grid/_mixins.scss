@@ -48,34 +48,32 @@
 
 @mixin grid-overlay($baseline-color: $visual-grid-baseline-color) {
   @if $visual-grid-overlay == true {
-    // Set gradient & size for each breakpoint
-    @each $item, $breakpoint in $breakpoints {
-      @if $breakpoint {
-        $visual-grid-line-height: map-get($breakpoint, line-height) * 1px;
-        $gradient-height: $visual-grid-line-height;
-        $media-query: map-get($breakpoint, media-query);
-        $baseline-stop: baseline-stop($visual-grid-line-height, $baseline-color);
-
-        @include media($media-query) {
-          @include grid-gradient($baseline-stop, $gradient-height, gradient-stops($grid-columns));
-        }
-      }
-    }
-
     // Full height
     &:before {
-      content: "";
-      // display: table;
+      // Set gradient & size for each breakpoint
+      @each $item, $breakpoint in $breakpoints {
+        @if $breakpoint {
+          $visual-grid-line-height: map-get($breakpoint, line-height) * 1px;
+          $gradient-height: $visual-grid-line-height;
+          $media-query: map-get($breakpoint, media-query);
+          $baseline-stop: baseline-stop($visual-grid-line-height, $baseline-color);
 
-      display: inline-block;
+          @include media($media-query) {
+            @include grid-gradient($baseline-stop, $gradient-height, gradient-stops($grid-columns));
+          }
+        }
+      }
+
+      content: "";
+      display: block;
       height: 100%;
-      left: 0;
-      margin: 0 auto;
       max-width: $max-width;
       opacity: $visual-grid-opacity;
-      pointer-events: none;
-      position: fixed;
-      right: 0;
+      position: absolute;
+        bottom: 0;
+        left: 0;
+        right: 0;
+        top: 0;
       width: 100%;
     }
 
@@ -87,6 +85,24 @@
     // In front of content
     @else if $visual-grid-index == front {
       z-index: 9999;
+    }
+  }
+}
+
+
+// Root font-size in %, outputted in correct breakpoints.
+@mixin rootsize {
+  // Set root font-size for each breakpoint
+  @each $item, $breakpoint in $breakpoints {
+    @if $breakpoint {
+      $font-size: map-get($breakpoint, font-size);
+      // $line-height: map-get($breakpoint, line-height);
+      $media-query: map-get($breakpoint, media-query);
+
+      @include media($media-query) {
+        font-size: $font-size / 16 * 100%;
+        // line-height: $line-height / 16 * 100%;
+      }
     }
   }
 }

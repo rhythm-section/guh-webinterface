@@ -28,29 +28,49 @@
  *
  */
 
+$columns-xs: 6;
+$columns-s: 6;
+$columns-m: 9;
+$columns-l: 12;
+$columns-xl: 12;
+$columns-xxl: 18;
+
+$breakpoint-xs: new-breakpoint(max-width em(480px), $columns-xs);
+$breakpoint-s: new-breakpoint(min-width em(481px) max-width em(640), $columns-s);
+$breakpoint-m: new-breakpoint(min-width em(641) max-width em(1024px), $columns-m);
+$breakpoint-l: new-breakpoint(min-width em(1025) max-width em(1280), $columns-l);
+$breakpoint-xl: new-breakpoint(min-width em(1281) max-width em(1600), $columns-xl);
+$breakpoint-xxl: new-breakpoint(min-width em(1601), $columns-xxl);
+
 $breakpoints: (
   xs: (
-    line-height: 27,
-    media-query: new-breakpoint(max-width em(480px), 4)
+    font-size: 12,
+    line-height: 18,
+    media-query: $breakpoint-xs
   ),
   s: (
-    line-height: 27,
-    media-query: new-breakpoint(min-width em(481px) max-width em(640), 4)
+    font-size: 14,
+    line-height: 21,
+    media-query: $breakpoint-s
   ),
   m: (
-    line-height: 27,
-    media-query: new-breakpoint(min-width em(641) max-width em(1024px), 4)
+    font-size: 14,
+    line-height: 21,
+    media-query: $breakpoint-m
   ),
   l: (
-    line-height: 27,
-    media-query: new-breakpoint(min-width em(1025) max-width em(1280), 4)
+    font-size: 14,
+    line-height: 21,
+    media-query: $breakpoint-l
   ),
   xl: (
-    line-height: 27,
-    media-query: new-breakpoint(min-width em(1281) max-width em(1440), 4)
+    font-size: 14,
+    line-height: 21,
+    media-query: $breakpoint-xl
   ),
   xxl: (
-    line-height: 27,
-    media-query: new-breakpoint(min-width em(1441px), 16)
+    font-size: 14,
+    line-height: 21,
+    media-query: $breakpoint-xxl
   )
 );
