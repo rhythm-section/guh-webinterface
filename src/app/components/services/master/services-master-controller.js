@@ -68,13 +68,14 @@
       _findAllDevices(bypassCache)
         .then(_findDeviceRelations)
         .then(function(services) {
+          // $log.log('services', services);
+
           services.forEach(function(service) {
+            // $log.log('service', service);
             service.name = (service.name === 'Name') ? service.deviceClass.name : service.name;
 
             if(service.deviceClass.classType === 'service' || service.deviceClass.classType === 'dev-service') {
               vm.configured.push(service);
-            } else {
-              $log.log('device removed', service);
             }
           });
         });
@@ -95,11 +96,11 @@
      */
 
     function _findAllDevices(bypassCache) {
-      if(bypassCache) {
+      // if(bypassCache) {
         return DSDevice.findAll({}, { bypassCache: true });
-      }
+      // }
       
-      return DSDevice.findAll();
+      // return DSDevice.findAll();
     }
 
 

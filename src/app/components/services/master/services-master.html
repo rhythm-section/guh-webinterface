@@ -23,9 +23,9 @@
 
 <ul class="tiles">
   <li class="item" ng-repeat="service in services.configured | orderBy: 'name' track by $index">
-    <a ui-sref="guh.services.detail({ deviceId: service.id })">
-      <h2 class="name hero" hero-id="name">{{ service.name }}</h2>
-      <p>{{ service.deviceClass.vendor.name }}, {{ service.deviceClass.name }}</p>
+    <!-- <a class="vendor-{{ service.deviceClass.vendor.name | kebabCase }}" ui-sref="guh.services.detail({ serviceId: service.id })"> -->
+    <a ui-sref="guh.services.detail({ serviceId: service.id })">
+      <h2 class="name">{{ service.name }}</h2>
     </a>
   </li>
 </ul>
