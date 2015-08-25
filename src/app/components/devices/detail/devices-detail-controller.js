@@ -39,12 +39,15 @@
     .module('guh.devices')
     .controller('DevicesDetailCtrl', DevicesDetailCtrl);
 
-  DevicesDetailCtrl.$inject = ['$log', '$state', '$stateParams', 'libs', 'DSDevice'];
+  DevicesDetailCtrl.$inject = ['$log', '$scope', '$state', '$stateParams', 'libs', 'DSDevice', 'DSState'];
 
-  function DevicesDetailCtrl($log, $state, $stateParams, libs, DSDevice) {
+  function DevicesDetailCtrl($log, $scope, $state, $stateParams, libs, DSDevice, DSState) {
 
     var vm = this;
     var currentDevice = {};
+
+    // Public methods
+    vm.remove = remove;
 
 
     /**
@@ -73,7 +76,7 @@
           currentDevice = device;
 
           // Set view variables
-          vm.SetupComplete = currentDevice.SetupComplete;
+          vm.setupComplete = currentDevice.setupComplete;
           vm.actions = [];
           vm.deviceClass = currentDevice.deviceClass;
           vm.deviceClassId = currentDevice.deviceClassId;
@@ -94,14 +97,14 @@
               vm.templateReady = true;
             });
 
-          // Actions & States
-          angular.forEach(currentDevice.deviceClass.actionTypes, function(actionType) {
+          // Actions
+          angular.forEach(vm.deviceClass.actionTypes, function(actionType) {
             var action = {};
             action.actionType = actionType;
 
             if(actionType.hasState) {  
-              var state = libs._.find(currentDevice.states, function(state) {
-                return state.stateTypeId === actionType.id;
+              var state = libs._.find(vm.deviceClass.stateTypes, function(stateType) {
+                return stateType.id === actionType.id;
               });
 
               // Add state to action
@@ -113,6 +116,9 @@
 
             vm.actions.push(action);
           });
+          
+          // Subscribe to websocket messages
+          _subscribeToWebsocket();
         })
         .catch(function(error) {
           $log.error('guh.controller.DevicesDetailCtrl', error);
@@ -141,6 +147,41 @@
       
       return DSDevice.find(deviceId);
     }
+
+    function _subscribeToWebsocket() {
+      currentDevice.subscribe(function(message) {
+        if(angular.isDefined(message.params.deviceId) && message.params.deviceId === vm.id) {
+          DSState.inject([{
+            stateTypeId: message.params.stateTypeId,
+            value: message.params.value
+          }]);
+        }
+      });
+    }
+
+    function _leaveState() {
+      // Unsubscribe websocket connection when leaving this state
+      if(DSDevice.is(currentDevice)) {
+        currentDevice.unsubscribe(currentDevice.id);
+      }
+    }
+
+    function remove() {
+      currentDevice
+        .remove()
+        .then(function(response) {
+          $log.log('Device succesfully removed');
+        })
+        .catch(function(error) {
+          // TODO: Build general error handler
+          // TODO: Handle error when device in use (rules)
+          $log.error(error);
+        });
+    }
+
+    $scope.$on('$stateChangeStart', function() {
+      _leaveState();
+    });
 
 
     // Initialize controller
