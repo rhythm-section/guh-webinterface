@@ -43,6 +43,7 @@
       // Libraries
       'ui.router',
       'cfp.hotkeys',
+      'ngDialog',
 
       // Configuration
       'guh.config',
