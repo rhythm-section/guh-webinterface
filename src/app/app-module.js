@@ -42,6 +42,7 @@
 
       // Libraries
       'ui.router',
+      'cfp.hotkeys',
 
       // Configuration
       'guh.config',
