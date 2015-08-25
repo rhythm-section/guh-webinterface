@@ -61,7 +61,7 @@
 
             function _findDeviceClassRelations(deviceClasses) {
               return angular.forEach(deviceClasses, function(deviceClass) {
-                return DSDeviceClass.loadRelations(deviceClass, ['actionTypes', 'eventTypes', 'stateTypes']);
+                return DSDeviceClass.loadRelations(deviceClass, ['actionType', 'eventType', 'stateType']);
               });
             }
 
@@ -69,9 +69,10 @@
               return DSDevice.findAll();
             }
 
+            // TODO: Find out why this isn't working (deviceClass relations are working because they are already loaded when deviceClasses are loaded)
             function _findDeviceRelations(devices) {
               return angular.forEach(devices, function(device) {
-                return DSDevice.loadRelations(device, ['states']);
+                return DSDevice.loadRelations(device, ['state']);
               });
             }
 
@@ -123,7 +124,7 @@
             controller: 'DevicesDetailCtrl',
             controllerAs: 'device',
             params: { deviceId: null },
-            url: '/detail',
+            url: '/:deviceId',
             templateUrl: 'app/components/devices/detail/devices-detail.html'
           });
 
@@ -143,7 +144,7 @@
           $stateProvider.state('guh.services.detail', {
             controller: 'ServicesDetailCtrl',
             controllerAs: 'service',
-            url: '/:deviceId',
+            url: '/:serviceId',
             templateUrl: 'app/components/services/detail/services-detail.html'
           });
 
@@ -163,7 +164,7 @@
           $stateProvider.state('guh.moods.detail', {
             controller: 'MoodsDetailCtrl',
             controllerAs: 'mood',
-            url: '/:deviceId',
+            url: '/:moodId',
             templateUrl: 'app/components/moods/detail/moods-detail.html'
           });
       
