@@ -42,8 +42,6 @@
 
       function guhToggleGridLink(scope, element, attrs) {
 
-        $log.log('guhToggleGridLink');
-
         var key = 'ctrl+g';
         var gridClass = 'grid-overlay';
 
