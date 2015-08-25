@@ -47,6 +47,9 @@
 
       // Configuration
       'guh.config',
+
+      // Filters
+      'guh.filter',
       
       // Utilities
       'guh.utils',
