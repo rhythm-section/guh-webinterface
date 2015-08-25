@@ -23,67 +23,12 @@
  * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 
 
-/*
- * Libraries
- *
- */
+.icon {
+  fill: $c-white;
+}
 
-@import "bourbon";
-
-
-/*
- * App SASS
- *
- */
-
-@import "../assets/scss/functions";
-@import "../assets/scss/mixins";
-@import "../assets/scss/variables";
-
-
-/*
- * Grid
- *
- */
-
-@import "../assets/scss/grid/grid";
-
-
-/*
- * Reset
- *
- */
-
-@import "../assets/scss/app/reset";
-
-
-/*
- * Components
- *
- */
-
-@import "../assets/scss/components/button";
-@import "../assets/scss/components/icon";
-@import "../assets/scss/components/list";
-@import "../assets/scss/components/modal";
-@import "../assets/scss/components/tiles";
-
-
-/*
- * Directives (Shared UI)
- */
-
-@import "../app/shared/ui/action-bar/action-bar";
-@import "../app/shared/ui/form/form";
-@import "../app/shared/ui/range/range";
-// @import "../app/shared/ui/tabs/tabs";
-@import "../app/shared/ui/wizard/wizard";
-
-
-/*
- * App specific
- *
- */
-
-@import "../assets/scss/app/base";
-@import "../assets/scss/app/layout";
+.modal {
+  .icon {
+    fill: $c-grey;
+  }
+}

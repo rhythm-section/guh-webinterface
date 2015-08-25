@@ -23,67 +23,67 @@
  * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 
 
-/*
- * Libraries
- *
- */
+button,
+.button {
+  background-color: get-color("background");
+  color: get-color("foreground");
+  cursor: pointer;
+  border: none;
+  display: block;
+  @include rem(font-size, 1);
+  @include rem(height, 4.5);
+  @include rem(line-height, 1.5);
+  @include rem(margin, 0, 0, 1.5);
+  // @include rem(padding, 0.7, 1.5, 0.8);
+  @include rem(padding, 1.5);
+  width: auto;
 
-@import "bourbon";
+  &:hover {
+    background-color: rgba($c-white, 0.1);
+  }
 
+  &:active {
+    background-color: rgba($c-white, 0.2);
+  }
 
-/*
- * App SASS
- *
- */
+  &.full {
+    width: 100%;
+  }
 
-@import "../assets/scss/functions";
-@import "../assets/scss/mixins";
-@import "../assets/scss/variables";
+  span {
+    display: inline-block;
+    @include rem(height, 1.5);
+    overflow: hidden;
+    @include rem(padding, 0, 1.5);
+    text-overflow: ellipsis;
+    white-space: no-wrap;
+    width: inherit;
+  }
 
+  .icon {
+    @include rem(height, 1.5);
+    @include rem(width, 1.5);
 
-/*
- * Grid
- *
- */
+    &.left {
+      float: left;
+    }
 
-@import "../assets/scss/grid/grid";
+    &.right {
+      float: right;
+    }
+  }
+}
 
+button {
+  @include appearance(none);
+  outline: none;
+}
 
-/*
- * Reset
- *
- */
-
-@import "../assets/scss/app/reset";
-
-
-/*
- * Components
- *
- */
-
-@import "../assets/scss/components/button";
-@import "../assets/scss/components/icon";
-@import "../assets/scss/components/list";
-@import "../assets/scss/components/modal";
-@import "../assets/scss/components/tiles";
-
-
-/*
- * Directives (Shared UI)
- */
-
-@import "../app/shared/ui/action-bar/action-bar";
-@import "../app/shared/ui/form/form";
-@import "../app/shared/ui/range/range";
-// @import "../app/shared/ui/tabs/tabs";
-@import "../app/shared/ui/wizard/wizard";
-
-
-/*
- * App specific
- *
- */
-
-@import "../assets/scss/app/base";
-@import "../assets/scss/app/layout";
+.modal {
+  button,
+  .button {
+    background-color: $c-white;
+    // border: 1px solid $c-grey;
+    color: $c-grey; 
+  }
+}
