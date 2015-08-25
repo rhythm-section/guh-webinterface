@@ -19,14 +19,3 @@
   OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
   SOFTWARE.
 -->
-
-
-<ul class="tiles">
-  <li class="item" ng-repeat="device in devices.configured | orderBy: 'name' track by $index">
-    <!-- <a class="vendor-{{ device.deviceClass.vendor.name | kebabCase }}" ui-sref="guh.devices.detail({ deviceId: device.id })"> -->
-    <a ui-sref="guh.devices.detail({ deviceId: device.id })">
-      <h2 class="name">{{ device.name }}</h2>
-      <!-- <p>{{ device.deviceClass.vendor.name }}, {{ device.deviceClass.name }}</p> -->
-    </a>
-  </li>
-</ul>

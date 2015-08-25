@@ -21,12 +21,20 @@
 -->
 
 
-<ul class="tiles">
-  <li class="item" ng-repeat="device in devices.configured | orderBy: 'name' track by $index">
-    <!-- <a class="vendor-{{ device.deviceClass.vendor.name | kebabCase }}" ui-sref="guh.devices.detail({ deviceId: device.id })"> -->
-    <a ui-sref="guh.devices.detail({ deviceId: device.id })">
-      <h2 class="name">{{ device.name }}</h2>
-      <!-- <p>{{ device.deviceClass.vendor.name }}, {{ device.deviceClass.name }}</p> -->
-    </a>
-  </li>
-</ul>
+<guh-form name="create-device"
+          on-form-submit="newDevice.add(params)"
+          ng-show="newDevice.selectedDeviceClass.paramTypes.length > 0"
+          class="list">
+
+  <guh-form-field  label="{{ paramType.name }}"
+                   name="{{ paramType.name }}"
+                   param-type="paramType"
+                   template="{{ paramType.inputTemplateUrl }}"
+                   ng-repeat="paramType in newDevice.selectedDeviceClass.paramTypes track by $index"
+                   class="item"></guh-form-field>
+
+  <footer>
+    <button type="submit" ng-disabled="newDevice.loading" class="full">Add {{ newDevice.selectedDeviceClass.name }}</button>
+  </footer>
+
+</guh-form>

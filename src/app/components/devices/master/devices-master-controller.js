@@ -39,9 +39,9 @@
     .module('guh.devices')
     .controller('DevicesMasterCtrl', DevicesMasterCtrl);
 
-  DevicesMasterCtrl.$inject = ['$log', 'DSVendor', 'DSDeviceClass', 'DSDevice'];
+  DevicesMasterCtrl.$inject = ['$log', '$stateParams', 'app', 'initialData', 'DS', 'DSVendor', 'DSDeviceClass', 'DSDevice', 'ngDialog'];
 
-  function DevicesMasterCtrl($log, DSVendor, DSDeviceClass, DSDevice) {
+  function DevicesMasterCtrl($log, $stateParams, app, initialData, DS, DSVendor, DSDeviceClass, DSDevice, ngDialog) {
     
     // Don't show debugging information
     DSVendor.debug = false;
@@ -49,7 +49,12 @@
     DSDevice.debug = false;
 
     var vm = this;
+
+    // Public variables
     vm.configured = [];
+
+    // Public methods
+    vm.add = add;
 
 
     /**
@@ -65,6 +70,8 @@
      */
 
     function _loadViewData(bypassCache) {
+      $log.log('_loadViewData', $stateParams);
+
       _findAllDevices(bypassCache)
         .then(_findDeviceRelations)
         .then(function(devices) {
@@ -73,8 +80,6 @@
 
             if(device.deviceClass.classType === 'device' || device.deviceClass.classType === 'gateway') {
               vm.configured.push(device);
-            } else {
-              $log.log('device removed', device);
             }
           });
         });
@@ -95,11 +100,11 @@
      */
 
     function _findAllDevices(bypassCache) {
-      if(bypassCache) {
+      // if(bypassCache) {
         return DSDevice.findAll({}, { bypassCache: true });
-      }
+      // }
       
-      return DSDevice.findAll();
+      // return DSDevice.findAll();
     }
 
 
@@ -119,7 +124,7 @@
     function _findDeviceRelations(devices) {
       return angular.forEach(devices, function(device) {
         return DSDevice
-          .loadRelations(device, ['deviceClass'])
+          .loadRelations(device, ['deviceClass', 'state'])
           .then(_findDeviceClassRelations);
       });
     }
@@ -142,9 +147,40 @@
       return DSDeviceClass.loadRelations(device.deviceClass, ['vendor']);
     }
 
+
+    /**
+     * @ngdoc interface
+     * @name add
+     * @methodOf guh.devices.controller:DevicesMasterCtrl
+     *
+     * @description
+     * Add a new device
+     *
+     */
+
+    function add() {
+      ngDialog.open({
+        className: 'ngdialog-theme-default',
+        controller: 'NewDeviceCtrl',
+        controllerAs: 'newDevice',
+        overlay: false,
+        preCloseCallback: function(value) {
+          if(confirm('Are you sure you want to close without saving your changes?')) {
+            return true;
+          }
+          return false;
+        },
+        template: 'app/components/devices/add/new-device-modal.html'
+      });
+    }
+
     
     // Initialize controller
-    _loadViewData();
+    // if(angular.isDefined(initialData) && angular.isDefined(initialData.devices)) {
+    //   _loadViewData(true);
+    // } else {
+      _loadViewData(false);
+    // }
 
   }
 
