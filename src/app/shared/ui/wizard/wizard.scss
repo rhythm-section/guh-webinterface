@@ -1,0 +1,155 @@
+/* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * 
+ *                                                                                     *
+ * Copyright (c) 2015 guh                                                              *
+ *                                                                                     *
+ * Permission is hereby granted, free of charge, to any person obtaining a copy        *
+ * of this software and associated documentation files (the "Software"), to deal       *
+ * in the Software without restriction, including without limitation the rights        *
+ * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell           * 
+ * copies of the Software, and to permit persons to whom the Software is               *
+ * furnished to do so, subject to the following conditions:                            *
+ *                                                                                     *
+ * The above copyright notice and this permission notice shall be included in all      *
+ * copies or substantial portions of the Software.                                     *
+ *                                                                                     *
+ * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR          * 
+ * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,            *
+ * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE         *
+ * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER              *
+ * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,       *
+ * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE       *
+ * SOFTWARE.                                                                           *
+ *                                                                                     *
+ * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */ 
+
+.modal .wizard,
+.wizard {
+  display: block;
+  height: 100%;
+  position: absolute;
+    left: 0;
+    top: 0;
+  width: 100%;
+
+  .wizard {
+    padding: 0;
+  }
+
+  .prev,
+  .next {
+    background-color: transparent;
+    margin: 0;
+    position: absolute;
+      @include rem(top, 1.5);
+    @include rem(width, 4.5);
+
+    .icon {
+      fill: rgba($c-grey, 0.1);
+    }
+
+    &:hover {
+      background-color: transparent;
+
+      .icon {
+        fill: $c-grey;
+      }
+    }
+  }
+
+  .wizard-navigation .prev,
+  .wizard-navigation .next {
+    top: 0;
+  }
+
+  .prev {
+    @include rem(left, 1.5);
+  }
+
+  .next {
+    @include rem(right, 1.5);
+  }
+
+  button,
+  .button {
+    background-color: rgba($c-grey, 0.1);
+    border: none;
+    @include rem(letter-spacing, 0.1);
+    @include rem(height, 4.5);
+    @include rem(margin, 3, 0, 0);
+    @include rem(padding, 1.5);
+    text-transform: uppercase;
+
+    &:hover {
+      background-color: rgba($c-grey, 0.2);
+    }
+  }
+}
+
+.wizard-title {
+  @include background(linear-gradient($c-white, rgba($c-white, 0.9)));
+  @include rem(font-size, 1);
+  @include rem(height, 7.5);
+  @include rem(letter-spacing, 0.1);
+  @include rem(line-height, 1.5);
+  @include rem(padding, 3, 4.5);
+  position: absolute;
+    left: 0;
+    top: 0;
+  text-align: center;
+  text-transform: uppercase;
+  width: 100%;
+  z-index: 1;
+}
+
+.wizard-content {
+  height: 100%;
+  @include rem(padding, 7.5, 1.5, 4.5);
+  overflow-y: scroll;
+  position: absolute;
+    left: 0;
+    top: 0;
+  width: 100%;
+  z-index: 0;
+}
+
+.wizard-navigation {
+  @include background(linear-gradient(rgba($c-white, 0.9), $c-white));
+  @include rem(height, 4.5);
+  @include rem(padding, 1.5);
+  position: absolute;
+    bottom: 0;
+    left: 0;
+  text-align: center;
+  width: 100%;
+  z-index: 2;
+
+  li {
+    background-color: rgba($c-grey, 0.2);
+    border-radius: 50%;
+    display: inline-block;
+    @include rem(height, 0.5);
+    @include rem(margin, 0.5);
+    @include rem(width, 0.5);
+
+    &:last-child {
+      margin-right: 0;
+    }
+
+    &.active {
+      background-color: $c-grey;
+    }
+  }
+}
+
+.wizard-step {
+  display: none;
+
+  &.current {
+    display: block;
+  }
+
+  .content {
+    display: block;
+    // @include rem(padding, 0, 1.5);
+  }
+}
