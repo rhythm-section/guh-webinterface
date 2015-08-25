@@ -120,7 +120,8 @@ module.exports = {
   concat: {},
 
   htmlhint: {
-    'doctype-first': false
+    'doctype-first': false,
+    'spec-char-escape': false
   },
 
   htmlmin: {
