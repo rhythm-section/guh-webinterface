@@ -130,6 +130,9 @@
 
       // Try to reconnect to guh host with new host
       websocketService.reconnect();
+      vm.check = true;
+      vm.setup = false;
+      vm.load = false;
     }
 
     function resetHostAddress() {
