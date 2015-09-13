@@ -33,8 +33,8 @@
         websocket: 'ws'
       };
       var host = {
-        restApi: '127.0.0.1',
-        websocket: '127.0.0.1'
+        restApi: 'guh.local',
+        websocket: 'guh.local'
       };
       var port = {
         restApi: '3333',
@@ -45,6 +45,11 @@
       return {
         // Environment
         environment: environment,
+
+        // Network
+        protocol: protocol,
+        host: host,
+        port: port,
 
         // URLs
         apiUrl: protocol.restApi + '://' + host.restApi + ':' + port.restApi + '/api/v1',

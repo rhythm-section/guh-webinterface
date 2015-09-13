@@ -39,9 +39,9 @@
     .module('guh.devices')
     .controller('DevicesMasterCtrl', DevicesMasterCtrl);
 
-  DevicesMasterCtrl.$inject = ['$log', '$stateParams', 'app', 'initialData', 'DS', 'DSVendor', 'DSDeviceClass', 'DSDevice', 'ngDialog'];
+  DevicesMasterCtrl.$inject = ['$log', '$stateParams', 'app', 'DS', 'DSVendor', 'DSDeviceClass', 'DSDevice', 'ngDialog'];
 
-  function DevicesMasterCtrl($log, $stateParams, app, initialData, DS, DSVendor, DSDeviceClass, DSDevice, ngDialog) {
+  function DevicesMasterCtrl($log, $stateParams, app, DS, DSVendor, DSDeviceClass, DSDevice, ngDialog) {
     
     // Don't show debugging information
     DSVendor.debug = false;
@@ -169,12 +169,7 @@
     }
 
     
-    // Initialize controller
-    // if(angular.isDefined(initialData) && angular.isDefined(initialData.devices)) {
-    //   _loadViewData(true);
-    // } else {
-      _loadViewData(true);
-    // }
+    _loadViewData(true);
 
   }
 

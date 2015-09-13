@@ -79,7 +79,8 @@ button {
   outline: none;
 }
 
-.modal {
+.modal,
+.intro {
   button,
   .button {
     background-color: $c-white;

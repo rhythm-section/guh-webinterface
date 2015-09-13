@@ -27,6 +27,25 @@
   @include outer-container;
   width: 100%;
 
+  &.intro {
+    @include rem(padding, 1.5);
+    position: fixed;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      top: 0;
+
+    header.app,
+    nav.app {
+      display: none;
+    }
+
+    .content {
+      background-color: $c-white;
+      height: 100%;
+    }
+  }
+
   @include media($breakpoint-xs) {
     @include rem(padding, 6, 0, 4.5);
     min-width: 320px;
@@ -191,6 +210,58 @@ nav.app {
 
     &.active {
       text-decoration: underline;
+    }
+  }
+}
+
+.intro {
+  &> p {
+    @include rem(padding, 1.5);
+    text-align: center;
+  }
+
+  .logo {
+    @include rem(padding, 6, 1.5, 3);
+    text-align: center;
+  }
+
+  .form-container {
+    @include rem(margin-top, 3);
+
+    @include media($breakpoint-xs) {}
+
+    @include media($breakpoint-s) {
+      @include shift-in-context(1 of $columns-s);
+      @include span-columns(4);
+    }
+
+    @include media($breakpoint-m) {
+      @include shift-in-context(2 of $columns-m);
+      @include span-columns(5);
+    }
+
+    @include media($breakpoint-l) {
+      @include shift-in-context(3 of $columns-l);
+      @include span-columns(6);
+    }
+
+    @include media($breakpoint-xl) {
+      @include shift-in-context(3 of $columns-xl);
+      @include span-columns(6);
+    }
+
+    @include media($breakpoint-xxl) {
+      @include shift-in-context(6 of $columns-xxl);
+      @include span-columns(6);
+    }
+
+    p {
+      @include rem(padding, 0, 1.5);
+    }
+
+    button {
+      float: left;
+      width: 50%;
     }
   }
 }

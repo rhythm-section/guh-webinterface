@@ -38,7 +38,7 @@
        */
 
       $urlRouterProvider
-        .otherwise('/devices');
+        .otherwise('/intro');
 
 
       /*
@@ -49,67 +49,19 @@
         abstract: true,
         controller: 'AppCtrl',
         controllerAs: 'app',
-        resolve: {
-          initialData: function($q, DSVendor, DSDeviceClass, DSDevice, DSRule) {
-            function _findAllVendors() {
-              return DSVendor.findAll();
-            }
-
-            function _findAllDeviceClasses() {
-              return DSDeviceClass.findAll();
-            }
-
-            function _findDeviceClassRelations(deviceClasses) {
-              return angular.forEach(deviceClasses, function(deviceClass) {
-                return DSDeviceClass.loadRelations(deviceClass, ['actionType', 'eventType', 'stateType']);
-              });
-            }
-
-            function _findAllDevices() {
-              return DSDevice.findAll();
-            }
-
-            // TODO: Find out why this isn't working (deviceClass relations are working because they are already loaded when deviceClasses are loaded)
-            function _findDeviceRelations(devices) {
-              return angular.forEach(devices, function(device) {
-                return DSDevice.loadRelations(device, ['state']);
-              });
-            }
-
-            function _findAllRules() {
-              return DSRule.findAll();
-            }
-
-            return $q
-              .all([
-                _findAllVendors(),
-                _findAllDeviceClasses()
-                  .then(_findDeviceClassRelations),
-                _findAllDevices()
-                  .then(_findDeviceRelations),
-                _findAllRules()
-              ])
-              .then(function(data) {
-                var initialData = {};
-                
-                initialData.vendors = data[0];
-                initialData.deviceClasses = data[1];
-                initialData.devices = data[2];
-                initialData.rules = data[3];
-
-                return initialData;
-              })
-              .catch(function(error) {
-                return error;
-              });
-          }
-        },
         templateUrl: 'app/app.html'
       });
 
+        $stateProvider.state('guh.intro', {
+          controller: 'IntroCtrl',
+          controllerAs: 'intro',
+          url: '/intro',
+          templateUrl: 'app/components/intro/intro.html'
+        });
+
         $stateProvider.state('guh.devices', {
           abstract: true,
-          template: '<ui-view class="page-transition hero-transition" />',
+          template: '<ui-view />',
           url: '/devices'
         });
 

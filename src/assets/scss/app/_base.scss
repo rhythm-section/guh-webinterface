@@ -64,6 +64,14 @@ h2 {
   text-transform: uppercase;
 }
 
+.intro {
+  color: $c-grey;
+
+  a {
+    color: inherit;
+  }
+}
+
 // p,
 // a {
 //   // @include rem(font-size, 1.8);
