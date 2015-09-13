@@ -33,7 +33,7 @@ var gulp = require('gulp');
  * Pipes
  */
 
-var copiedFontsDevelopment = require('../pipes/copied-fonts-development');
+var copiedAssetsProduction = require('../pipes/copied-assets-production');
 
 
 /*
@@ -41,6 +41,6 @@ var copiedFontsDevelopment = require('../pipes/copied-fonts-development');
  * 
  */
 
-gulp.task('copy-fonts-development', function() {
-  return copiedFontsDevelopment.getPipe();
+gulp.task('copy-assets-production', function() {
+  return copiedAssetsProduction.getPipe();
 });

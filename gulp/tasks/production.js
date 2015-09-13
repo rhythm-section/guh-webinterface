@@ -42,7 +42,7 @@ gulp.task('production', function(done) {
   process.env.NODE_ENV = 'production';
   
   runSequence(
-    'copy-fonts-production',
+    'copy-assets-production',
     'build-ui-svg-sprites',
     'build-vendor-svg-sprites',
     [

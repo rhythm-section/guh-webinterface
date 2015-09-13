@@ -43,7 +43,7 @@ var pathConfig = require('../config/gulp').paths;
 
 module.exports = {
   getPipe: function() {
-    return gulp.src(pathConfig.fonts, { base: pathConfig.src })
-      .pipe(gulp.dest(pathConfig.dest.development));
+    return gulp.src(pathConfig.assets, { base: pathConfig.src })
+      .pipe(gulp.dest(pathConfig.dest.production));
   }
 };

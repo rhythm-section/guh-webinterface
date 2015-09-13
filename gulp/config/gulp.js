@@ -54,8 +54,10 @@ module.exports = {
       development: './docs',
       production: './docs'
     },
-
-    fonts: src + '/assets/fonts/**/*',
+    assets: [
+      src + '/assets/fonts/**/*',
+      src + '/assets/svg/*.svg',
+    ],
     libs: {
       development: developmentDest + '/assets/libs',
       production: productionDest + '/assets/libs'
