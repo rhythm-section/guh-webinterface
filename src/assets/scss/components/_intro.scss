@@ -43,8 +43,8 @@
 }
 
 .intro {
-  &> p {
-    @include rem(padding, 1.5);
+  &> .content p {
+    @include rem(padding, 6, 1.5, 3);
     text-align: center;
   }
 

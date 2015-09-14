@@ -32,10 +32,7 @@
         restApi: 'http',
         websocket: 'ws'
       };
-      var host = {
-        restApi: 'guh.local',
-        websocket: 'guh.local'
-      };
+      var host = 'guh.local';
       var port = {
         restApi: '3333',
         websocket: '4444'
@@ -52,8 +49,8 @@
         port: port,
 
         // URLs
-        apiUrl: protocol.restApi + '://' + host.restApi + ':' + port.restApi + '/api/v1',
-        websocketUrl: protocol.websocket + '://' + host.websocket + ':' + port.websocket,
+        apiUrl: protocol.restApi + '://' + host + ':' + port.restApi + '/api/v1',
+        websocketUrl: protocol.websocket + '://' + host + ':' + port.websocket,
 
         // Paths & Files
         paths: {

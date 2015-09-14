@@ -39,9 +39,9 @@
     .module('guh.intro')
     .controller('IntroCtrl', IntroCtrl);
 
-  IntroCtrl.$inject = ['$log', '$scope', '$q', '$timeout', '$state', 'websocketService', 'app', 'modelsHelper', 'DSVendor', 'DSDeviceClass', 'DSDevice', 'DSRule'];
+  IntroCtrl.$inject = ['$log', '$scope', '$q', '$location', '$timeout', '$state', 'host', 'websocketService', 'app', 'modelsHelper', 'DSVendor', 'DSDeviceClass', 'DSDevice', 'DSRule', 'DSSettings'];
 
-  function IntroCtrl($log, $scope, $q, $timeout, $state, websocketService, app, modelsHelper, DSVendor, DSDeviceClass, DSDevice, DSRule) {
+  function IntroCtrl($log, $scope, $q, $location, $timeout, $state, host, websocketService, app, modelsHelper, DSVendor, DSDeviceClass, DSDevice, DSRule, DSSettings) {
     
     var vm = this;
 
@@ -55,11 +55,34 @@
     vm.resetHostAddress = resetHostAddress;
 
     function _init() {
-      // Set default guh host
-      vm.hostAddress = app.host.websocket;
+      vm.hostAddress = host;
 
-      // Try to connect to guh host
+      _overrideConfig();
       websocketService.reconnect();
+    }
+
+    function _overrideConfig() {
+      // Override host and url defaults
+      app.host = vm.hostAddress;
+      app.apiUrl = app.protocol.restApi + '://' + app.host + ':' + app.port.restApi + '/api/v1';
+      app.websocketUrl = app.protocol.websocket + '://' + app.host + ':' + app.port.websocket;
+
+      // Override basepath for templates
+      modelsHelper.setBasePath();
+    }
+
+    function _saveHost() {
+      DSSettings
+        .find('admin')
+        .catch(function(error) {
+          /* jshint unused:false */
+          
+          DSSettings
+            .create({
+              userId: 'admin',
+              host: app.host
+            });
+        });
     }
 
     function _findAllVendors() {
@@ -114,34 +137,32 @@
     }
 
     function checkHostAddress() {
-      $log.log(vm.hostAddress);
+      // TODO: Check if valid host address
     }
 
     function setHostAddress() {
-      // Override host and url defaults
-      app.host.restApi = vm.hostAddress;
-      app.apiUrl = app.protocol.restApi + '://' + app.host.restApi + ':' + app.port.restApi + '/api/v1';
+      _overrideConfig();
 
-      app.host.websocket = vm.hostAddress;
-      app.websocketUrl = app.protocol.websocket + '://' + app.host.websocket + ':' + app.port.websocket;
-
-      // Override basepath for templates
-      modelsHelper.setBasePath();
-
-      // Try to reconnect to guh host with new host
-      websocketService.reconnect();
       vm.check = true;
       vm.setup = false;
       vm.load = false;
+
+      // Try to reconnect to guh host with new host
+      $timeout(function() {
+        websocketService.reconnect();
+      }, 1000);
     }
 
     function resetHostAddress() {
-      vm.hostAddress = app.host.websocket;
+      vm.hostAddress = host;
     }
 
     $scope.$on('WebsocketConnected', function(event, data) {
       /* jshint unused:false */
 
+      _saveHost();
+
+      // Load data
       vm.check = false;
       vm.setup = false;
       vm.load = true;
@@ -152,7 +173,7 @@
     $scope.$on('WebsocketConnectionError', function(event, data) {
       /* jshint unused:false */
       
-      // Reset
+      // Reset to default
       resetHostAddress();
 
       // Setup

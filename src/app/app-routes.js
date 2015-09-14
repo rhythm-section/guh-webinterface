@@ -49,6 +49,21 @@
         abstract: true,
         controller: 'AppCtrl',
         controllerAs: 'app',
+        resolve: {
+          host: ['$location', 'app', 'DSSettings', function($location, app, DSSettings) {
+            return DSSettings
+              .find('admin')
+              .then(function(data) {
+                return data.host;
+              })
+              .catch(function(error) {
+                var host = $location.host();
+
+                // Set default guh host
+                return (angular.isDefined(host) && host !== '') ? host : app.host;
+              });
+          }]
+        },
         templateUrl: 'app/app.html'
       });
 

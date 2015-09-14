@@ -27,7 +27,8 @@
     "angular-animate": "~1.4.3",
     "angular-messages": "~1.4.3",
     "angular-sanitize": "~1.4.3",
-    "ngDialog": "~0.4.0"
+    "ngDialog": "~0.4.0",
+    "js-data-localstorage": "~2.1.1"
   },
   "devDependencies": {},
   "overrides": {
