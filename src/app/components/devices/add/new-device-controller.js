@@ -46,10 +46,10 @@
     var vm = this;
 
     // Public variables
+    vm.supportedVendors = [];
 
     // Public methods
     vm.reset = reset;
-    vm.supportedVendors = [];
     vm.selectVendor = selectVendor;
     vm.selectDeviceClass = selectDeviceClass;
     vm.discoverDevices = discoverDevices;
@@ -101,6 +101,13 @@
     }
 
     function selectDeviceClass(deviceClass) {
+      // Reset
+      vm.selectedDeviceClass = null;
+      vm.createMethod = '';
+      vm.setupMethod = '';
+      vm.params = [];
+      vm.discoveredDevices = [];
+
       vm.selectedDeviceClass = deviceClass;
       vm.createMethod = deviceClass.getCreateMethod();
       vm.setupMethod = deviceClass.getSetupMethod();
@@ -110,6 +117,9 @@
     }
 
     function discoverDevices(params) {
+      // Reset
+      vm.params = [];
+      
       vm.discover = false;
       vm.loading = true;
       vm.params = angular.copy(params);
