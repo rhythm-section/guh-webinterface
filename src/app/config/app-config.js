@@ -32,7 +32,7 @@
         restApi: undefined,
         websocket: undefined
       };
-      var host = undefined;
+      var host;
       var port = {
         restApi: '3333',
         websocket: '4444'

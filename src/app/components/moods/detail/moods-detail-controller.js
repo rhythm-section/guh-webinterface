@@ -71,12 +71,6 @@
       } else {
         mood = DSRule.get(moodId);
 
-        var bypassCache = true;
-
-      // _findMood(bypassCache, moodId)
-      //   .then(function(mood) {
-        $log.log('mood', mood);
-
         vm.actions = mood.actions;
         vm.active = mood.active;
         vm.enabled = mood.enabled;

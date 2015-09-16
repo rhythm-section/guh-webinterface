@@ -57,6 +57,7 @@
                 return data.host;
               })
               .catch(function(error) {
+                /* jshint unused:false */
                 return $location.host();
               });
           }]
