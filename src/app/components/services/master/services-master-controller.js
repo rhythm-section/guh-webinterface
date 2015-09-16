@@ -39,13 +39,11 @@
     .module('guh.services')
     .controller('ServicesMasterCtrl', ServicesMasterCtrl);
 
-  ServicesMasterCtrl.$inject = ['$log', 'DSVendor', 'DSDeviceClass', 'DSDevice'];
+  ServicesMasterCtrl.$inject = ['$log', '$state', 'DSDevice'];
 
-  function ServicesMasterCtrl($log, DSVendor, DSDeviceClass, DSDevice) {
+  function ServicesMasterCtrl($log, $state, DSDevice) {
 
     // Don't show debugging information
-    DSVendor.debug = false;
-    DSDeviceClass.debug = false;
     DSDevice.debug = false;
 
     var vm = this;
@@ -54,7 +52,7 @@
 
     /**
      * @ngdoc interface
-     * @name _loadViewData
+     * @name _init
      * @methodOf guh.services.controller:ServicesMasterCtrl
      *
      * @description
@@ -64,88 +62,25 @@
      *
      */
 
-    function _loadViewData(bypassCache) {
-      _findAllDevices(bypassCache)
-        .then(_findDeviceRelations)
-        .then(function(services) {
-          // $log.log('services', services);
+    function _init() {
+      var services = DSDevice.getAll();
 
-          services.forEach(function(service) {
-            // $log.log('service', service);
-            service.name = (service.name === 'Name') ? service.deviceClass.name : service.name;
-
-            if(service.deviceClass.classType === 'service' || service.deviceClass.classType === 'dev-service') {
-              vm.configured.push(service);
-            }
-          });
-        });
-    }
-
-
-    /**
-     * @ngdoc interface
-     * @name _findAllDevices
-     * @methodOf guh.services.controller:ServicesMasterCtrl
-     *
-     * @description
-     * Load configured services with there relations (deviceClass, vendor).
-     * 
-     * @param {boolean} bypassCache True if services should be requested from Server instead of application memory (datastore)
-     * @returns {Array} Promise of DSDevice Objects enhanced with relational data (deviceClass, vendor)
-     *
-     */
-
-    function _findAllDevices(bypassCache) {
-      if(bypassCache) {
-        return DSDevice.findAll({}, { bypassCache: true });
+      if(angular.isArray(services) && services.length === 0 ) {
+        $state.go('guh.intro');
       }
-      
-      return DSDevice.findAll();
-    }
 
+      services.forEach(function(service) {
+        service.name = (service.name === 'Name') ? service.deviceClass.name : service.name;
 
-    /**
-     * @ngdoc interface
-     * @name _findDeviceRelations
-     * @methodOf guh.services.controller:ServicesMasterCtrl
-     *
-     * @description
-     * Load device relation (deviceClass) for each of configured services.
-     * 
-     * @param {DSDevice} services List of services.
-     * @returns {Array} Promise of DSDevice Objects enhanced with relational data (deviceClass)
-     *
-     */
-
-    function _findDeviceRelations(services) {
-      return angular.forEach(services, function(service) {
-        return DSDevice
-          .loadRelations(service, ['deviceClass'])
-          .then(_findDeviceClassRelations);
+        if(service.deviceClass.classType === 'service' || service.deviceClass.classType === 'dev-service') {
+          vm.configured.push(service);
+        }
       });
-    }
-
-
-    /**
-     * @ngdoc interface
-     * @name _findDeviceClassRelations
-     * @methodOf guh.services.controller:ServicesMasterCtrl
-     *
-     * @description
-     * Load deviceClass relation (vendor) for configured services.
-     * 
-     * @param {DSDevice} service Service object with related deviceClass
-     * @returns {Object} Promise of DSDeviceClass Object enhanced with relational data (vendor)
-     *
-     */
-
-    function _findDeviceClassRelations(service) {
-      return DSDeviceClass.loadRelations(service.deviceClass, ['vendor']);
     }
 
     
     // Initialize controller
-    _loadViewData(true);
+    _init();
 
   }
 
