@@ -39,9 +39,9 @@
     .module('guh.services')
     .controller('ServicesMasterCtrl', ServicesMasterCtrl);
 
-  ServicesMasterCtrl.$inject = ['$log', '$state', 'DSDevice'];
+  ServicesMasterCtrl.$inject = ['$log', '$state', 'libs', 'DS', 'DSDevice'];
 
-  function ServicesMasterCtrl($log, $state, DSDevice) {
+  function ServicesMasterCtrl($log, $state, libs, DS, DSDevice) {
 
     // Don't show debugging information
     DSDevice.debug = false;
@@ -65,8 +65,18 @@
     function _init() {
       var services = DSDevice.getAll();
 
-      if(angular.isArray(services) && services.length === 0 ) {
-        $state.go('guh.intro', { previousState: $state.current.name });
+      $log.log('DS', DS);
+      $log.log('DSDevice', DSDevice);
+      $log.log('services', services);
+      $log.log('libs._.size(DS.store.device.completedQueries)', libs._.size(DS.store.device.completedQueries));
+
+      if(libs._.size(DS.store.device.completedQueries) <= 1) {
+        $state.go('guh.intro', {
+          previousState: {
+            name: $state.current.name,
+            params: {}
+          }
+        });
       }
 
       services.forEach(function(service) {

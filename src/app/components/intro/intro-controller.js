@@ -39,9 +39,9 @@
     .module('guh.intro')
     .controller('IntroCtrl', IntroCtrl);
 
-  IntroCtrl.$inject = ['$log', '$rootScope', '$scope', '$q', '$location', '$timeout', '$state', '$stateParams', 'host', 'websocketService', 'app', 'modelsHelper', 'DSVendor', 'DSDeviceClass', 'DSDevice', 'DSRule', 'DSSettings'];
+  IntroCtrl.$inject = ['$log', '$rootScope', '$scope', '$q', '$location', '$timeout', '$state', '$stateParams', 'host', 'websocketService', 'libs', 'app', 'modelsHelper', 'DSVendor', 'DSDeviceClass', 'DSDevice', 'DSRule', 'DSSettings'];
 
-  function IntroCtrl($log, $rootScope, $scope, $q, $location, $timeout, $state, $stateParams, host, websocketService, app, modelsHelper, DSVendor, DSDeviceClass, DSDevice, DSRule, DSSettings) {
+  function IntroCtrl($log, $rootScope, $scope, $q, $location, $timeout, $state, $stateParams, host, websocketService, libs, app, modelsHelper, DSVendor, DSDeviceClass, DSDevice, DSRule, DSSettings) {
     
     var vm = this;
     var ssl = '';
@@ -57,8 +57,6 @@
     vm.resetHost = resetHost;
 
     function _init() {
-      $log.log('$stateParams', $stateParams);
-
       // Set default host
       vm.host = host;
 
@@ -129,6 +127,16 @@
       return DSRule.findAll();
     }
 
+    function _findRuleDetails(rules) {
+      return angular.forEach(rules, function(rule) {
+        return DSRule.find(rule.id, { bypassCache: true })
+          .then(function(rule) {
+            $log.log('rule', rule);
+            return rule;
+          });
+      });
+    }
+
     function _loadData() {
       $q.all([
           _findAllVendors(),
@@ -137,14 +145,17 @@
           _findAllDevices()
             .then(_findDeviceRelations),
           _findAllRules()
+            .then(_findRuleDetails)
         ])
         .then(function(data) {
           /* jshint unused:false */
 
+          app.dataLoaded = true;
+
           // Wait some time to avoid flickering when visiting intro-page where data is already loaded
           $timeout(function() {
-            if(angular.isString($stateParams.previousState)) {
-              $state.go($stateParams.previousState);
+            if(angular.isObject($stateParams.previousState) && !libs._.isEmpty($stateParams.previousState)) {
+              $state.go($stateParams.previousState.name, $stateParams.previousState.params);
             } else {
               $state.go('guh.devices.master');
             }

@@ -38,6 +38,7 @@
         websocket: '4444'
       };
       var environment = 'development';
+      var dataLoaded = false;
 
       return {
         // Environment
@@ -47,6 +48,7 @@
         protocol: protocol,
         host: host,
         port: port,
+        dataLoaded: dataLoaded,
 
         // URLs
         apiUrl: protocol.restApi + '://' + host + ':' + port.restApi + '/api/v1',
