@@ -119,7 +119,7 @@
     // TODO: Find out why this isn't working (deviceClass relations are working because they are already loaded when deviceClasses are loaded)
     function _findDeviceRelations(devices) {
       return angular.forEach(devices, function(device) {
-        return DSDevice.loadRelations(device, ['state']);
+        return DSDevice.loadRelations(device, ['deviceClass', 'state']);
       });
     }
 
@@ -129,11 +129,7 @@
 
     function _findRuleDetails(rules) {
       return angular.forEach(rules, function(rule) {
-        return DSRule.find(rule.id, { bypassCache: true })
-          .then(function(rule) {
-            $log.log('rule', rule);
-            return rule;
-          });
+        return DSRule.find(rule.id, { bypassCache: true });
       });
     }
 
