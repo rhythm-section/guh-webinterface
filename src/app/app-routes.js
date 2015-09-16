@@ -67,6 +67,9 @@
         $stateProvider.state('guh.intro', {
           controller: 'IntroCtrl',
           controllerAs: 'intro',
+          params: {
+            previousState: {}
+          },
           url: '/intro',
           templateUrl: 'app/components/intro/intro.html'
         });

@@ -66,7 +66,7 @@
       var devices = DSDevice.getAll();
 
       if(angular.isArray(devices) && devices.length === 0 ) {
-        $state.go('guh.intro');
+        $state.go('guh.intro', { previousState: $state.current.name });
       }
 
       devices.forEach(function(device) {

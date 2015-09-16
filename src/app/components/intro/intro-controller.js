@@ -39,9 +39,9 @@
     .module('guh.intro')
     .controller('IntroCtrl', IntroCtrl);
 
-  IntroCtrl.$inject = ['$log', '$scope', '$q', '$location', '$timeout', '$state', 'host', 'websocketService', 'app', 'modelsHelper', 'DSVendor', 'DSDeviceClass', 'DSDevice', 'DSRule', 'DSSettings'];
+  IntroCtrl.$inject = ['$log', '$rootScope', '$scope', '$q', '$location', '$timeout', '$state', '$stateParams', 'host', 'websocketService', 'app', 'modelsHelper', 'DSVendor', 'DSDeviceClass', 'DSDevice', 'DSRule', 'DSSettings'];
 
-  function IntroCtrl($log, $scope, $q, $location, $timeout, $state, host, websocketService, app, modelsHelper, DSVendor, DSDeviceClass, DSDevice, DSRule, DSSettings) {
+  function IntroCtrl($log, $rootScope, $scope, $q, $location, $timeout, $state, $stateParams, host, websocketService, app, modelsHelper, DSVendor, DSDeviceClass, DSDevice, DSRule, DSSettings) {
     
     var vm = this;
     var ssl = '';
@@ -57,6 +57,8 @@
     vm.resetHost = resetHost;
 
     function _init() {
+      $log.log('$stateParams', $stateParams);
+
       // Set default host
       vm.host = host;
 
@@ -141,7 +143,11 @@
 
           // Wait some time to avoid flickering when visiting intro-page where data is already loaded
           $timeout(function() {
-            $state.go('guh.devices.master');
+            if(angular.isString($stateParams.previousState)) {
+              $state.go($stateParams.previousState);
+            } else {
+              $state.go('guh.devices.master');
+            }
           }, 1000);
         })
         .catch(function(error) {
