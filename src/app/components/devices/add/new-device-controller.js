@@ -39,13 +39,14 @@
     .module('guh.devices')
     .controller('NewDeviceCtrl', NewDeviceCtrl);
 
-  NewDeviceCtrl.$inject = ['$log', '$rootScope', '$scope', '$state', '$stateParams', 'DSVendor', 'DSDevice'];
+  NewDeviceCtrl.$inject = ['$log', '$rootScope', '$scope', '$state', '$stateParams', 'libs', 'DSVendor', 'DSDevice'];
 
-  function NewDeviceCtrl($log, $rootScope, $scope, $state, $stateParams, DSVendor, DSDevice) {
+  function NewDeviceCtrl($log, $rootScope, $scope, $state, $stateParams, libs, DSVendor, DSDevice) {
 
     var vm = this;
 
     // Public variables
+    vm.supportedVendors = [];
 
     // Public methods
     vm.reset = reset;
@@ -59,23 +60,23 @@
 
     function _init() {
       // First step
-      // vm.showVendors = true;
-      // vm.showDeviceClasses = false;
-      // vm.showCreateMethod = false;
-      // vm.showSetupMethod = false;
+      var vendors = DSVendor.getAll();
 
-      _findAllVendors()
-        .then(function(vendors) {
-          vm.supportedVendors = vendors;
-        });
+      angular.forEach(vendors, function(vendor) {
+        _checkDeviceClasses(vendor); 
+      });
     }
 
-    function _findAllVendors() {
-      return DSVendor.findAll();
-    }
+    function _checkDeviceClasses(vendor) {
+      angular.forEach(vendor.deviceClasses, function(deviceClass) {
+        var createMethod = deviceClass.getCreateMethod();
 
-    function _findVendorRelations(vendor) {
-      return DSVendor.loadRelations(vendor, ['deviceClass']);
+        // Only if vendor not already included
+        if(!libs._.includes(vm.supportedVendors, vendor) && (createMethod.title !== 'Auto' && (deviceClass.classType === 'device' || deviceClass.classType === 'gateway'))) {
+          vm.supportedVendors.push(vendor);
+          return;
+        }
+      });
     }
 
     function reset() {
@@ -83,15 +84,7 @@
     }
 
     function selectVendor(vendor) {
-      // Check relations & set selected vendor
-      if(angular.isUndefined(vendor.deviceClass) && vendor.deviceClass === {}) {
-        _findVendorRelations(vendor)
-          .then(function(vendor) {
-            vm.selectedVendor = vendor;
-          });
-      } else {
-        vm.selectedVendor = vendor;
-      }
+      vm.selectedVendor = vendor;
 
       // Remove deviceClasses that are auto discovered
       vm.supportedDeviceClasses = [];
@@ -108,6 +101,13 @@
     }
 
     function selectDeviceClass(deviceClass) {
+      // Reset
+      vm.selectedDeviceClass = null;
+      vm.createMethod = '';
+      vm.setupMethod = '';
+      vm.params = [];
+      vm.discoveredDevices = [];
+
       vm.selectedDeviceClass = deviceClass;
       vm.createMethod = deviceClass.getCreateMethod();
       vm.setupMethod = deviceClass.getSetupMethod();
@@ -117,6 +117,9 @@
     }
 
     function discoverDevices(params) {
+      // Reset
+      vm.params = [];
+      
       vm.discover = false;
       vm.loading = true;
       vm.params = angular.copy(params);
@@ -161,8 +164,6 @@
       var deviceDescriptorId = (angular.isDefined(deviceData) && angular.isString(deviceData.id)) ? deviceData.id : '';
       var deviceParams = (deviceDescriptorId === '' && angular.isDefined(deviceData) && angular.isArray(deviceData)) ? deviceData : [];
 
-      $log.log('add', deviceClassId, deviceDescriptorId, deviceParams);
-
       // Without setupMethod the device can be saved directly
       if(vm.setupMethod) {
         pairDevice(deviceClassId, deviceDescriptorId, deviceParams);
@@ -172,13 +173,9 @@
     }
 
     function save(deviceClassId, deviceDescriptorId, deviceParams) {
-      $log.log('Close modal: save', deviceClassId, deviceDescriptorId, deviceParams);
-
       DSDevice
         .add(deviceClassId, deviceDescriptorId, deviceParams)
         .then(function(device) {
-          $log.log('device saved', device);
-
           DSDevice
             .inject({
               deviceClassId: deviceClassId,
@@ -200,17 +197,6 @@
         .catch(function(error) {
           $log.log(error);
         });
-
-
-      $log.log('$scope', $scope);
-
-      // vm.closeModal({
-      //   device: {
-      //     deviceClassId: vm.selectedDeviceClass.id,
-      //     deviceData: deviceData
-      //   },
-      //   httpCreate: true
-      // });
     }
 
 

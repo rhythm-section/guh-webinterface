@@ -83,6 +83,10 @@
       background-color: rgba($c-grey, 0.2);
     }
   }
+
+  label + button {
+    @include rem(margin, 1.5, 0, 0);
+  }
 }
 
 .wizard-title {

@@ -78,7 +78,10 @@
         service.name = (service.name === 'Name') ? service.deviceClass.name : service.name;
 
         if(service.deviceClass.classType === 'service' || service.deviceClass.classType === 'dev-service') {
-          vm.configured.push(service);
+          // Filter mood toggle-buttons
+          if(service.name.substring(0, 19) !== 'mood-toggle-button-') {
+            vm.configured.push(service);
+          }
         }
       });
     }

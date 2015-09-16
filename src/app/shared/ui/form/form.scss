@@ -52,7 +52,8 @@ input {
 }
 
 input[type="email"],
-input[type="text"] {
+input[type="text"],
+input[type="password"] {
   // border-bottom: 1px solid lighten($c-grey, 50%);
   border-bottom: 1px solid rgba($c-white, 0.1);
   color: $c-white;
@@ -105,7 +106,8 @@ input[type="checkbox"] {
 .modal,
 .intro {
   input[type="email"],
-  input[type="text"] {
+  input[type="text"],
+  input[type="password"] {
     border-bottom: 1px solid rgba($c-grey, 0.1);
     color: $c-grey;
 
