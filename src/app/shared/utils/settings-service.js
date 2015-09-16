@@ -22,25 +22,36 @@
  *                                                                                     *
  * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 
-/*
- * Plugins
- */
+(function() {
+  'use strict';
 
-var gulp = require('gulp');
+  angular
+    .module('guh.utils')
+    .factory('DSSettings', DSSettingsFactory)
+    .run(function(DSSettings) {});
 
+  DSSettingsFactory.$inject = ['$log'];
 
-/*
- * Pipes
- */
+  function DSSettingsFactory($log) {
 
-var copiedFontsProduction = require('../pipes/copied-fonts-production');
+    /* jshint unused:false */
 
+    /*
+     * DataStore configuration
+     */
+    var localStorageAdapter = new DSLocalStorageAdapter();
+    var localStorageStore = new JSData.DS();
 
-/*
- * Task
- * 
- */
+    localStorageStore.registerAdapter('localstorage', localStorageAdapter, { default: true });
 
-gulp.task('copy-fonts-production', function() {
-  return copiedFontsProduction.getPipe();
-});
+    var DSSettings = localStorageStore.defineResource({
+      // Model configuration
+      idAttribute: 'userId',
+      name: 'Settings'
+    });
+
+    return DSSettings;
+
+  }
+
+}());

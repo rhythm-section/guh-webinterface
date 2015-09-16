@@ -22,25 +22,70 @@
  *                                                                                     *
  * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 
-/*
- * Plugins
- */
 
-var gulp = require('gulp');
+html {
+  @include background(linear-gradient($c-green,  $c-turquoise));
+  background-repeat: no-repeat;
+  background-attachment: fixed;
+  box-sizing: border-box;
+  @include rootsize();
+}
 
+*,
+*:before,
+*:after {
+  box-sizing: inherit;
+}
 
-/*
- * Pipes
- */
+body {
+  color: get-color("foreground");
+  font-family: 'Ubuntu';
+  font-weight: 400;
+  @include rem(line-height, 1.5);
+  position: relative;
+}
 
-var copiedFontsDevelopment = require('../pipes/copied-fonts-development');
+.grid-overlay {
+  @include grid-overlay();
+}
 
+a {
+  color: get-color("foreground");
+  text-decoration: none; 
+}
 
-/*
- * Task
- * 
- */
+h2 {
+  // @include rem(font-size, 2);
+  // @include rem(line-height, 3);
+  @include rem(letter-spacing, 0.1);
+  @include rem(margin, 1, 0, 2);
+  @include rem(padding-left, 0.1);
+  text-align: center;
+  text-transform: uppercase;
+}
 
-gulp.task('copy-fonts-development', function() {
-  return copiedFontsDevelopment.getPipe();
-});
+.intro {
+  color: $c-grey;
+
+  a {
+    color: inherit;
+  }
+}
+
+// p,
+// a {
+//   // @include rem(font-size, 1.8);
+//   // @include rem(line-height, 2.7);
+//   @include rem(font-size, 1);
+// }
+
+// a {
+//   color: get-color("foreground");
+// }
+
+// h1 {
+//   @include rem(font-size, 3.2);
+//   @include rem(line-height, 4.8);
+//   @include rem(margin, 2.4, 0);
+//   text-align: center;
+// }

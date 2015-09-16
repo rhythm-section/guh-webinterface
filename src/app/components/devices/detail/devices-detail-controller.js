@@ -43,8 +43,11 @@
 
   function DevicesDetailCtrl($log, $scope, $state, $stateParams, libs, DSDevice, DSState) {
 
+    // Don't show debugging information
+    DSDevice.debug = false;
+
     var vm = this;
-    var currentDevice = {};
+    var device = {};
 
     // Public methods
     vm.remove = remove;
@@ -52,104 +55,81 @@
 
     /**
      * @ngdoc interface
-     * @name _loadViewData
+     * @name _init
      * @methodOf guh.devices.controller:DevicesDetailCtrl
      *
      * @description
      * Set data for view.
-     * 
-     * @param {boolean} bypassCache True if device should be requested from Server instead of application memory (datastore)
      *
      */
 
-    function _loadViewData(bypassCache) {
+    function _init() {
       var deviceId = $stateParams.deviceId;
-
+      
       // Return to device list if deviceId is unknown (e.g. on browser reload devices/detail)
       if(!deviceId) {
         $state.go('guh.devices.master');
         return;
       }
 
-      _findDevice(bypassCache, deviceId)
-        .then(function(device) {
-          currentDevice = device;
+      device = DSDevice.get(deviceId);
 
-          // Set view variables
-          vm.setupComplete = currentDevice.setupComplete;
-          vm.actions = [];
-          vm.deviceClass = currentDevice.deviceClass;
-          vm.deviceClassId = currentDevice.deviceClassId;
-          vm.id = currentDevice.id;
-          vm.name = (currentDevice.name === 'Name') ? currentDevice.deviceClass.name : currentDevice.name;
-          vm.params = currentDevice.params;
-          vm.states = currentDevice.states;
+      if(angular.isUndefined(device)) {
+        $state.go('guh.intro', {
+          previousState: {
+            name: $state.current.name,
+            params: $stateParams
+          }
+        });
+      } else {
+        vm.setupComplete = device.setupComplete;
+        vm.actions = [];
+        vm.deviceClass = device.deviceClass;
+        vm.deviceClassId = device.deviceClassId;
+        vm.id = device.id;
+        vm.name = (device.name === 'Name') ? device.deviceClass.name : device.name;
+        vm.params = device.params;
+        vm.states = device.states;
 
-          // Wait for templateUrl check
-          device.deviceClass.templateUrl
-            .then(function(fileExists) {
-              vm.templateUrl = fileExists;
-            })
-            .catch(function(error) {
-              $log.error('guh.controller.DevicesDetailCtrl', error);
-            })
-            .finally(function() {
-              vm.templateReady = true;
+        // Wait for templateUrl check
+        device.deviceClass.templateUrl
+          .then(function(fileExists) {
+            vm.templateUrl = fileExists;
+          })
+          .catch(function(error) {
+            $log.error('guh.controller.DevicesDetailCtrl', error);
+          })
+          .finally(function() {
+            vm.templateReady = true;
+          });
+
+        // Actions
+        angular.forEach(vm.deviceClass.actionTypes, function(actionType) {
+          var action = {};
+          action.actionType = actionType;
+
+          if(actionType.hasState) {  
+            var state = libs._.find(vm.deviceClass.stateTypes, function(stateType) {
+              return stateType.id === actionType.id;
             });
 
-          // Actions
-          angular.forEach(vm.deviceClass.actionTypes, function(actionType) {
-            var action = {};
-            action.actionType = actionType;
+            // Add state to action
+            action.state = state;
 
-            if(actionType.hasState) {  
-              var state = libs._.find(vm.deviceClass.stateTypes, function(stateType) {
-                return stateType.id === actionType.id;
-              });
+            // Remove state from sates array
+            vm.states = libs._.without(vm.states, state);
+          }
 
-              // Add state to action
-              action.state = state;
-
-              // Remove state from sates array
-              vm.states = libs._.without(vm.states, state);
-            }
-
-            vm.actions.push(action);
-          });
-          
-          // Subscribe to websocket messages
-          _subscribeToWebsocket();
-        })
-        .catch(function(error) {
-          $log.error('guh.controller.DevicesDetailCtrl', error);
+          vm.actions.push(action);
         });
-    }
-
-
-    /**
-     * @ngdoc interface
-     * @name _findDevice
-     * @methodOf guh.devices.controller:DevicesDetailCtrl
-     *
-     * @description
-     * Load configured device
-     * 
-     * @param {boolean} bypassCache True if device should be requested from Server instead of application memory (datastore)
-     * @param {String} deviceId ID of the device that should be displayed
-     * @returns {Array} Promise of DSDevice Object
-     *
-     */
-
-    function _findDevice(bypassCache, deviceId) {
-      if(bypassCache) {
-        return DSDevice.find(deviceId, { bypassCache: true });
+        
+        // Subscribe to websocket messages
+        _subscribeToWebsocket();
       }
-      
-      return DSDevice.find(deviceId);
     }
 
     function _subscribeToWebsocket() {
-      currentDevice.subscribe(function(message) {
+      device.subscribe(function(message) {
         if(angular.isDefined(message.params.deviceId) && message.params.deviceId === vm.id) {
           DSState.inject([{
             stateTypeId: message.params.stateTypeId,
@@ -160,14 +140,13 @@
     }
 
     function _leaveState() {
-      // Unsubscribe websocket connection when leaving this state
-      if(DSDevice.is(currentDevice)) {
-        currentDevice.unsubscribe(currentDevice.id);
+      if(DSDevice.is(device)) {
+        device.unsubscribe(device.id);
       }
     }
 
     function remove() {
-      currentDevice
+      device
         .remove()
         .then(function(response) {
           $log.log('Device succesfully removed', response);
@@ -184,8 +163,7 @@
     });
 
 
-    // Initialize controller
-    _loadViewData();
+    _init();
 
   }
 

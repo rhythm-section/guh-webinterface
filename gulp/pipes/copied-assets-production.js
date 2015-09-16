@@ -23,67 +23,27 @@
  * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 
 
-button,
-.button {
-  background-color: get-color("background");
-  color: get-color("foreground");
-  cursor: pointer;
-  border: none;
-  display: block;
-  @include rem(font-size, 1);
-  @include rem(height, 4.5);
-  @include rem(line-height, 1.5);
-  @include rem(margin, 0, 0, 1.5);
-  // @include rem(padding, 0.7, 1.5, 0.8);
-  @include rem(padding, 1.5);
-  width: auto;
+/*
+ * Plugins
+ */
 
-  &:hover {
-    background-color: rgba($c-white, 0.1);
+var gulp = require('gulp');
+
+
+/*
+ * Configuration
+ */
+
+var pathConfig = require('../config/gulp').paths;
+
+
+/*
+ * Pipe
+ */
+
+module.exports = {
+  getPipe: function() {
+    return gulp.src(pathConfig.assets, { base: pathConfig.src })
+      .pipe(gulp.dest(pathConfig.dest.production));
   }
-
-  &:active {
-    background-color: rgba($c-white, 0.2);
-  }
-
-  &.full {
-    width: 100%;
-  }
-
-  span {
-    display: inline-block;
-    @include rem(height, 1.5);
-    overflow: hidden;
-    @include rem(padding, 0, 1.5);
-    text-overflow: ellipsis;
-    white-space: no-wrap;
-    width: inherit;
-  }
-
-  .icon {
-    @include rem(height, 1.5);
-    @include rem(width, 1.5);
-
-    &.left {
-      float: left;
-    }
-
-    &.right {
-      float: right;
-    }
-  }
-}
-
-button {
-  @include appearance(none);
-  outline: none;
-}
-
-.modal {
-  button,
-  .button {
-    background-color: $c-white;
-    // border: 1px solid $c-grey;
-    color: $c-grey; 
-  }
-}
+};

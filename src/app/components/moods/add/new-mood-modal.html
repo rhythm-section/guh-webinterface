@@ -41,7 +41,7 @@
 
           <!-- Actions -->
           <p class="item" ng-class="{ 'selected': newMood.selectedEnterActionTypes[device.id][actionType.id] }" ng-if="actionType.paramTypes.length === 0" ng-click="newMood.selectEnterAction(device, actionType)" ng-repeat="actionType in device.deviceClass.actionTypes" ng-mouseenter="remove = true" ng-mouseleave="remove = false" ng-init="remove = false">
-            <span>{{ actionType.phrase }}</span>
+            <span>{{ actionType.name }}</span>
             <svg class="icon" ng-show="!newMood.selectedEnterActionTypes[device.id][actionType.id]">
               <use xlink:href="./assets/svg/ui/ui.symbol.svg#plus"></use>
             </svg>
@@ -51,7 +51,7 @@
             </svg>
           </p>
           <p class="item" ng-class="{ 'selected': newMood.selectedEnterActionTypes[device.id][actionType.id] }" ng-if="actionType.paramTypes.length > 0" ng-click="newMood.selectEnterAction(device, actionType)" ng-repeat="actionType in device.deviceClass.actionTypes" ng-mouseenter="remove = true" ng-mouseleave="remove = false" ng-init="remove = false">
-            <span>{{ actionType.phrase }}</span>
+            <span>{{ actionType.name }}</span>
             <svg class="icon" ng-show="!newMood.selectedEnterActionTypes[device.id][actionType.id]">
               <use xlink:href="./assets/svg/ui/ui.symbol.svg#chevron-right"></use>
             </svg>
@@ -93,7 +93,7 @@
 
           <!-- Actions -->
           <p class="item" ng-class="{ 'selected': newMood.selectedExitActionTypes[device.id][actionType.id] }" ng-if="actionType.paramTypes.length === 0" ng-click="newMood.selectExitAction(device, actionType)" ng-repeat="actionType in device.deviceClass.actionTypes" ng-mouseenter="remove = true" ng-mouseleave="remove = false" ng-init="remove = false">
-            <span>{{ actionType.selected }} {{ actionType.phrase }}</span>
+            <span>{{ actionType.name }}</span>
             <svg class="icon" ng-show="!newMood.selectedExitActionTypes[device.id][actionType.id]">
               <use xlink:href="./assets/svg/ui/ui.symbol.svg#plus"></use>
             </svg>
@@ -103,7 +103,7 @@
             </svg>
           </p>
           <p class="item" ng-class="{ 'selected': newMood.selectedExitActionTypes[device.id][actionType.id] }" ng-if="actionType.paramTypes.length > 0" ng-click="newMood.selectExitAction(device, actionType)" ng-repeat="actionType in device.deviceClass.actionTypes" ng-mouseenter="remove = true" ng-mouseleave="remove = false" ng-init="remove = false">
-            <span>{{ actionType.phrase }}</span>
+            <span>{{ actionType.name }}</span>
             <svg class="icon" ng-show="!newMood.selectedExitActionTypes[device.id][actionType.id]">
               <use xlink:href="./assets/svg/ui/ui.symbol.svg#chevron-right"></use>
             </svg>

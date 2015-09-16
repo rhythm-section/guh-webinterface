@@ -50,11 +50,11 @@
 
 
 /*
- * Reset
+ * Reset, Base & Layout
  *
  */
 
-@import "../assets/scss/app/reset";
+@import "../assets/scss/reset";
 
 
 /*
@@ -62,11 +62,11 @@
  *
  */
 
-@import "../assets/scss/components/button";
-@import "../assets/scss/components/icon";
-@import "../assets/scss/components/list";
-@import "../assets/scss/components/modal";
-@import "../assets/scss/components/tiles";
+@import "../assets/scss/shared/button";
+@import "../assets/scss/shared/icon";
+@import "../assets/scss/shared/list";
+@import "../assets/scss/shared/modal";
+@import "../assets/scss/shared/tiles";
 
 
 /*
@@ -80,9 +80,17 @@
 
 
 /*
- * App specific
+ * App base
  *
  */
 
-@import "../assets/scss/app/base";
-@import "../assets/scss/app/layout";
+@import "../assets/scss/base";
+@import "../assets/scss/layout";
+
+
+/*
+ * App components
+ *
+ */
+
+@import "../assets/scss/components/intro";

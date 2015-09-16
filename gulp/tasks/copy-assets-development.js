@@ -22,98 +22,25 @@
  *                                                                                     *
  * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 
+/*
+ * Plugins
+ */
 
-// .list {
-//   p {
-//     color: $c-grey;
-//     @include rem(font-size, 1);
-//     letter-spacing: 0.1em;
-//     padding-left: 0.1em;
-//     text-transform: uppercase;
-//   }
-// }
+var gulp = require('gulp');
 
-.list > .item-divider {
-  // border-bottom: 1px solid $c-turquoise;
-  border-bottom: none;
-  color: $c-turquoise;
-  @include rem(height, 3);
-  @include rem(margin, 1.5, 0, 0);
-  @include rem(padding, 0.7, 1.5, 0.8);
-}
 
-.list > .item {
-  background-color: $c-white;
-  border-bottom: 1px solid rgba($c-grey, 0.1);
-  cursor: pointer;
-  display: block;
-  @include rem(height, 4.5);
-  @include rem(padding, 1.5);
-  position: relative;
+/*
+ * Pipes
+ */
 
-  &:last-child {
-    border-bottom: none;
-  }
+var copiedAssetsDevelopment = require('../pipes/copied-assets-development');
 
-  span {
-    display: inline-block;
-    height: inherit;
-    overflow: hidden;
-    @include rem(padding, 1.5, 4.5, 1.5, 1.5);
-    position: absolute;
-      left: 0;
-      top: 0;
-    text-overflow: ellipsis;
-    width: 100%;
-    white-space: nowrap;
-  }
 
-  // &:first-child {
-  //   border-top: 1px solid lighten($c-grey, 50%);
-  // }
+/*
+ * Task
+ * 
+ */
 
-  .icon {
-    float: right;
-    @include rem(height, 1.5);
-    // @include rem(margin, 1.4, 1.5, 1.6);
-    @include rem(margin, 1.5);
-    // position: relative;
-    //   @include rem(top, 0.2);
-    position: absolute;
-      right: 0;
-      top: 0;
-    @include rem(width, 1.5);
-  }
-}
-
-.modal {
-  .list > .item {
-    &.selected .icon {
-      fill: $c-turquoise;
-    }
-
-    .icon {
-      // display: none;
-      // fill: lighten($c-grey, 50%);
-      fill: rgba($c-grey, 0.1);
-    }
-  }
-
-  .list > .item:hover {
-    &.selected .icon {
-      fill: $c-grey;
-    }
-
-    .icon {
-      display: block;
-      fill: $c-grey;
-    }
-  }
-
-  .list > .item:active {
-    .icon {
-      display: block;
-      fill: lighten($c-grey, 50%);
-    }
-  }
-}
+gulp.task('copy-assets-development', function() {
+  return copiedAssetsDevelopment.getPipe();
+});

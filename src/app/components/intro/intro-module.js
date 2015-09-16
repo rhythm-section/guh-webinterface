@@ -25,10 +25,10 @@
 
 /**
  * @ngdoc overview
- * @name guh
+ * @name guh.intro
  *
  * @description
- * Module container for whole app.
+ * Module for intro component of the app.
  *
  */
 
@@ -36,36 +36,6 @@
   'use strict';
 
   angular
-    .module('guh', [
-      // Angular
-      'ngMessages',
-
-      // Libraries
-      'ui.router',
-      'cfp.hotkeys',
-      'ngDialog',
-
-      // Configuration
-      'guh.config',
-
-      // Filters
-      'guh.filter',
-      
-      // Utilities
-      'guh.utils',
-
-      // Services (guh-libjs)
-      'guh.api',
-      'guh.models',
-
-      // Directives
-      'guh.ui',
-
-      // App
-      'guh.intro',
-      'guh.moods',
-      'guh.devices',
-      'guh.services'
-    ]);
+    .module('guh.intro', []);
 
 }());

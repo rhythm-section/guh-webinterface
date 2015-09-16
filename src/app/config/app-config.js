@@ -29,26 +29,30 @@
     .module('guh.config')
     .constant('app', (function() {
       var protocol = {
-        restApi: 'http',
-        websocket: 'ws'
+        restApi: undefined,
+        websocket: undefined
       };
-      var host = {
-        restApi: '127.0.0.1',
-        websocket: '127.0.0.1'
-      };
+      var host;
       var port = {
         restApi: '3333',
         websocket: '4444'
       };
       var environment = 'development';
+      var dataLoaded = false;
 
       return {
         // Environment
         environment: environment,
 
+        // Network
+        protocol: protocol,
+        host: host,
+        port: port,
+        dataLoaded: dataLoaded,
+
         // URLs
-        apiUrl: protocol.restApi + '://' + host.restApi + ':' + port.restApi + '/api/v1',
-        websocketUrl: protocol.websocket + '://' + host.websocket + ':' + port.websocket,
+        apiUrl: protocol.restApi + '://' + host + ':' + port.restApi + '/api/v1',
+        websocketUrl: protocol.websocket + '://' + host + ':' + port.websocket,
 
         // Paths & Files
         paths: {

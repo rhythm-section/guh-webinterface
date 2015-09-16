@@ -39,37 +39,36 @@
     .module('guh.moods')
     .controller('MoodsMasterCtrl', MoodsMasterCtrl);
 
-  MoodsMasterCtrl.$inject = ['$log', '$stateParams', 'DSRule'];
+  MoodsMasterCtrl.$inject = ['$log', '$state', '$stateParams', 'app', 'DSRule'];
 
-  function MoodsMasterCtrl($log, $stateParams, DSRule) {
+  function MoodsMasterCtrl($log, $state, $stateParams, app, DSRule) {
 
     // Don't show debugging information
     DSRule.debug = false;
 
     var vm = this;
     
-
     // Public variables
     vm.configured = [];
 
 
-    function _loadViewData(bypassCache) {
-      _findAllRules(bypassCache)
-        .then(function(rules) {
-          vm.configured = rules;
+    function _init() {
+      var moods = DSRule.getAll();
+
+      if(!app.dataLoaded) {
+        $state.go('guh.intro', {
+          previousState: {
+            name: $state.current.name,
+            params: {}
+          }
         });
-    }
-
-    function _findAllRules(bypassCache) {
-      if(bypassCache) {
-        return DSRule.findAll({}, { bypassCache: true });
+      } else {
+        vm.configured = moods;
       }
-      
-      return DSRule.findAll();
     }
 
 
-    _loadViewData(true);
+    _init();
 
   }
 

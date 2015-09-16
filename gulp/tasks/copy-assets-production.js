@@ -22,62 +22,25 @@
  *                                                                                     *
  * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 
+/*
+ * Plugins
+ */
 
-html {
-  @include background(linear-gradient($c-green,  $c-turquoise));
-  background-repeat: no-repeat;
-  background-attachment: fixed;
-  box-sizing: border-box;
-  @include rootsize();
-}
+var gulp = require('gulp');
 
-*,
-*:before,
-*:after {
-  box-sizing: inherit;
-}
 
-body {
-  color: get-color("foreground");
-  font-family: 'Ubuntu';
-  font-weight: 400;
-  @include rem(line-height, 1.5);
-  position: relative;
-}
+/*
+ * Pipes
+ */
 
-.grid-overlay {
-  @include grid-overlay();
-}
+var copiedAssetsProduction = require('../pipes/copied-assets-production');
 
-a {
-  color: get-color("foreground");
-  text-decoration: none; 
-}
 
-h2 {
-  // @include rem(font-size, 2);
-  // @include rem(line-height, 3);
-  @include rem(letter-spacing, 0.1);
-  @include rem(margin, 1, 0, 2);
-  @include rem(padding-left, 0.1);
-  text-align: center;
-  text-transform: uppercase;
-}
+/*
+ * Task
+ * 
+ */
 
-// p,
-// a {
-//   // @include rem(font-size, 1.8);
-//   // @include rem(line-height, 2.7);
-//   @include rem(font-size, 1);
-// }
-
-// a {
-//   color: get-color("foreground");
-// }
-
-// h1 {
-//   @include rem(font-size, 3.2);
-//   @include rem(line-height, 4.8);
-//   @include rem(margin, 2.4, 0);
-//   text-align: center;
-// }
+gulp.task('copy-assets-production', function() {
+  return copiedAssetsProduction.getPipe();
+});
