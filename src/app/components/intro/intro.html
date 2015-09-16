@@ -30,21 +30,21 @@
 
 <!-- Setup -->
 <div class="form-container" ng-show="intro.setup">
-  <p>Please enter the host address of your guh system.</p>
+  <p>Please enter the host address or name of your guh system.</p>
 
-  <form name="setHostAddress" ng-submit="intro.setHostAddress()" novalidate>  
-    <label>IP</label>
+  <form name="setHost" ng-submit="intro.setHost()" novalidate>  
+    <label>Host address or name</label>
     <input name="test"
            type="text"
-           ng-model="intro.hostAddress"
-           ng-change="intro.checkHostAddress()"
+           ng-model="intro.host"
+           ng-change="intro.checkHost()"s
            ng-required="true" />
 
-    <div ng-messages="setHostAddress.$error" ng-if="setHostAddress.$dirty">
-      <p ng-message="required">Field is required.</p>
-    </div>
 
-    <button type="button" ng-click="intro.resetHostAddress()">Reset</button>
+    <!-- TODO: Replace with ng-messages when replacing this with directive (see controller) -->
+    <p ng-show="!intro.valid">The entered host is not valid.</p>
+
+    <button type="button" ng-click="intro.resetHost()">Set to default</button>
     <button type="submit">Save</button>
   </form>
 </div>

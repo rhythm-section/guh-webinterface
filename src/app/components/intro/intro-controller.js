@@ -44,31 +44,44 @@
   function IntroCtrl($log, $scope, $q, $location, $timeout, $state, host, websocketService, app, modelsHelper, DSVendor, DSDeviceClass, DSDevice, DSRule, DSSettings) {
     
     var vm = this;
+    var ssl = '';
 
-    vm.check = true;
+    vm.check = false;
     vm.setup = false;
     vm.load = false;
-    vm.hostAddress = '';
+    vm.valid = true;
+    vm.host = '';
 
-    vm.checkHostAddress = checkHostAddress;
-    vm.setHostAddress = setHostAddress;
-    vm.resetHostAddress = resetHostAddress;
+    vm.checkHost = checkHost;
+    vm.setHost = setHost;
+    vm.resetHost = resetHost;
 
     function _init() {
-      vm.hostAddress = host;
+      // Set default host
+      vm.host = host;
 
+      // Set config with new host
       _overrideConfig();
-      websocketService.reconnect();
+
+      // Try to connect to host
+      _checkConnection();
     }
 
     function _overrideConfig() {
       // Override host and url defaults
-      app.host = vm.hostAddress;
+      app.protocol.restApi = ssl ? 'https' : 'http';
+      app.protocol.websocket = ssl ? 'wss' : 'ws';
+      app.host = vm.host;
+
       app.apiUrl = app.protocol.restApi + '://' + app.host + ':' + app.port.restApi + '/api/v1';
       app.websocketUrl = app.protocol.websocket + '://' + app.host + ':' + app.port.websocket;
 
       // Override basepath for templates
       modelsHelper.setBasePath();
+    }
+
+    function _checkConnection() {
+      websocketService.reconnect();
     }
 
     function _saveHost() {
@@ -136,11 +149,20 @@
         });
     }
 
-    function checkHostAddress() {
-      // TODO: Check if valid host address
+    // TODO: Replace with directive (form-field-ipV4 and form-field-ipV6)
+    function checkHost() {
+      // Copyright: smink, http://stackoverflow.com/questions/106179/regular-expression-to-match-dns-hostname-or-ip-address
+      var validIpAddressRegex = new RegExp('^(([0-9]|[1-9][0-9]|1[0-9]{2}|2[0-4][0-9]|25[0-5])\.){3}([0-9]|[1-9][0-9]|1[0-9]{2}|2[0-4][0-9]|25[0-5])$');
+      // Valid as per RFC 1123: http://tools.ietf.org/html/rfc1123
+      var validHostnameRegex = new RegExp('^(([a-zA-Z0-9]|[a-zA-Z0-9][a-zA-Z0-9\-]*[a-zA-Z0-9])\.)*([A-Za-z0-9]|[A-Za-z0-9][A-Za-z0-9\-]*[A-Za-z0-9])$');
+      vm.valid = false;
+
+      if(angular.isDefined(vm.host)) {
+        vm.valid = validIpAddressRegex.test(vm.host) ||validHostnameRegex.test(vm.host);
+      }
     }
 
-    function setHostAddress() {
+    function setHost() {
       _overrideConfig();
 
       vm.check = true;
@@ -153,8 +175,8 @@
       }, 1000);
     }
 
-    function resetHostAddress() {
-      vm.hostAddress = host;
+    function resetHost() {
+      vm.host = host;
     }
 
     $scope.$on('WebsocketConnected', function(event, data) {
@@ -174,7 +196,7 @@
       /* jshint unused:false */
       
       // Reset to default
-      resetHostAddress();
+      resetHost();
 
       // Setup
       vm.check = false;

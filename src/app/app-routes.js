@@ -57,10 +57,7 @@
                 return data.host;
               })
               .catch(function(error) {
-                var host = $location.host();
-
-                // Set default guh host
-                return (angular.isDefined(host) && host !== '') ? host : app.host;
+                return $location.host();
               });
           }]
         },

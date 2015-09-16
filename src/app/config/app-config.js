@@ -29,10 +29,10 @@
     .module('guh.config')
     .constant('app', (function() {
       var protocol = {
-        restApi: 'http',
-        websocket: 'ws'
+        restApi: undefined,
+        websocket: undefined
       };
-      var host = 'guh.local';
+      var host = undefined;
       var port = {
         restApi: '3333',
         websocket: '4444'
