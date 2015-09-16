@@ -65,11 +65,6 @@
     function _init() {
       var services = DSDevice.getAll();
 
-      $log.log('DS', DS);
-      $log.log('DSDevice', DSDevice);
-      $log.log('services', services);
-      $log.log('libs._.size(DS.store.device.completedQueries)', libs._.size(DS.store.device.completedQueries));
-
       if(libs._.size(DS.store.device.completedQueries) <= 1) {
         $state.go('guh.intro', {
           previousState: {
