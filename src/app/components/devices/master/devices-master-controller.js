@@ -51,9 +51,6 @@
     // Public variables
     vm.configured = [];
 
-    // Public methods
-    vm.add = add;
-
 
     /**
      * @ngdoc interface
@@ -78,27 +75,6 @@
         if(device.deviceClass.classType === 'device' || device.deviceClass.classType === 'gateway') {
           vm.configured.push(device);
         }
-      });
-    }
-
-
-    /**
-     * @ngdoc interface
-     * @name add
-     * @methodOf guh.devices.controller:DevicesMasterCtrl
-     *
-     * @description
-     * Add a new device
-     *
-     */
-
-    function add() {
-      ngDialog.open({
-        className: 'ngdialog-theme-default',
-        controller: 'NewDeviceCtrl',
-        controllerAs: 'newDevice',
-        overlay: false,
-        template: 'app/components/devices/add/new-device-modal.html'
       });
     }
 

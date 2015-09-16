@@ -47,6 +47,8 @@
     DSDevice.debug = false;
 
     var vm = this;
+
+    // Public variables
     vm.configured = [];
 
 
@@ -57,8 +59,6 @@
      *
      * @description
      * Set data for view.
-     * 
-     * @param {boolean} bypassCache True if services should be requested from Server instead of application memory (datastore)
      *
      */
 
@@ -79,7 +79,6 @@
     }
 
     
-    // Initialize controller
     _init();
 
   }
