@@ -29,70 +29,32 @@
 
 <div guh-wizard handle="newDevice">
   <!-- Select vendor -->
-  <div guh-wizard-step>
-    <h3>Select the vendor of your device</h3>
-    <ul class="list">
-      <li class="item" ng-repeat="vendor in newDevice.supportedVendors | orderBy: 'name' track by $index" ng-click="newDevice.selectVendor(vendor)">
-        {{ vendor.name }}
-        <svg class="icon">
-          <use xlink:href="./assets/svg/ui/ui.symbol.svg#chevron-right"></use>
-        </svg>
-      </li>
-    </ul>
+  <div guh-wizard-step class="list" title="Select the vendor of your device">
+    <p class="item" ng-repeat="vendor in newDevice.supportedVendors | orderBy: 'name' track by $index" ng-click="newDevice.selectVendor(vendor)">
+      {{ vendor.name }}
+      <svg class="icon">
+        <use xlink:href="./assets/svg/ui/ui.symbol.svg#chevron-right"></use>
+      </svg>
+    </p>
   </div>
 
   <!-- Select deviceClass -->
-  <div guh-wizard-step>
-    <button class="prev" ng-click="newDevice.back()">
+  <div guh-wizard-step class="list" title="Select your device">
+    <p class="item" ng-repeat="deviceClass in newDevice.supportedDeviceClasses | orderBy: 'name' track by $index" ng-click="newDevice.selectDeviceClass(deviceClass)">
+      {{ deviceClass.name }}
       <svg class="icon">
-        <use xlink:href="./assets/svg/ui/ui.symbol.svg#chevron-left"></use>
+        <use xlink:href="./assets/svg/ui/ui.symbol.svg#chevron-right"></use>
       </svg>
-    </button>
-    <h3>Select your device</h3>
-    <ul class="list">
-      <li class="item" ng-repeat="deviceClass in newDevice.supportedDeviceClasses | orderBy: 'name' track by $index" ng-click="newDevice.selectDeviceClass(deviceClass)">
-        {{ deviceClass.name }}
-        <svg class="icon">
-          <use xlink:href="./assets/svg/ui/ui.symbol.svg#chevron-right"></use>
-        </svg>
-      </li>
-    </ul>
+    </p>
   </div>
 
   <!-- Create method -->
-  <div guh-wizard-step ng-show="newDevice.createMethod">
-    <button class="prev" ng-click="newDevice.back()">
-      <svg class="icon">
-        <use xlink:href="./assets/svg/ui/ui.symbol.svg#chevron-left"></use>
-      </svg>
-    </button>
-    <h3>Enter device details</h3>
+  <div guh-wizard-step ng-show="newDevice.createMethod" title="Enter device details">
     <ng-include src="newDevice.createMethod.addTemplate" class="content"></ng-include>
   </div>
 
   <!-- Setup method -->
-  <div guh-wizard-step ng-show="newDevice.setupMethod">
-    <button class="prev" ng-click="newDevice.back()">
-      <svg class="icon">
-        <use xlink:href="./assets/svg/ui/ui.symbol.svg#chevron-left"></use>
-      </svg>
-    </button>
-    <h3>Pair device</h3>
+  <div guh-wizard-step ng-show="newDevice.setupMethod" title="Pair device">
     <ng-include src="newDevice.setupMethod.addTemplate" class="content"></ng-include>
   </div>
 </div>
-
-<!-- <div guh-wizard handle="newBla">
-  <div guh-wizard-step>
-    <h3>Step 1</h3>
-  </div>
-  <div guh-wizard-step>
-    <h3>Step 2</h3>
-  </div>
-  <div guh-wizard-step>
-    <h3>Step 3</h3>
-  </div>
-  <div guh-wizard-step>
-    <h3>Step 4</h3>
-  </div>
-</div> -->

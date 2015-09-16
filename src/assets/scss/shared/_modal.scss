@@ -108,7 +108,7 @@
 
     button,
     .button {
-      background-color: rgba($c-grey, 0.1);
+      background-color: rgba($c-grey, 0.2);
       border: none;
       @include rem(letter-spacing, 0.1);
       @include rem(height, 4.5);
@@ -131,7 +131,7 @@
         z-index: 10000;
 
         .icon {
-          fill: rgba($c-grey, 0.1);
+          fill: rgba($c-grey, 0.2);
         }
 
         &:hover .icon {
