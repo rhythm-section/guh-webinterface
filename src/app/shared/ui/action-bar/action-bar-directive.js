@@ -128,11 +128,29 @@
           actionBarCtrl.init();
         });
 
-        scope.$on('ngDialog.closing', function (e, $dialog) {
-          $log.log('ngDialog closing: ' + $dialog.attr('id'));
+        scope.$on('ngDialog.opened', function (event, $dialog) {
+          var remainingDialogs = document.getElementsByClassName('ngdialog');
+          $log.log('remainingDialogs', remainingDialogs.length);
         });
 
-        scope.$on('ngDialog.closed', function (e, $dialog) {
+        scope.$on('ngDialog.closing', function (event, $dialog) {
+          $log.log('ngDialog closing: ' + $dialog.attr('id'));
+
+          var dialog = document.getElementById($dialog.attr('id'));
+          dialog.remove();
+
+          var body = angular.element(document).find('body');
+          var remainingDialogs = document.getElementsByClassName('ngdialog');
+
+          $log.log('remainingDialogs', remainingDialogs.length);
+
+          // If last dialog was removed
+          if(remainingDialogs.length === 0) {
+            body.removeClass('ngdialog-open');
+          }
+        });
+
+        scope.$on('ngDialog.closed', function (event, $dialog) {
           $log.log('ngDialog closed: ' + $dialog.attr('id'));
         });
       }
