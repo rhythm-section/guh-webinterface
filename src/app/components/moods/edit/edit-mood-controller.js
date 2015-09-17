@@ -39,9 +39,9 @@
     .module('guh.moods')
     .controller('EditMoodCtrl', EditMoodCtrl);
 
-  EditMoodCtrl.$inject = ['$log', '$rootScope', '$stateParams', 'DSRule', 'DSDevice'];
+  EditMoodCtrl.$inject = ['$log', '$rootScope', '$scope', '$state', '$stateParams', 'DSRule', 'DSDevice'];
 
-  function EditMoodCtrl($log, $rootScope, $stateParams, DSRule, DSDevice) {
+  function EditMoodCtrl($log, $rootScope, $scope, $state, $stateParams, DSRule, DSDevice) {
 
     var vm = this;
 
@@ -66,26 +66,37 @@
       return DSRule.find(ruleId);
     }
 
-    function _findAllDevices() {
-      return DSDevice.findAll();
-    }
-
     function _removeRule() {
       return vm.rule.remove();
     }
 
     function _removeToggleButton(devices) {
-      angular.forEach(devices, function(device) {
-        var ruleIdPart = device.name.substring(device.name.lastIndexOf('{{') + 2, device.name.lastIndexOf('}}'));
+      var devices = DSDevice.getAll();
 
-        $log.log('ruleIdPart', '{{' + ruleIdPart + '}}', vm.ruleId);
+      $log.log('devices', devices);
+
+      angular.forEach(devices, function(device) {
+        var ruleIdPart = device.name.substring(device.name.lastIndexOf('{') + 1, device.name.lastIndexOf('}'));
 
         if('{' + ruleIdPart + '}' === vm.ruleId) {
+          $log.log('Remove device');
+          $log.log(device.name, vm.ruleId);
+
           // Remove device
           device
             .remove()
             .then(function() {
-              _removeRule();
+              // Close dialog and update mood master view with new mood
+              $scope.closeThisDialog();
+
+              $state.go('guh.moods.master', { bypassCache: true }, {
+                reload: true,
+                inherit: false,
+                notify: true
+              });
+            })
+            .catch(function(error) {
+              $log.error('guh.moods.EditMoodCtrl:controller - ', error);
             });
         }
       });
@@ -93,7 +104,6 @@
 
     function remove() {
       _removeRule()
-        .then(_findAllDevices)
         .then(_removeToggleButton)
         .catch(function(error) {
           $log.error('guh.moods.EditMoodCtrl:controller - ', error);
