@@ -51,7 +51,6 @@
 
     // Public methods
     vm.addTrigger = addTrigger;
-    vm.remove = remove;
 
     function _init() {
       var moodId = $stateParams.moodId;
@@ -147,10 +146,6 @@
         showClose: false,
         template: 'app/components/moods/detail/add-trigger.html'
       });
-    }
-
-    function remove() {
-      // Remove rule and associated mood-toggle device
     }
 
 

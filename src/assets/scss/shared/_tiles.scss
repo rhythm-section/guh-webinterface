@@ -23,7 +23,10 @@
  * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 
 
-.tiles {}
+.tiles {
+  overflow: auto;
+  width: 100%;
+}
 
 .tiles > .item {
   background-color: get-color("background");
