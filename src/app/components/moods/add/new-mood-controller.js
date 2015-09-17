@@ -39,9 +39,9 @@
     .module('guh.moods')
     .controller('NewMoodCtrl', NewMoodCtrl);
 
-  NewMoodCtrl.$inject = ['$log', '$rootScope', '$scope', '$state', 'DSDevice', 'DSRule', 'libs'];
+  NewMoodCtrl.$inject = ['$log', '$rootScope', '$scope', '$state', 'DSDevice', 'DSRule', 'DSHttpAdapter', 'libs', 'app'];
 
-  function NewMoodCtrl($log, $rootScope, $scope, $state, DSDevice, DSRule, libs) {
+  function NewMoodCtrl($log, $rootScope, $scope, $state, DSDevice, DSRule, DSHttpAdapter, libs, app) {
 
     // View data
     var vm = this;
@@ -178,11 +178,9 @@
               $log.log('vm.rule', vm.rule);
 
               // Update created rule with created stateEvaluator
-              DSRule
-                .update(vm.rule.id, vm.rule, { cacheResponse: false })
-                .then(function(rule) {
-                  $log.log('updated rule', rule);
-
+              DSHttpAdapter
+                .PUT(app.apiUrl + '/rules/' + vm.rule.id, vm.rule)
+                .then(function() {
                   DSDevice.inject(vm.rule);
 
                   // Close dialog and update mood master view with new mood
