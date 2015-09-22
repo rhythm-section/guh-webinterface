@@ -55,6 +55,7 @@
     vm.discoverDevices = discoverDevices;
     vm.back = back;
     vm.add = add;
+    vm.confirmPairing = confirmPairing;
     vm.save = save;
 
 
@@ -170,6 +171,25 @@
       } else {
         save(deviceClassId, deviceDescriptorId, deviceParams);
       }
+    }
+
+    function confirmPairing() {
+      DSDevice
+        .confirmPairing(vm.pairingTransactionId)
+        .then(function(device) {
+          DSDevice.inject(device);
+
+          $scope.closeThisDialog();
+
+          $state.go('guh.devices.master', { bypassCache: true }, {
+            reload: true,
+            inherit: false,
+            notify: true
+          });
+        })
+        .catch(function(error) {
+          $log.error(error);
+        });
     }
 
     function save(deviceClassId, deviceDescriptorId, deviceParams) {
