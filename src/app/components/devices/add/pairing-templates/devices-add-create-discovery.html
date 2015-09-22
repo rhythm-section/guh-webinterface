@@ -35,8 +35,7 @@
 <p ng-show="newDevice.discoveredDevices.length > 0">Select your desired device/plugin.</p>
 <ul class="list" ng-show="newDevice.discoveredDevices.length > 0">
   <li class="item" ng-repeat="device in newDevice.discoveredDevices track by $index | orderBy: 'name'" ng-click="newDevice.add(device)">
-    <h2>{{ device.title }}</h2>
-    <p>{{ device.description }}</p>
+    <p>{{ device.title }} ({{ device.description }})</p>
   </li>
 </ul>
 
