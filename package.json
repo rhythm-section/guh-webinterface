@@ -41,6 +41,7 @@
     "gulp-ngdocs": "^0.2.13",
     "gulp-order": "^1.1.1",
     "gulp-plumber": "^1.0.1",
+    "gulp-preprocess": "^1.2.0",
     "gulp-rename": "^1.2.2",
     "gulp-sass": "^2.0.3",
     "gulp-size": "^1.2.3",

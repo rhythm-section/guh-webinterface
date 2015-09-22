@@ -48,8 +48,6 @@
         // Production: One $templateCache entry per template
         var cacheObject = $templateCache.get(path + file);
 
-        $log.log('template:' + path + file);
-
         if(cacheObject !== undefined) {
           return true;
         } else {

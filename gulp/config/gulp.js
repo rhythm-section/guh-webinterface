@@ -50,6 +50,11 @@ module.exports = {
       development: developmentDest,
       production: productionDest
     },
+    appConfigSrc: src + '/app/config/app-config.js',
+    appConfigDest: {
+      development: developmentDest + '/config/',
+      production: developmentDest + '/config/'
+    },
     docs: {
       development: './docs',
       production: './docs'
@@ -65,7 +70,7 @@ module.exports = {
     images: src + '/assets/img/**/*.{gif,jpg,jpeg,png}',
     index: src + '/index.html',
     templates: [src + '/**/*.html', '!' + src + '/index.html'],
-    scripts: src + '/app/**/*.js',
+    scripts: [src + '/app/**/*.js', developmentDest + '/config/app-config.js', '!' + src + '/app/config/app-config.js'],
     styles: src + '/app/app.scss',
     sass: [src + '/assets/scss/**/*.scss', src + '/app/**/*.scss'],
     svg: {
