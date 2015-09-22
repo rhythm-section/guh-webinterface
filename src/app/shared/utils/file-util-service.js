@@ -29,9 +29,9 @@
     .module('guh.utils')
     .factory('File', FileFactory);
 
-  FileFactory.$inject = [];
+  FileFactory.$inject = ['$log', '$templateCache', 'app'];
 
-  function FileFactory() {
+  function FileFactory($log, $templateCache, app) {
     
     var File = {
       checkFile: checkFile
@@ -44,15 +44,27 @@
      * Public method: checkFile(path, file)
      */
     function checkFile(path, file) {
-      var request = new XMLHttpRequest();
+      if(app.environment === 'production') {
+        // Production: One $templateCache entry per template
+        var cacheObject = $templateCache.get(path + file);
 
-      request.open('HEAD', path + file, false);
-      request.send();
+        if(cacheObject !== undefined) {
+          return true;
+        } else {
+          return false;
+        }
+      } else if(app.environment === 'development') {
+        // Development: One HTML file per template
+        var request = new XMLHttpRequest();
 
-      if(request.status === 200) {
-        return true;
-      } else {
-        return false;
+        request.open('HEAD', path + file, false);
+        request.send();
+
+        if(request.status === 200) {
+          return true;
+        } else {
+          return false;
+        }
       }
     }
   }

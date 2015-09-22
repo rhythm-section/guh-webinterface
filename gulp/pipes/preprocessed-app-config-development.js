@@ -28,35 +28,27 @@
  */
 
 var gulp = require('gulp');
-var runSequence = require('run-sequence');
-var argsParser = require('../utils/args-parser');
-var logger = require('../utils/logger');
+var plumber = require('gulp-plumber');
+var preprocess = require('gulp-preprocess');
 
 
 /*
- * Task
+ * Configuration
  */
 
-gulp.task('production', function(done) {
-  // Setting node envrionment
-  process.env.NODE_ENV = 'production';
-  
-  runSequence(
-    'preprocess-app-config-production',
-    'copy-assets-production',
-    'build-ui-svg-sprites',
-    'build-vendor-svg-sprites',
-    [
-      'build-templates-production',
-      'build-vendor-styles-production',
-      'build-app-styles-production',
-      'build-vendor-scripts-production',
-      'build-app-scripts-production',
-      'document-app-scripts-production'
-    ],
-    'build-index-production',
-    argsParser.isServer() ? 'app-server-production' : 'noop',
-    argsParser.isWatch() ? 'watch-production' : 'noop',
-    done
-  );
-});
+var pathConfig = require('../config/gulp').paths;
+
+
+/*
+ * Pipe
+ */
+
+module.exports = {
+  getPipe: function() {
+    return gulp.src(pathConfig.appConfigSrc)
+      .pipe(plumber())
+      // Default context (https://www.npmjs.com/package/gulp-preprocess) is all what is needed => no specific config
+      .pipe(preprocess())
+      .pipe(gulp.dest(pathConfig.appConfigDest.development));
+  }
+};

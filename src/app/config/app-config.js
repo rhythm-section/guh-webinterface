@@ -37,7 +37,7 @@
         restApi: '3333',
         websocket: '4444'
       };
-      var environment = 'development';
+      var environment = '/* @echo NODE_ENV */';   // Set inside gulp task: "preprocess-app-config"
       var dataLoaded = false;
 
       return {
