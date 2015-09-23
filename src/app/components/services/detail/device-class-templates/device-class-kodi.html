@@ -25,8 +25,7 @@
 <div class="left">
   <h2>State</h2>
   <p ng-if="service.states.length === 0">No state available.</p>
-  <div ng-repeat="state in service.stat
-  es track by $index" class="state">
+  <div ng-repeat="state in service.states track by $index" class="state">
     <p class="value">{{ state.value }}</p>
     <p class="name">{{ state.stateType.name }}</p>
   </div>
