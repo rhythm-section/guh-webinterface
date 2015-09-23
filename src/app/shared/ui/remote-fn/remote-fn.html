@@ -15,31 +15,26 @@
   IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
   FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
   AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
-  LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+  LIABILITY, WHETHER IN AN ActionType OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
   OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
   SOFTWARE.
 -->
 
 
-<!-- States -->
-<div class="left">
-  <h2>State</h2>
-  <p ng-if="service.states.length === 0">No state available.</p>
-  <div ng-repeat="state in service.stat
-  es track by $index" class="state">
-    <p class="value">{{ state.value }}</p>
-    <p class="name">{{ state.stateType.name }}</p>
-  </div>
+<div class="remote-fn">
+  <button class="red" ng-click="remoteFn.pressButton('red')">
+    <span>red</span>
+  </button>
+
+  <button class="green" ng-click="remoteFn.pressButton('green')">
+    <span>green</span>
+  </button>
+  
+  <button class="yellow" ng-click="remoteFn.pressButton('yellow')">
+    <span>yellow</span>
+  </button>
+  
+  <button class="blue" ng-click="remoteFn.pressButton('blue')">
+    <span>blue</span>
+  </button>
 </div>
-
-<!-- Actions -->
-<div class="middle">
-  <h2>Control</h2>
-
-  <guh-remote-player action="service.actionsObject.pressButton" device-id="{{ service.id }}"></guh-remote-player>
-  <guh-remote-navigation action="service.actionsObject.pressButton" device-id="{{ service.id }}"></guh-remote-navigation>
-  <guh-remote-fn action="service.actionsObject.pressButton" device-id="{{ service.id }}"></guh-remote-fn>
-</div>
-
-<!-- Events -->
-<div class="right"></div>
