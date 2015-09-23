@@ -68,6 +68,7 @@
         // Basepaths
         basePaths: {
           devices: 'app/components/devices/',
+          services: 'app/components/services/',
           ui: 'app/shared/ui/'
         },
 

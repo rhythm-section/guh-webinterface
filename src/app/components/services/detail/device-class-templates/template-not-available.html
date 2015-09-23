@@ -52,6 +52,7 @@
     <p class="value" ng-switch-when="sun noon">{{ state.value * 1000 | date: 'dd.MM.yyyy' }}, {{ state.value * 1000 | date: 'HH:mm' }}</p>
     <p class="value" ng-switch-when="dawn">{{ state.value * 1000 | date: 'dd.MM.yyyy' }}, {{ state.value * 1000 | date: 'HH:mm' }}</p>
     <p class="value" ng-switch-when="sunset">{{ state.value * 1000 | date: 'dd.MM.yyyy' }}, {{ state.value * 1000 | date: 'HH:mm' }}</p>
+    <p class="value" ng-switch-when="last update">{{ state.value * 1000 | date: 'dd.MM.yyyy' }}, {{ state.value * 1000 | date: 'HH:mm' }}</p>
     <p class="value" ng-switch-default="">{{ state.value }}</p>
     <p class="name">{{ state.stateType.name }}</p>
   </div>

@@ -23,77 +23,65 @@
  * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 
 
-/*
- * Libraries
- *
- */
+.remote-navigation {
+  @include rem(margin-bottom, 1.5);
+  overflow: hidden;
+  position: relative;
 
-@import "bourbon";
+  &:before {
+    content: "";
+    display: block;
+    padding-bottom: 100%;
+  }
 
+  &> div {
+    height: 100%;
+    position: absolute;
+      left: 0;
+      top: 0;
+    width: 100%;
+  }
 
-/*
- * App SASS
- *
- */
+  button {
+    float: left;
+    margin: 0;
+    overflow: auto;
+    padding: 0;
+    width: 100%;
 
-@import "../assets/scss/functions";
-@import "../assets/scss/mixins";
-@import "../assets/scss/variables";
+    &:hover {
+      // background-color: get-color("background");
+    }
 
+    &.back,
+    &.fullscreen,
+    &.info,
+    &.osd {
+      height: 30%;
+      width: 30%;
+    }
 
-/*
- * Grid
- *
- */
+    &.select {
+      height: 40%;
+      width: 40%;
+    }
 
-@import "../assets/scss/grid/grid";
+    &.up,
+    &.down {
+      height: 30%;
+      width: 40%;
+    }
 
+    &.left,
+    &.right {
+      height: 40%;
+      width: 30%;
+    }
 
-/*
- * Reset, Base & Layout
- *
- */
-
-@import "../assets/scss/reset";
-
-
-/*
- * Components
- *
- */
-
-@import "../assets/scss/shared/button";
-@import "../assets/scss/shared/icon";
-@import "../assets/scss/shared/list";
-@import "../assets/scss/shared/modal";
-@import "../assets/scss/shared/tiles";
-
-
-/*
- * Directives (Shared UI)
- */
-
-@import "../app/shared/ui/action-bar/action-bar";
-@import "../app/shared/ui/form/form";
-@import "../app/shared/ui/range/range";
-@import "../app/shared/ui/remote-navigation/remote-navigation";
-@import "../app/shared/ui/remote-fn/remote-fn";
-@import "../app/shared/ui/remote-player/remote-player";
-@import "../app/shared/ui/wizard/wizard";
-
-
-/*
- * App base
- *
- */
-
-@import "../assets/scss/base";
-@import "../assets/scss/layout";
-
-
-/*
- * App components
- *
- */
-
-@import "../assets/scss/components/intro";
+    span {
+      display: block;
+      padding: 0;
+      width: 100%;
+    }
+  }
+}

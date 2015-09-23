@@ -23,77 +23,20 @@
  * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 
 
-/*
- * Libraries
- *
- */
+(function() {
+  'use strict';
 
-@import "bourbon";
+  angular
+    .module('guh.filter')
+    .filter('camelCase', filter);
 
+  function filter() {
+    return function(input, type) {
+      if(input) {
+        return input.replace(/(\s[a-z])/g, function($1) {
+          return $1.toUpperCase().replace(' ','')});
+      }
+    };
+  }
 
-/*
- * App SASS
- *
- */
-
-@import "../assets/scss/functions";
-@import "../assets/scss/mixins";
-@import "../assets/scss/variables";
-
-
-/*
- * Grid
- *
- */
-
-@import "../assets/scss/grid/grid";
-
-
-/*
- * Reset, Base & Layout
- *
- */
-
-@import "../assets/scss/reset";
-
-
-/*
- * Components
- *
- */
-
-@import "../assets/scss/shared/button";
-@import "../assets/scss/shared/icon";
-@import "../assets/scss/shared/list";
-@import "../assets/scss/shared/modal";
-@import "../assets/scss/shared/tiles";
-
-
-/*
- * Directives (Shared UI)
- */
-
-@import "../app/shared/ui/action-bar/action-bar";
-@import "../app/shared/ui/form/form";
-@import "../app/shared/ui/range/range";
-@import "../app/shared/ui/remote-navigation/remote-navigation";
-@import "../app/shared/ui/remote-fn/remote-fn";
-@import "../app/shared/ui/remote-player/remote-player";
-@import "../app/shared/ui/wizard/wizard";
-
-
-/*
- * App base
- *
- */
-
-@import "../assets/scss/base";
-@import "../assets/scss/layout";
-
-
-/*
- * App components
- *
- */
-
-@import "../assets/scss/components/intro";
+}());

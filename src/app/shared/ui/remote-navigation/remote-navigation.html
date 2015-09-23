@@ -1,0 +1,97 @@
+<!-- 
+  Copyright (C) 2015 Lukas Mayerhofer <lukas.mayerhofer@guh.guru>
+  
+  Permission is hereby granted, free of charge, to any person obtaining a copy
+  of this software and associated documentation files (the "Software"), to deal
+  in the Software without restriction, including without limitation the rights
+  to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+  copies of the Software, and to permit persons to whom the Software is
+  furnished to do so, subject to the following conditions:
+  
+  The above copyright notice and this permission notice shall be included in all
+  copies or substantial portions of the Software.
+  
+  THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+  IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+  FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+  AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+  LIABILITY, WHETHER IN AN ActionType OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+  OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+  SOFTWARE.
+-->
+
+
+<div class="remote-navigation">
+  <div>
+    <!-- First row -->
+    <button class="back" ng-click="remoteNavigation.pressButton('back')">
+      <span>
+        <svg class="icon">
+          <use xlink:href="./assets/svg/ui/ui.symbol.svg#arrow-left-c"></use>
+        </svg>
+      </span>
+    </button>
+
+    <button class="up" ng-click="remoteNavigation.pressButton('up')">
+      <span>
+        <svg class="icon">
+          <use xlink:href="./assets/svg/ui/ui.symbol.svg#chevron-up"></use>
+        </svg>
+      </span>
+    </button>
+
+    <button class="fullscreen" ng-click="remoteNavigation.pressButton('fullscreen')">
+      <span>
+        <svg class="icon">
+          <use xlink:href="./assets/svg/ui/ui.symbol.svg#arrow-expand"></use>
+        </svg>
+      </span>
+    </button>
+
+    <!-- Second row -->
+    <button class="left" ng-click="remoteNavigation.pressButton('left')">
+      <span>
+        <svg class="icon">
+          <use xlink:href="./assets/svg/ui/ui.symbol.svg#chevron-left"></use>
+        </svg>
+      </span>
+    </button>
+
+    <button class="select" ng-click="remoteNavigation.pressButton('select')">
+      <span>OK</span>
+    </button>
+
+    <button class="right" ng-click="remoteNavigation.pressButton('right')">
+      <span>
+        <svg class="icon">
+          <use xlink:href="./assets/svg/ui/ui.symbol.svg#chevron-right"></use>
+        </svg>
+      </span>
+    </button>
+
+    <!-- Third row -->
+    <button class="info" ng-click="remoteNavigation.pressButton('info')">
+      <span>
+        <svg class="icon">
+          <use xlink:href="./assets/svg/ui/ui.symbol.svg#information"></use>
+        </svg>
+      </span>
+    </button>
+
+    <button class="down" ng-click="remoteNavigation.pressButton('down')">
+      <span>
+        <svg class="icon">
+          <use xlink:href="./assets/svg/ui/ui.symbol.svg#chevron-down"></use>
+        </svg>
+      </span>
+    </button>
+
+    <button class="osd" ng-click="remoteNavigation.pressButton('osd')">
+      <span>
+        <svg class="icon">
+          <use xlink:href="./assets/svg/ui/ui.symbol.svg#navicon-round"></use>
+        </svg>
+      </span>
+    </button>
+  </div>
+</div>
