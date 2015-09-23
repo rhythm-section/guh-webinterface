@@ -39,9 +39,9 @@
     .module('guh.services')
     .controller('ServicesDetailCtrl', ServicesDetailCtrl);
 
-  ServicesDetailCtrl.$inject = ['$log', '$scope', '$state', '$stateParams', 'libs', 'DSDevice', 'DSState'];
+  ServicesDetailCtrl.$inject = ['$log', '$scope', '$filter', '$state', '$stateParams', 'libs', 'DSDevice', 'DSState'];
 
-  function ServicesDetailCtrl($log, $scope, $state, $stateParams, libs, DSDevice, DSState) {
+  function ServicesDetailCtrl($log, $scope, $filter, $state, $stateParams, libs, DSDevice, DSState) {
 
     // Don't show debugging information
     DSDevice.debug = false;
@@ -85,6 +85,7 @@
         // Set view variables
         vm.setupComplete = service.setupComplete;
         vm.actions = [];
+        vm.actionsObject = {};
         vm.deviceClass = service.deviceClass;
         vm.deviceClassId = service.deviceClassId;
         vm.id = service.id;
@@ -122,6 +123,7 @@
           }
 
           vm.actions.push(action);
+          vm.actionsObject[$filter('camelCase')(actionType.name)] = action;
         });
 
         // Subscribe to websocket messages
