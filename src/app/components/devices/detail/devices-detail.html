@@ -22,16 +22,8 @@
 
 
 <!-- Header -->
-<!-- <div id="device-header">
-  <div class="description">
-    <h2 class="name hero" hero-id="name">{{ device.name }}</h2>
-    <p>{{ device.deviceClass.vendor.name }}, {{ device.deviceClass.name }}</p>
-  </div>
-</div> -->
 <div>
   <h2>{{ device.name }}</h2>
 </div>
 
 <ng-include src="device.templateUrl" ng-if="device.templateReady"></ng-include>
-
-<!-- <button ng-click="device.remove()"><span>Remove</span></button> -->

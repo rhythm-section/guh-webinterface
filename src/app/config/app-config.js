@@ -149,6 +149,48 @@
             label: 'is between',
             operators: ['ValueOperatorGreaterOrEqual', 'ValueOperatorLessOrEqual']
           }
+        },
+
+        // Units
+        unit: {
+          UnitNone: '',
+          UnitSeconds: 'sec',
+          UnitMinutes: 'min',
+          UnitHours: 'hr',
+          UnitUnixTime: 'sec',
+          UnitMeterPerSecond: 'm/s',
+          UnitKiloMeterPerHour: 'km/h',
+          UnitDegree: '°',
+          UnitRadiant: 'rad',
+          UnitDegreeCelsius: '°C',
+          UnitDegreeKelvin: 'K',
+          UnitMired: 'mired',
+          UnitMilliBar: 'mbar',
+          UnitBar: 'bar',
+          UnitPascal: 'Pa',
+          UnitHectoPascal: 'hPa',
+          UnitAtmosphere: 'atm',
+          UnitLumen: 'lm',
+          UnitLux: 'lx',
+          UnitCandela: 'cd',
+          UnitMilliMeter: 'mm',
+          UnitCentiMeter: 'cm',
+          UnitMeter: 'm',
+          UnitKiloMeter: 'km',
+          UnitGram: 'g',
+          UnitKiloGram: 'kg',
+          UnitDezibel: 'dB',
+          UnitKiloByte: 'kB',
+          UnitMegaByte: 'MB',
+          UnitGigaByte: 'GB',
+          UnitTeraByte: 'TB',
+          UnitMilliWatt: 'mW',
+          UnitWatt: 'W',
+          UnitKiloWatt: 'kW',
+          UnitKiloWattHour: 'kWh',
+          UnitPercentage: '%',
+          UnitEuro: '€',
+          UnitDollar: '$'
         }
       };
     })());

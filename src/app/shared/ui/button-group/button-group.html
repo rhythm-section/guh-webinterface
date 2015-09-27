@@ -21,8 +21,8 @@
 -->
 
 
-<guh-modal label="{{ formField.name }}" modal-class="full">
-  <guh-color label="{{ formField.name }}"
-             state="formField.value"
-             on-change="formField.setValue('debounce', 600)"></guh-color>
-</guh-modal>
+<div class="button-group" ng-class="{ 'button-count-{{ buttonGroup.buttons.length }}': buttonGroup.buttons.length < 4, 'button-count-4': buttonGroup.buttons.length >= 4 }">
+  <button ng-click="buttonGroup.pressButton(button)" ng-repeat="button in buttonGroup.buttons">
+    <span>{{ button }}</span>
+  </button>
+</div>

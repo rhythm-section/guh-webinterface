@@ -356,6 +356,24 @@
           });
         };
 
+        // Watch min state
+        scope.$watch('range.stateMin', function(newValue) {
+          minHandlePosition = _rangeToPercent(newValue - ctrl.min);
+
+          // Position handles
+          if(angular.isDefined(attrs.stateMin)) {
+            _placeHandle(minHandle, minHandlePosition);
+          } else {
+            _placeHandle(minHandle, 0);
+          }
+        });
+
+        // Watch max state
+        scope.$watch('range.stateMax', function(newValue) {
+          maxHandlePosition = _rangeToPercent(newValue - ctrl.min);
+          _placeHandle(maxHandle, maxHandlePosition);
+        });
+
         // Resize window
         w.bind('resize', function() {
           $timeout.cancel(resizeTimer);

@@ -21,8 +21,4 @@
 -->
 
 
-<guh-modal label="{{ formField.name }}" modal-class="full">
-  <guh-color label="{{ formField.name }}"
-             state="formField.value"
-             on-change="formField.setValue('debounce', 600)"></guh-color>
-</guh-modal>
+<button class="full" type="button" ng-click="modal.open()">{{ modal.label }}</button>

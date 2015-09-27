@@ -174,8 +174,12 @@
 
           // ParamType
           if(angular.isDefined(vm.paramType)) {
+            // Min & max value
+            vm.minValue = vm.paramType.minValue ? vm.paramType.minValue : 0;
+            vm.maxValue = vm.paramType.maxValue ? vm.paramType.maxValue : 100;
+
             // Unit
-            vm.unit = vm.paramType.unit ? vm.paramType.unit : undefined;
+            vm.unit = vm.paramType.unit ? app.unit[vm.paramType.unit] : undefined;
           }
         }
 
@@ -379,6 +383,14 @@
             }
           }
         });
+
+        // Watch state
+        if(angular.isDefined(scope.formField.state)) {
+          scope.formField.state.on('DS.change', function() {
+            scope.formField.value = scope.formField.state.value;
+            scope.$apply();
+          });
+        }
 
         // On destroy
         scope.$on('$destroy', function() {

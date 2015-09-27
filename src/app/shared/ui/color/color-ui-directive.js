@@ -21,7 +21,8 @@
  * SOFTWARE.                                                                           *
  *                                                                                     *
  * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
- 
+
+
 (function() {
   'use strict';
 
@@ -29,13 +30,14 @@
     .module('guh.ui')
     .directive('guhColor', guhColor);
 
-    guhColor.$inject = ['$log'];
+    guhColor.$inject = ['$log', 'ngDialog'];
 
-    function guhColor($log) {
+    function guhColor($log, ngDialog) {
+
       var directive = {
         bindToController: {
+          changeCallback: '&onChange',
           label: '@',
-          lightness: '=',
           state: '='
         },
         compile: colorCompile,
@@ -49,45 +51,28 @@
       return directive;
 
 
-      function colorCtrl() {
-        
+      function colorCtrl($scope) {
         /* jshint validthis: true */
+
         var vm = this;
 
 
-        /*
-         * Public Variables
-         */
-
-        vm.error = false;
-        vm.firstColor = null;
         vm.colorSaved = false;
 
-
-        /*
-         * API
-         */
 
         vm.getElementDimensions = getElementDimensions;
         vm.setValue = setValue;
         vm.resetValue = resetValue;
-        vm.convertLightness = convertLightness;
+        vm.closeModal = closeModal;
 
-
-        /*
-         * Private methods
-         */
 
         function _init() {
           _setDefaults();
-
-          // TODO: Make tests out of these
           _checkParameters();
         }
 
         function _setDefaults() {
-          vm.lightness = angular.isDefined(vm.lightness) ? vm.lightness : 100;
-          vm.state = angular.isDefined(vm.state) ? vm.state : '#000000';
+          vm.state = angular.isDefined(vm.state) ? vm.state : '#ffffff';
           vm.firstColor = vm.state;
         }
 
@@ -96,29 +81,26 @@
           angular.forEach(vm, function(value, key) {
             if(angular.isDefined(value)) {
               switch(key) {
-                case 'lightness':
-                  if(!angular.isNumber(vm.lightness)) {
-                    $log.error('guh.ui.colorCtrl:controller | The value of parameter lightness has to be a number.');
+                case 'label':
+                  if(!angular.isString(vm.label)) {
+                    $log.error('guh.ui.colorCtrl:controller | The value of parameter label has to be a String.');
                     vm.error = true;
                   }
-
                   break;
+
                 case 'state':
                   if(!angular.isString(vm.state)) {
-                    $log.error('guh.ui.colorCtrl:controller | The value of parameter state has to be a string.');
+                    $log.error('guh.ui.colorCtrl:controller | The value of parameter label has to be a String.');
                     vm.error = true;
                   }
-
                   break;
               }
+            } else {
+              vm.error = true;
+              $log.error('guh.ui.colorCtrl:controller | Parameter "' + key + '" has to be set.');
             }
           });
         }
-
-
-        /*
-         * Public methods
-         */
 
         function getElementDimensions(element, selector) {
           selector = angular.isDefined(selector) ? selector : null;
@@ -152,193 +134,174 @@
 
         function setValue() {
           vm.colorSaved = true;
+          vm.changeCallback();
+          $scope.$parent.closeThisDialog();
         }
 
-        function convertLightness(lightness) {
-          // Input in percent [0% - 100%]
-          lightness = Math.round(lightness / 100 * 255);
-
-          switch(lightness) {
-            case 255:
-              lightness = Math.floor(254 / 255 * 100);
-              break;
-            case 0:
-              lightness = Math.ceil(1 / 255 * 100);
-              break;
-            default:
-              lightness = Math.round(lightness / 255 * 100);
-          }
-
-          // Output [0 - 1]
-          return lightness / 100;
+        function closeModal() {
+          $scope.$parent.closeThisDialog();
         }
 
 
         _init();
-        
+
+      }
+
+    }
+
+
+    function colorCompile(tElement, tAttrs) {
+
+      /*
+       * Variables
+       */
+
+      // Elements
+      var color = angular.element(tElement[0].getElementsByClassName('color'));
+      var currentColor = angular.element(tElement[0].getElementsByClassName('current-color'));
+
+
+      /*
+       * Private methods
+       */
+
+      function _init() {
+        _setColorDimensions();
+      }
+
+      function _setColorDimensions() {
+        // Add margin-bottom to properbly size canvas element to baseline grid
+        if(color.offsetHeight % currentColor.offsetHeight !== 0) {
+          color[0].style.marginBottom = color.offsetHeight % currentColor.offsetHeight + 'px';
+        }
       }
 
 
-      function colorCompile(tElement, tAttrs) {
-        /* jshint unused: false */
+      _init();
 
-        /*
-         * Variables
-         */
 
+      /*
+       * Link
+       */
+
+      var link = {
+        pre: preLink,
+        post: postLink
+      };
+
+      return link;
+
+
+      function preLink(scope, element, attrs, ctrl) {
+        console.log('preLink');
+      }
+
+      function postLink(scope, element, attrs, ctrl) {
+        
         // Elements
-        var label = angular.element(tElement[0].getElementsByClassName('label'));
-        var color = angular.element(tElement[0].getElementsByClassName('color'));
+        var color = angular.element(element[0].getElementsByClassName('color'))[0];
+        var content = angular.element(tElement[0].getElementsByClassName('content'))[0];
+        var close = angular.element(tElement[0].getElementsByClassName('close'))[0].getElementsByClassName('icon')[0];
+
+        console.log('close', close);
+
+        // Dimensions
+        var colorDimensions = ctrl.getElementDimensions(color);
 
 
         /*
          * Private methods
          */
-
         function _init() {
-          _setColorDimensions();
+          color.style.backgroundColor = ctrl.state;
+          // content.style.color = 'rgb(' + Math.floor(rgbDark.r)  + ', ' + Math.floor(rgbDark.g) + ', ' + Math.floor(rgbDark.b) + ')';
         }
 
-        function _setColorDimensions() {
-          // Add margin-bottom to properbly size canvas element to baseline grid
-          if(color.offsetHeight % label.offsetHeight !== 0) {
-            color[0].style.marginBottom = color.offsetHeight % label.offsetHeight + 'px';
-          }
+        function _hsvToRgb(h, s, v) {
+            var r, g, b, i, f, p, q, t;
+            if (arguments.length === 1) {
+                s = h.s;
+                v = h.v;
+                h = h.h;
+            }
+            i = Math.floor(h * 6);
+            f = h * 6 - i;
+            p = v * (1 - s);
+            q = v * (1 - f * s);
+            t = v * (1 - (1 - f) * s);
+            switch (i % 6) {
+                case 0:
+                  r = v;
+                  g = t;
+                  b = p;
+                  break;
+                case 1:
+                  r = q;
+                  g = v;
+                  b = p;
+                  break;
+                case 2:
+                  r = p;
+                  g = v;
+                  b = t;
+                  break;
+                case 3:
+                  r = p;
+                  g = q;
+                  b = v;
+                  break;
+                case 4:
+                  r = t;
+                  g = p;
+                  b = v;
+                  break;
+                case 5:
+                  r = v;
+                  g = p;
+                  b = q;
+                  break;
+            }
+            return {
+                r: Math.round(r * 255),
+                g: Math.round(g * 255),
+                b: Math.round(b * 255)
+            };
+        }
+
+        function _rgbComponentToHex(c) {
+          var hex = parseInt(c).toString(16);
+          return hex.length === 1 ? '0' + hex : hex;
         }
 
 
         _init();
 
+
         /*
-         * Link
+         * Events
          */
+        scope.moveHandle = function($event) {
+          if(!ctrl.colorSaved) {
+            var hueStep = 360 / colorDimensions.width;
+            var hue = Math.round($event.offsetX * hueStep);
 
-        var link = {
-          pre: preLink,
-          post: postLink
-        };
+            var saturationStep = 100 / colorDimensions.height;
+            var saturation = Math.round((colorDimensions.height - $event.offsetY) * saturationStep);
 
-        return link;
+            var rgb = _hsvToRgb(hue / 360, saturation / 100, 1);
+            var rgbDark = _hsvToRgb(hue / 360, saturation / 100, 0.6);
+            var hex = '#' + _rgbComponentToHex(rgb.r) + _rgbComponentToHex(rgb.g) + _rgbComponentToHex(rgb.b);
+            var hexDark = '#' + _rgbComponentToHex(rgbDark.r) + _rgbComponentToHex(rgbDark.g) + _rgbComponentToHex(rgbDark.b);
 
-
-        function preLink(scope, element, attrs, ctrl) {
-          $log.log('preLink');
-        }
-
-        function postLink(scope, element, attrs, ctrl) {
-          $log.log('postLink');
-
-          /*
-           * Variables
-           */
-
-          // Elements
-          var color = angular.element(element[0].getElementsByClassName('color'))[0];
-
-          // Dimensions
-          var colorDimensions = ctrl.getElementDimensions(color);
-
-
-          /*
-           * Private methods
-           */
-
-          function _init() {
-
+            color.style.backgroundColor = hex;
+            content.style.color = 'rgb(' + Math.floor(rgbDark.r)  + ', ' + Math.floor(rgbDark.g) + ', ' + Math.floor(rgbDark.b) + ')';
+            close.style.fill = 'rgb(' + Math.floor(rgbDark.r)  + ', ' + Math.floor(rgbDark.g) + ', ' + Math.floor(rgbDark.b) + ')';
+            ctrl.state = hex;
           }
-
-          function _hsvToRgb(h, s, v) {
-              var r, g, b, i, f, p, q, t;
-              if (arguments.length === 1) {
-                  s = h.s;
-                  v = h.v;
-                  h = h.h;
-              }
-              i = Math.floor(h * 6);
-              f = h * 6 - i;
-              p = v * (1 - s);
-              q = v * (1 - f * s);
-              t = v * (1 - (1 - f) * s);
-              switch (i % 6) {
-                  case 0:
-                    r = v;
-                    g = t;
-                    b = p;
-                    break;
-                  case 1:
-                    r = q;
-                    g = v;
-                    b = p;
-                    break;
-                  case 2:
-                    r = p;
-                    g = v;
-                    b = t;
-                    break;
-                  case 3:
-                    r = p;
-                    g = q;
-                    b = v;
-                    break;
-                  case 4:
-                    r = t;
-                    g = p;
-                    b = v;
-                    break;
-                  case 5:
-                    r = v;
-                    g = p;
-                    b = q;
-                    break;
-              }
-              return {
-                  r: Math.round(r * 255),
-                  g: Math.round(g * 255),
-                  b: Math.round(b * 255)
-              };
-          }
-
-          function _rgbComponentToHex(c) {
-            var hex = parseInt(c).toString(16);
-            return hex.length === 1 ? '0' + hex : hex;
-          }
-
-          function _degToRad(deg) {
-            return (Math.PI / 180) * deg;
-          }
-
-
-          /*
-           * Events
-           */
-
-          // scope.$watch('ctrl.lightness', function(oldValue, newValue) {
-          //   // ctrl.lightness = ctrl.convertLightness(newValue);
-          //   $log.log('ctrl.lightness', oldValue, newValue, ctrl.convertLightness(newValue));
-          // });
-
-          scope.moveHandle = function($event) {
-            if(!ctrl.colorSaved) {
-              var hueStep = 360 / colorDimensions.width;
-              var hue = Math.round($event.offsetX * hueStep);
-              var saturationStep = 100 / colorDimensions.height;
-              var saturation = Math.round((colorDimensions.height - $event.offsetY) * saturationStep);
-              var lightness = ctrl.convertLightness(ctrl.lightness);
-              var rgb = _hsvToRgb(hue / 360, saturation / 100, lightness);
-              var hex = '#' + _rgbComponentToHex(rgb.r) + _rgbComponentToHex(rgb.g) + _rgbComponentToHex(rgb.b);
-
-              color.style.backgroundColor = hex;
-              ctrl.state = hex;
-            }
-          };
-
-
-          if(!ctrl.error) {
-            _init();
-          }
-
         }
       }
+
     }
+
 
 }());

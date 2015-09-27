@@ -28,7 +28,7 @@
          type="text"
          ng-change="formField.setValue('throttle', 600)"
          ng-model="formField.value"
-         ng-pattern="/^([0-9A-F]{2}[:-]){5}([0-9A-F]{2})$/"
+         ng-pattern="/^([A-Fa-f0-9]{2}[:-]){5}([A-Fa-f0-9]{2})$/"
          ng-required="{{ formField.required }}" />
 
   <div ng-messages="subForm[formField.label].$error" ng-if="subForm[formField.label].$dirty">

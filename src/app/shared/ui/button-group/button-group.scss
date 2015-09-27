@@ -23,79 +23,39 @@
  * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 
 
-/*
- * Libraries
- *
- */
+.button-group {
+  overflow: auto;
+  width: 100%;
 
-@import "bourbon";
+  button {
+    float: left;
+    width: 50%;
 
+    span {
+      display: block;
+      padding: 0;
+      width: 100%;
+    }
+  }
+}
 
-/*
- * App SASS
- *
- */
+// .button-count-1 button {
+//   width: 100%;
+// }
 
-@import "../assets/scss/functions";
-@import "../assets/scss/mixins";
-@import "../assets/scss/variables";
+// .button-count-2 button {
+//   width: 50%;
+// }
 
+// .button-count-3 button {
+//   width: 34%;
 
-/*
- * Grid
- *
- */
+//   &:first-child,
+//   &:last-child {
+//     width: 33%;
+//   }
+// }
 
-@import "../assets/scss/grid/grid";
-
-
-/*
- * Reset, Base & Layout
- *
- */
-
-@import "../assets/scss/reset";
-
-
-/*
- * Components
- *
- */
-
-@import "../assets/scss/shared/button";
-@import "../assets/scss/shared/icon";
-@import "../assets/scss/shared/list";
-@import "../assets/scss/shared/modal";
-@import "../assets/scss/shared/tiles";
-
-
-/*
- * Directives (Shared UI)
- */
-
-@import "../app/shared/ui/action-bar/action-bar";
-@import "../app/shared/ui/button-group/button-group";
-@import "../app/shared/ui/color/color";
-@import "../app/shared/ui/form/form";
-@import "../app/shared/ui/range/range";
-@import "../app/shared/ui/remote-navigation/remote-navigation";
-@import "../app/shared/ui/remote-fn/remote-fn";
-@import "../app/shared/ui/remote-player/remote-player";
-@import "../app/shared/ui/wizard/wizard";
-
-
-/*
- * App base
- *
- */
-
-@import "../assets/scss/base";
-@import "../assets/scss/layout";
-
-
-/*
- * App components
- *
- */
-
-@import "../assets/scss/components/intro";
+// .button-count-4 button {
+//   width: 25%;
+// }

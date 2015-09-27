@@ -24,8 +24,8 @@
 <!-- States -->
 <div class="left">
   <h2>State</h2>
-  <p ng-if="service.states.length === 0">No state available.</p>
-  <div ng-repeat="state in service.states track by $index" class="state">
+  <p ng-if="device.states.length === 0">No state available.</p>
+  <div ng-repeat="state in device.states track by $index" class="state">
     <p class="value">{{ state.value }}</p>
     <p class="name">{{ state.stateType.name }}</p>
   </div>
@@ -35,9 +35,23 @@
 <div class="middle">
   <h2>Control</h2>
 
-  <guh-remote-player action="service.actionsObject.pressButton" device-id="{{ service.id }}"></guh-remote-player>
-  <guh-remote-navigation action="service.actionsObject.pressButton" device-id="{{ service.id }}"></guh-remote-navigation>
-  <guh-remote-fn action="service.actionsObject.pressButton" device-id="{{ service.id }}"></guh-remote-fn>
+  <!-- ON/OFF -->
+  <guh-action device-id="{{ device.id }}" action-type-id="{{ device.actionsObject.setPower.actionType.id }}"></guh-action>
+
+  <!-- Brightness -->
+  <guh-action device-id="{{ device.id }}" action-type-id="{{ device.actionsObject.setBrightness.actionType.id }}"></guh-action>
+
+  <!-- Color temperature -->
+  <guh-action device-id="{{ device.id }}" action-type-id="{{ device.actionsObject.setColorTemperature.actionType.id }}"></guh-action>
+
+  <!-- Color -->
+  <guh-action device-id="{{ device.id }}" action-type-id="{{ device.actionsObject.setColor.actionType.id }}"></guh-action>
+
+  <!-- Set effect -->
+  <guh-button-group device-id="{{ device.id }}" action="device.actionsObject.setEffect" buttons="[ 'none', 'color loop' ]"></guh-button-group>
+
+  <!-- Flash -->
+  <guh-button-group device-id="{{ device.id }}" action="device.actionsObject.flash" buttons="[ 'flash once', 'flash 30 seconds' ]"></guh-button-group>
 </div>
 
 <!-- Events -->

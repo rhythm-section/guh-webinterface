@@ -39,9 +39,9 @@
     .module('guh.devices')
     .controller('DevicesDetailCtrl', DevicesDetailCtrl);
 
-  DevicesDetailCtrl.$inject = ['$log', '$scope', '$state', '$stateParams', 'libs', 'DSDevice', 'DSState'];
+  DevicesDetailCtrl.$inject = ['$log', '$scope', '$filter', '$state', '$stateParams', 'libs', 'DSDevice', 'DSState'];
 
-  function DevicesDetailCtrl($log, $scope, $state, $stateParams, libs, DSDevice, DSState) {
+  function DevicesDetailCtrl($log, $scope, $filter, $state, $stateParams, libs, DSDevice, DSState) {
 
     // Don't show debugging information
     DSDevice.debug = false;
@@ -84,6 +84,7 @@
       } else {
         vm.setupComplete = device.setupComplete;
         vm.actions = [];
+        vm.actionsObject = {};
         vm.deviceClass = device.deviceClass;
         vm.deviceClassId = device.deviceClassId;
         vm.id = device.id;
@@ -121,6 +122,7 @@
           }
 
           vm.actions.push(action);
+          vm.actionsObject[$filter('camelCase')(actionType.name)] = action;
         });
         
         // Subscribe to websocket messages
