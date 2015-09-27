@@ -43,6 +43,12 @@
 
   <!-- Color temperature -->
   <guh-action device-id="{{ device.id }}" action-type-id="{{ device.actionsObject.setColorTemperature.actionType.id }}"></guh-action>
+
+  <!-- Set effect -->
+  <guh-button-group device-id="{{ device.id }}" action="device.actionsObject.setEffect" buttons="[ 'none', 'color loop' ]"></guh-button-group>
+
+  <!-- Flash -->
+  <guh-button-group device-id="{{ device.id }}" action="device.actionsObject.flash" buttons="[ 'flash once', 'flash 30 seconds' ]"></guh-button-group>
 </div>
 
 <!-- Events -->
