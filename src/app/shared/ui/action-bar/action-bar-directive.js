@@ -86,7 +86,7 @@
 
           vm.modal = ngDialog.open({
             // className: 'ngdialog-theme-default',
-            className: 'modal',
+            className: 'modal small',
             controller: addController,
             controllerAs: addControllerAs,
             overlay: true,
@@ -102,7 +102,7 @@
 
           vm.modal = ngDialog.open({
             // className: 'ngdialog-theme-default',
-            className: 'modal',
+            className: 'modal small',
             controller: editController,
             controllerAs: editControllerAs,
             overlay: true,

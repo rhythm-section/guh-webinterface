@@ -36,7 +36,8 @@
 
       var directive = {
         bindToController: {
-          label: '@'
+          label: '@',
+          modalClass: '@?'
         },
         controller: modalCtrl,
         controllerAs: 'modal',
@@ -89,8 +90,10 @@
 
 
         function open() {
+          var className = vm.modalClass ? ' ' + vm.modalClass : '';
+
           vm.modal = ngDialog.open({
-            className: 'modal',
+            className: 'modal' + className,
             overlay: true,
             plain: true,
             scope: $scope,
