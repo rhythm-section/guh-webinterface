@@ -21,9 +21,29 @@
 -->
 
 
-<!-- Header -->
-<div>
-  <h2>{{ device.name }}</h2>
+<!-- States -->
+<div class="left">
+  <h2>State</h2>
+  <p ng-if="device.states.length === 0">No state available.</p>
+  <div ng-repeat="state in device.states track by $index" class="state">
+    <p class="value">{{ state.value }}</p>
+    <p class="name">{{ state.stateType.name }}</p>
+  </div>
 </div>
 
-<ng-include src="device.templateUrl" ng-if="device.templateReady"></ng-include>
+<!-- Actions -->
+<div class="middle">
+  <h2>Control</h2>
+
+  <!-- ON/OFF -->
+  <guh-action device-id="{{ device.id }}" action-type-id="{{ device.actionsObject.setPower.actionType.id }}"></guh-action>
+
+  <!-- Brightness -->
+  <guh-action device-id="{{ device.id }}" action-type-id="{{ device.actionsObject.setBrightness.actionType.id }}"></guh-action>
+
+  <!-- Color temperature -->
+  <guh-action device-id="{{ device.id }}" action-type-id="{{ device.actionsObject.setColorTemperature.actionType.id }}"></guh-action>
+</div>
+
+<!-- Events -->
+<div class="right"></div>
