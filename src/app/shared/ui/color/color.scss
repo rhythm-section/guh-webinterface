@@ -23,54 +23,30 @@
  * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 
 
-/*
- * Variables
- */
-
-$line-height: 2.4;
-$x-height: 1.8;
-
-
-/*
- * Styles
- */
-
-.label {
-  display: block;
-  @include rem(margin-bottom, $line-height);
-  @include rem(padding-top, ($line-height - $x-height));
-  text-align: center;
+.modal .ngdialog-content .color button.close {
+  background-color: transparent;
+  color: rgba(get-color('foreground'), 0.4);
 }
 
 .color {
   @include user-select(none);
-  background-color: #eee;
-  // Default values, set inside directive
-  position: relative;
-  width: 100%;
-  margin: 0 auto;
-  width: 500px;
-  z-index: 0;
+  position: fixed;
+    @include rem(bottom, 1.5);
+    @include rem(left, 1.5);
+    @include rem(right, 1.5);
+    @include rem(top, 1.5);
+  z-index: 9999;
 
-  &:before {
-    // background-color: #fff;
-    // border-radius: 50%;
-    content: '';
-    display: block;
-    padding-top: 100%;
-  }
-
-  p {
-    @include rem(margin-top, -($line-height / 2));
+  .content {
+    color: rgba(get-color('foreground'), 0.4);
     position: absolute;
-      left: 0;
+      left: 50%;
       top: 50%;
-    text-align: center;
-    width: 100%;
-    z-index: 1;
+    @include transform(translateX(-50%) translateY(-50%));
+
   }
 
-  div {
+  .background {
     background-color: transparent;
     height: 100%;
     position: absolute;
@@ -78,5 +54,9 @@ $x-height: 1.8;
       top: 0;
     width: 100%;
     z-index: 2;
+  }
+
+  p {
+    text-align: center;
   }
 }
