@@ -174,8 +174,12 @@
 
           // ParamType
           if(angular.isDefined(vm.paramType)) {
+            // Min & max value
+            vm.minValue = vm.paramType.minValue ? vm.paramType.minValue : 0;
+            vm.maxValue = vm.paramType.maxValue ? vm.paramType.maxValue : 100;
+
             // Unit
-            vm.unit = vm.paramType.unit ? vm.paramType.unit : undefined;
+            vm.unit = vm.paramType.unit ? app.unit[vm.paramType.unit] : undefined;
           }
         }
 
