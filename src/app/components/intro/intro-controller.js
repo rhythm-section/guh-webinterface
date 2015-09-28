@@ -108,7 +108,7 @@
 
     function _findDeviceClassRelations(deviceClasses) {
       return angular.forEach(deviceClasses, function(deviceClass) {
-        return DSDeviceClass.loadRelations(deviceClass, ['actionType', 'eventType', 'stateType']);
+        return DSDeviceClass.loadRelations(deviceClass, ['eventType']);
       });
     }
 
@@ -119,7 +119,7 @@
     // TODO: Find out why this isn't working (deviceClass relations are working because they are already loaded when deviceClasses are loaded)
     function _findDeviceRelations(devices) {
       return angular.forEach(devices, function(device) {
-        return DSDevice.loadRelations(device, ['deviceClass', 'state']);
+        return DSDevice.loadRelations(device, ['deviceClass']);
       });
     }
 

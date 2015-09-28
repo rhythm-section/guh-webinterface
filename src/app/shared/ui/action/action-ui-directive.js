@@ -68,15 +68,15 @@
 
         function _init() {
           vm.actionType = _getActionType(vm.actionTypeId);
-          vm.state = _getState(vm.actionTypeId);
+          vm.state = _getState(vm.deviceId, vm.actionTypeId);
         }
 
         function _getActionType(actionTypeId) {
           return DSActionType.get(actionTypeId);
         }
 
-        function _getState(actionTypeId) {
-          var state = DSState.get(actionTypeId);
+        function _getState(deviceId, actionTypeId) {
+          var state = DSState.get('' + deviceId + '_' + actionTypeId);
 
           /*
            * Order for initial state value:

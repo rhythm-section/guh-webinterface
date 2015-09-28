@@ -39,9 +39,9 @@
     .module('guh.devices')
     .controller('DevicesDetailCtrl', DevicesDetailCtrl);
 
-  DevicesDetailCtrl.$inject = ['$log', '$scope', '$filter', '$state', '$stateParams', 'libs', 'DSDevice', 'DSState'];
+  DevicesDetailCtrl.$inject = ['$log', '$scope', '$filter', '$state', '$stateParams', 'libs', 'DSDevice', 'DSState', 'DSDeviceClass'];
 
-  function DevicesDetailCtrl($log, $scope, $filter, $state, $stateParams, libs, DSDevice, DSState) {
+  function DevicesDetailCtrl($log, $scope, $filter, $state, $stateParams, libs, DSDevice, DSState, DSDeviceClass) {
 
     // Don't show debugging information
     DSDevice.debug = false;
@@ -105,12 +105,15 @@
           });
 
         // Actions
-        angular.forEach(vm.deviceClass.actionTypes, function(actionType) {
+        var actionTypes = DSDeviceClass.getAllActionTypes(device.deviceClassId);
+        var stateTypes = DSDeviceClass.getAllStateTypes(device.deviceClassId);
+
+        angular.forEach(actionTypes, function(actionType) {
           var action = {};
           action.actionType = actionType;
 
-          if(actionType.hasState) {  
-            var state = libs._.find(vm.deviceClass.stateTypes, function(stateType) {
+          if(actionType.hasState) {
+            var state = libs._.find(stateTypes, function(stateType) {
               return stateType.id === actionType.id;
             });
 
@@ -133,10 +136,16 @@
     function _subscribeToWebsocket() {
       device.subscribe(function(message) {
         if(angular.isDefined(message.params.deviceId) && message.params.deviceId === vm.id) {
-          DSState.inject([{
-            stateTypeId: message.params.stateTypeId,
-            value: message.params.value
-          }]);
+          var deviceId = message.params.deviceId;
+          var stateTypeId = message.params.stateTypeId;
+          var value = message.params.value;
+
+          DSState.inject({
+            id: '' + deviceId + '_' + stateTypeId,
+            deviceId: deviceId,
+            stateTypeId: stateTypeId,
+            value: value
+          });
         }
       });
     }
