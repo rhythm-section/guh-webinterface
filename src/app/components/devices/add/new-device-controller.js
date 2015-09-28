@@ -39,7 +39,7 @@
     .module('guh.devices')
     .controller('NewDeviceCtrl', NewDeviceCtrl);
 
-  NewDeviceCtrl.$inject = ['$log', '$rootScope', '$scope', '$state', '$stateParams', 'app', 'libs', 'DSHttpAdapter' 'DSVendor', 'DSDevice'];
+  NewDeviceCtrl.$inject = ['$log', '$rootScope', '$scope', '$state', '$stateParams', 'app', 'libs', 'DSHttpAdapter', 'DSVendor', 'DSDevice'];
 
   function NewDeviceCtrl($log, $rootScope, $scope, $state, $stateParams, app, libs, DSHttpAdapter, DSVendor, DSDevice) {
 
