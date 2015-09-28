@@ -29,13 +29,40 @@
     .module('guh')
     .controller('AppCtrl', AppCtrl);
 
-  AppCtrl.$inject = ['$log', '$scope', '$state'];
+  AppCtrl.$inject = ['$log', '$scope', '$timeout', '$state', 'app', 'websocketService', 'ngDialog'];
 
-  function AppCtrl($log, $scope, $state) {
+  function AppCtrl($log, $scope, $timeout, $state, app, websocketService, ngDialog) {
 
     var vm = this;
+    var modal = null;
     
     vm.$state = $state;
+
+    $scope.$on('WebsocketConnectionLost', function(event, data) {
+      // Only show error when data available (=> not first run)
+      if(app.dataLoaded) {
+        if(!modal) {
+          modal = ngDialog.open({
+            className: 'modal error',
+            overlay: true,
+            plain: true,
+            showClose: false,
+            template: '<p>' + data + '</p>'
+          });
+        }
+
+        $timeout(function(){
+          websocketService.reconnect();
+        }, 2000);
+      }
+    });
+
+    $scope.$on('WebsocketConnected', function(event, data) {
+      if(modal) {
+        modal.close();
+        modal = null;
+      }
+    });
 
   }
 
