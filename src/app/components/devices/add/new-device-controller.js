@@ -39,9 +39,9 @@
     .module('guh.devices')
     .controller('NewDeviceCtrl', NewDeviceCtrl);
 
-  NewDeviceCtrl.$inject = ['$log', '$rootScope', '$scope', '$state', '$stateParams', 'libs', 'DSVendor', 'DSDevice'];
+  NewDeviceCtrl.$inject = ['$log', '$rootScope', '$scope', '$state', '$stateParams', 'app', 'libs', 'DSHttpAdapter', 'DSVendor', 'DSDevice'];
 
-  function NewDeviceCtrl($log, $rootScope, $scope, $state, $stateParams, libs, DSVendor, DSDevice) {
+  function NewDeviceCtrl($log, $rootScope, $scope, $state, $stateParams, app, libs, DSHttpAdapter, DSVendor, DSDevice) {
 
     var vm = this;
 
@@ -196,23 +196,30 @@
       DSDevice
         .add(deviceClassId, deviceDescriptorId, deviceParams)
         .then(function(device) {
-          DSDevice
-            .inject({
-              deviceClassId: deviceClassId,
-              id: device.id,
-              name: device.name,
-              params: deviceParams,
-              setupComplete: true
+          DSHttpAdapter
+            .GET(app.apiUrl + '/devices/' + device.id + '/states')
+            .then(function(response) {
+              var states = response.data;
+
+              DSDevice
+                .inject({
+                  deviceClassId: deviceClassId,
+                  id: device.id,
+                  name: device.name,
+                  params: deviceParams,
+                  setupComplete: true,
+                  states: states
+                });
+
+              $scope.closeThisDialog();
+
+              // $state.go('guh.rules.master', { bypassCache: true }, { reload: true });
+              $state.go('guh.devices.master', { bypassCache: true }, {
+                reload: true,
+                inherit: false,
+                notify: true
+              });
             });
-
-          $scope.closeThisDialog();
-
-          // $state.go('guh.rules.master', { bypassCache: true }, { reload: true });
-          $state.go('guh.devices.master', { bypassCache: true }, {
-            reload: true,
-            inherit: false,
-            notify: true
-          });
         })
         .catch(function(error) {
           $log.log(error);

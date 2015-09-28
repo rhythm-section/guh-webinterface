@@ -385,7 +385,7 @@
         });
 
         // Watch state
-        if(angular.isDefined(scope.formField.state)) {
+        if(angular.isDefined(scope.formField.state) && scope.formField.state !== null) {
           scope.formField.state.on('DS.change', function() {
             scope.formField.value = scope.formField.state.value;
             scope.$apply();

@@ -173,6 +173,25 @@
       @include rem(top, 1.5);
   }
 
+  &.error .ngdialog-content {
+    background-color: $c-white;
+    position: fixed;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      top: 0;
+
+    p {
+      @include rem(font-size, 1.5);
+      @include rem(line-height, 2.25);
+      position: fixed;
+        left: 50%;
+        top: 50%;
+      @include transform(translateX(-50%) translateY(-50%));
+      text-align: center;
+    }
+  }
+
   .ngdialog-close {
 
   }

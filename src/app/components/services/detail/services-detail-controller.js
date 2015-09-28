@@ -39,9 +39,9 @@
     .module('guh.services')
     .controller('ServicesDetailCtrl', ServicesDetailCtrl);
 
-  ServicesDetailCtrl.$inject = ['$log', '$scope', '$filter', '$state', '$stateParams', 'libs', 'DSDevice', 'DSState'];
+  ServicesDetailCtrl.$inject = ['$log', '$scope', '$filter', '$state', '$stateParams', 'libs', 'DSDevice', 'DSState', 'DSDeviceClass'];
 
-  function ServicesDetailCtrl($log, $scope, $filter, $state, $stateParams, libs, DSDevice, DSState) {
+  function ServicesDetailCtrl($log, $scope, $filter, $state, $stateParams, libs, DSDevice, DSState, DSDeviceClass) {
 
     // Don't show debugging information
     DSDevice.debug = false;
@@ -73,6 +73,7 @@
       }
 
       service = DSDevice.get(serviceId);
+      $log.log('service', service);
 
       if(angular.isUndefined(service)) {
         $state.go('guh.intro', {
@@ -106,7 +107,10 @@
           });
 
         // Actions
-        angular.forEach(vm.deviceClass.actionTypes, function(actionType) {
+        var actionTypes = DSDeviceClass.getAllActionTypes(service.deviceClassId);
+        var stateTypes = DSDeviceClass.getAllStateTypes(service.deviceClassId);
+
+        angular.forEach(actionTypes, function(actionType) {
           var action = {};
           action.actionType = actionType;
 
@@ -134,10 +138,16 @@
     function _subscribeToWebsocket() {
       service.subscribe(function(message) {
         if(angular.isDefined(message.params.deviceId) && message.params.deviceId === vm.id) {
-          DSState.inject([{
-            stateTypeId: message.params.stateTypeId,
-            value: message.params.value
-          }]);
+          var deviceId = message.params.deviceId;
+          var stateTypeId = message.params.stateTypeId;
+          var value = message.params.value;
+
+          DSState.inject({
+            id: '' + deviceId + '_' + stateTypeId,
+            deviceId: deviceId,
+            stateTypeId: stateTypeId,
+            value: value
+          });
         }
       });
     }
