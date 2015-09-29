@@ -39,9 +39,9 @@
     .module('guh.devices')
     .controller('DevicesMasterCtrl', DevicesMasterCtrl);
 
-  DevicesMasterCtrl.$inject = ['$log', '$state', 'DSDevice'];
+  DevicesMasterCtrl.$inject = ['$log', '$scope', '$state', '$stateParams', 'DSDevice'];
 
-  function DevicesMasterCtrl($log, $state, DSDevice) {
+  function DevicesMasterCtrl($log, $scope, $state, $stateParams, DSDevice) {
     
     // Don't show debugging information
     DSDevice.debug = false;
@@ -82,6 +82,17 @@
         }
       });
     }
+
+
+    $scope.$on('ReloadView', function(event, data) {
+      $log.log('Reload view!', event, data);
+
+      $state.go($state.current, $stateParams, {
+        reload: true,
+        inherit: false,
+        notify: true
+      });
+    });
 
     
     _init();

@@ -50,7 +50,6 @@
     var service = {};
 
     // Public methods
-    vm.remove = remove;
 
 
     /**
@@ -73,7 +72,6 @@
       }
 
       service = DSDevice.get(serviceId);
-      $log.log('service', service);
 
       if(angular.isUndefined(service)) {
         $state.go('guh.intro', {
@@ -129,52 +127,8 @@
           vm.actions.push(action);
           vm.actionsObject[$filter('camelCase')(actionType.name)] = action;
         });
-
-        // Subscribe to websocket messages
-        _subscribeToWebsocket();
       }
     }
-
-    function _subscribeToWebsocket() {
-      service.subscribe(function(message) {
-        if(angular.isDefined(message.params.deviceId) && message.params.deviceId === vm.id) {
-          var deviceId = message.params.deviceId;
-          var stateTypeId = message.params.stateTypeId;
-          var value = message.params.value;
-
-          DSState.inject({
-            id: '' + deviceId + '_' + stateTypeId,
-            deviceId: deviceId,
-            stateTypeId: stateTypeId,
-            value: value
-          });
-        }
-      });
-    }
-
-    function _leaveState() {
-      // Unsubscribe websocket connection when leaving this state
-      if(DSDevice.is(service)) {
-        service.unsubscribe(service.id);
-      }
-    }
-
-    function remove() {
-      service
-        .remove()
-        .then(function(response) {
-          $log.log('Device succesfully removed', response);
-        })
-        .catch(function(error) {
-          // TODO: Build general error handler
-          // TODO: Handle error when service in use (rules)
-          $log.error(error);
-        });
-    }
-
-    $scope.$on('$stateChangeStart', function() {
-      _leaveState();
-    });
 
 
     _init();

@@ -50,7 +50,6 @@
     var device = {};
 
     // Public methods
-    vm.remove = remove;
 
 
     /**
@@ -127,51 +126,8 @@
           vm.actions.push(action);
           vm.actionsObject[$filter('camelCase')(actionType.name)] = action;
         });
-        
-        // Subscribe to websocket messages
-        _subscribeToWebsocket();
       }
     }
-
-    function _subscribeToWebsocket() {
-      device.subscribe(function(message) {
-        if(angular.isDefined(message.params.deviceId) && message.params.deviceId === vm.id) {
-          var deviceId = message.params.deviceId;
-          var stateTypeId = message.params.stateTypeId;
-          var value = message.params.value;
-
-          DSState.inject({
-            id: '' + deviceId + '_' + stateTypeId,
-            deviceId: deviceId,
-            stateTypeId: stateTypeId,
-            value: value
-          });
-        }
-      });
-    }
-
-    function _leaveState() {
-      if(DSDevice.is(device)) {
-        device.unsubscribe(device.id);
-      }
-    }
-
-    function remove() {
-      device
-        .remove()
-        .then(function(response) {
-          $log.log('Device succesfully removed', response);
-        })
-        .catch(function(error) {
-          // TODO: Build general error handler
-          // TODO: Handle error when device in use (rules)
-          $log.error(error);
-        });
-    }
-
-    $scope.$on('$stateChangeStart', function() {
-      _leaveState();
-    });
 
 
     _init();

@@ -96,23 +96,27 @@
           devices: {
             deviceAdded: 'Devices.DeviceAdded',
             deviceRemoved: 'Devices.DeviceRemoved',
-            stateChanged: 'Devices.StateChanged'
+            stateChanged: 'Devices.StateChanged',
+            paramsChanged: 'Devices.DeviceParamsChanged'
           },
 
           // Rules
           rules: {
             ruleAdded: 'Rules.RuleAdded',
-            ruleRemoved: 'Rules.RuleRemoved'
+            ruleRemoved: 'Rules.RuleRemoved',
+            ruleActiveChanged: 'Rules.RuleActiveChanged',
+            ruleConfigurationChanged: 'Rules.RuleConfigurationChanged'
           },
 
           // Events
           events: {
-            eventTriggered: 'Events.EventTriggeres'
+            eventTriggered: 'Events.EventTriggered'
           },
 
           // Log entry
           logging: {
-            logEntryAdded: 'Logging.LogEntryAdded'
+            logEntryAdded: 'Logging.LogEntryAdded',
+            logDatabaseUpdated: 'Logging.LogDatabaseUpdated'
           }
         },
 
