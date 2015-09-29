@@ -39,9 +39,9 @@
     .module('guh.services')
     .controller('ServicesMasterCtrl', ServicesMasterCtrl);
 
-  ServicesMasterCtrl.$inject = ['$log', '$state', 'libs', 'DS', 'DSDevice'];
+  ServicesMasterCtrl.$inject = ['$log', '$scope', '$state', '$stateParams', 'libs', 'DS', 'DSDevice'];
 
-  function ServicesMasterCtrl($log, $state, libs, DS, DSDevice) {
+  function ServicesMasterCtrl($log, $scope, $state, $stateParams, libs, DS, DSDevice) {
 
     // Don't show debugging information
     DSDevice.debug = false;
@@ -85,6 +85,17 @@
         }
       });
     }
+
+
+    $scope.$on('ReloadView', function(event, data) {
+      $log.log('Reload view!', event, data);
+
+      $state.go($state.$current, $stateParams, {
+        reload: true,
+        inherit: false,
+        notify: true
+      });
+    });
 
     
     _init();

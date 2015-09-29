@@ -384,10 +384,12 @@
         });
 
         // Watch state
-        scope.formField.state.on('DS.change', function() {
-          scope.formField.value = scope.formField.state.value;
-          scope.$apply();
-        });
+        if(scope && angular.isDefined(scope.formField.state)) {
+          scope.formField.state.on('DS.change', function() {
+            scope.formField.value = scope.formField.state.value;
+            scope.$apply();
+          });
+        }
 
         // On destroy
         scope.$on('$destroy', function() {
@@ -401,7 +403,10 @@
           // Link: http://api.jquery.com/off/
           selectedOperatorWatch();
           templateWatch();
-          scope.formField.state.off();
+
+          if(scope && angular.isDefined(scope.formField.state)) {
+            scope.formField.state.off();
+          }
 
           scope = null;
 

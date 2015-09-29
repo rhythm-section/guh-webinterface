@@ -189,30 +189,13 @@
       DSDevice
         .add(deviceClassId, deviceDescriptorId, deviceParams)
         .then(function(device) {
-          DSHttpAdapter
-            .GET(app.apiUrl + '/devices/' + device.id + '/states')
-            .then(function(response) {
-              var states = response.data;
+          $scope.closeThisDialog();
 
-              DSDevice
-                .inject({
-                  deviceClassId: deviceClassId,
-                  id: device.id,
-                  name: device.name,
-                  params: deviceParams,
-                  setupComplete: true,
-                  states: states
-                });
-
-              $scope.closeThisDialog();
-
-              // $state.go('guh.rules.master', { bypassCache: true }, { reload: true });
-              $state.go('guh.services.master', { bypassCache: true }, {
-                reload: true,
-                inherit: false,
-                notify: true
-              });
-            });
+          $state.go('guh.services.master', { bypassCache: true }, {
+            reload: true,
+            inherit: false,
+            notify: true
+          });
         })
         .catch(function(error) {
           $log.log(error);
