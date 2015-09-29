@@ -176,7 +176,9 @@
     function confirmPairing() {
       DSDevice
         .confirmPairing(vm.pairingTransactionId)
-        .then(function(device) {
+        .then(function(response) {
+          var device = response.data;
+
           DSDevice.inject(device);
 
           $scope.closeThisDialog();
