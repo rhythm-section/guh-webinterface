@@ -35,6 +35,7 @@
 <div class="middle">
   <h2>Control</h2>
 
+  <guh-action device-id="{{ service.id }}" action-type-id="{{ service.actionsObject.setVolume.actionType.id }}"></guh-action>
   <guh-remote-player action="service.actionsObject.pressButton" device-id="{{ service.id }}"></guh-remote-player>
   <guh-remote-navigation action="service.actionsObject.pressButton" device-id="{{ service.id }}"></guh-remote-navigation>
   <guh-remote-fn action="service.actionsObject.pressButton" device-id="{{ service.id }}"></guh-remote-fn>
