@@ -347,7 +347,7 @@
         ctrl.formCtrl = formCtrl;
 
         // Watch selected operator
-        scope.$watch('formField.selectedOperator', function(newValue) {
+        var selectedOperatorWatch = scope.$watch('formField.selectedOperator', function(newValue) {
           if(formCtrl && !ctrl.valueOperator) {
             // Add formField if valueOperator not set
             formCtrl.addFormField(scope);
@@ -359,7 +359,7 @@
         });
 
         // Watch template
-        scope.$watch('formField.template', function(newValue) {
+        var templateWatch = scope.$watch('formField.template', function(newValue) {
           templateUrl = newValue;
 
           ctrl.init();
@@ -367,7 +367,6 @@
           if(ctrl.valueOperator) {
             $http.get('app/shared/ui/form/value-operator.html', { cache: $templateCache }).success(function(template) {
               // Replace guhFormField-directive with proper HTML input
-              // element.html(template);
               element.html(template);
               $compile(element.contents())(scope);
             });
@@ -385,12 +384,10 @@
         });
 
         // Watch state
-        if(angular.isDefined(scope.formField.state) && scope.formField.state !== null) {
-          scope.formField.state.on('DS.change', function() {
-            scope.formField.value = scope.formField.state.value;
-            scope.$apply();
-          });
-        }
+        scope.formField.state.on('DS.change', function() {
+          scope.formField.value = scope.formField.state.value;
+          scope.$apply();
+        });
 
         // On destroy
         scope.$on('$destroy', function() {
@@ -399,8 +396,17 @@
             formCtrl.removeFormField(scope);
           }
 
-          element.remove();
+          // Remove bindings
+          // Link: http://angular-tips.com/blog/2013/08/removing-the-unneeded-watches/
+          // Link: http://api.jquery.com/off/
+          selectedOperatorWatch();
+          templateWatch();
+          scope.formField.state.off();
+
           scope = null;
+
+          element.remove();
+          element = null;
         });
       }
     }
