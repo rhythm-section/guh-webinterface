@@ -28,6 +28,7 @@ html {
   background-repeat: no-repeat;
   background-attachment: fixed;
   box-sizing: border-box;
+  min-height: 100%;
   @include rootsize();
 }
 
