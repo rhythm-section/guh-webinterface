@@ -25,10 +25,13 @@
 .modal .wizard,
 .wizard {
   display: block;
+  // position: fixed;
   height: 100%;
+  overflow: hidden;
+  // overflow: hidden;
   position: absolute;
-    left: 0;
-    top: 0;
+  //   left: 0;
+  //   top: 0;
   width: 100%;
 
   .wizard {
@@ -107,11 +110,11 @@
 
 .wizard-content {
   height: 100%;
-  @include rem(padding, 7.5, 1.5, 4.5);
+  @include rem(padding, 0, 1.5);
   overflow-y: scroll;
-  position: absolute;
-    left: 0;
-    top: 0;
+  // position: absolute;
+  //   left: 0;
+  //   top: 0;
   width: 100%;
   z-index: 0;
 }
@@ -147,6 +150,7 @@
 
 .wizard-step {
   display: none;
+  @include rem(padding, 7.5, 0, 6);
 
   &.current {
     display: block;

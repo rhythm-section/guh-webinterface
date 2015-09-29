@@ -50,6 +50,10 @@ button,
     width: 100%;
   }
 
+  &::-moz-focus-inner {
+    border: 0;
+  }
+
   span {
     display: inline-block;
     @include rem(height, 1.5);
