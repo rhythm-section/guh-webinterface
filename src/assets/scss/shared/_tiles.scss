@@ -31,12 +31,13 @@
 
 .tiles > .item {
   background-color: get-color("background");
+  @include rem(height, 7.5);
   @include rem(margin, 0, 0, 1.5);
   position: relative;
 
   @include media($breakpoint-xs) {
-    @include span-columns(3);
-    @include omega(2n);
+    @include span-columns(6);
+    // @include omega(2n);
   }
 
   @include media($breakpoint-s) {
@@ -66,12 +67,6 @@
     &:nth-child(4n + 1) {
       @include shift-in-context(1 of $columns-xxl);
     }
-  }
-
-  &:before {
-    content: "";
-    display: block;
-    padding-top: 100%;
   }
 
   &:hover {
