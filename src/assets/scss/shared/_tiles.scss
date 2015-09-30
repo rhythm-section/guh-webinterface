@@ -35,8 +35,8 @@
   position: relative;
 
   @include media($breakpoint-xs) {
-    @include span-columns(3);
-    @include omega(2n);
+    @include span-columns(6);
+    // @include omega(2n);
   }
 
   @include media($breakpoint-s) {
@@ -68,6 +68,7 @@
     }
   }
 
+  // @include rem(height, 7.5);
   &:before {
     content: "";
     display: block;
