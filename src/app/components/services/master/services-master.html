@@ -26,6 +26,7 @@
     <!-- <a class="vendor-{{ service.deviceClass.vendor.name | kebabCase }}" ui-sref="guh.services.detail({ serviceId: service.id })"> -->
     <a ui-sref="guh.services.detail({ serviceId: service.id })">
       <h2 class="name">{{ service.name }}</h2>
+      <p>{{ service.deviceClass.vendor.name }}, {{ service.deviceClass.name }}</p>
     </a>
   </li>
 </ul>

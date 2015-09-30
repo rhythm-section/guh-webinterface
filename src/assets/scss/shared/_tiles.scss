@@ -31,7 +31,7 @@
 
 .tiles > .item {
   background-color: get-color("background");
-  @include rem(height, 7.5);
+  @include rem(height, 9);
   @include rem(margin, 0, 0, 1.5);
   position: relative;
 
@@ -88,12 +88,24 @@
     @include rem(font-size, 1);
     letter-spacing: 0;
     @include rem(line-height, 1.5);
+    margin-bottom: 0;
     @include rem(margin-top, 1.5);
     overflow: hidden;
     text-align: center;
     text-overflow: ellipsis;
     text-transform: capitalize;
     white-space: nowrap;
+    width: 100%;
+  }
+
+  p {
+    @include rem(font-size, 0.8);
+    @include rem(line-height, 1.5);
+    overflow: hidden;
+    text-align: center;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    margin: 0;
     width: 100%;
   }
 }
