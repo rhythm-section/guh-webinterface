@@ -31,6 +31,7 @@
 
 .tiles > .item {
   background-color: get-color("background");
+  @include rem(height, 7.5);
   @include rem(margin, 0, 0, 1.5);
   position: relative;
 
@@ -66,13 +67,6 @@
     &:nth-child(4n + 1) {
       @include shift-in-context(1 of $columns-xxl);
     }
-  }
-
-  // @include rem(height, 7.5);
-  &:before {
-    content: "";
-    display: block;
-    padding-top: 100%;
   }
 
   &:hover {
