@@ -60,8 +60,14 @@ module.exports = {
       production: './docs'
     },
     assets: [
+      // Assets
       src + '/assets/fonts/**/*',
       src + '/assets/svg/*.svg',
+      // Favicon
+      src + '/*.png',
+      src + '/*.ico',
+      src + '/browserconfig.xml',
+      src + '/manifest.json'
     ],
     libs: {
       development: developmentDest + '/assets/libs',
