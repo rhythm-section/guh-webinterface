@@ -384,7 +384,7 @@
         });
 
         // Watch state
-        if(scope && angular.isDefined(scope.formField.state)) {
+        if(scope && angular.isFunction(scope.formField.state)) {
           scope.formField.state.on('DS.change', function() {
             scope.formField.value = scope.formField.state.value;
             scope.$apply();
@@ -404,7 +404,7 @@
           selectedOperatorWatch();
           templateWatch();
 
-          if(scope && angular.isDefined(scope.formField.state)) {
+          if(scope && angular.isFunction(scope.formField.state)) {
             scope.formField.state.off();
           }
 
