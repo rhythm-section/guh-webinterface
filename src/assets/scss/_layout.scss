@@ -105,7 +105,8 @@ header.app {
     @include span-columns(4);
     @include omega();
     left: auto;
-    right: 0;
+    // right: 0;
+    @include shift(7);
   }
 
   @include media($breakpoint-xxl) {
@@ -167,6 +168,10 @@ nav.app {
     border-bottom: 1px solid rgba($c-white, 0.1);
     border-top: none;
     top: 0;
+
+    ul {
+      @include shift-in-context(1 of $columns-xl);
+    }
   }
 
   @include media($breakpoint-xxl) {
@@ -177,7 +182,7 @@ nav.app {
     top: 0;
 
     ul {
-      @include shift(1);
+      @include shift-in-context(1 of $columns-xxl);
     }
   }
 
@@ -220,16 +225,17 @@ nav.app {
     }
 
     @include media($breakpoint-l) {
-      @include span-columns(9);
+      @include span-columns(6);
     }
 
     @include media($breakpoint-xl) {
-      @include span-columns(4);
+      @include shift-in-context(1 of $columns-xl);
+      @include span-columns(5);
     }
 
     @include media($breakpoint-xxl) {
       @include shift-in-context(1 of $columns-xxl);
-      @include span-columns(5);
+      @include span-columns(8);
     }
   }
 
@@ -244,15 +250,16 @@ nav.app {
     }
 
     @include media($breakpoint-l) {
-      @include span-columns(4);
+      @include span-columns(6);
+      @include omega;
     }
 
     @include media($breakpoint-xl) {
-      @include span-columns(4);
+      @include span-columns(5);
     }
 
     @include media($breakpoint-xxl) {
-      @include span-columns(6);
+      @include span-columns(8);
     }
   }
 
@@ -276,7 +283,7 @@ nav.app {
     }
 
     @include media($breakpoint-xxl) {
-      @include span-columns(5);
+      @include span-columns(9);
     }
   }
 }
