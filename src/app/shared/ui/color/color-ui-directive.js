@@ -30,9 +30,9 @@
     .module('guh.ui')
     .directive('guhColor', guhColor);
 
-    guhColor.$inject = ['$log', 'ngDialog'];
+    guhColor.$inject = ['$log'];
 
-    function guhColor($log, ngDialog) {
+    function guhColor($log) {
 
       var directive = {
         bindToController: {
@@ -298,7 +298,7 @@
             close.style.fill = 'rgb(' + Math.floor(rgbDark.r)  + ', ' + Math.floor(rgbDark.g) + ', ' + Math.floor(rgbDark.b) + ')';
             ctrl.state = hex;
           }
-        }
+        };
       }
 
     }
