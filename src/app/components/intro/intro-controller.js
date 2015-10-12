@@ -44,7 +44,8 @@
   function IntroCtrl($log, $rootScope, $scope, $q, $location, $timeout, $state, $stateParams, host, websocketService, libs, app, modelsHelper, DSVendor, DSDeviceClass, DSDevice, DSRule, DSSettings) {
     
     var vm = this;
-    var ssl = '';
+    var protocol = $location.protocol();
+    var ssl = protocol.charAt(protocol.length - 1) === 's' ? true : false;
 
     vm.check = false;
     vm.setup = false;
@@ -207,14 +208,28 @@
 
     $scope.$on('WebsocketConnectionError', function(event, data) {
       /* jshint unused:false */
-      
-      // Reset to default
-      resetHost();
 
-      // Setup
-      vm.check = false;
-      vm.setup = true;
-      vm.load = false;
+      // Clear localstorage entry if already saved
+      return DSSettings
+        .find('admin')
+        .then(function(data) {
+          DSSettings
+            .destroy('admin')
+            .then(function() {
+              $log.log('localstorage successful deleted', DSSettings.get('admin'));
+            });
+        })
+        .finally(function() {
+          // Reset to default
+          resetHost();
+
+          // Setup
+          vm.check = false;
+          vm.setup = true;
+          vm.load = false;
+
+          $log.log('vm', vm);
+        });
     });
 
 

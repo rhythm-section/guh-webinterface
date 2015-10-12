@@ -189,6 +189,7 @@
       DSDevice
         .add(deviceClassId, deviceDescriptorId, deviceParams)
         .then(function(device) {
+          /* jshint unused:true */
           $scope.closeThisDialog();
 
           $state.go('guh.services.master', { bypassCache: true }, {
