@@ -192,6 +192,7 @@
           UnitWatt: 'W',
           UnitKiloWatt: 'kW',
           UnitKiloWattHour: 'kWh',
+          UnitEuroPerMegaWattHour: '€/MWh',
           UnitPercentage: '%',
           UnitEuro: '€',
           UnitDollar: '$'
