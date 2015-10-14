@@ -46,14 +46,9 @@
   <h2>State</h2>
   <p ng-if="service.states.length === 0">No state available.</p>
   <!-- <p ng-repeat="state in service.states | orderBy: 'name' track by $index">{{ state.stateType.name }}: {{ state.value }}</p> -->
-  <div ng-switch="state.stateType.name" ng-repeat="state in service.states track by $index" class="state">
-    <p class="value" ng-switch-when="dusk">{{ state.value * 1000 | date: 'dd.MM.yyyy' }}, {{ state.value * 1000 | date: 'HH:mm' }}</p>
-    <p class="value" ng-switch-when="sunrise">{{ state.value * 1000 | date: 'dd.MM.yyyy' }}, {{ state.value * 1000 | date: 'HH:mm' }}</p>
-    <p class="value" ng-switch-when="sun noon">{{ state.value * 1000 | date: 'dd.MM.yyyy' }}, {{ state.value * 1000 | date: 'HH:mm' }}</p>
-    <p class="value" ng-switch-when="dawn">{{ state.value * 1000 | date: 'dd.MM.yyyy' }}, {{ state.value * 1000 | date: 'HH:mm' }}</p>
-    <p class="value" ng-switch-when="sunset">{{ state.value * 1000 | date: 'dd.MM.yyyy' }}, {{ state.value * 1000 | date: 'HH:mm' }}</p>
-    <p class="value" ng-switch-when="last update">{{ state.value * 1000 | date: 'dd.MM.yyyy' }}, {{ state.value * 1000 | date: 'HH:mm' }}</p>
-    <p class="value" ng-switch-default="">{{ state.value }}</p>
+  <div ng-switch="state.stateType.unit" ng-repeat="state in service.states track by $index" class="state">
+    <p class="value" ng-switch-when="UnitUnixTime">{{ state.value * 1000 | date: 'dd.MM.yyyy' }}, {{ state.value * 1000 | date: 'HH:mm' }}</p>
+    <p class="value" ng-switch-default>{{ state.value }} {{ state.stateType.unit | unit }}</p>
     <p class="name">{{ state.stateType.name }}</p>
   </div>
 </div>
