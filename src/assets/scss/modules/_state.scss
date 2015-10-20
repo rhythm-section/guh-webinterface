@@ -24,58 +24,25 @@
 
 
 $grey: #676767;
-$white: #fff;
 
-$background: $white;
-$background-active: $grey;
 $color: $grey;
 
 
-.tabset {
-  @include rem(margin, 4.5, 0, 0);
+.state {
+  @include rem(margin-bottom, 1.5);
 
-  ul {
-    @include display(flex);
-    @include flex-wrap(nowrap);
-  }
-
-  li {
-    @include flex(1);
-    @include flex-grow(1);
-
-    &:first-child a {
-      @include rem(border-bottom-left-radius, 1.5);
-      @include rem(border-top-left-radius, 1.5);
-    }
-
-    &:last-child a {
-      border: 1px solid rgba($background-active, 0.1);
-      @include rem(border-bottom-right-radius, 1.5);
-      @include rem(border-top-right-radius, 1.5);
-    }
-  }
-
-  a {
-    background-color: $background;
-    border: 1px solid rgba($background-active, 0.1);
-    border-right: none;
+  .value {
     color: $color;
-    display: block;
-    @include rem(padding, 0.7, 1.5, 0.8);
-    text-align: center;
-    text-decoration: none;
-
-    &.active {
-      background-color: rgba($background-active, 0.1);
-      color: $color;
-    }
-
-    &.disabled {
-      color: rgba($color, 0.2);
-    }
+    @include rem(font-size, 1.5);
+    @include rem(line-height, 1.5);
   }
-}
 
-.tab {
-  @include rem(padding, 3, 0, 0);
+  .name {
+    color: rgba($color, 0.6);
+    @include rem(font-size, 0.8);
+    // letter-spacing: 0.2em;
+    @include rem(line-height, 1.5);
+    // @include rem(margin, 0.2, 0, 1.3);
+    text-transform: uppercase;
+  }
 }

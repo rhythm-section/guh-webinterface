@@ -21,51 +21,27 @@
 -->
 
 
-<!-- Device state -->
-<!-- <guh-tabset id="device-state"> -->
+<!-- <svg class="icon">
+  <use xlink:href="./assets/svg/vendor/vendor.symbol.svg#elro"></use>
+  <use ng-attr-xlink:href="{{ './assets/svg/vendor/vendor.symbol.svg#' + (device.deviceClass.vendor.name | kebabCase) }}"></use>
+</svg> -->
+<h2 class="heading">{{ device.name }}</h2>
+<p class="heading heading_sub">{{ device.deviceClass.vendor.name === device.deviceClass.name ? device.deviceClass.name : device.deviceClass.vendor.name + ' &middot; ' + device.deviceClass.name }}</p>
+
+<guh-tabset id="device-state">
   <!-- Actions -->
-  <!-- <guh-tab heading="Actions">
-    <p ng-if="device.actions.length === 0">This device doesn't have any actions.</p>
+  <guh-tab heading="Control">
+    <p ng-if="device.actions.length === 0">This device doesn't have any controls.</p>
     <guh-action device-id="{{ device.id }}" action-type-id="{{ action.actionType.id }}" ng-repeat="action in device.actions | orderBy: 'name' track by $index"></guh-action>
-  </guh-tab> -->
+  </guh-tab>
 
   <!-- States -->
-  <!-- <guh-tab heading="States">
-    <p ng-if="device.states.length === 0">This device doesn't have any states.</p>
-    <p ng-repeat="state in device.states | orderBy: 'name' track by $index">{{ state.stateType.name }}: {{ state.value }}</p>
-  </guh-tab> -->
-
-  <!-- Events -->
-  <!-- <guh-tab heading="Events">
-    <p ng-if="device.deviceClass.eventTypes.length === 0">This device doesn't have any events.</p>
-    <p ng-repeat="eventType in service.deviceClass.eventTypes | orderBy: 'name' track by $index">{{ eventType.name }}</p>
+  <guh-tab heading="State">
+    <p ng-if="device.states.length === 0">This device doesn't have a state to show you.</p>
+    <div ng-switch="state.stateType.unit" ng-repeat="state in device.states track by $index" class="state">
+      <p class="name">{{ state.stateType.name }}</p>
+      <p class="value" ng-switch-when="UnitUnixTime">{{ state.value * 1000 | date: 'dd.MM.yyyy' }}, {{ state.value * 1000 | date: 'HH:mm' }}</p>
+      <p class="value" ng-switch-default>{{ state.value }} {{ state.stateType.unit | unit }}</p>
+    </div>
   </guh-tab>
-</guh-tabset> -->
-
-<!-- Actions -->
-<!-- <div id="device-actions">
-  <p ng-if="device.actions.length === 0">This device doesn't have any actions.</p>
-  <guh-action device-id="{{ device.id }}" action-type-id="{{ action.actionType.id }}" ng-repeat="action in device.actions | orderBy: 'name' track by $index"></guh-action>
-</div>
- -->
-
-<!-- States -->
-<div class="left">
-  <h2>State</h2>
-  <p ng-if="device.states.length === 0">No state available.</p>
-  <!-- <p ng-repeat="state in service.states | orderBy: 'name' track by $index">{{ state.stateType.name }}: {{ state.value }}</p> -->
-  <div ng-repeat="state in device.states track by $index" class="state">
-    <p class="value">{{ state.value }}</p>
-    <p class="name">{{ state.stateType.name }}</p>
-  </div>
-</div>
-
-<!-- Actions -->
-<div class="middle">
-  <h2>Controls</h2>
-  <p ng-if="device.actions.length === 0">No controls available.</p>
-  <guh-action device-id="{{ device.id }}" action-type-id="{{ action.actionType.id }}" ng-repeat="action in device.actions | orderBy: 'name' track by $index"></guh-action>
-</div>
-
-<!-- Events -->
-<div class="right"></div>
+</guh-tabset>

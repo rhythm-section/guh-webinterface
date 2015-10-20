@@ -23,59 +23,50 @@
  * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 
 
-$grey: #676767;
 $white: #fff;
+$grey: #676767;
 
-$background: $white;
-$background-active: $grey;
-$color: $grey;
+$bg-active: $white;
+$c-active: $grey;
 
 
-.tabset {
-  @include rem(margin, 4.5, 0, 0);
+.thing-master,
+.thing-detail {
+  position: fixed;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    top: 0;
+}
 
-  ul {
-    @include display(flex);
-    @include flex-wrap(nowrap);
-  }
+.thing-master {
 
-  li {
-    @include flex(1);
-    @include flex-grow(1);
+}
 
-    &:first-child a {
-      @include rem(border-bottom-left-radius, 1.5);
-      @include rem(border-top-left-radius, 1.5);
-    }
+.thing-detail {
+  margin-left: -10%;
+  overflow: auto;
+  width: 120%;
+}
 
-    &:last-child a {
-      border: 1px solid rgba($background-active, 0.1);
-      @include rem(border-bottom-right-radius, 1.5);
-      @include rem(border-top-right-radius, 1.5);
-    }
-  }
+.thing {
+  border-left: 1px solid rgba(#000, 0.1);
+  height: 100%;
+  float: left;
+  @include rem(padding, 9, 1.5, 3);
+  overflow-y: scroll;
+  // width: 22%;
+  width: 18%;
 
-  a {
-    background-color: $background;
-    border: 1px solid rgba($background-active, 0.1);
-    border-right: none;
-    color: $color;
-    display: block;
-    @include rem(padding, 0.7, 1.5, 0.8);
-    text-align: center;
-    text-decoration: none;
-
-    &.active {
-      background-color: rgba($background-active, 0.1);
-      color: $color;
-    }
-
-    &.disabled {
-      color: rgba($color, 0.2);
-    }
+  &:first-child {
+    border-left: none;
   }
 }
 
-.tab {
-  @include rem(padding, 3, 0, 0);
+.thing-active {
+  background-color: $bg-active;
+  border-left: none;
+  color: $c-active;
+  // width: 34%;
+  width: 28%;
 }

@@ -23,59 +23,67 @@
  * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 
 
-$grey: #676767;
+$black: #000;
 $white: #fff;
 
-$background: $white;
-$background-active: $grey;
-$color: $grey;
+$background-active: $white;
+$color: $black;
+$color-active: $white;
 
 
-.tabset {
-  @include rem(margin, 4.5, 0, 0);
+.tiles {
+  overflow: auto;
+  width: 100%;
+}
 
-  ul {
-    @include display(flex);
-    @include flex-wrap(nowrap);
+.tile {
+  border-left: 1px solid rgba($color, 0.1);
+  border-top: 1px solid rgba($color, 0.1);
+  float: left;
+  position: relative;
+  width: 20%;
+
+  &:nth-child(5n + 1) {
+    border-left: none;
   }
 
-  li {
-    @include flex(1);
-    @include flex-grow(1);
+  &:nth-child(1),
+  &:nth-child(2),
+  &:nth-child(3),
+  &:nth-child(4),
+  &:nth-child(5) {
+    border-top: none;
+  }
 
-    &:first-child a {
-      @include rem(border-bottom-left-radius, 1.5);
-      @include rem(border-top-left-radius, 1.5);
-    }
-
-    &:last-child a {
-      border: 1px solid rgba($background-active, 0.1);
-      @include rem(border-bottom-right-radius, 1.5);
-      @include rem(border-top-right-radius, 1.5);
-    }
+  &:before {
+    content: "";
+    display: block;
+    padding-bottom: 100%;
   }
 
   a {
-    background-color: $background;
-    border: 1px solid rgba($background-active, 0.1);
-    border-right: none;
-    color: $color;
+    background-color: transparent;
+    color: rgba($color, 0.2);
     display: block;
-    @include rem(padding, 0.7, 1.5, 0.8);
+    position: absolute;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      top: 0;
     text-align: center;
     text-decoration: none;
 
-    &.active {
+    &:hover {
       background-color: rgba($background-active, 0.1);
-      color: $color;
-    }
-
-    &.disabled {
-      color: rgba($color, 0.2);
+      color: $color-active;
     }
   }
-}
 
-.tab {
-  @include rem(padding, 3, 0, 0);
+  .content {
+    @include rem(margin-top, -2.25);
+    @include rem(padding, 0, 3);
+    position: absolute;
+      top: 50%;
+    width: 100%;
+  }
 }

@@ -162,8 +162,8 @@
           UnitMinutes: 'min',
           UnitHours: 'hr',
           UnitUnixTime: 'sec',
-          UnitMeterPerSecond: 'm/s',
-          UnitKiloMeterPerHour: 'km/h',
+          UnitMeterPerSecond: 'm / s',
+          UnitKiloMeterPerHour: 'km / h',
           UnitDegree: '°',
           UnitRadiant: 'rad',
           UnitDegreeCelsius: '°C',
@@ -192,6 +192,7 @@
           UnitWatt: 'W',
           UnitKiloWatt: 'kW',
           UnitKiloWattHour: 'kWh',
+          UnitEuroPerMegaWattHour: '€ / MWh',
           UnitPercentage: '%',
           UnitEuro: '€',
           UnitDollar: '$'

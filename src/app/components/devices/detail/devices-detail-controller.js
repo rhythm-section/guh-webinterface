@@ -63,7 +63,13 @@
      */
 
     function _init() {
+      var devices = DSDevice.getAll();
       var deviceId = $stateParams.deviceId;
+
+      $log.log('devices', devices);
+      $log.log('index', libs._.findIndex(devices, function(device) {
+        return device.id === deviceId;
+      }));
       
       // Return to device list if deviceId is unknown (e.g. on browser reload devices/detail)
       if(!deviceId) {

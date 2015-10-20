@@ -20,17 +20,25 @@
   SOFTWARE.
 -->
 
-<!-- Header -->
-<!-- <div id="device-header">
-  <div class="description">
-    <h2 class="name hero" hero-id="name">{{ service.name }}</h2>
-    <p>{{ service.deviceClass.vendor.name }}, {{ service.deviceClass.name }}</p>
+
+<div class="horizontal-container">
+  <div class="horizontal-item">
+    <h2 class="heading">Thermostat</h2>
   </div>
-</div> -->
-<!-- <div>
-  <h2>{{ service.name }}</h2>
-</div> -->
 
-<ng-include src="service.templateUrl" ng-if="service.templateReady"></ng-include>
+  <div class="horizontal-item">
+    <h2 class="heading">Light</h2>
+  </div>
 
-<!-- <button ng-click="service.remove()">Remove</button> -->
+  <div class="horizontal-item_current">
+    <ng-include src="'./app/components/services/detail/device-class-templates/template-not-available.html'" ng-if="service.templateReady"></ng-include>
+  </div>
+
+  <div class="horizontal-item">
+    <h2 class="heading">Music</h2>
+  </div>
+
+  <div class="horizontal-item">
+    <h2 class="heading">Blinds</h2>
+  </div>
+</div>

@@ -22,11 +22,12 @@
 
 
 <ul class="tiles">
-  <li class="item" ng-repeat="service in services.configured | orderBy: 'name' track by $index">
-    <!-- <a class="vendor-{{ service.deviceClass.vendor.name | kebabCase }}" ui-sref="guh.services.detail({ serviceId: service.id })"> -->
+  <li class="tile" ng-repeat="service in services.configured | orderBy: 'name' track by $index">
     <a ui-sref="guh.services.detail({ serviceId: service.id })">
-      <h2 class="name">{{ service.name }}</h2>
-      <p>{{ service.deviceClass.vendor.name }}, {{ service.deviceClass.name }}</p>
+      <div class="content">
+        <h2 class="heading">{{ service.name }}</h2>
+        <p class="heading_sub">{{ service.deviceClass.vendor.name === service.deviceClass.name ? service.deviceClass.name : service.deviceClass.vendor.name + ' &middot; ' + service.deviceClass.name }}</p>
+      </div>
     </a>
   </li>
 </ul>
