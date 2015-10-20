@@ -23,80 +23,21 @@
  * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 
 
-/**
- * @ngdoc interface
- * @name guh.devices.controller:DevicesMasterCtrl
- *
- * @description
- * Load and list configured devices.
- *
- */
-
-(function(){
+(function() {
   'use strict';
 
   angular
-    .module('guh.devices')
-    .controller('DevicesMasterCtrl', DevicesMasterCtrl);
+    .module('guh.filter')
+    .filter('unit', filter);
 
-  DevicesMasterCtrl.$inject = ['$log', '$scope', '$state', '$stateParams', 'DSDevice'];
+  filter.$inject = ['$log', '$filter', 'app'];
 
-  function DevicesMasterCtrl($log, $scope, $state, $stateParams, DSDevice) {
-    
-    // Don't show debugging information
-    DSDevice.debug = false;
+  function filter($log, $filter, app) {
+    return function(unit) {
+      var unitString = app.unit[unit];
 
-    var vm = this;
-
-    // Public variables
-    vm.configured = [];
-
-
-    /**
-     * @ngdoc interface
-     * @name _init
-     * @methodOf guh.devices.controller:DevicesMasterCtrl
-     *
-     * @description
-     * Set data for view.
-     *
-     */
-
-    function _init() {
-      var devices = DSDevice.getAll();
-
-      if(angular.isArray(devices) && devices.length === 0) {
-        $state.go('guh.intro', {
-          previousState: {
-            name: $state.current.name,
-            params: {}
-          }
-        });
-      }
-
-      devices.forEach(function(device) {
-        device.name = (device.name === 'Name') ? device.deviceClass.name : device.name;
-
-        if(device.deviceClass.classType === 'device' || device.deviceClass.classType === 'gateway') {
-          vm.configured.push(device);
-        }
-      });
-    }
-
-
-    $scope.$on('ReloadView', function(event, data) {
-      $log.log('Reload view!', event, data);
-
-      $state.go($state.current, $stateParams, {
-        reload: true,
-        inherit: false,
-        notify: true
-      });
-    });
-
-    
-    _init();
-
+      return unitString;
+    };
   }
 
 }());
