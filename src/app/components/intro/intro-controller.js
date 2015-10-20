@@ -39,9 +39,9 @@
     .module('guh.intro')
     .controller('IntroCtrl', IntroCtrl);
 
-  IntroCtrl.$inject = ['$log', '$rootScope', '$scope', '$q', '$location', '$timeout', '$state', '$stateParams', 'host', 'websocketService', 'libs', 'app', 'modelsHelper', 'DSVendor', 'DSDeviceClass', 'DSDevice', 'DSRule', 'DSSettings'];
+  IntroCtrl.$inject = ['$log', '$rootScope', '$scope', '$q', '$location', '$timeout', '$state', '$stateParams', 'host', 'websocketService', 'libs', 'app', 'modelsHelper', 'DS', 'DSVendor', 'DSDeviceClass', 'DSDevice', 'DSState', 'DSRule', 'DSSettings'];
 
-  function IntroCtrl($log, $rootScope, $scope, $q, $location, $timeout, $state, $stateParams, host, websocketService, libs, app, modelsHelper, DSVendor, DSDeviceClass, DSDevice, DSRule, DSSettings) {
+  function IntroCtrl($log, $rootScope, $scope, $q, $location, $timeout, $state, $stateParams, host, websocketService, libs, app, modelsHelper, DS, DSVendor, DSDeviceClass, DSDevice, DSState, DSRule, DSSettings) {
     
     var vm = this;
     var protocol = $location.protocol();
@@ -124,6 +124,22 @@
       });
     }
 
+    function _findStates(devices) {
+      return angular.forEach(devices, function(device) {
+        return DS
+          .adapters
+          .http
+          .GET(app.apiUrl + '/devices/' + device.id + '/states')
+          .then(function(response) {
+            var states = DSState.createCollection(response.data);
+
+            device.states = DSState.inject(states);
+
+            return device;
+          });
+      });
+    }
+
     function _findAllRules() {
       return DSRule.findAll();
     }
@@ -140,7 +156,8 @@
           _findAllDeviceClasses()
             .then(_findDeviceClassRelations),
           _findAllDevices()
-            .then(_findDeviceRelations),
+            .then(_findDeviceRelations)
+            .then(_findStates),
           _findAllRules()
             .then(_findRuleDetails)
         ])
