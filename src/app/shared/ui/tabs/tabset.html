@@ -23,8 +23,8 @@
 
 <div class="tabset">
   <ul>
-    <li class="test" ng-repeat="tab in tabset.tabs">
-      <a href="" ng-class="{'active': tab.active}" ng-click="tabset.selectTab(tab)">{{ tab.heading }}</a>
+    <li ng-repeat="tab in tabset.tabs">
+      <a href="" ng-class="{ 'active': tab.active, 'hotkey': tab.hotkey }" ng-click="tabset.selectTab(tab)">{{ tab.heading }}</a>
     </li>
   </ul>
 
