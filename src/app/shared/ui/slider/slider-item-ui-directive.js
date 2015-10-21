@@ -21,96 +21,63 @@
  * SOFTWARE.                                                                           *
  *                                                                                     *
  * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
-
-
-/**
- * @ngdoc interface
- * @name guh.devices.controller:DevicesMasterCtrl
- *
- * @description
- * Load and list configured devices.
- *
- */
-
-(function(){
+ 
+(function() {
   'use strict';
 
   angular
-    .module('guh.devices')
-    .controller('DevicesMasterCtrl', DevicesMasterCtrl);
+    .module('guh.ui')
+    .directive('guhSliderItem', guhSliderItem);
 
-  DevicesMasterCtrl.$inject = ['$log', '$scope', '$filter', '$state', '$stateParams', 'DSDevice'];
+    guhSliderItem.$inject = ['$log'];
 
-  function DevicesMasterCtrl($log, $scope, $filter, $state, $stateParams, DSDevice) {
-    
-    // Don't show debugging information
-    DSDevice.debug = false;
+    function guhSliderItem($log) {
+      var directive = {
+        bindToController: {
+          index: '='
+        },
+        controller: sliderItemCtrl,
+        controllerAs: 'sliderItem',
+        link: sliderItemLink,
+        require: '^^guhSlider',
+        restrict: 'E',
+        scope: {},
+        templateUrl: 'app/shared/ui/slider/slider-item.html',
+        transclude: true
+      };
 
-    var vm = this;
-
-    // Public variables
-    vm.configured = [];
-    vm.currentSlide = 0;
-
-    // Public methods
-    vm.setCurrent = setCurrent;
+      return directive;
 
 
-    /**
-     * @ngdoc interface
-     * @name _init
-     * @methodOf guh.devices.controller:DevicesMasterCtrl
-     *
-     * @description
-     * Set data for view.
-     *
-     */
+      function sliderItemCtrl() {
 
-    function _init() {
-      var devices = DSDevice.getAll();
+        /* jshint validthis: true */
+        var vm = this;
 
-      if(angular.isArray(devices) && devices.length === 0) {
-        $state.go('guh.intro', {
-          previousState: {
-            name: $state.current.name,
-            params: {}
-          }
-        });
       }
 
-      var configuredDevices = [];
-      devices.forEach(function(device) {
-        device.name = (device.name === 'Name') ? device.deviceClass.name : device.name;
 
-        if(device.deviceClass.classType === 'device' || device.deviceClass.classType === 'gateway') {
-          configuredDevices.push(device);
+      function sliderItemLink(scope, element, attrs, sliderCtrl) {
+        element.addClass('slider__item');
+
+        // Add slide to contentSlider
+        scope.sliderItem.index = sliderCtrl.addSliderItem({
+          scope: scope,
+          element: element,
+          attrs: attrs
+        });
+
+        // Slide to first element
+        if(scope.sliderItem.index === 0) {
+          sliderCtrl.slideTo(scope.sliderItem.index);
         }
-      });
 
-      // Sort by name
-      vm.configured = $filter('orderBy')(configuredDevices, 'name');
+        sliderCtrl.setWidth();
+
+        element.bind('click', function() {
+          sliderCtrl.slideTo(scope.sliderItem.index);
+        });
+      }
     }
-
-
-    function setCurrent(index) {
-      vm.currentSlide = index;
-      $state.go('guh.devices.master.current', { deviceId: vm.configured[index].id });
-    }
-
-
-    $scope.$on('ReloadView', function(event, data) {
-      $log.log('Reload view!', event, data);
-
-      $state.go($state.current, $stateParams, {
-        reload: true,
-        inherit: false,
-        notify: true
-      });
-    });
-
-    
-    _init();
-
-  }
 
 }());

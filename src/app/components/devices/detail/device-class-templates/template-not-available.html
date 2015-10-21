@@ -21,13 +21,6 @@
 -->
 
 
-<!-- <svg class="icon">
-  <use xlink:href="./assets/svg/vendor/vendor.symbol.svg#elro"></use>
-  <use ng-attr-xlink:href="{{ './assets/svg/vendor/vendor.symbol.svg#' + (device.deviceClass.vendor.name | kebabCase) }}"></use>
-</svg> -->
-<h2 class="heading">{{ device.name }}</h2>
-<p class="heading heading_sub">{{ device.deviceClass.vendor.name === device.deviceClass.name ? device.deviceClass.name : device.deviceClass.vendor.name + ' &middot; ' + device.deviceClass.name }}</p>
-
 <guh-tabset id="device-state">
   <!-- Actions -->
   <guh-tab heading="Control">

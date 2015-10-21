@@ -39,9 +39,9 @@
     .module('guh.services')
     .controller('ServicesMasterCtrl', ServicesMasterCtrl);
 
-  ServicesMasterCtrl.$inject = ['$log', '$scope', '$state', '$stateParams', 'libs', 'DS', 'DSDevice'];
+  ServicesMasterCtrl.$inject = ['$log', '$scope', '$filter', '$state', '$stateParams', 'libs', 'DS', 'DSDevice'];
 
-  function ServicesMasterCtrl($log, $scope, $state, $stateParams, libs, DS, DSDevice) {
+  function ServicesMasterCtrl($log, $scope, $filter, $state, $stateParams, libs, DS, DSDevice) {
 
     // Don't show debugging information
     DSDevice.debug = false;
@@ -50,6 +50,10 @@
 
     // Public variables
     vm.configured = [];
+    vm.currentSlide = 0;
+
+    // Public methods
+    vm.setCurrent = setCurrent;
 
 
     /**
@@ -74,16 +78,27 @@
         });
       }
 
+      var configuredServices = [];
       services.forEach(function(service) {
         service.name = (service.name === 'Name') ? service.deviceClass.name : service.name;
 
         if(service.deviceClass.classType === 'service' || service.deviceClass.classType === 'dev-service') {
           // Filter mood toggle-buttons
           if(service.name.substring(0, 19) !== 'mood-toggle-button-') {
-            vm.configured.push(service);
+            configuredServices.push(service);
           }
         }
       });
+
+      // Sort by name
+      vm.configured = $filter('orderBy')(configuredServices, 'name');
+    }
+
+
+    function setCurrent(index) {
+      $log.log('setCurrent', index);
+      vm.currentSlide = index;
+      $state.go('guh.services.master.current', { serviceId: vm.configured[index].id });
     }
 
 

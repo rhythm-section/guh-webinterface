@@ -23,94 +23,10 @@
  * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 
 
-/**
- * @ngdoc interface
- * @name guh.devices.controller:DevicesMasterCtrl
- *
- * @description
- * Load and list configured devices.
- *
- */
-
-(function(){
-  'use strict';
-
-  angular
-    .module('guh.devices')
-    .controller('DevicesMasterCtrl', DevicesMasterCtrl);
-
-  DevicesMasterCtrl.$inject = ['$log', '$scope', '$filter', '$state', '$stateParams', 'DSDevice'];
-
-  function DevicesMasterCtrl($log, $scope, $filter, $state, $stateParams, DSDevice) {
-    
-    // Don't show debugging information
-    DSDevice.debug = false;
-
-    var vm = this;
-
-    // Public variables
-    vm.configured = [];
-    vm.currentSlide = 0;
-
-    // Public methods
-    vm.setCurrent = setCurrent;
-
-
-    /**
-     * @ngdoc interface
-     * @name _init
-     * @methodOf guh.devices.controller:DevicesMasterCtrl
-     *
-     * @description
-     * Set data for view.
-     *
-     */
-
-    function _init() {
-      var devices = DSDevice.getAll();
-
-      if(angular.isArray(devices) && devices.length === 0) {
-        $state.go('guh.intro', {
-          previousState: {
-            name: $state.current.name,
-            params: {}
-          }
-        });
-      }
-
-      var configuredDevices = [];
-      devices.forEach(function(device) {
-        device.name = (device.name === 'Name') ? device.deviceClass.name : device.name;
-
-        if(device.deviceClass.classType === 'device' || device.deviceClass.classType === 'gateway') {
-          configuredDevices.push(device);
-        }
-      });
-
-      // Sort by name
-      vm.configured = $filter('orderBy')(configuredDevices, 'name');
-    }
-
-
-    function setCurrent(index) {
-      vm.currentSlide = index;
-      $state.go('guh.devices.master.current', { deviceId: vm.configured[index].id });
-    }
-
-
-    $scope.$on('ReloadView', function(event, data) {
-      $log.log('Reload view!', event, data);
-
-      $state.go($state.current, $stateParams, {
-        reload: true,
-        inherit: false,
-        notify: true
-      });
-    });
-
-    
-    _init();
-
-  }
-
-}());
+/* Clearing floats: http://www.quirksmode.org/css/clearing.html */
+.container {
+  background-color: transparent;
+  height: 100%;
+  overflow: auto;
+  width: 100%;
+}

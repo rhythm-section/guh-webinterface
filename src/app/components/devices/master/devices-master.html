@@ -21,13 +21,15 @@
 -->
 
 
-<ul class="tiles">
-  <li class="tile" ng-repeat="device in devices.configured | orderBy: 'name' track by $index">
-    <a ui-sref="guh.devices.detail({ deviceId: device.id })">
-      <div class="content">
-        <h2 class="heading">{{ device.name }}</h2>
-        <p class="heading_sub">{{ device.deviceClass.vendor.name === device.deviceClass.name ? device.deviceClass.name : device.deviceClass.vendor.name + ' &middot; ' + device.deviceClass.name }}</p>
-      </div>
-    </a>
-  </li>
-</ul>
+<guh-slider on-change="devices.setCurrent(slideIndex)">
+  <guh-slider-item ng-repeat="device in devices.configured track by $index" index="$index">
+    <!-- <svg class="icon">
+      <use xlink:href="./assets/svg/vendor/vendor.symbol.svg#elro"></use>
+      <use ng-attr-xlink:href="{{ './assets/svg/vendor/vendor.symbol.svg#' + (device.deviceClass.vendor.name | kebabCase) }}"></use>
+    </svg> -->
+    <h2 class="heading">{{ device.name }}</h2>
+    <p class="heading heading_sub">{{ device.deviceClass.vendor.name === device.deviceClass.name ? device.deviceClass.name : device.deviceClass.vendor.name + ' &middot; ' + device.deviceClass.name }}</p>
+
+    <div ng-if="devices.currentSlide === $index" ui-view></div>
+  </guh-slider-item>
+</guh-slider>

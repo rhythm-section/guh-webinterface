@@ -21,24 +21,4 @@
 -->
 
 
-<div class="horizontal-container">
-  <div class="horizontal-item">
-    <h2 class="heading">Thermostat</h2>
-  </div>
-
-  <div class="horizontal-item">
-    <h2 class="heading">Light</h2>
-  </div>
-
-  <div class="horizontal-item_current">
-    <ng-include src="'./app/components/devices/detail/device-class-templates/template-not-available.html'" ng-if="device.templateReady"></ng-include>
-  </div>
-
-  <div class="horizontal-item">
-    <h2 class="heading">Music</h2>
-  </div>
-
-  <div class="horizontal-item">
-    <h2 class="heading">Blinds</h2>
-  </div>
-</div>
+<ng-include src="'./app/components/devices/detail/device-class-templates/template-not-available.html'" ng-if="device.templateReady"></ng-include>

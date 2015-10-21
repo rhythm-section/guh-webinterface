@@ -66,9 +66,10 @@
  *
  */
 
+@import "../assets/scss/modules/container";
+@import "../assets/scss/modules/content";
 @import "../assets/scss/modules/heading";
 @import "../assets/scss/modules/state";
-@import "../assets/scss/modules/thing";
 @import "../assets/scss/modules/tile";
 
 // @import "../assets/scss/shared/button";
@@ -83,6 +84,9 @@
  * Directives (Shared UI)
  */
 
+@import "../app/shared/ui/slider/slider";
+@import "../app/shared/ui/tabs/tabs";
+
 // @import "../app/shared/ui/action-bar/action-bar";
 // @import "../app/shared/ui/button-group/button-group";
 // @import "../app/shared/ui/color/color";
@@ -91,7 +95,6 @@
 // @import "../app/shared/ui/remote-navigation/remote-navigation";
 // @import "../app/shared/ui/remote-fn/remote-fn";
 // @import "../app/shared/ui/remote-player/remote-player";
-@import "../app/shared/ui/tabs/tabs";
 // @import "../app/shared/ui/wizard/wizard";
 
 

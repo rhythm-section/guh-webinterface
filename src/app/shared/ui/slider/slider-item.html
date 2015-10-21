@@ -21,18 +21,4 @@
 -->
 
 
-<header class="app">
-  <div class="content">
-    <nav>
-      <ul>
-        <li><a ng-class="{ active: app.$state.includes('guh.devices') }" ui-sref="guh.devices.master">Devices</a></li>
-        <li><a ng-class="{ active: app.$state.includes('guh.services') }" ui-sref="guh.services.master">Services</a></li>
-        <!-- <li><a ng-class="{ active: app.$state.includes('guh.moods') }" ui-sref="guh.moods.master">Moods</a></li> -->
-      </ul>
-    </nav>
-
-    <guh-action-bar></guh-action-bar>
-  </div>
-</header>
-
-<div ui-view class="content"></div>
+<div class="content content_content-center slider__content" ng-transclude></div>
