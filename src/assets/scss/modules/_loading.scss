@@ -23,25 +23,38 @@
  * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 
 
-$white: #fff;
+$turquoise: #57baae;
 
-$background-border-page: $white;
+$background: $turquoise;
 
 
-/* Maybe consider using preserve-3d in parent element: http://zerosixthree.se/vertical-align-anything-with-just-3-lines-of-css/ */
-.content {
+.loader {
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+}
+
+.loader::after {
+  @include animation(ball-scale 2s 0s ease-in-out infinite);
+  @include animation-fill-mode(both);
+  background-color: $background;
+  content: "";
   display: block;
+  @include rem(height, 0.1);
+  margin: 0 auto;
+  @include rem(margin-top, 1);
+  @include rem(width, 3);
 }
 
-.content_content-center {
-  position: relative;
-    top: 50%;
-  @include transform(translateY(-50%));
-}
+@include keyframes(ball-scale) {
+  0% {
+    opacity: 0;
+  }
 
-.content_border-page {
-  background-color: $background-border-page;
-  height: 100%;
-  overflow-y: scroll;
-  -webkit-overflow-scrolling: touch;
+  50% {
+    opacity: 1;
+  }
+
+  100% {
+    opacity: 0;
+  }
 }

@@ -82,7 +82,11 @@
     }
 
     function _checkConnection() {
-      websocketService.reconnect();
+      vm.check = true;
+
+      $timeout(function() {
+        websocketService.reconnect();
+      }, 2000);
     }
 
     function _saveHost() {

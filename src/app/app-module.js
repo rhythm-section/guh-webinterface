@@ -38,6 +38,7 @@
   angular
     .module('guh', [
       // Angular
+      'ngAnimate',
       'ngMessages',
 
       // Libraries

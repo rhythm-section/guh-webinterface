@@ -24,6 +24,8 @@
 
 
 $grey: #676767;
+$grey-dark: #bcbaba;
+$grey-light: #dddbdc;
 $green: #7cc09a;
 $turquoise: #57baae;
 $white: #fff;
@@ -31,6 +33,10 @@ $white: #fff;
 $background: $white;
 $background-light: $green;
 $background-dark: $turquoise;
+$background-button: $grey-light;
+$border-light: $grey-light;
+$border-dark: $grey-dark;
+$color-button: $white;
 $color-text: $grey;
 $color-highlight: $turquoise;
 
@@ -47,7 +53,7 @@ body,
 }
 
 html {
-  @include linear-gradient(to bottom, $background-light, $background-dark);
+  @include linear-gradient(to bottom, $background-light, $background-dark, $fallback: $background);
   box-sizing: border-box;
   @include rootsize();
 }
@@ -60,6 +66,7 @@ body {
   @include rem(line-height, 1.5);
 }
 
+// Type
 h1,
 h2,
 h3,
@@ -80,4 +87,69 @@ p {
 
 a {
   color: $color-highlight;
+}
+
+// Media
+img {
+  width: 100%;
+}
+
+// Form
+form {
+
+}
+
+button,
+label,
+input {
+  display: block;
+  width: 100%;
+}
+
+label {
+  @include rem(margin, 1.5, 0, 1);
+}
+
+button,
+input,
+textarea {
+  @include appearance(none);
+  border: none;
+  border-bottom: 1px solid $border-light;
+  border-radius: 0;
+  color: $color-text;
+  @include rem(font-size, 1);
+  @include rem(line-height, 1.5);
+  @include rem(padding, 1, 0);
+
+  &+ p {
+    @include rem(margin, 1, 0);
+  }
+}
+
+button:focus,
+input:focus {
+  border-color: $border-dark;
+  outline: none;
+}
+
+button,
+input[type="button"],
+input[type="submit"] {
+  background-color: transparent;
+  // background-color: rgba($background-button, 0.2);
+  background-color: transparent;
+  border: 1px solid $border-light;
+  // @include rem(border-radius, 1.75);
+  cursor: pointer;
+  letter-spacing: 0.1em;
+  @include rem(margin, 1.5, 0, 1);
+  @include rem(padding, 1);
+  text-transform: uppercase;
+  @include transition(background 0.3s ease-in-out, color 0.3s ease-in-out);
+
+  &:hover {
+    background-color: $background-button;
+    // color: $color-button;
+  }
 }
