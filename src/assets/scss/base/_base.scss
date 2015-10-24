@@ -48,12 +48,12 @@ $color-highlight: $turquoise;
 
 html,
 body,
-#main {
+.main {
   height: 100%;
 }
 
 html {
-  @include linear-gradient(to bottom, $background-light, $background-dark, $fallback: $background);
+  @include linear-gradient(to bottom, $background-light, $background-dark);
   box-sizing: border-box;
   @include rootsize();
 }

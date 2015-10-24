@@ -35,16 +35,16 @@ $color: $grey;
 header.app {
   @include rem(height, 4.5);
   position: fixed;
-    left: -10%;
+    left: 0;
     top: 0;
   text-align: right;
-  width: 120%;
+  width: 100%;
   z-index: 9000;
 
   .content {
     margin: 0 auto;
     position: relative;
-    width: 28%;
+    width: 46%;
   }
 
   nav {
@@ -97,4 +97,9 @@ header.app {
       @include rem(width, 1.5);
     }
   }
+}
+
+// Setup page
+.main .intro header.app {
+  display: none;
 }

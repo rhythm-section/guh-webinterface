@@ -23,35 +23,135 @@
  * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 
 
-#main.ng-enter {
-  opacity: 0;
-  @include transform(scale(0.9, 0.9));
-  @include transition(transform 0.3s ease-in-out, opacity 0.6s linear);
+/*
+ * Animations
+ */
+
+@include keyframes(fadeAndZoomIn) {
+  from {
+    opacity: 0;
+    @include transform(scale(0.9, 0.9));
+  }
+
+  to {
+    opacity: 1;
+    @include transform(scale(1, 1));
+  }
 }
 
-#main.ng-enter.ng-enter-active {
-  opacity: 1;
-  @include transform(scale(1, 1));
+@include keyframes(shake) {
+  from, to {
+    transform: translate3d(0, 0, 0);
+  }
+
+  10%, 30%, 50%, 70%, 90% {
+    transform: translate3d(-10px, 0, 0);
+  }
+
+  20%, 40%, 60%, 80% {
+    transform: translate3d(10px, 0, 0);
+  }
+}
+
+@include keyframes(slideInUp) {
+  from {
+    @include transform(translateY(100%));
+  }
+
+  to {
+    @include transform(none);
+  }
+}
+
+@include keyframes(slideOutUp) {
+  from {
+    @include transform(translateY(0%));
+  }
+
+  to {
+    @include transform(translateY(-100%));
+  }
 }
 
 
-#main.default > .content {
-  min-height: 100%;
-  @include rem(padding-top, 7.5);
+/*
+ * Layout: General
+ */
+
+// Main
+.main {
+  @include transition(all 0.8s);
+
+  &.ng-enter {
+    // .intro {
+      @include animation(fadeAndZoomIn 0.4s ease-out);
+    // }
+  }
 }
 
-#main.intro > .content {
+// Wrapper
+.wrapper {
+  height: 100%;
+
+  // .content {
+  //   @include transition(all 20s);
+  // }
+
+  // &.intro {
+  //   position: relative;
+  //   z-index: 9999;
+  // }
+
+  // &.devices,
+  // &.device {
+  //   position: relative;
+  //   z-index: 8888;
+  // }
+
+  // &.intro .content.ng-leave {
+  //   @include animation(slideOutUp 10s ease-in);
+  // }
+
+  // &.devices .content.ng-enter,
+  // &.device .content.ng-enter {
+  //   @include animation(slideInUp 10s ease-in);
+  //   @include animation-delay(10s);
+  // }
+
+  // &.intro.intro-remove {
+  //   .content_border-page {
+  //     @include animation(slideOutUp 1s ease-in);
+  //   }
+  // }
+
+  // &.devices.devices-add,
+  // &.device.device-add {
+  //   .slider {
+  //     @include animation(slideInUp 1s ease-in);
+  //   }
+  // }
+}
+
+
+/*
+ * Layout: intro
+ */
+
+// Intro
+.intro > .content {
   height: 100%;
   @include rem(padding, 1.5);
+
+  // General
+  .not-valid {
+    @include animation(shake 1s);
+  }
+
 
   // Logo
   .logo {
     display: block;
     margin: 0 auto;
-
-    @include media($breakpoint-xs) {
-      @include rem(margin-top, 6);
-    }
   }
 
   .logo.small-add,
@@ -62,24 +162,35 @@
   .logo,
   .logo.small-add,
   .logo.small-remove.small-remove-active {
-    @include media($breakpoint-xs) {
-      @include rem(height, 9);
-      @include rem(margin-top, 6);
-      @include rem(width, 9);
+    @include rem(height, 9);
+    @include rem(margin-top, 6);
+    @include rem(width, 9);
+
+    @include media($min-width-m) {
+      @include rem(margin-top, 12);
+    }
+
+    @include media($min-width-xxl) {
+      @include rem(margin-top, 15);
     }
   }
 
   .logo.small,
   .logo.small-add.small-add-active,
   .logo.small-remove {
-    @include media($breakpoint-xs) {
-      @include rem(height, 4.5);
-      @include rem(margin-top, 4.5);
-      @include rem(width, 4.5);
+    @include rem(height, 4.5);
+    @include rem(margin-top, 4.5);
+    @include rem(width, 4.5);
+
+    @include media($min-width-m) {
+      @include rem(margin-top, 9);
+    }
+
+    @include media($min-width-xxl) {
+      @include rem(margin-top, 11.5);
     }
   }
 
-  // .logo.small-add,
   .logo.small-remove {
     @include transition-delay(0.4s);
   }
@@ -89,11 +200,16 @@
   .content {
     margin: 0 auto;
     position: relative;
-
-    @include media($breakpoint-xs) {
-      width: 87.5%;
-    }
+    @include rem(width, 24);
   }
+
+
+  // General (Info texts, setup wizard)
+  .info,
+  .wizard {
+    @include rem(padding, 0, 1.5);
+  }
+
 
   // Info texts
   .info {
@@ -120,13 +236,12 @@
     @include transition(opacity 0.3s linear);
   }
 
-  // .info.ng-hide-add,
   .info.ng-hide-remove {
     @include transition-delay(0.4s);
   }
 
 
-  // Setup
+  // Setup wizard
   .wizard {
     @include rem(margin-top, 3);
     position: absolute;
@@ -158,3 +273,13 @@
     @include transition-delay(0.4s);
   }
 }
+
+
+/*
+ * Layout: Master
+ */
+
+
+/*
+ * Layout: Detail
+ */

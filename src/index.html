@@ -66,7 +66,8 @@
 </head>
 
 <body guh-toggle-grid="hide">
-  <div ng-class="{ intro: app.$state.is('guh.intro') }" id="main" ui-view></div>
+  <!-- <div ui-view id="main" ng-class="app.$state.is('guh.intro') ? 'intro' : 'default'"></div> -->
+  <div ui-view class="main"></div>
   
   <!-- vendor:js -->
   <!-- endinject -->

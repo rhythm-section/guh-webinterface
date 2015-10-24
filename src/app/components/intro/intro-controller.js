@@ -47,12 +47,17 @@
     var protocol = $location.protocol();
     var ssl = protocol.charAt(protocol.length - 1) === 's' ? true : false;
 
+    // State variables
     vm.check = false;
     vm.setup = false;
     vm.load = false;
     vm.valid = true;
+    vm.submitted = false;
+
+    // Current host
     vm.host = '';
 
+    // Methods
     vm.checkHost = checkHost;
     vm.setHost = setHost;
     vm.resetHost = resetHost;
@@ -177,7 +182,7 @@
             } else {
               $state.go('guh.devices.master');
             }
-          }, 1000);
+          }, 2000);
         })
         .catch(function(error) {
           $log.error(error);
@@ -198,6 +203,15 @@
     }
 
     function setHost() {
+      vm.submitted = true;
+      $timeout(function() {
+        vm.submitted = false;
+      }, 1000);
+
+      if(!vm.valid) {
+        return;
+      }
+
       _overrideConfig();
 
       vm.check = true;
@@ -207,11 +221,12 @@
       // Try to reconnect to guh host with new host
       $timeout(function() {
         websocketService.reconnect();
-      }, 1000);
+      }, 2000);
     }
 
     function resetHost() {
       vm.host = host;
+      checkHost();
     }
 
     $scope.$on('WebsocketConnected', function(event, data) {
@@ -248,8 +263,6 @@
           vm.check = false;
           vm.setup = true;
           vm.load = false;
-
-          $log.log('vm', vm);
         });
     });
 
