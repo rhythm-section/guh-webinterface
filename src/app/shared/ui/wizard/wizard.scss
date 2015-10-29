@@ -22,142 +22,215 @@
  *                                                                                     *
  * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */ 
 
-.modal .wizard,
+
+$grey: #676767;
+$white: #fff;
+
+
+$background: transparent;
+$color: $grey;
+$color-border: $grey;
+
+
 .wizard {
-  display: block;
-  // position: fixed;
-  height: 100%;
-  overflow: hidden;
-  // overflow: hidden;
-  position: absolute;
-  //   left: 0;
-  //   top: 0;
-  width: 100%;
-
-  .wizard {
-    padding: 0;
-  }
-
-  .prev,
-  .next {
-    background-color: transparent;
-    margin: 0;
-    position: absolute;
-      @include rem(top, 1.5);
-    @include rem(width, 4.5);
-
-    .icon {
-      fill: rgba($c-grey, 0.2);
-    }
-
-    &:hover {
-      background-color: transparent;
-
-      .icon {
-        fill: $c-grey;
-      }
-    }
-  }
-
-  .wizard-navigation .prev,
-  .wizard-navigation .next {
-    top: 0;
-  }
-
-  .prev {
-    @include rem(left, 1.5);
-  }
-
-  .next {
-    @include rem(right, 1.5);
-  }
-
-  button,
-  .button {
-    background-color: rgba($c-grey, 0.15);
-    border: none;
-    @include rem(letter-spacing, 0.1);
-    @include rem(height, 4.5);
-    @include rem(margin, 3, 0, 0);
-    @include rem(padding, 1.5);
-    text-transform: uppercase;
-
-    &:hover {
-      background-color: rgba($c-grey, 0.2);
-    }
-  }
-
-  label + button {
-    @include rem(margin, 1.5, 0, 0);
-  }
+  background-color: $background;
+  color: $color;
+  min-width: 100%;
 }
 
-.wizard-title {
-  @include background(linear-gradient($c-white, rgba($c-white, 0.9)));
-  @include rem(font-size, 1);
+.wizard__title {
+  @include linear-gradient(to bottom, rgba($background-overlay, 0.8), rgba($background-overlay, 0.4));
+  // background-color: rgba($white, 0.9);
+  // box-shadow:  0px 0px 10px 0px rgba(0, 0, 0, 0.2);
+  @include rem(font-size, 1.5);
   @include rem(height, 7.5);
-  @include rem(letter-spacing, 0.1);
-  @include rem(line-height, 1.5);
-  @include rem(padding, 3, 6);
-  position: absolute;
+  @include rem(padding, 3, 6, 3, 3);
+  position: fixed;
     left: 0;
+    right: 0;
     top: 0;
-  text-align: center;
-  text-transform: uppercase;
-  width: 100%;
-  z-index: 1;
+  // text-align: left;
+  z-index: 9998;
 }
 
-.wizard-content {
-  height: 100%;
-  @include rem(padding, 0, 1.5);
-  overflow-y: scroll;
-  // position: absolute;
-  //   left: 0;
-  //   top: 0;
-  width: 100%;
-  z-index: 0;
+.wizard__content {
+  min-height: 100%;
+  @include rem(padding, 0, 0, 6);
+
+  @include media($min-width-s) {
+    margin: 0 auto;
+    @include rem(width, 27);
+  }
 }
 
-.wizard-navigation {
-  @include background(linear-gradient(rgba($c-white, 0.9), $c-white));
+.wizard__navigation {
+  @include linear-gradient(to top, rgba($background-overlay, 0.8), rgba($background-overlay, 0.4));
+  // background-color: rgba($white, 0.9);
+  // box-shadow:  0px 0px 10px 0px rgba(0, 0, 0, 0.2);
+  // border-top: 1px solid rgba($color-border, 0.2);
   @include rem(height, 4.5);
-  @include rem(padding, 1.5);
-  position: absolute;
+  position: fixed;
     bottom: 0;
     left: 0;
-  text-align: center;
-  width: 100%;
-  z-index: 2;
+    right: 0;
 
-  li {
-    background-color: rgba($c-grey, 0.2);
-    border-radius: 50%;
-    display: inline-block;
-    @include rem(height, 0.5);
-    @include rem(margin, 0.5);
-    @include rem(width, 0.5);
+  button {
+    @include rem(height, 4.5);
+    @include rem(width, 4.5);
+  }
 
-    &:last-child {
-      margin-right: 0;
-    }
+  .wizard__prev,
+  .wizard__next {
+    position: fixed;
+      bottom: 0;
+  }
 
-    &.active {
-      background-color: $c-grey;
-    }
+  .wizard__prev {
+    left: 0;
+  }
+
+  .wizard__next {
+    right: 0;
   }
 }
 
-.wizard-step {
-  display: none;
-  @include rem(padding, 7.5, 0, 6);
 
-  &.current {
-    display: block;
-  }
+// .modal .wizard,
+// .wizard {
+//   display: block;
+//   // position: fixed;
+//   height: 100%;
+//   overflow: hidden;
+//   // overflow: hidden;
+//   position: absolute;
+//   //   left: 0;
+//   //   top: 0;
+//   width: 100%;
 
-  .content {
-    display: block;
-    // @include rem(padding, 0, 1.5);
-  }
-}
+//   .wizard {
+//     padding: 0;
+//   }
+
+//   .prev,
+//   .next {
+//     background-color: transparent;
+//     margin: 0;
+//     position: absolute;
+//       @include rem(top, 1.5);
+//     @include rem(width, 4.5);
+
+//     .icon {
+//       fill: rgba($c-grey, 0.2);
+//     }
+
+//     &:hover {
+//       background-color: transparent;
+
+//       .icon {
+//         fill: $c-grey;
+//       }
+//     }
+//   }
+
+//   .wizard-navigation .prev,
+//   .wizard-navigation .next {
+//     top: 0;
+//   }
+
+//   .prev {
+//     @include rem(left, 1.5);
+//   }
+
+//   .next {
+//     @include rem(right, 1.5);
+//   }
+
+//   button,
+//   .button {
+//     background-color: rgba($c-grey, 0.15);
+//     border: none;
+//     @include rem(letter-spacing, 0.1);
+//     @include rem(height, 4.5);
+//     @include rem(margin, 3, 0, 0);
+//     @include rem(padding, 1.5);
+//     text-transform: uppercase;
+
+//     &:hover {
+//       background-color: rgba($c-grey, 0.2);
+//     }
+//   }
+
+//   label + button {
+//     @include rem(margin, 1.5, 0, 0);
+//   }
+// }
+
+// .wizard-title {
+//   @include background(linear-gradient($c-white, rgba($c-white, 0.9)));
+//   @include rem(font-size, 1);
+//   @include rem(height, 7.5);
+//   @include rem(letter-spacing, 0.1);
+//   @include rem(line-height, 1.5);
+//   @include rem(padding, 3, 6);
+//   position: absolute;
+//     left: 0;
+//     top: 0;
+//   text-align: center;
+//   text-transform: uppercase;
+//   width: 100%;
+//   z-index: 1;
+// }
+
+// .wizard-content {
+//   height: 100%;
+//   @include rem(padding, 0, 1.5);
+//   overflow-y: scroll;
+//   // position: absolute;
+//   //   left: 0;
+//   //   top: 0;
+//   width: 100%;
+//   z-index: 0;
+// }
+
+// .wizard-navigation {
+//   @include background(linear-gradient(rgba($c-white, 0.9), $c-white));
+//   @include rem(height, 4.5);
+//   @include rem(padding, 1.5);
+//   position: absolute;
+//     bottom: 0;
+//     left: 0;
+//   text-align: center;
+//   width: 100%;
+//   z-index: 2;
+
+//   li {
+//     background-color: rgba($c-grey, 0.2);
+//     border-radius: 50%;
+//     display: inline-block;
+//     @include rem(height, 0.5);
+//     @include rem(margin, 0.5);
+//     @include rem(width, 0.5);
+
+//     &:last-child {
+//       margin-right: 0;
+//     }
+
+//     &.active {
+//       background-color: $c-grey;
+//     }
+//   }
+// }
+
+// .wizard-step {
+//   display: none;
+//   @include rem(padding, 7.5, 0, 6);
+
+//   &.current {
+//     display: block;
+//   }
+
+//   .content {
+//     display: block;
+//     // @include rem(padding, 0, 1.5);
+//   }
+// }

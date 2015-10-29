@@ -22,22 +22,22 @@
 
 
 <!-- <div> -->
-  <h3 class="wizard-title">{{ wizard.title }}</h3>
+  <h3 class="wizard__title heading">{{ wizard.title }}</h3>
 
-  <div class="wizard-content" ng-transclude></div>
+  <div class="wizard__content" ng-transclude></div>
 
-  <div class="wizard-navigation">
+  <div class="wizard__navigation">
     <ul ng-if="wizard.showNavigation">
       <li ng-class="{ active: wizard.isActive(step) }" ng-repeat="step in wizard.steps track by $index"></li>
     </ul>
 
-    <button class="prev" ng-click="wizard.prev()" ng-show="wizard.hasPrev()">
+    <button class="wizard__prev" ng-click="wizard.prev()" ng-show="wizard.hasPrev()">
       <svg class="icon">
         <use xlink:href="./assets/svg/ui/ui.symbol.svg#chevron-left"></use>
       </svg>
     </button>
 
-    <button class="next" ng-click="wizard.next()" ng-show="wizard.hasNext()">
+    <button class="wizard__next" ng-click="wizard.next()" ng-show="wizard.hasNext()">
       <svg class="icon">
         <use xlink:href="./assets/svg/ui/ui.symbol.svg#chevron-right"></use>
       </svg>

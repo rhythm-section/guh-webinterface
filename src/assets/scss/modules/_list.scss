@@ -23,38 +23,49 @@
  * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 
 
-// .list {
-//   p {
-//     color: $c-grey;
-//     @include rem(font-size, 1);
-//     letter-spacing: 0.1em;
-//     padding-left: 0.1em;
-//     text-transform: uppercase;
-//   }
-// }
+$grey: #676767;
+$white: #fff;
+
+$background: transparent;
+$border-color: $grey;
+$color: $grey;
+
+
+.list {
+  @include rem(padding, 0, 1.5);
+}
 
 .list > .item-divider {
-  // border-bottom: 1px solid $c-turquoise;
   border-bottom: none;
   color: $c-turquoise;
   @include rem(height, 3);
   @include rem(margin, 1.5, 0, 0);
-  @include rem(padding, 0.7, 1.5, 0.8);
+  @include rem(padding, 1.5);
 }
 
 .list > .item {
-  // background-color: $c-white;
-  background-color: transparent;
-  border-bottom: 1px solid rgba($c-grey, 0.1);
+  // border-bottom: 1px solid rgba($c-grey, 0.1);
+  // border-top: 1px solid rgba($border-color, 0.1);
+  color: $color;
   cursor: pointer;
   display: block;
   @include rem(height, 4.5);
   @include rem(padding, 1.5);
   position: relative;
 
-  &:last-child {
-    border-bottom: none;
+  &:hover {
+    background-color: $white;
+    // border-color: $white;
+    box-shadow: 0px 0px 6px 0px rgba(0, 0, 0, 0.1);
   }
+
+  &:hover + .item {
+    border-color: $white;
+  }
+
+  // &:first-child {
+  //   border-top: none;
+  // }
 
   span {
     display: inline-block;
@@ -69,17 +80,10 @@
     white-space: nowrap;
   }
 
-  // &:first-child {
-  //   border-top: 1px solid lighten($c-grey, 50%);
-  // }
-
   .icon {
     float: right;
     @include rem(height, 1.5);
-    // @include rem(margin, 1.4, 1.5, 1.6);
     @include rem(margin, 1.5);
-    // position: relative;
-    //   @include rem(top, 0.2);
     position: absolute;
       right: 0;
       top: 0;
@@ -94,8 +98,6 @@
     }
 
     .icon {
-      // display: none;
-      // fill: lighten($c-grey, 50%);
       fill: rgba($c-grey, 0.2);
     }
   }
