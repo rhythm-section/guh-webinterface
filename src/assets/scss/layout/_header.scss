@@ -23,37 +23,41 @@
  * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 
 
+$black: #000;
 $grey: #676767;
 $green: #7cc09a;
 $turquoise: #57baae;
 $white: #fff;
 
 $background: $white;
+$border: $black;
+$box-shadow: $black;
 $color: $grey;
 
 
 header.app {
-  @include rem(height, 4.5);
-  position: fixed;
-    left: 0;
-    top: 0;
-  text-align: right;
+  @include rem(height, 6);
+  @include rem(padding, 1.5);
+  position: relative;
   width: 100%;
   z-index: 9000;
 
   .content {
-    margin: 0 auto;
-    position: relative;
-    width: 46%;
+    overflow: auto;
+  }
+
+  nav,
+  .action-bar {
+    width: 49%;
   }
 
   nav {
-    background-color: $background;
+    float: left;
+    @include rem(padding, 0, 1.5);
 
     ul {
-      border-bottom: 1px solid rgba($grey, 0.1);
-      margin: 0 auto;
       overflow: auto;
+      width: 100%;
     }
 
     li {
@@ -61,11 +65,14 @@ header.app {
     }
 
     a {
-      color: rgba($color, 0.2);
+      color: rgba($color, 0.3);
       display: block;
-      @include rem(padding, 1.5);
+      font-weight: 700;
+      @include rem(padding, 0.5, 1, 0);
       text-decoration: none;
+      @include transition(color 0.3s);
 
+      &:hover,
       &.active {
         color: $color;
       }
@@ -73,28 +80,40 @@ header.app {
   }
 
   .action-bar {
-    position: absolute;
-      right: 0;
-      top: 0;
+    float: right;
+    @include rem(padding, 0, 1.5);
 
-    button {
-      @include appearance(none);
-      background: transparent;
-      border: none;
-      cursor: pointer;
-      outline: none;
-      @include rem(padding, 1.5);
+    .icon {
+      fill: $color;
+      @include rem(height, 1.2);
+      @include rem(width, 1.2);
+      @include transition(fill 0.3s);
     }
 
-    span {
-      display: none;
+    button {
+      border: none;
+      color: $color;
+      float: right;
+      @include rem(margin, 0, 0, 0, 1.5);
+      @include rem(padding, 0.5, 1);
+      position: relative;
+      text-align: left;
+      width: auto;
+
+      &:hover,
+      &:active {
+        background-color: transparent;
+      }
+    }
+
+    span,
+    .icon {
+      display: inline-block;
     }
 
     .icon {
-      display: block;
-      fill: $color;
-      @include rem(height, 1.5);
-      @include rem(width, 1.5);
+      position: relative;
+        @include rem(top, 0.1);
     }
   }
 }
