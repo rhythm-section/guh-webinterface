@@ -140,7 +140,15 @@
           .http
           .GET(app.apiUrl + '/devices/' + device.id + '/states')
           .then(function(response) {
-            var states = DSState.createCollection(response.data);
+            // var states = DSState.createCollection(response.data);
+            var states = [];
+            angular.forEach(response.data, function(state) {
+              var stateToInject = {};
+
+              state.deviceId = device.id;
+              stateToInject = DSState.createInstance(state);
+              states.push(stateToInject);
+            });
 
             device.states = DSState.inject(states);
 
