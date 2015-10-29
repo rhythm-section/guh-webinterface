@@ -52,6 +52,7 @@
         /* jshint validthis: true */
         var vm = this;
 
+        vm.getState = getState;
         vm.execute = execute;
         vm.addParam = addParam;
 
@@ -68,14 +69,14 @@
 
         function _init() {
           vm.actionType = _getActionType(vm.actionTypeId);
-          vm.state = _getState(vm.deviceId, vm.actionTypeId);
+          vm.state = getState(vm.deviceId, vm.actionTypeId);
         }
 
         function _getActionType(actionTypeId) {
           return DSActionType.get(actionTypeId);
         }
 
-        function _getState(deviceId, actionTypeId) {
+        function getState(deviceId, actionTypeId) {
           var state = DSState.get('' + deviceId + '_' + actionTypeId);
 
           /*
@@ -123,8 +124,17 @@
       }
 
 
-      function actionLink(scope, element, attrs) {
+      function actionLink(scope, element, attrs, ctrl) {
         /* jshint unused: false */
+
+        // Watch state
+        DSState.on('DS.change', function(DSState, state) {
+          if(state.compoundId === '' + ctrl.deviceId + '_' + ctrl.actionTypeId) {
+            scope.$apply(function() {
+              ctrl.state.value = state.value;
+            });
+          }
+        });
       }
     }
 

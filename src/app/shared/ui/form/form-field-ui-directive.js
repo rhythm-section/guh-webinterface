@@ -29,9 +29,9 @@
     .module('guh.ui')
     .directive('guhFormField', guhFormField);
 
-    guhFormField.$inject = ['$log', '$http', '$templateCache', '$compile', 'libs', 'app'];
+    guhFormField.$inject = ['$log', '$http', '$templateCache', '$compile', 'libs', 'app', 'DSState'];
 
-    function guhFormField($log, $http, $templateCache, $compile, libs, app) {
+    function guhFormField($log, $http, $templateCache, $compile, libs, app, DSState) {
       var directive = {
         bindToController: {
           changeCallback: '&onValueChange',
@@ -384,12 +384,14 @@
         });
 
         // Watch state
-        if(scope && angular.isFunction(scope.formField.state)) {
-          scope.formField.state.on('DS.change', function() {
-            scope.formField.value = scope.formField.state.value;
-            scope.$apply();
-          });
-        }
+        DSState.on('DS.change', function(DSState, state) {
+          if(angular.isDefined(scope) && scope !== null) {
+            $log.log('STATE CHANGED', scope);
+            scope.$apply(function() {
+              scope.formField.value = scope.formField.state.value;
+            });
+          }
+        });
 
         // On destroy
         scope.$on('$destroy', function() {
@@ -413,6 +415,7 @@
           element.remove();
           element = null;
         });
+        
       }
     }
 
