@@ -96,9 +96,11 @@
 
 
     function setCurrent(index) {
-      $log.log('setCurrent', index);
       vm.currentSlide = index;
-      $state.go('guh.services.master.current', { serviceId: vm.configured[index].id });
+      
+      if(index !== -1) {
+        $state.go('guh.services.master.current', { serviceId: vm.configured[index].id });
+      }
     }
 
 

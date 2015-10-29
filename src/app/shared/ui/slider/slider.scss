@@ -25,12 +25,8 @@
 
 $black: #000;
 $grey: #676767;
-// $green: #7cc09a;
-// $turquoise: #57baae;
 $white: #fff;
 
-// $background-light: $green;
-// $background-dark: $turquoise;
 $background-current: $white;
 $border: $black;
 $color: $black;
@@ -38,112 +34,56 @@ $color-current: $grey;
 
 
 .slider {
+  height: 100%;
   overflow: hidden;
   position: fixed;
-    bottom: 0;
     left: 0;
-    right: 0;
     top: 0;
+  width: 100%;
 }
 
 .slider__content-container {
-  // margin-left: -10%;
-  // width: 120%;
+  @include transition(transform 0.2s ease-out);
 }
 
 .slider__item {
   background-color: transparent;
   border-left: 1px solid rgba($border, 0.1);
   color: rgba($color, 0.3);
+  cursor: pointer;
   float: left;
   height: 100%;
-  @include rem(padding, 0, 3);
-  // width: 18%;
+  overflow-y: scroll;
+  @include rem(padding, 6, 3);
+  @include transition(background-color 0.4s ease-in, box-shadow 0.2s ease-out, color 0.4s ease-in, width 0.2s ease-in-out);
+  @include user-select(none);
 
-  &:first-child {
-    border-left: none;
+  &:nth-last-child(3) {
+    border-right: 1px solid rgba($border, 0.1);
   }
+
+  .content_content-center {
+    @include transform(translateY(-50%));
+    @include transition(top 0.4s ease-in-out, transform 0.4s ease-in-out);
+    top: 50%;
+  }
+}
+
+.slider__item_dummy {
+  border-color: transparent;
 }
 
 .slider__item_current {
-  background-color: $background-current;
-  border-left: none;
-  box-shadow: 0px 0px 12px 0px rgba(0, 0, 0, 0.3);
-  color: $color-current;
-  overflow-y: scroll;
-  @include rem(padding, 10.5, 3, 3);
-  // width: 28%;
 
-  &+ .slider__item {
-    border-left: none;
-  }
 }
 
-// .slider-wrapper {
-//   height: 100%;
-//   overflow: hidden;
-//   position: absolute;
-//     bottom: 0;
-//     left: 0;
-//     right: 0;
-//     top: 0;
-// }
+.slider__item_details {
+  background-color: $background-current;
+  box-shadow: 0px 0px 12px 0px rgba(0, 0, 0, 0.3);
+  color: $color-current;
 
-// .slider-content {
-//   height: 100%;
-//   margin-left: -10%;
-//   overflow: auto;
-//   width: 120%;
-// }
-
-// .slide,
-// .slide_current {
-//   float: left;
-//   height: inherit;
-//   width: 18%;
-// }
-
-// .slide {
-//   background-color: transparent;
-//   border-left: 1px solid rgba($black, 0.1);
-//   color: rgba($black, 0.2);
-//   position: relative;
-
-//   &:first-child {
-//     border-left: none;
-//   }
-
-//   .slide-content {
-//     height: inherit;
-//     @include rem(padding, 10.5, 3, 3);
-//   }
-
-//   .content {
-//     @include rem(margin-top, -2.25);
-//     position: absolute;
-//       left: 0%;
-//       top: 50%;
-//     width: 100%;
-//   }
-// }
-
-// .slide_current {
-//   background-color: $background-current;
-//   background-image: none;
-//   box-shadow: 0px 0px 12px 0px rgba(0, 0, 0, 0.3);
-//   border-left: none;
-//   color: $color-current;
-//   overflow-y: scroll;
-//   width: 28%;
-
-//   &+ .horizontal-item {
-//     border-left: none;
-//   }
-
-//   .content {
-//     margin-top: 0;
-//     position: static;
-//       left: 0;
-//       top: 0;
-//   }
-// }
+  .content_content-center {
+    @include transform(translateY(0%));
+    top: 0%;
+  }
+}

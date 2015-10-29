@@ -28,8 +28,8 @@
       <use ng-attr-xlink:href="{{ './assets/svg/vendor/vendor.symbol.svg#' + (device.deviceClass.vendor.name | kebabCase) }}"></use>
     </svg> -->
     <h2 class="heading">{{ device.name }}</h2>
-    <p class="heading heading_sub">{{ device.deviceClass.vendor.name === device.deviceClass.name ? device.deviceClass.name : device.deviceClass.vendor.name + ' &middot; ' + device.deviceClass.name }}</p>
+    <p class="heading heading_sub">{{ device.deviceClass.vendor.name === device.deviceClass.name || device.deviceClass.name === device.name ? device.deviceClass.vendor.name : device.deviceClass.vendor.name + ' &middot; ' + device.deviceClass.name }}</p>
 
-    <div ng-if="devices.currentSlide === $index" ui-view></div>
+    <div class="detail" ng-if="devices.currentSlide === $index" ui-view></div>
   </guh-slider-item>
 </guh-slider>

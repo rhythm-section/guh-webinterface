@@ -47,6 +47,11 @@ $color-highlight: $turquoise;
 }
 
 html,
+body {
+  min-height: 100%;
+}
+
+html,
 body,
 .main {
   height: 100%;
@@ -64,6 +69,7 @@ body {
   font-weight: 400;
   @include rem(font-size, 1);
   @include rem(line-height, 1.5);
+  position: relative;
 }
 
 // Type
@@ -140,13 +146,15 @@ input[type="submit"] {
   // background-color: rgba($background-button, 0.2);
   background-color: transparent;
   border: 1px solid $border-light;
+  @include rem(margin, 1.5, 0, 1);
   // @include rem(border-radius, 1.75);
   cursor: pointer;
   letter-spacing: 0.1em;
-  @include rem(margin, 1.5, 0, 1);
+  outline: none;
   @include rem(padding, 1);
   text-transform: uppercase;
   @include transition(background 0.3s ease-in-out, color 0.3s ease-in-out);
+  @include user-select(none);
 
   &:hover {
     background-color: $background-button;

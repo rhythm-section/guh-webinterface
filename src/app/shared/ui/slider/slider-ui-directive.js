@@ -30,9 +30,10 @@
     .module('guh.ui')
     .directive('guhSlider', guhSlider);
 
-    guhSlider.$inject = ['$log', '$window', 'hotkeys'];
 
-    function guhSlider($log, $window, hotkeys) {
+    guhSlider.$inject = ['$log', '$window', '$animate', '$timeout', 'hotkeys'];
+
+    function guhSlider($log, $window, $animate, $timeout, hotkeys) {
 
       var directive = {
         bindToController: {
@@ -59,7 +60,7 @@
          * Public variables
          */
         vm.sliderItems = [];
-        vm.currentSliderItemIndex = 0;
+        vm.currentSliderItemIndex = -1;
 
         /*
          * Public methods
@@ -67,6 +68,7 @@
         vm.init = init;
         vm.addSliderItem = addSliderItem;
         vm.slideTo = slideTo;
+        vm.executeCallback = executeCallback;
 
 
         function _hasPrev() {
@@ -103,29 +105,39 @@
                 }
               }
             });
-
-          // vm.slideTo(0);
         }
 
         function addSliderItem(sliderItem) {
           vm.sliderItems.push(sliderItem);
 
+          // if(vm.sliderItems.length === 1) {
+          //   vm.slideTo(0);
+          // }
+
           return vm.sliderItems.length - 1;
         }
 
         function slideTo(sliderItemIndex) {
-          if(sliderItemIndex >= 0 && sliderItemIndex < vm.sliderItems.length) {
-            vm.previousSliderItemIndex = vm.currentSliderItemIndex;
+          if(sliderItemIndex >= 0 && sliderItemIndex < vm.sliderItems.length && sliderItemIndex !== vm.currentSliderItemIndex) {
+            vm.previousSliderItemIndex = vm.currentSliderItemIndex === -1 ? 0 : vm.currentSliderItemIndex;
             vm.currentSliderItemIndex = sliderItemIndex;
-
-            // Move current class to new current
-            vm.setCurrent();
 
             // Execute callback function
             vm.changeCallback({
-              slideIndex: sliderItemIndex
+              slideIndex: -1
             });
+
+            // Move current class to new current
+            $log.log('before vm.setCurrent', vm.currentSliderItemIndex);
+            vm.setCurrent();
           }
+        }
+
+        function executeCallback() {
+          // Execute callback function
+          vm.changeCallback({
+            slideIndex: vm.currentSliderItemIndex
+          });
         }
 
       }
@@ -134,25 +146,19 @@
       function sliderLink(scope, element, attrs, sliderCtrl) {
         // Elements
         var contentContainer = angular.element(element[0].getElementsByClassName('slider__content-container'));
+        var sliderItems = element[0].getElementsByClassName('slider__item');
 
         var i = 0;
         var columnCount = 5;
         var dummyColumnCount = Math.floor((columnCount - 1) / 2);
 
-
         var minColumnWidth = 300;
         var maxColumnWidth = 600;
         var viewportWidth = $window.innerWidth;
-        // var currentSliderItemWidth = Math.floor(viewportWidth / 100 * 38.2);
-        // var sliderItemWidth = Math.floor(currentSliderItemWidth / 100 * 38.2);
         var currentSliderItemWidth = Math.floor(viewportWidth / 100 * 46);
         var sliderItemWidth = Math.floor(viewportWidth / 100 * 18);
-        // if(sliderItemWidth < minColumnWidth) {
-        //   sliderItemWidth = minColumnWidth;
-        // } else if(sliderItemWidth > maxColumnWidth) {
-        //   sliderItemWidth = maxColumnWidth;
-        // }
-        // var columnCount = Math.floor(viewportWidth / sliderItemWidth) - 1;
+        var slideTimer;
+
         var containerWidth = 0;
         var offset = 0;
 
@@ -173,7 +179,7 @@
 
         // Add dummy elements for start/end
         for(i; i < dummyColumnCount; i++) {
-          var dummySliderItemBefore = angular.element('<div class="slider__item"></div>');
+          var dummySliderItemBefore = angular.element('<div class="slider__item slider__item_dummy"></div>');
           dummySliderItemBefore.css({
             width: sliderItemWidth + 'px'
           });
@@ -212,42 +218,56 @@
         }
 
         function setCurrent() {
-          var oldCurrent = angular.element(element[0].getElementsByClassName('slider__item_current'));
-          var oldCurrentContent;
-          var newCurrent = sliderCtrl.sliderItems[sliderCtrl.currentSliderItemIndex].element;
-          var newCurrentContent;
+          if(sliderCtrl.currentSliderItemIndex !== -1) {
+            var oldCurrent = angular.element(element[0].getElementsByClassName('slider__item_current'));
+            var oldCurrentContent;
+            var newCurrent = sliderCtrl.sliderItems[sliderCtrl.currentSliderItemIndex].element;
+            var newCurrentContent;
+            var halfSliderItemWidth = Math.floor(sliderItemWidth / 2);
 
-          // Calculate and set container offset
-          if(sliderCtrl.currentSliderItemIndex > sliderCtrl.previousSliderItemIndex) {
-            // Slide to right
-            offset = offset - (sliderCtrl.currentSliderItemIndex - sliderCtrl.previousSliderItemIndex) * sliderItemWidth;
-          } else {
-            // Slide to left
-            offset = offset + (sliderCtrl.previousSliderItemIndex - sliderCtrl.currentSliderItemIndex) * sliderItemWidth;
-          }
-          _setContainerOffset();
-          
-          // Set previous current width and classes
-          oldCurrent.removeClass('slider__item_current');
-          if(oldCurrent.length > 0) {
-            _setWidth(oldCurrent, sliderItemWidth);
-            oldCurrentContent = angular.element(oldCurrent[0].getElementsByClassName('content'));
-            oldCurrentContent.addClass('content_content-center');
-          }
 
-          // Set new current width and classes
-          newCurrent.addClass('slider__item_current');
-          if(newCurrent.length > 0) {
-            _setWidth(newCurrent, currentSliderItemWidth);
-            newCurrentContent = angular.element(newCurrent[0].getElementsByClassName('content'));
-            newCurrentContent.removeClass('content_content-center');
+            // Cancel timer to set new widths and positions
+            $timeout.cancel(slideTimer);
+
+            // Before slide
+            if(oldCurrent.length > 0) {
+              oldCurrent.removeClass('slider__item_details');
+              oldCurrent.removeClass('slider__item_current');
+              _setWidth(oldCurrent, sliderItemWidth);
+              oldCurrentContent = angular.element(oldCurrent[0].getElementsByClassName('content'));
+            }
+
+            // Slide
+            if(sliderCtrl.currentSliderItemIndex > sliderCtrl.previousSliderItemIndex) {
+              // Slide to right
+              offset = offset - (sliderCtrl.currentSliderItemIndex - sliderCtrl.previousSliderItemIndex) * sliderItemWidth;
+            } else {
+              // Slide to left
+              offset = offset + (sliderCtrl.previousSliderItemIndex - sliderCtrl.currentSliderItemIndex) * sliderItemWidth;
+            }
+            _setContainerOffset();
+
+            // After slide
+            if(newCurrent.length > 0) {
+              $log.log('set width', currentSliderItemWidth);
+              _setWidth(newCurrent, currentSliderItemWidth);
+              newCurrentContent = angular.element(newCurrent[0].getElementsByClassName('content'));
+              newCurrent.addClass('slider__item_current');
+              // newCurrentContent.removeClass('content_content-center');
+
+              slideTimer = $timeout(function() {
+                newCurrent.addClass('slider__item_details');
+
+                $timeout(function() {
+                  sliderCtrl.executeCallback();
+                }, 400);
+              }, 400);
+            }
           }
         }
 
 
         angular.element($window).on('resize', function() {
-          var sliderItems = element[0].getElementsByClassName('slider__item');
-
           viewportWidth = $window.innerWidth;
           currentSliderItemWidth = viewportWidth / 100 * 46;
           sliderItemWidth = viewportWidth / 100 * 18;

@@ -23,9 +23,34 @@
  * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 
 
+$white: #fff;
+
+$background: $white;
+
+
 /*
  * Animations
  */
+
+@include keyframes(fadeIn) {
+  from {
+    opacity: 0;
+  }
+
+  to {
+    opacity: 1;
+  }
+}
+
+@include keyframes(fadeOut) {
+  from {
+    opacity: 1;
+  }
+
+  to {
+    opacity: 0;
+  }
+}
 
 @include keyframes(fadeAndZoomIn) {
   from {
@@ -131,7 +156,6 @@
   //   }
   // }
 }
-
 
 /*
  * Layout: intro
@@ -283,3 +307,15 @@
 /*
  * Layout: Detail
  */
+
+// .detail {
+//   @include transition(all 10s);
+
+//   &.ng-enter {
+//     @include animation(fadeIn 2s ease-out);
+//   }
+
+//   // &.ng-leave {
+//   //   @include animation(fadeOut 2s ease-in);
+//   // }
+// }

@@ -94,7 +94,10 @@
 
     function setCurrent(index) {
       vm.currentSlide = index;
-      $state.go('guh.devices.master.current', { deviceId: vm.configured[index].id });
+      
+      if(index !== -1) {
+        $state.go('guh.devices.master.current', { deviceId: vm.configured[index].id });
+      }
     }
 
 
