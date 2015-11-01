@@ -23,34 +23,52 @@
  * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 
 
+$grey: #676767;
+
+$color: $grey;
+
+
 .remote-navigation {
-  @include rem(margin-bottom, 1.5);
   overflow: hidden;
-  position: relative;
+  margin: 0 auto;
+  @include rem(margin-bottom, 3);
+  // position: relative;
+  width: 100%;
 
-  &:before {
-    content: "";
-    display: block;
-    padding-bottom: 100%;
-  }
+  // &:before {
+  //   content: "";
+  //   display: block;
+  //   padding-bottom: 100%;
+  // }
 
-  &> div {
-    height: 100%;
-    position: absolute;
-      left: 0;
-      top: 0;
-    width: 100%;
-  }
+  // &> div {
+  //   height: 100%;
+  //   position: absolute;
+  //     left: 0;
+  //     top: 0;
+  //   width: 100%;
+  // }
 
   button {
+    border-left: none;
+    border-top: none;
+    border-radius: 0px;
     float: left;
     margin: 0;
     overflow: auto;
-    padding: 0;
+    @include rem(padding, 1.5, 0);
     width: 100%;
 
-    &:hover {
-      // background-color: get-color("background");
+    &.back,
+    &.up,
+    &.fullscreen {
+      border-top: 1px solid rgba($color, 0.1);
+    }
+
+    &.back,
+    &.left,
+    &.info {
+      border-left: 1px solid rgba($color, 0.1);
     }
 
     &.back,
@@ -78,10 +96,36 @@
       width: 30%;
     }
 
+    &.back {
+      @include rem(border-top-left-radius, 1.5);
+    }
+
+    &.fullscreen {
+      @include rem(border-top-right-radius, 1.5);
+    }
+
+    &.info {
+      @include rem(border-bottom-left-radius, 1.5);
+    }
+
+    &.osd {
+      @include rem(border-bottom-right-radius, 1.5);
+    }    
+
+    span,
+    .icon {
+      margin: 0 auto;
+    }
+
     span {
       display: block;
-      padding: 0;
       width: 100%;
+    }
+
+    .icon {
+      fill: $color;
+      @include rem(height, 1.5);
+      @include rem(width, 1.5);
     }
   }
 }
