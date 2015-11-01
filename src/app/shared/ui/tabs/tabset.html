@@ -24,9 +24,10 @@
 <div class="tabset">
   <ul>
     <li ng-repeat="tab in tabset.tabs">
-      <a href="" ng-class="{ 'active': tab.active, 'hotkey': tab.hotkey }" ng-click="tabset.selectTab(tab)">{{ tab.heading }}</a>
+      <!-- <a href="" ng-class="{ 'active': tab.active, 'hotkey': tab.hotkey, 'disabled': tab.disabled }" ng-click="tabset.selectTab(tab)">{{ tab.heading }}</a> -->
+      <a href="" ng-class="{ 'active': tab.active, 'hotkey': tab.hotkey, 'disabled': tabset.disabled }" ng-click="tabset.selectTab(tab)">{{ tab.heading }}</a>
     </li>
   </ul>
 
-  <ng-transclude></ng-transclude>
+  <ng-transclude ng-hide="tabset.disabled"></ng-transclude>
 </div>

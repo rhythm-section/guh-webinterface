@@ -32,7 +32,7 @@ $color: $grey;
 
 
 .tabset {
-  @include rem(margin, 4.5, 0, 0);
+  @include rem(margin, 4.5, 0, 3);
 
   ul {
     @include display(flex);
@@ -72,6 +72,7 @@ $color: $grey;
 
     &.disabled {
       color: rgba($color, 0.2);
+      cursor: default;
     }
   }
 }
