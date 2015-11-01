@@ -155,8 +155,10 @@
         var minColumnWidth = 300;
         var maxColumnWidth = 600;
         var viewportWidth = $window.innerWidth;
-        var currentSliderItemWidth = Math.floor(viewportWidth / 100 * 46);
-        var sliderItemWidth = Math.floor(viewportWidth / 100 * 18);
+        // var currentSliderItemWidth = Math.floor(viewportWidth / 100 * 46);
+        // var sliderItemWidth = Math.floor(viewportWidth / 100 * 18);
+        var currentSliderItemWidth = Math.floor(viewportWidth / 100 * 40);
+        var sliderItemWidth = Math.floor(viewportWidth / 100 * 20);
         var slideTimer;
 
         var containerWidth = 0;

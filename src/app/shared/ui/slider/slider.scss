@@ -48,13 +48,14 @@ $color-current: $grey;
 
 .slider__item {
   background-color: transparent;
-  border-left: 1px solid rgba($border, 0.1);
+  border-left: 1px solid rgba($border, 0.05);
   color: rgba($color, 0.3);
   cursor: pointer;
   float: left;
   height: 100%;
   overflow-y: scroll;
-  @include rem(padding, 6, 3);
+  @include rem(padding, 6);
+  position: relative;
   @include transition(background-color 0.4s ease-in, box-shadow 0.2s ease-out, color 0.4s ease-in, width 0.2s ease-in-out);
   @include user-select(none);
 
@@ -74,7 +75,7 @@ $color-current: $grey;
 }
 
 .slider__item_current {
-
+  border-left-color: transparent;
 }
 
 .slider__item_details {
