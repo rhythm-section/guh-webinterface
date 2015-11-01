@@ -96,13 +96,13 @@
               templateUrl: 'app/components/devices/detail/devices-detail.html'
             });
 
-          $stateProvider.state('guh.devices.detail', {
-            controller: 'DevicesDetailCtrl',
-            controllerAs: 'device',
-            params: { deviceId: null },
-            url: '/:deviceId',
-            templateUrl: 'app/components/devices/detail/devices-detail.html'
-          });
+          // $stateProvider.state('guh.devices.detail', {
+          //   controller: 'DevicesDetailCtrl',
+          //   controllerAs: 'device',
+          //   params: { deviceId: null },
+          //   url: '/:deviceId',
+          //   templateUrl: 'app/components/devices/detail/devices-detail.html'
+          // });
 
         $stateProvider.state('guh.services', {
           abstract: true,
@@ -125,12 +125,12 @@
               templateUrl: 'app/components/services/detail/services-detail.html'
             });
 
-          $stateProvider.state('guh.services.detail', {
-            controller: 'ServicesDetailCtrl',
-            controllerAs: 'service',
-            url: '/:serviceId',
-            templateUrl: 'app/components/services/detail/services-detail.html'
-          });
+          // $stateProvider.state('guh.services.detail', {
+          //   controller: 'ServicesDetailCtrl',
+          //   controllerAs: 'service',
+          //   url: '/:serviceId',
+          //   templateUrl: 'app/components/services/detail/services-detail.html'
+          // });
 
         $stateProvider.state('guh.moods', {
           abstract: true,
