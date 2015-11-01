@@ -21,7 +21,7 @@
 -->
 
 
-<guh-tabset id="device-state">
+<guh-tabset disabled="!device.statesObject.reachable.value">
   <!-- Actions -->
   <guh-tab heading="Control">
     <p ng-if="device.actions.length === 0">This device doesn't have any controls.</p>
@@ -55,3 +55,5 @@
     </div>
   </guh-tab>
 </guh-tabset>
+
+<p ng-show="!device.statesObject.reachable.value">The connection to the hue light or hue bridge was lost. Please check if the light is connected to the bridge with the following IP address: {{ device.paramsObject.hostAddress.value }}. Please also check if the hue bridge is connected to your local network.</p>
