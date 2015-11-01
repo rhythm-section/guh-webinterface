@@ -23,6 +23,78 @@
  * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 
 
+$black: #000;
+$green: #7cc09a;
+$green-dark: darken($green, 4%);
+$grey-dark: #676767;
+$grey-light: #f0f0f0;
+$grey-middle: #e3e3e3;
+$white: #fff;
+
+$background: $white;
+$background-active: $grey-light;
+$border: $grey-middle;
+$color: $grey-dark;
+
+
+.action-bar {
+  overflow: auto;
+  @include rem(padding, 1.5);
+  width: 100%;
+
+  button {
+    background-color: $background;
+    border: 1px solid $border;
+    border-left: none;
+    color: $color;
+    float: right;
+    @include rem(height, 3);
+    // @include rem(padding, 0.8, 1.5, 0.7);
+    @include transition(background-color 0.2s ease-in-out);
+
+    &:hover {
+      background-color: $background-active;
+      // color: rgba($color, 1);
+
+      // .icon {
+      //   fill: rgba($color, 1);
+      // }
+    }
+
+    &:last-child {
+      border-left: 1px solid $border;
+      @include rem(border-bottom-left-radius, 1.5);
+      @include rem(border-top-left-radius, 1.5);
+    }
+
+    &:first-child {
+      @include rem(border-bottom-right-radius, 1.5);
+      @include rem(border-top-right-radius, 1.5);
+    }
+  }
+
+  span,
+  .icon {
+    display: inline-block;
+    @include rem(font-size, 1);
+    @include rem(line-height, 1.5);
+    @include rem(height, 1.5);
+    position: relative;
+  }
+
+  span {
+    @include rem(top, -0.5);
+    width: auto;
+  }
+
+  .icon {
+    fill: $color;
+    @include rem(left, 0.5);
+    @include rem(top, -0.2);
+    @include transition(color 0.2s ease-in-out, fill 0.2s ease-in-out);
+  }
+}
+
 // .action-bar {
 //   text-align: right;
 
