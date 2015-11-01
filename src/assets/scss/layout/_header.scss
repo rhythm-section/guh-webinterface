@@ -24,99 +24,167 @@
 
 
 $black: #000;
-$grey: #676767;
+$grey-dark: #676767;
+$grey-light: #f0f0f0;
+$grey-middle: #e3e3e3;
 $green: #7cc09a;
 $turquoise: #57baae;
+$green-dark: darken($green, 4%);
 $white: #fff;
 
 $background: $white;
-$border: $black;
+$background-active: $grey-light;
+$border: $grey-middle;
 $box-shadow: $black;
-$color: $grey;
+$color: $grey-dark;
 
 
 header.app {
-  @include rem(height, 6);
-  @include rem(padding, 1.5);
-  position: relative;
+  position: fixed;
+    top: 0;
+  z-index: 10;
   width: 100%;
-  z-index: 9000;
 
-  .content {
+  .content-wrapper {
+    margin: 0 auto;
     overflow: auto;
+    width: 40%;
+    width: 100%;
   }
 
   nav,
-  .action-bar {
-    width: 49%;
-  }
-
-  nav {
+  .actions {
     float: left;
-    @include rem(padding, 0, 1.5);
+    width: 50%;
+  }
 
-    ul {
-      overflow: auto;
-      width: 100%;
+  ul {
+    overflow: hidden;
+    @include rem(padding, 1.5);
+    width: 100%;
+  }
+
+  li {
+    background-color: $background;
+    border: 1px solid $border;
+    border-left: none;
+    float: left;
+    @include rem(height, 3);
+    @include transition(background-color 0.2s ease-in-out);
+
+    &:hover,
+    &.active {
+      background-color: $background-active;
     }
 
-    li {
-      float: left;
+    &:first-child {
+      border-left: 1px solid $border;
+      @include rem(border-bottom-left-radius, 1.5);
+      @include rem(border-top-left-radius, 1.5);
     }
 
-    a {
-      color: rgba($color, 0.3);
-      display: block;
-      font-weight: 700;
-      @include rem(padding, 0.5, 1, 0);
-      text-decoration: none;
-      @include transition(color 0.3s);
-
-      &:hover,
-      &.active {
-        color: $color;
-      }
+    &:last-child {
+      @include rem(border-bottom-right-radius, 1.5);
+      @include rem(border-top-right-radius, 1.5);
     }
   }
 
-  .action-bar {
-    float: right;
-    @include rem(padding, 0, 1.5);
-
-    .icon {
-      fill: $color;
-      @include rem(height, 1.2);
-      @include rem(width, 1.2);
-      @include transition(fill 0.3s);
-    }
-
-    button {
-      border: none;
-      color: $color;
-      float: right;
-      @include rem(margin, 0, 0, 0, 1.5);
-      @include rem(padding, 0.5, 1);
-      position: relative;
-      text-align: left;
-      width: auto;
-
-      &:hover,
-      &:active {
-        background-color: transparent;
-      }
-    }
-
-    span,
-    .icon {
-      display: inline-block;
-    }
-
-    .icon {
-      position: relative;
-        @include rem(top, 0.1);
-    }
+  a {
+    color: $color;
+    display: block;
+    // @include rem(padding, 1.6, 1.5, 1.4);
+    @include rem(padding, 0.7, 1.5, 0.8);
+    text-decoration: none;
   }
+
+  // a,
+  // button {
+  //   background-color: $background;
+  // }
 }
+
+// header.app {  
+//   @include rem(height, 6);
+//   @include rem(padding, 1.5);
+//   position: relative;
+//   width: 100%;
+//   z-index: 9000;
+
+//   .content {
+//     overflow: auto;
+//   }
+
+//   nav,
+//   .action-bar {
+//     width: 49%;
+//   }
+
+//   nav {
+//     float: left;
+//     @include rem(padding, 0, 1.5);
+
+//     ul {
+//       overflow: auto;
+//       width: 100%;
+//     }
+
+//     li {
+//       float: left;
+//     }
+
+//     a {
+//       color: rgba($color, 0.3);
+//       display: block;
+//       font-weight: 700;
+//       @include rem(padding, 0.5, 1, 0);
+//       text-decoration: none;
+//       @include transition(color 0.3s);
+
+//       &:hover,
+//       &.active {
+//         color: $color;
+//       }
+//     }
+//   }
+
+//   .action-bar {
+//     float: right;
+//     @include rem(padding, 0, 1.5);
+
+//     .icon {
+//       fill: $color;
+//       @include rem(height, 1.2);
+//       @include rem(width, 1.2);
+//       @include transition(fill 0.3s);
+//     }
+
+//     button {
+//       border: none;
+//       color: $color;
+//       float: right;
+//       @include rem(margin, 0, 0, 0, 1.5);
+//       @include rem(padding, 0.5, 1);
+//       position: relative;
+//       text-align: left;
+//       width: auto;
+
+//       &:hover,
+//       &:active {
+//         background-color: transparent;
+//       }
+//     }
+
+//     span,
+//     .icon {
+//       display: inline-block;
+//     }
+
+//     .icon {
+//       position: relative;
+//         @include rem(top, 0.1);
+//     }
+//   }
+// }
 
 // Setup page
 .main .intro header.app {

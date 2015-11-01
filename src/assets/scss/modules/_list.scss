@@ -52,6 +52,7 @@ $color: $grey;
   @include rem(height, 4.5);
   @include rem(padding, 1.5);
   position: relative;
+  text-align: left;
 
   &:hover {
     background-color: $white;
@@ -66,6 +67,10 @@ $color: $grey;
   // &:first-child {
   //   border-top: none;
   // }
+
+  p {
+    padding: 0;
+  }
 
   span {
     display: inline-block;
