@@ -29,9 +29,9 @@
     .module('guh.ui')
     .directive('guhWizard', wizardDirective);
 
-  wizardDirective.$inject = ['$log', 'libs', 'wizardService'];
+  wizardDirective.$inject = ['$log', '$animate', 'libs', 'wizardService'];
 
-  function wizardDirective($log, libs, wizardService) {
+  function wizardDirective($log, $animate, libs, wizardService) {
 
     var directive = {
       bindToController: {
@@ -50,7 +50,7 @@
     return directive;
 
 
-    function wizardCtrl() {
+    function wizardCtrl($scope, $element) {
 
       /* jshint validthis: true */
       var vm = this;
@@ -100,6 +100,12 @@
         if(hasPrev()) {
           vm.steps[currentStep].element.removeClass('current');
           vm.steps[currentStep - 1].element.addClass('current');
+          // $animate
+          //   .removeClass(vm.steps[currentStep].element, 'current');
+
+          // $animate
+          //   .addClass(vm.steps[currentStep - 1].element, 'current');
+
           vm.title = vm.steps[currentStep - 1].scope.wizardStep.title;
 
           currentStep = currentStep - 1;
@@ -110,9 +116,21 @@
         if(hasNext()) {
           vm.steps[currentStep].element.removeClass('current');
           vm.steps[currentStep + 1].element.addClass('current');
-          vm.title = vm.steps[currentStep + 1].scope.wizardStep.title;
+          // $animate
+          //   .addClass(vm.steps[currentStep].element, 'slide-out-left')
+          //   .then(function() {
+          //     $log.log('END OF ANIMATION', vm.steps[currentStep].element);
+          //     // vm.steps[currentStep].element.removeClass('slide-out-left');
+          //     // vm.steps[currentStep].element.addClass('hide');
 
-          currentStep = currentStep + 1;
+              vm.title = vm.steps[currentStep + 1].scope.wizardStep.title;
+
+              currentStep = currentStep + 1;
+            // });
+
+          // $animate.addClass(vm.steps[currentStep + 1].element, 'slide-in-left');
+
+          
         }
       }
 

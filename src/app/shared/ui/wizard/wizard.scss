@@ -39,44 +39,22 @@ $color-border: $grey;
 }
 
 .wizard__title {
-  @include linear-gradient(to bottom, rgba($background-overlay, 0.8), rgba($background-overlay, 0.4));
-  // background-color: rgba($white, 0.9);
-  // box-shadow:  0px 0px 10px 0px rgba(0, 0, 0, 0.2);
-  @include rem(font-size, 1.5);
-  @include rem(height, 7.5);
-  @include rem(padding, 3, 6, 3, 3);
-  position: fixed;
-    left: 0;
-    right: 0;
-    top: 0;
-  // text-align: left;
-  z-index: 9998;
+  letter-spacing: 0;
+  @include rem(margin-bottom, 1.5);
+  text-transform: none;
 }
 
 .wizard__content {
   min-height: 100%;
-  @include rem(padding, 0, 0, 6);
-
-  @include media($min-width-s) {
-    margin: 0 auto;
-    @include rem(width, 27);
-  }
 }
 
 .wizard__navigation {
-  @include linear-gradient(to top, rgba($background-overlay, 0.8), rgba($background-overlay, 0.4));
-  // background-color: rgba($white, 0.9);
-  // box-shadow:  0px 0px 10px 0px rgba(0, 0, 0, 0.2);
-  // border-top: 1px solid rgba($color-border, 0.2);
-  @include rem(height, 4.5);
-  position: fixed;
-    bottom: 0;
-    left: 0;
-    right: 0;
-
   button {
+    background-color: transparent;
+    border: none;
     @include rem(height, 4.5);
-    @include rem(width, 4.5);
+    @include rem(padding, 1.5, 3);
+    @include rem(width, 7.5);
   }
 
   .wizard__prev,
@@ -93,6 +71,92 @@ $color-border: $grey;
     right: 0;
   }
 }
+
+.wizard-step {
+  display: none;
+  @include rem(padding, 0, 1.5);
+  @include transition(transform 1s);
+  // @include transform(translateX(100%));
+
+  &.current {
+    display: block;
+  }
+
+  p {
+    @include rem(padding, 0, 1.5);
+    // text-align: center;
+  }
+
+  .list,
+  p {
+    @include rem(margin-bottom, 1.5);
+  }
+
+  .label,
+  label {
+    letter-spacing: 0.1em;
+    text-align: left;
+    text-transform: uppercase;
+  }
+
+  .item {
+    margin-bottom: 0;
+  }
+
+  // &.hide {
+  //   display: none;
+  // }
+
+  // &.slide-out-left.slide-out-left-add {
+  //   @include transform(translateX(0%));
+  // }
+
+  // &.slide-out-left,
+  // &.slide-out-left.slide-out-left-add-active {
+  //   @include transform(translateX(-100%));
+  // }
+
+  // &.slide-in-left-add {
+  //   @include transform(translateX(100%)):
+  // }
+
+  // &.slide-in-left-add-active {
+  //   @include transform(translateX(0%)):
+  // }
+}
+
+.ngdialog-content {
+  .wizard__title {
+    @include linear-gradient(to bottom, rgba($background-overlay, 0.8), rgba($background-overlay, 0.4));
+    @include rem(font-size, 1.5);
+    @include rem(height, 7.5);
+    @include rem(padding, 3, 6, 3);
+    position: fixed;
+      left: 0;
+      right: 0;
+      top: 0;
+    z-index: 9998;
+  }
+
+  .wizard__content {
+    @include rem(padding, 7.5, 0, 6);
+
+    @include media($min-width-s) {
+      margin: 0 auto;
+      @include rem(width, 30);
+    }
+  }
+
+  .wizard__navigation {
+    @include linear-gradient(to top, rgba($background-overlay, 0.8), rgba($background-overlay, 0.4));
+    @include rem(height, 4.5);
+    position: fixed;
+      bottom: 0;
+      left: 0;
+      right: 0;
+  }
+}
+
 
 
 // .modal .wizard,
