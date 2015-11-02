@@ -21,16 +21,23 @@
 -->
 
 
-<nav class="app">
-  <ul>
-    <li><a ng-class="{ active: app.$state.includes('guh.devices') }" ui-sref="guh.devices.master">Devices</a></li>
-    <li><a ng-class="{ active: app.$state.includes('guh.services') }" ui-sref="guh.services.master">Services</a></li>
-    <!-- <li><a ng-class="{ active: app.$state.includes('guh.moods') }" ui-sref="guh.moods.master">Moods</a></li> -->
-  </ul>
-</nav>
+<!-- <div class="wrapper" ng-class="app.$state.current.controllerAs"> -->
+<div class="wrapper" ng-class="{ 'intro': app.$state.includes('guh.intro'), 'devices': app.$state.includes('guh.devices.master'), 'device': app.$state.includes('guh.devices.detail') }">
+  <header class="app">
+    <div class="content-wrapper">
+      <nav>
+        <ul>
+          <li ng-class="{ active: app.$state.includes('guh.devices') }"><a ui-sref="guh.devices.master">Devices</a></li>
+          <li ng-class="{ active: app.$state.includes('guh.services') }"><a ui-sref="guh.services.master">Services</a></li>
+          <!-- <li ng-class="{ active: app.$state.includes('guh.moods') }"><a class="heading" ui-sref="guh.moods.master">Moods</a></li> -->
+        </ul>
+      </nav>
 
-<header class="app">
-  <guh-action-bar></guh-action-bar>
-</header>
+      <div class="actions">
+        <guh-action-bar></guh-action-bar>
+      </div>
+    </div>
+  </header>
 
-<div ui-view class="app content"></div>
+  <div ui-view class="content"></div>
+</div>

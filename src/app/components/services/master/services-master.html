@@ -21,12 +21,15 @@
 -->
 
 
-<ul class="tiles">
-  <li class="item" ng-repeat="service in services.configured | orderBy: 'name' track by $index">
-    <!-- <a class="vendor-{{ service.deviceClass.vendor.name | kebabCase }}" ui-sref="guh.services.detail({ serviceId: service.id })"> -->
-    <a ui-sref="guh.services.detail({ serviceId: service.id })">
-      <h2 class="name">{{ service.name }}</h2>
-      <p>{{ service.deviceClass.vendor.name }}, {{ service.deviceClass.name }}</p>
-    </a>
-  </li>
-</ul>
+<guh-slider on-change="services.setCurrent(slideIndex)">
+  <guh-slider-item ng-repeat="service in services.configured track by $index" index="$index">
+    <!-- <svg class="icon">
+      <use xlink:href="./assets/svg/vendor/vendor.symbol.svg#elro"></use>
+      <use ng-attr-xlink:href="{{ './assets/svg/vendor/vendor.symbol.svg#' + (service.deviceClass.vendor.name | kebabCase) }}"></use>
+    </svg> -->
+    <h2 class="heading">{{ service.name }}</h2>
+    <p class="heading heading_sub">{{ service.deviceClass.vendor.name === service.deviceClass.name || service.deviceClass.name === service.name ? service.deviceClass.vendor.name : service.deviceClass.vendor.name + ' &middot; ' + service.deviceClass.name }}</p>
+    
+    <div class="detail" ng-if="services.currentSlide === $index" ui-view></div>
+  </guh-slider-item>
+</guh-slider>

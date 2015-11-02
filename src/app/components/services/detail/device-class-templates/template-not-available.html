@@ -21,44 +21,21 @@
 -->
 
 
-<!-- <guh-tabset id="service-state"> -->
+<guh-tabset id="service-state">
   <!-- Actions -->
-  <!-- <guh-tab heading="Actions">
-    <p ng-if="service.deviceClass.actionTypes.length === 0">This service doesn't has any actions.</p>
-    <guh-action device-id="{{ service.id }}" action-type-id="{{ actionType.id }}" ng-repeat="actionType in service.deviceClass.actionTypes | orderBy: 'name' track by $index"></guh-action>
-  </guh-tab> -->
+  <guh-tab heading="Control">
+    <p ng-if="service.actions.length === 0">This service doesn't have any controls.</p>
+    <guh-action device-id="{{ service.id }}" action-type-id="{{ action.actionType.id }}" ng-repeat="action in device.actions | orderBy: 'name' track by $index"></guh-action>
+  </guh-tab>
 
   <!-- States -->
-  <!-- <guh-tab heading="States">
-    <p ng-if="service.deviceClass.stateTypes.length === 0">This service doesn't has any states.</p>
-    <p ng-repeat="stateType in service.deviceClass.stateTypes | orderBy: 'name' track by $index">{{ stateType.name }}: {{ stateType.value }}</p>
-  </guh-tab> -->
-
-  <!-- Events -->
-  <!-- <guh-tab heading="Events">
-    <p ng-if="service.deviceClass.eventTypes.length === 0">This service doesn't has any events.</p>
-    <p ng-repeat="eventType in service.deviceClass.eventTypes | orderBy: 'name' track by $index">{{ eventType.name }}</p>
+  <guh-tab heading="State">
+    <p ng-if="service.states.length === 0">This service doesn't have a state to show you.</p>
+    <div ng-switch="state.stateType.unit" ng-repeat="state in service.states track by $index" class="state">
+      <p class="name">{{ state.stateType.name }}</p>
+      <p class="value" ng-switch-when="UnitUnixTime">{{ state.value * 1000 | date: 'dd.MM.yyyy' }}, {{ state.value * 1000 | date: 'HH:mm' }}</p>
+      <p class="value" ng-switch-when="UnitEuroPerMegaWattHour">{{ state.value / 10 }} €-Cent / kWh</p>
+      <p class="value" ng-switch-default>{{ state.value }} {{ state.stateType.unit | unit }}</p>
+    </div>
   </guh-tab>
-</guh-tabset> -->
-
-<!-- States -->
-<div class="left">
-  <h2>State</h2>
-  <p ng-if="service.states.length === 0">No state available.</p>
-  <!-- <p ng-repeat="state in service.states | orderBy: 'name' track by $index">{{ state.stateType.name }}: {{ state.value }}</p> -->
-  <div ng-switch="state.stateType.unit" ng-repeat="state in service.states track by $index" class="state">
-    <p class="value" ng-switch-when="UnitUnixTime">{{ state.value * 1000 | date: 'dd.MM.yyyy' }}, {{ state.value * 1000 | date: 'HH:mm' }}</p>
-    <p class="value" ng-switch-default>{{ state.value }} {{ state.stateType.unit | unit }}</p>
-    <p class="name">{{ state.stateType.name }}</p>
-  </div>
-</div>
-
-<!-- Actions -->
-<div class="middle">
-  <h2>Controls</h2>
-  <p ng-if="service.actions.length === 0">No controls available.</p>
-  <guh-action device-id="{{ service.id }}" action-type-id="{{ action.actionType.id }}" ng-repeat="action in service.actions | orderBy: 'name' track by $index"></guh-action>
-</div>
-
-<!-- Events -->
-<div class="right"></div>
+</guh-tabset>

@@ -23,26 +23,45 @@
  * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 
 
+$grey: #676767;
+
+$color: $grey;
+
+
 .remote-player {
-  @include rem(margin-bottom, 1.5);
+  margin: 0 auto;
+  @include rem(margin-bottom, 3);
   overflow: auto;
   width: 100%;
 
   button {
+    border-left: none;
+    border-radius: 0px;
     float: left;
     margin: 0;
-    padding: 0;
     width: 16%;
+
+    &:first-child {
+      border-left: 1px solid $border;
+      @include rem(border-bottom-left-radius, 1.5);
+      @include rem(border-top-left-radius, 1.5);
+    }
+
+    &:last-child {
+      @include rem(border-bottom-right-radius, 1.5);
+      @include rem(border-top-right-radius, 1.5);
+    }
 
     &.play,
     &.pause {
       width: 18%;
     }
 
-    span {
-      display: block;
-      padding: 0;
-      width: 100%;
+    .icon {
+      fill: $color;
+      @include rem(height, 1.5);
+      margin: 0 auto;
+      @include rem(width, 1.5);
     }
   }
 }

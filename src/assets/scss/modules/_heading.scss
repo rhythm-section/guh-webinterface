@@ -23,12 +23,17 @@
  * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 
 
-.icon {
-  fill: $c-white;
+.heading {
+  letter-spacing: 0.1em;
+  overflow: hidden;
+  padding-left: 0.1em;
+  text-align: center;
+  text-overflow: ellipsis;
+  text-transform: uppercase;
+  white-space: nowrap;
+  width: 100%;
 }
 
-.modal {
-  .icon {
-    fill: $c-grey;
-  }
+.heading_sub {
+  @include rem(margin-bottom, 1.5);
 }

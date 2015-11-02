@@ -89,7 +89,9 @@
         vm.id = device.id;
         vm.name = (device.name === 'Name') ? device.deviceClass.name : device.name;
         vm.params = device.params;
+        vm.paramsObject = {};
         vm.states = device.states;
+        vm.statesObject = {};
 
         // Wait for templateUrl check
         device.deviceClass.templateUrl
@@ -125,6 +127,16 @@
 
           vm.actions.push(action);
           vm.actionsObject[$filter('camelCase')(actionType.name)] = action;
+        });
+
+        // Params
+        angular.forEach(vm.params, function(param) {
+          vm.paramsObject[$filter('camelCase')(param.name)] = param;
+        });
+
+        // States
+        angular.forEach(vm.states, function(state) {
+          vm.statesObject[$filter('camelCase')(state.stateType.name)] = state;
         });
       }
     }

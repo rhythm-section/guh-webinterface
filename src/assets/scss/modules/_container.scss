@@ -23,64 +23,10 @@
  * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 
 
-$grey: #676767;
-$white: #fff;
-
-$background: $white;
-$background-active: $grey;
-$color: $grey;
-
-
-.tabset {
-  @include rem(margin, 4.5, 0, 3);
-
-  ul {
-    @include display(flex);
-    @include flex-wrap(nowrap);
-  }
-
-  li {
-    @include flex(1);
-    @include flex-grow(1);
-
-    &:first-child a {
-      @include rem(border-bottom-left-radius, 1.5);
-      @include rem(border-top-left-radius, 1.5);
-    }
-
-    &:last-child a {
-      border: 1px solid rgba($background-active, 0.1);
-      @include rem(border-bottom-right-radius, 1.5);
-      @include rem(border-top-right-radius, 1.5);
-    }
-
-    &::-moz-focus-inner {
-      border: 0;
-    }
-  }
-
-  a {
-    background-color: $background;
-    border: 1px solid rgba($background-active, 0.1);
-    border-right: none;
-    color: $color;
-    display: block;
-    @include rem(padding, 0.7, 1.5, 0.8);
-    text-align: center;
-    text-decoration: none;
-
-    &.active {
-      background-color: rgba($background-active, 0.1);
-      color: $color;
-    }
-
-    &.disabled {
-      color: rgba($color, 0.2);
-      cursor: default;
-    }
-  }
-}
-
-.tab {
-  @include rem(padding, 3, 0, 0);
+/* Clearing floats: http://www.quirksmode.org/css/clearing.html */
+.container {
+  background-color: transparent;
+  height: 100%;
+  overflow: auto;
+  width: 100%;
 }

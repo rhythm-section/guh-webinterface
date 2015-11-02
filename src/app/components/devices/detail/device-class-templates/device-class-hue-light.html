@@ -21,38 +21,39 @@
 -->
 
 
-<!-- States -->
-<div class="left">
-  <h2>State</h2>
-  <p ng-if="device.states.length === 0">No state available.</p>
-  <div ng-repeat="state in device.states track by $index" class="state">
-    <p class="value">{{ state.value }}</p>
-    <p class="name">{{ state.stateType.name }}</p>
-  </div>
-</div>
+<guh-tabset disabled="!device.statesObject.reachable.value">
+  <!-- Actions -->
+  <guh-tab heading="Control">
+    <p ng-if="device.actions.length === 0">This device doesn't have any controls.</p>
 
-<!-- Actions -->
-<div class="middle">
-  <h2>Control</h2>
+    <!-- ON/OFF -->
+    <guh-action device-id="{{ device.id }}" action-type-id="{{ device.actionsObject.setPower.actionType.id }}"></guh-action>
 
-  <!-- ON/OFF -->
-  <guh-action device-id="{{ device.id }}" action-type-id="{{ device.actionsObject.setPower.actionType.id }}"></guh-action>
+    <!-- Brightness -->
+    <guh-action device-id="{{ device.id }}" action-type-id="{{ device.actionsObject.setBrightness.actionType.id }}"></guh-action>
 
-  <!-- Brightness -->
-  <guh-action device-id="{{ device.id }}" action-type-id="{{ device.actionsObject.setBrightness.actionType.id }}"></guh-action>
+    <!-- Color temperature -->
+    <guh-action device-id="{{ device.id }}" action-type-id="{{ device.actionsObject.setColorTemperature.actionType.id }}"></guh-action>
 
-  <!-- Color temperature -->
-  <guh-action device-id="{{ device.id }}" action-type-id="{{ device.actionsObject.setColorTemperature.actionType.id }}"></guh-action>
+    <!-- Color -->
+    <guh-action device-id="{{ device.id }}" action-type-id="{{ device.actionsObject.setColor.actionType.id }}"></guh-action>
 
-  <!-- Color -->
-  <guh-action device-id="{{ device.id }}" action-type-id="{{ device.actionsObject.setColor.actionType.id }}"></guh-action>
+    <!-- Set effect -->
+    <guh-button-group device-id="{{ device.id }}" action="device.actionsObject.setEffect" buttons="[ 'none', 'color loop' ]"></guh-button-group>
 
-  <!-- Set effect -->
-  <guh-button-group device-id="{{ device.id }}" action="device.actionsObject.setEffect" buttons="[ 'none', 'color loop' ]"></guh-button-group>
+    <!-- Flash -->
+    <guh-button-group device-id="{{ device.id }}" action="device.actionsObject.flash" buttons="[ 'flash once', 'flash 30 seconds' ]"></guh-button-group>
+  </guh-tab>
 
-  <!-- Flash -->
-  <guh-button-group device-id="{{ device.id }}" action="device.actionsObject.flash" buttons="[ 'flash once', 'flash 30 seconds' ]"></guh-button-group>
-</div>
+  <!-- States -->
+  <guh-tab heading="State">
+    <p ng-if="device.states.length === 0">This device doesn't have a state to show you.</p>
+    <div ng-switch="state.stateType.unit" ng-repeat="state in device.states track by $index" class="state">
+      <p class="name">{{ state.stateType.name }}</p>
+      <p class="value" ng-switch-when="UnitUnixTime">{{ state.value * 1000 | date: 'dd.MM.yyyy' }}, {{ state.value * 1000 | date: 'HH:mm' }}</p>
+      <p class="value" ng-switch-default>{{ state.value }} {{ state.stateType.unit | unit }}</p>
+    </div>
+  </guh-tab>
+</guh-tabset>
 
-<!-- Events -->
-<div class="right"></div>
+<p ng-show="!device.statesObject.reachable.value">The connection to the hue light or hue bridge was lost. Please check if the light is connected to the bridge with the following IP address: {{ device.paramsObject.hostAddress.value }}. Please also check if the hue bridge is connected to your local network.</p>

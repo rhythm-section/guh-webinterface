@@ -26,61 +26,102 @@
 $grey: #676767;
 $white: #fff;
 
-$background: $white;
-$background-active: $grey;
+$background: transparent;
+$border-color: $grey;
 $color: $grey;
 
 
-.tabset {
-  @include rem(margin, 4.5, 0, 3);
+.list {
+  @include rem(padding, 0, 1.5);
+}
 
-  ul {
-    @include display(flex);
-    @include flex-wrap(nowrap);
+.list > .item-divider {
+  border-bottom: none;
+  color: $c-turquoise;
+  @include rem(height, 3);
+  @include rem(margin, 1.5, 0, 0);
+  @include rem(padding, 1.5);
+}
+
+.list > .item {
+  // border-bottom: 1px solid rgba($c-grey, 0.1);
+  // border-top: 1px solid rgba($border-color, 0.1);
+  color: $color;
+  cursor: pointer;
+  display: block;
+  @include rem(height, 4.5);
+  @include rem(padding, 1.5);
+  position: relative;
+  text-align: left;
+
+  &:hover {
+    background-color: $white;
+    // border-color: $white;
+    box-shadow: 0px 0px 6px 0px rgba(0, 0, 0, 0.1);
   }
 
-  li {
-    @include flex(1);
-    @include flex-grow(1);
-
-    &:first-child a {
-      @include rem(border-bottom-left-radius, 1.5);
-      @include rem(border-top-left-radius, 1.5);
-    }
-
-    &:last-child a {
-      border: 1px solid rgba($background-active, 0.1);
-      @include rem(border-bottom-right-radius, 1.5);
-      @include rem(border-top-right-radius, 1.5);
-    }
-
-    &::-moz-focus-inner {
-      border: 0;
-    }
+  &:hover + .item {
+    border-color: $white;
   }
 
-  a {
-    background-color: $background;
-    border: 1px solid rgba($background-active, 0.1);
-    border-right: none;
-    color: $color;
-    display: block;
-    @include rem(padding, 0.7, 1.5, 0.8);
-    text-align: center;
-    text-decoration: none;
+  // &:first-child {
+  //   border-top: none;
+  // }
 
-    &.active {
-      background-color: rgba($background-active, 0.1);
-      color: $color;
-    }
+  p {
+    padding: 0;
+  }
 
-    &.disabled {
-      color: rgba($color, 0.2);
-      cursor: default;
-    }
+  span {
+    display: inline-block;
+    height: inherit;
+    overflow: hidden;
+    @include rem(padding, 1.5, 4.5, 1.5, 1.5);
+    position: absolute;
+      left: 0;
+      top: 0;
+    text-overflow: ellipsis;
+    width: 100%;
+    white-space: nowrap;
+  }
+
+  .icon {
+    float: right;
+    @include rem(height, 1.5);
+    @include rem(margin, 1.5);
+    position: absolute;
+      right: 0;
+      top: 0;
+    @include rem(width, 1.5);
   }
 }
 
-.tab {
-  @include rem(padding, 3, 0, 0);
+.modal {
+  .list > .item {
+    &.selected .icon {
+      fill: $c-turquoise;
+    }
+
+    .icon {
+      fill: rgba($c-grey, 0.2);
+    }
+  }
+
+  .list > .item:hover {
+    &.selected .icon {
+      fill: $c-grey;
+    }
+
+    .icon {
+      display: block;
+      fill: $c-grey;
+    }
+  }
+
+  .list > .item:active {
+    .icon {
+      display: block;
+      fill: lighten($c-grey, 50%);
+    }
+  }
 }

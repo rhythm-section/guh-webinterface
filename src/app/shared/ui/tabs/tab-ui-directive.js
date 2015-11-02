@@ -29,14 +29,15 @@
     .module('guh.ui')
     .directive('guhTab', guhTab);
 
-    guhTab.$inject = [];
+    guhTab.$inject = ['$log'];
 
-    function guhTab() {
+    function guhTab($log) {
       var directive = {
         link: tabLink,
         require: '^guhTabset',
         restrict: 'E',
         scope: {
+          // disabled: '=',
           heading: '@'
         },
         templateUrl: 'app/shared/ui/tabs/tab.html',

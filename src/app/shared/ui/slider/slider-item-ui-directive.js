@@ -21,66 +21,63 @@
  * SOFTWARE.                                                                           *
  *                                                                                     *
  * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
+ 
+(function() {
+  'use strict';
+
+  angular
+    .module('guh.ui')
+    .directive('guhSliderItem', guhSliderItem);
+
+    guhSliderItem.$inject = ['$log'];
+
+    function guhSliderItem($log) {
+      var directive = {
+        bindToController: {
+          index: '='
+        },
+        controller: sliderItemCtrl,
+        controllerAs: 'sliderItem',
+        link: sliderItemLink,
+        require: '^^guhSlider',
+        restrict: 'E',
+        scope: {},
+        templateUrl: 'app/shared/ui/slider/slider-item.html',
+        transclude: true
+      };
+
+      return directive;
 
 
-$grey: #676767;
-$white: #fff;
+      function sliderItemCtrl() {
 
-$background: $white;
-$background-active: $grey;
-$color: $grey;
+        /* jshint validthis: true */
+        var vm = this;
+
+      }
 
 
-.tabset {
-  @include rem(margin, 4.5, 0, 3);
+      function sliderItemLink(scope, element, attrs, sliderCtrl) {
+        element.addClass('slider__item');
 
-  ul {
-    @include display(flex);
-    @include flex-wrap(nowrap);
-  }
+        // Add slide to contentSlider
+        scope.sliderItem.index = sliderCtrl.addSliderItem({
+          scope: scope,
+          element: element,
+          attrs: attrs
+        });
 
-  li {
-    @include flex(1);
-    @include flex-grow(1);
+        // Slide to first element
+        if(scope.sliderItem.index === 0) {
+          sliderCtrl.slideTo(scope.sliderItem.index);
+        }
 
-    &:first-child a {
-      @include rem(border-bottom-left-radius, 1.5);
-      @include rem(border-top-left-radius, 1.5);
+        sliderCtrl.setWidth();
+
+        element.bind('click', function() {
+          sliderCtrl.slideTo(scope.sliderItem.index);
+        });
+      }
     }
 
-    &:last-child a {
-      border: 1px solid rgba($background-active, 0.1);
-      @include rem(border-bottom-right-radius, 1.5);
-      @include rem(border-top-right-radius, 1.5);
-    }
-
-    &::-moz-focus-inner {
-      border: 0;
-    }
-  }
-
-  a {
-    background-color: $background;
-    border: 1px solid rgba($background-active, 0.1);
-    border-right: none;
-    color: $color;
-    display: block;
-    @include rem(padding, 0.7, 1.5, 0.8);
-    text-align: center;
-    text-decoration: none;
-
-    &.active {
-      background-color: rgba($background-active, 0.1);
-      color: $color;
-    }
-
-    &.disabled {
-      color: rgba($color, 0.2);
-      cursor: default;
-    }
-  }
-}
-
-.tab {
-  @include rem(padding, 3, 0, 0);
-}
+}());

@@ -29,9 +29,9 @@
     .module('guh.ui')
     .directive('guhActionBar', guhActionBar);
 
-    guhActionBar.$inject = ['$log', '$filter', '$rootScope', '$state', 'ngDialog'];
+    guhActionBar.$inject = ['$log', '$filter', '$rootScope', '$timeout', '$state', 'ngDialog'];
 
-    function guhActionBar($log, $filter, $rootScope, $state, ngDialog) {
+    function guhActionBar($log, $filter, $rootScope, $timeout, $state, ngDialog) {
       var directive = {
         bindToController: {
 
@@ -70,13 +70,16 @@
           stateCtrlAsSingular = (stateCtrlAs.charAt(stateCtrlAs.length - 1) === 's') ? stateCtrlAs.substring(0, stateCtrlAs.length - 1) : stateCtrlAs;
           stateCtrlAsPlural = stateCtrlAsSingular + 's';
 
-          if(stateCtrlAs.charAt(stateCtrlAs.length - 1) === 's') {
-            vm.showAdd = true;
-            vm.showEdit = false;
-          } else {
-            vm.showAdd = false;
-            vm.showEdit = true;
-          }
+          vm.showAdd = true;
+          vm.showEdit = true;
+
+          // if(stateCtrlAs.charAt(stateCtrlAs.length - 1) === 's') {
+          //   vm.showAdd = true;
+          //   vm.showEdit = false;
+          // } else {
+          //   vm.showAdd = false;
+          //   vm.showEdit = true;
+          // }
         }
 
         function openAddModal() {
@@ -89,6 +92,7 @@
             className: 'modal small',
             controller: addController,
             controllerAs: addControllerAs,
+            disableAnimation: true,
             overlay: true,
             showClose: false,
             template: 'app/components/' + stateCtrlAsPlural + '/add/' + addTemplate + '.html'
@@ -105,6 +109,7 @@
             className: 'modal small',
             controller: editController,
             controllerAs: editControllerAs,
+            disableAnimation: true,
             overlay: true,
             showClose: false,
             template: 'app/components/' + stateCtrlAsPlural + '/edit/' + editTemplate + '.html'
@@ -133,23 +138,27 @@
           $log.log('remainingDialogs', remainingDialogs.length);
         });
 
+        // Becaus of bug that ngDialog.closed is not working (see below), this is needed to remove the dialog. The timeout is needed because of the animation
         scope.$on('ngDialog.closing', function (event, $dialog) {
-          $log.log('ngDialog closing: ' + $dialog.attr('id'));
+          $timeout(function() {
+            $log.log('ngDialog closing: ' + $dialog.attr('id'));
 
-          var dialog = document.getElementById($dialog.attr('id'));
-          dialog.remove();
+            var dialog = document.getElementById($dialog.attr('id'));
+            dialog.remove();
 
-          var body = angular.element(document).find('body');
-          var remainingDialogs = document.getElementsByClassName('ngdialog');
+            var body = angular.element(document).find('body');
+            var remainingDialogs = document.getElementsByClassName('ngdialog');
 
-          $log.log('remainingDialogs', remainingDialogs.length);
+            $log.log('remainingDialogs', remainingDialogs.length);
 
-          // If last dialog was removed
-          if(remainingDialogs.length === 0) {
-            body.removeClass('ngdialog-open');
-          }
+            // If last dialog was removed
+            if(remainingDialogs.length === 0) {
+              body.removeClass('ngdialog-open');
+            }
+          }, 400);
         });
 
+        // Bug: https://github.com/likeastore/ngDialog/issues/319
         scope.$on('ngDialog.closed', function (event, $dialog) {
           $log.log('ngDialog closed: ' + $dialog.attr('id'));
         });

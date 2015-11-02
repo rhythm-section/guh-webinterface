@@ -47,12 +47,17 @@
     var protocol = $location.protocol();
     var ssl = protocol.charAt(protocol.length - 1) === 's' ? true : false;
 
+    // State variables
     vm.check = false;
     vm.setup = false;
     vm.load = false;
     vm.valid = true;
+    vm.submitted = false;
+
+    // Current host
     vm.host = '';
 
+    // Methods
     vm.checkHost = checkHost;
     vm.setHost = setHost;
     vm.resetHost = resetHost;
@@ -82,7 +87,11 @@
     }
 
     function _checkConnection() {
-      websocketService.reconnect();
+      vm.check = true;
+
+      $timeout(function() {
+        websocketService.reconnect();
+      }, 2000);
     }
 
     function _saveHost() {
@@ -131,7 +140,15 @@
           .http
           .GET(app.apiUrl + '/devices/' + device.id + '/states')
           .then(function(response) {
-            var states = DSState.createCollection(response.data);
+            // var states = DSState.createCollection(response.data);
+            var states = [];
+            angular.forEach(response.data, function(state) {
+              var stateToInject = {};
+
+              state.deviceId = device.id;
+              stateToInject = DSState.createInstance(state);
+              states.push(stateToInject);
+            });
 
             device.states = DSState.inject(states);
 
@@ -173,7 +190,7 @@
             } else {
               $state.go('guh.devices.master');
             }
-          }, 1000);
+          }, 2000);
         })
         .catch(function(error) {
           $log.error(error);
@@ -189,11 +206,20 @@
       vm.valid = false;
 
       if(angular.isDefined(vm.host)) {
-        vm.valid = validIpAddressRegex.test(vm.host) ||validHostnameRegex.test(vm.host);
+        vm.valid = validIpAddressRegex.test(vm.host) || validHostnameRegex.test(vm.host);
       }
     }
 
     function setHost() {
+      vm.submitted = true;
+      $timeout(function() {
+        vm.submitted = false;
+      }, 1000);
+
+      if(!vm.valid) {
+        return;
+      }
+
       _overrideConfig();
 
       vm.check = true;
@@ -203,11 +229,12 @@
       // Try to reconnect to guh host with new host
       $timeout(function() {
         websocketService.reconnect();
-      }, 1000);
+      }, 2000);
     }
 
     function resetHost() {
       vm.host = host;
+      checkHost();
     }
 
     $scope.$on('WebsocketConnected', function(event, data) {
@@ -223,30 +250,30 @@
       _loadData();
     });
 
-    $scope.$on('WebsocketConnectionError', function(event, data) {
-      /* jshint unused:false */
+    angular.forEach(['WebsocketConnectionError', 'WebsocketConnectionLost'], function(websocketEvent) {
+      $scope.$on(websocketEvent, function(event, data) {
+        /* jshint unused:false */
 
-      // Clear localstorage entry if already saved
-      return DSSettings
-        .find('admin')
-        .then(function(data) {
-          DSSettings
-            .destroy('admin')
-            .then(function() {
-              $log.log('localstorage successful deleted', DSSettings.get('admin'));
-            });
-        })
-        .finally(function() {
-          // Reset to default
-          resetHost();
+        // Clear localstorage entry if already saved
+        return DSSettings
+          .find('admin')
+          .then(function(data) {
+            DSSettings
+              .destroy('admin')
+              .then(function() {
+                $log.log('localstorage successful deleted', DSSettings.get('admin'));
+              });
+          })
+          .finally(function() {
+            // Reset to default
+            // resetHost();
 
-          // Setup
-          vm.check = false;
-          vm.setup = true;
-          vm.load = false;
-
-          $log.log('vm', vm);
-        });
+            // Setup
+            vm.check = false;
+            vm.setup = true;
+            vm.load = false;
+          });
+      });
     });
 
 

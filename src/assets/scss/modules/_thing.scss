@@ -23,64 +23,78 @@
  * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 
 
+$black: #000;
 $grey: #676767;
+$green: #7cc09a;
+$turquoise: #57baae;
 $white: #fff;
 
-$background: $white;
-$background-active: $grey;
-$color: $grey;
+$background-light: $green;
+$background-dark: $turquoise;
+$background-current: $white;
+$color: $black;
+$color-current: $grey;
 
 
-.tabset {
-  @include rem(margin, 4.5, 0, 3);
+.horizontal-container {
+  position: fixed;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    top: 0;
+}
 
-  ul {
-    @include display(flex);
-    @include flex-wrap(nowrap);
+.horizontal-container {
+  margin-left: -10%;
+  overflow: auto;
+  width: 120%;
+}
+
+.horizontal-item,
+.horizontal-item_current {
+  float: left;
+  height: 100%;
+  @include rem(padding, 10.5, 3, 3);
+  width: 18%;
+}
+
+.horizontal-item {
+  background-color: transparent;
+  border-left: 1px solid rgba($black, 0.1);
+  color: rgba($black, 0.2);
+  position: relative;  
+
+  &:first-child {
+    border-left: none;
   }
 
-  li {
-    @include flex(1);
-    @include flex-grow(1);
-
-    &:first-child a {
-      @include rem(border-bottom-left-radius, 1.5);
-      @include rem(border-top-left-radius, 1.5);
-    }
-
-    &:last-child a {
-      border: 1px solid rgba($background-active, 0.1);
-      @include rem(border-bottom-right-radius, 1.5);
-      @include rem(border-top-right-radius, 1.5);
-    }
-
-    &::-moz-focus-inner {
-      border: 0;
-    }
-  }
-
-  a {
-    background-color: $background;
-    border: 1px solid rgba($background-active, 0.1);
-    border-right: none;
-    color: $color;
-    display: block;
-    @include rem(padding, 0.7, 1.5, 0.8);
-    text-align: center;
-    text-decoration: none;
-
-    &.active {
-      background-color: rgba($background-active, 0.1);
-      color: $color;
-    }
-
-    &.disabled {
-      color: rgba($color, 0.2);
-      cursor: default;
-    }
+  .heading {
+    @include rem(margin-top, -1.5);
+    position: absolute;
+      left: 0%;
+      top: 50%;
+    width: 100%;
   }
 }
 
-.tab {
-  @include rem(padding, 3, 0, 0);
+.horizontal-item_current {
+  background-color: $background-current;
+  background-image: none;
+  box-shadow: 0px 0px 12px 0px rgba(0, 0, 0, 0.3);
+  border-left: none;
+  color: $color-current;
+  overflow-y: scroll;
+  width: 28%;
+
+  &+ .horizontal-item {
+    border-left: none;
+  }
+
+  // .icon {
+  //   display: block;
+  //   fill: $color-current;
+  //   @include rem(height, 12);
+  //   margin: 0 auto;
+  //   @include rem(width, 12);
+  // }
 }

@@ -31,17 +31,26 @@ $line-height: 1.5;
 $x-height: 1;
 
 
+$green: #7cc09a;
+$grey: #676767;
+$turquoise: #57baae;
+
+$background-bar: $grey;
+$background-bar-active: $green;
+$color: $grey;
+
+
 /*
  * Styles
  */
 
-.label {
-  display: block;
-  @include rem(margin-bottom, $line-height);
-  // @include rem(padding-top, ($line-height - $x-height));
-  // text-align: center;
-  @include rem(padding, 0, 1.5);
-}
+// .label {
+//   display: block;
+//   @include rem(margin-bottom, $line-height);
+//   // @include rem(padding-top, ($line-height - $x-height));
+//   // text-align: center;
+//   @include rem(padding, 0, 1.5);
+// }
 
 .range {
   background-color: transparent;
@@ -51,17 +60,17 @@ $x-height: 1;
   // @include rem(margin-bottom, $line-height - ($line-height - $x-height));
   // @include rem(padding, ($line-height - $x-height), $line-height, 0);
   @include rem(margin-bottom, 1.5);
-  @include rem(padding, $line-height);
+  @include rem(padding, 0, $line-height, $line-height);
   position: relative;
   width: 100%;
   z-index: 0;
 
   .icon {
-    fill: rgba($c-white, 0.2);
+    fill: rgba($grey, 0.2);
     @include rem(height, 1.5);
     padding: 0;
     position: absolute;
-      @include rem(top, 1.5);
+      top: 0;
     @include rem(width, 1.5);
 
     &.left {
@@ -109,7 +118,7 @@ $x-height: 1;
 }
 
 .bar {
-  background-color: get-color("background");
+  background-color: rgba($background-bar, 0.2);
   position: absolute;
     left: 0;
     right: 0;
@@ -117,7 +126,8 @@ $x-height: 1;
 }
 
 .bar-active {
-  background-color: get-color("foreground");
+  background-color: $background-bar-active;
+  @include linear-gradient(to right, $green, $turquoise);
   position: absolute;
     left: 10%;
     right: 10%;

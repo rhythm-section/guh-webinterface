@@ -21,25 +21,25 @@
 -->
 
 
-<!-- States -->
-<div class="left">
-  <h2>State</h2>
-  <p ng-if="service.states.length === 0">No state available.</p>
-  <div ng-repeat="state in service.states track by $index" class="state">
-    <p class="value">{{ state.value }}</p>
-    <p class="name">{{ state.stateType.name }}</p>
-  </div>
-</div>
+<guh-tabset disabled="!service.statesObject.connected.value">
+  <!-- Actions -->
+  <guh-tab heading="Control">
+    <p ng-if="service.actions.length === 0">This device doesn't have any controls.</p>
 
-<!-- Actions -->
-<div class="middle">
-  <h2>Control</h2>
+    <guh-action device-id="{{ service.id }}" action-type-id="{{ service.actionsObject.setVolume.actionType.id }}"></guh-action>
+    <guh-remote-player action="service.actionsObject.pressButton" device-id="{{ service.id }}"></guh-remote-player>
+    <guh-remote-navigation action="service.actionsObject.pressButton" device-id="{{ service.id }}"></guh-remote-navigation>
+    <guh-remote-fn action="service.actionsObject.pressButton" device-id="{{ service.id }}"></guh-remote-fn>
+    </guh-tab>
 
-  <guh-action device-id="{{ service.id }}" action-type-id="{{ service.actionsObject.setVolume.actionType.id }}"></guh-action>
-  <guh-remote-player action="service.actionsObject.pressButton" device-id="{{ service.id }}"></guh-remote-player>
-  <guh-remote-navigation action="service.actionsObject.pressButton" device-id="{{ service.id }}"></guh-remote-navigation>
-  <guh-remote-fn action="service.actionsObject.pressButton" device-id="{{ service.id }}"></guh-remote-fn>
-</div>
+  <!-- States -->
+  <guh-tab heading="State">
+    <p ng-if="service.states.length === 0">This device doesn't have a state to show you.</p>
+    <div ng-repeat="state in service.states track by $index" class="state">
+      <p class="value">{{ state.value }}</p>
+      <p class="name">{{ state.stateType.name }}</p>
+    </div>
+  </guh-tab>
+</guh-tabset>
 
-<!-- Events -->
-<div class="right"></div>
+<p ng-show="!service.statesObject.connected.value">The connection to Kodi was lost. Please check if Kodi is turned on and is reachable under the following address: {{ service.paramsObject.ip.value }}:{{ service.paramsObject.port.value }}</p>

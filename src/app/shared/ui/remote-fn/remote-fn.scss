@@ -28,12 +28,24 @@
   width: 100%;
 
   button {
+    border-left: none;
+    border-radius: 0px;
     float: left;
     width: 25%;
 
+    &:first-child {
+      border-left: 1px solid $border;
+      @include rem(border-bottom-left-radius, 1.5);
+      @include rem(border-top-left-radius, 1.5);
+    }
+
+    &:last-child {
+      @include rem(border-bottom-right-radius, 1.5);
+      @include rem(border-top-right-radius, 1.5);
+    }
+
     span {
       display: block;
-      padding: 0;
       width: 100%;
     }
   }

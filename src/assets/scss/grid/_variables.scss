@@ -35,12 +35,23 @@ $columns-l: 12;
 $columns-xl: 12;
 $columns-xxl: 18;
 
-$breakpoint-xs: new-breakpoint(max-width em(480px), $columns-xs);
-$breakpoint-s: new-breakpoint(min-width em(481px) max-width em(640), $columns-s);
-$breakpoint-m: new-breakpoint(min-width em(641) max-width em(1024px), $columns-m);
-$breakpoint-l: new-breakpoint(min-width em(1025) max-width em(1280), $columns-l);
-$breakpoint-xl: new-breakpoint(min-width em(1281) max-width em(1600), $columns-xl);
-$breakpoint-xxl: new-breakpoint(min-width em(1601), $columns-xxl);
+$max-width-xs: em(480px);
+$min-width-s: em(481px);
+$max-width-s: em(640px);
+$min-width-m: em(641px);
+$max-width-m: em(1024px);
+$min-width-l: em(1025px);
+$max-width-l: em(1280px);
+$min-width-xl: em(1281px);
+$max-width-xl: em(1600px);
+$min-width-xxl: em(1601px);
+
+$breakpoint-xs: new-breakpoint(max-width $max-width-xs, $columns-xs);
+$breakpoint-s: new-breakpoint(min-width $min-width-s max-width $max-width-s, $columns-s);
+$breakpoint-m: new-breakpoint(min-width $min-width-m max-width $max-width-m, $columns-m);
+$breakpoint-l: new-breakpoint(min-width $min-width-l max-width $max-width-l, $columns-l);
+$breakpoint-xl: new-breakpoint(min-width $min-width-xl max-width $max-width-xl, $columns-xl);
+$breakpoint-xxl: new-breakpoint(min-width $min-width-xxl, $columns-xxl);
 
 $breakpoints: (
   xs: (

@@ -29,10 +29,13 @@
     .module('guh.ui')
     .directive('guhTabset', guhTabset);
 
-    guhTabset.$inject = [];
+    guhTabset.$inject = ['$log', 'hotkeys'];
 
-    function guhTabset() {
+    function guhTabset($log, hotkeys) {
       var directive = {
+        bindToController: {
+          disabled: '='
+        },
         controller: tabsetCtrl,
         controllerAs: 'tabset',
         link: tabsetLink,
@@ -45,7 +48,8 @@
       return directive;
 
 
-      function tabsetCtrl() {
+      function tabsetCtrl($scope) {
+        
         /* jshint validthis: true */
         var vm = this;
 
@@ -53,6 +57,7 @@
          * Variables
          */
         vm.tabs = [];
+        vm.disabled = (vm.disabled === undefined) ? false : vm.disabled;
 
         /*
          * Methods
@@ -61,15 +66,44 @@
         vm.selectTab = selectTab;
 
         function addTab(tab) {
+          var hotkey = tab.heading.charAt(0).toLowerCase();
+
           vm.tabs.push(tab);
 
           // Set first tab active
           if(vm.tabs.length === 1) {
             tab.active = true;
           }
+
+          // Bind hotkey only if combo is letter (a-z)
+          if(hotkey.match(/[a-z]/)) {
+            tab.hotkey = true;
+
+            hotkeys
+              .bindTo($scope)
+              .add({
+                combo: hotkey,
+                description: tab.heading,
+                callback: function(event, hotkey) {
+                  event.preventDefault();
+
+                  angular.forEach(vm.tabs, function(tab) {
+                    if(tab.heading === hotkey.description) {
+                      selectTab(tab);
+                    }
+                  });
+                }
+              });
+          } else {
+            tab.hotkey = false;
+          }
         }
 
         function selectTab(selectedTab) {
+          if(selectedTab.disabled) {
+            return;
+          }
+
           angular.forEach(vm.tabs, function(tab) {
             if(tab.active && tab !== selectedTab) {
               tab.active = false;

@@ -88,13 +88,21 @@
             templateUrl: 'app/components/devices/master/devices-master.html'
           });
 
-          $stateProvider.state('guh.devices.detail', {
-            controller: 'DevicesDetailCtrl',
-            controllerAs: 'device',
-            params: { deviceId: null },
-            url: '/:deviceId',
-            templateUrl: 'app/components/devices/detail/devices-detail.html'
-          });
+            $stateProvider.state('guh.devices.master.current', {
+              controller: 'DevicesDetailCtrl',
+              controllerAs: 'device',
+              params: { deviceId: null },
+              url: '/:deviceId',
+              templateUrl: 'app/components/devices/detail/devices-detail.html'
+            });
+
+          // $stateProvider.state('guh.devices.detail', {
+          //   controller: 'DevicesDetailCtrl',
+          //   controllerAs: 'device',
+          //   params: { deviceId: null },
+          //   url: '/:deviceId',
+          //   templateUrl: 'app/components/devices/detail/devices-detail.html'
+          // });
 
         $stateProvider.state('guh.services', {
           abstract: true,
@@ -109,12 +117,20 @@
             templateUrl: 'app/components/services/master/services-master.html'
           });
 
-          $stateProvider.state('guh.services.detail', {
-            controller: 'ServicesDetailCtrl',
-            controllerAs: 'service',
-            url: '/:serviceId',
-            templateUrl: 'app/components/services/detail/services-detail.html'
-          });
+            $stateProvider.state('guh.services.master.current', {
+              controller: 'ServicesDetailCtrl',
+              controllerAs: 'service',
+              params: { serviceId: null },
+              url: '/:serviceId',
+              templateUrl: 'app/components/services/detail/services-detail.html'
+            });
+
+          // $stateProvider.state('guh.services.detail', {
+          //   controller: 'ServicesDetailCtrl',
+          //   controllerAs: 'service',
+          //   url: '/:serviceId',
+          //   templateUrl: 'app/components/services/detail/services-detail.html'
+          // });
 
         $stateProvider.state('guh.moods', {
           abstract: true,

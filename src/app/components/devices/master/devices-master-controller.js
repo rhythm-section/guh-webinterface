@@ -39,9 +39,9 @@
     .module('guh.devices')
     .controller('DevicesMasterCtrl', DevicesMasterCtrl);
 
-  DevicesMasterCtrl.$inject = ['$log', '$scope', '$state', '$stateParams', 'DSDevice'];
+  DevicesMasterCtrl.$inject = ['$log', '$scope', '$filter', '$state', '$stateParams', 'DSDevice'];
 
-  function DevicesMasterCtrl($log, $scope, $state, $stateParams, DSDevice) {
+  function DevicesMasterCtrl($log, $scope, $filter, $state, $stateParams, DSDevice) {
     
     // Don't show debugging information
     DSDevice.debug = false;
@@ -50,6 +50,10 @@
 
     // Public variables
     vm.configured = [];
+    vm.currentSlide = 0;
+
+    // Public methods
+    vm.setCurrent = setCurrent;
 
 
     /**
@@ -74,13 +78,26 @@
         });
       }
 
+      var configuredDevices = [];
       devices.forEach(function(device) {
         device.name = (device.name === 'Name') ? device.deviceClass.name : device.name;
 
         if(device.deviceClass.classType === 'device' || device.deviceClass.classType === 'gateway') {
-          vm.configured.push(device);
+          configuredDevices.push(device);
         }
       });
+
+      // Sort by name
+      vm.configured = $filter('orderBy')(configuredDevices, 'name');
+    }
+
+
+    function setCurrent(index) {
+      vm.currentSlide = index;
+      
+      if(index !== -1) {
+        $state.go('guh.devices.master.current', { deviceId: vm.configured[index].id });
+      }
     }
 
 
