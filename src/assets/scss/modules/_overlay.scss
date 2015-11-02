@@ -91,6 +91,24 @@ $color: $grey;
     //   @include rem(margin-left, -10);
     //   @include rem(width, 27);
     // }
+
+    .inner-content {
+      @include rem(padding, 7.5, 6, 6);
+
+      h3 {
+        @include linear-gradient(to bottom, rgba($background-overlay, 0.8), rgba($background-overlay, 0.4));
+        @include rem(font-size, 1.5);
+        @include rem(height, 7.5);
+        @include rem(padding, 3, 6, 3);
+        position: fixed;
+          left: 0;
+          right: 0;
+          top: 0;
+        text-align: center;
+        width: 100%;
+        z-index: 9998;
+      }
+    }
   }
 
   .close {
