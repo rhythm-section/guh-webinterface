@@ -149,6 +149,7 @@
 
         var viewportWidth = $window.innerWidth;
         var slideTimer;
+        var executeTimer;
 
         var columnCount;
         var dummyColumnCount;
@@ -366,6 +367,7 @@
 
             // Cancel timer to set new widths and positions
             $timeout.cancel(slideTimer);
+            $timeout.cancel(executeTimer);
 
             // Before slide
             if(oldCurrent.length > 0) {
@@ -395,7 +397,7 @@
               slideTimer = $timeout(function() {
                 newCurrent.addClass('slider__item-details');
 
-                $timeout(function() {
+                executeTimer = $timeout(function() {
                   sliderCtrl.executeCallback();
                 }, 400);
               }, 400);
