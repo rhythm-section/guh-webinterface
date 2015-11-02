@@ -45,6 +45,7 @@
       'ui.router',
       'cfp.hotkeys',
       'ngDialog',
+      'chart.js',
 
       // Configuration
       'guh.config',

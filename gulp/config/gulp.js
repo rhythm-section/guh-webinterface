@@ -182,6 +182,8 @@ module.exports = {
     'js-data-angular.js',
     'guh-libjs.js',
     'ngDialog.js',
+    'Chart.js',
+    'angular-chart.js',
     'hotkeys.js'
   ],
 
