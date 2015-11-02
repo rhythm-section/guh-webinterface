@@ -53,6 +53,10 @@ $color: $grey;
       @include rem(border-bottom-right-radius, 1.5);
       @include rem(border-top-right-radius, 1.5);
     }
+
+    &::-moz-focus-inner {
+      border: 0;
+    }
   }
 
   a {
