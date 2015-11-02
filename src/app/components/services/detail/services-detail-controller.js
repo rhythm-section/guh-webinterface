@@ -39,9 +39,9 @@
     .module('guh.services')
     .controller('ServicesDetailCtrl', ServicesDetailCtrl);
 
-  ServicesDetailCtrl.$inject = ['$log', '$scope', '$filter', '$state', '$stateParams', 'libs', 'DSDevice', 'DSState', 'DSDeviceClass'];
+  ServicesDetailCtrl.$inject = ['$log', '$scope', '$filter', '$state', '$stateParams', 'app', 'libs', 'DSHttpAdapter', 'DSDevice', 'DSState', 'DSDeviceClass'];
 
-  function ServicesDetailCtrl($log, $scope, $filter, $state, $stateParams, libs, DSDevice, DSState, DSDeviceClass) {
+  function ServicesDetailCtrl($log, $scope, $filter, $state, $stateParams, app, libs, DSHttpAdapter, DSDevice, DSState, DSDeviceClass) {
 
     // Don't show debugging information
     DSDevice.debug = false;
@@ -90,7 +90,9 @@
         vm.id = service.id;
         vm.name = (service.name === 'Name') ? service.deviceClass.name : service.name;
         vm.params = service.params;
+        vm.paramsObject = {};
         vm.states = service.states;
+        vm.statesObject = {};
 
         // Wait for templateUrl check
         service.deviceClass.templateUrl
@@ -127,10 +129,19 @@
           vm.actions.push(action);
           vm.actionsObject[$filter('camelCase')(actionType.name)] = action;
         });
+
+        // Params
+        angular.forEach(vm.params, function(param) {
+          vm.paramsObject[$filter('camelCase')(param.name)] = param;
+        });
+
+        // States
+        angular.forEach(vm.states, function(state) {
+          vm.statesObject[$filter('camelCase')(state.stateType.name)] = state;
+        });
       }
     }
-
-
+    
     _init();
 
   }
