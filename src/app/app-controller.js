@@ -29,25 +29,31 @@
     .module('guh')
     .controller('AppCtrl', AppCtrl);
 
-  AppCtrl.$inject = ['$log', '$scope', '$timeout', '$state', 'app', 'websocketService', 'ngDialog'];
+  AppCtrl.$inject = ['$log', '$rootScope', '$scope', '$animate', '$timeout', '$state', '$stateParams', 'app', 'libs', 'websocketService', 'ngDialog'];
 
-  function AppCtrl($log, $scope, $timeout, $state, app, websocketService, ngDialog) {
+  function AppCtrl($log, $rootScope, $scope, $animate, $timeout, $state, $stateParams, app, libs, websocketService, ngDialog) {
 
     var vm = this;
-    var modal = null;
+    var connectionErrorModal = null;
     
     vm.$state = $state;
+    vm.$stateParams = $stateParams;
 
+
+    // Websocket Connection Error
     $scope.$on('WebsocketConnectionLost', function(event, data) {
       // Only show error when data available (=> not first run)
       if(app.dataLoaded) {
-        if(!modal) {
-          modal = ngDialog.open({
-            className: 'modal error',
+        if(!connectionErrorModal) {
+          connectionErrorModal = ngDialog.open({
+            className: 'modal modal_error modal_full',
             overlay: true,
             plain: true,
             showClose: false,
-            template: '<p>' + data + '</p>'
+            template: '<div>' + 
+                        '<p>' + data + '</p>' + 
+                        '<a class="button" ui-sref="guh.intro()" ng-click="closeThisDialog()">Reload the interface</a>' +
+                      '</div>'
           });
         }
 
@@ -58,9 +64,9 @@
     });
 
     $scope.$on('WebsocketConnected', function(event, data) {
-      if(modal) {
-        modal.close();
-        modal = null;
+      if(connectionErrorModal) {
+        connectionErrorModal.close();
+        connectionErrorModal = null;
       }
     });
 
