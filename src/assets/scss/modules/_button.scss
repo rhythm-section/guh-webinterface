@@ -23,74 +23,46 @@
  * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 
 
-/*
- * Libraries
- *
- */
+$green: #7cc09a;
+$grey-dark: #676767;
+$grey-light: #f0f0f0;
+$grey-middle: #e3e3e3;
+$turquoise: #57baae;
+$white: #fff;
 
-@import "bourbon";
+$background: $white;
+$background-highlight: $green;
+$background-highlight-hover: $turquoise;
+$border: $grey-light;
+$border-hover: $grey-middle;
+$border-focus: $grey-dark;
+$border-highlight: $turquoise;
+$color-highlight: $white;
 
+.button {
+  display: block;
+  background-color: $background-highlight;
+  border: 1px solid rgba($border-highlight, 0.4);
+  @include rem(border-radius, 1.5);
+  color: $color-highlight;
+  cursor: pointer;
+  margin: 0 auto;
+  @include rem(margin-bottom, 1.5);
+  @include rem(max-width, 19.5);
+  outline: none;
+  @include rem(padding, 0.7, 1.5, 0.8);
+  @include rem(font-size, 1);
+  @include rem(line-height, 1.5);
+  text-decoration: none;
+  @include transition(background 0.2s ease-in-out);
+  @include user-select(none);
 
-/*
- * App SASS
- *
- */
+  &::-moz-focus-inner {
+    border: 0;
+  }
 
-@import "../assets/scss/functions";
-@import "../assets/scss/mixins";
-@import "../assets/scss/variables";
-
-
-/*
- * Grid
- *
- */
-
-@import "../assets/scss/grid/grid";
-
-
-/*
- * Base & Layout
- *
- */
-
-@import "../assets/scss/base/reset";
-@import "../assets/scss/base/base";
-
-@import "../assets/scss/layout/header";
-@import "../assets/scss/layout/content";
-
-
-/*
- * Modules
- *
- */
-
-@import "../assets/scss/modules/button";
-@import "../assets/scss/modules/container";
-@import "../assets/scss/modules/content";
-@import "../assets/scss/modules/heading";
-@import "../assets/scss/modules/hotkeys";
-@import "../assets/scss/modules/icon";
-@import "../assets/scss/modules/list";
-@import "../assets/scss/modules/loading";
-@import "../assets/scss/modules/overlay";
-@import "../assets/scss/modules/state";
-@import "../assets/scss/modules/tile";
-
-
-/*
- * Directives (Shared UI)
- */
-
-@import "../app/shared/ui/action-bar/action-bar";
-@import "../app/shared/ui/button-group/button-group";
-@import "../app/shared/ui/color/color";
-@import "../app/shared/ui/form/form";
-@import "../app/shared/ui/range/range";
-@import "../app/shared/ui/remote-navigation/remote-navigation";
-@import "../app/shared/ui/remote-fn/remote-fn";
-@import "../app/shared/ui/remote-player/remote-player";
-@import "../app/shared/ui/slider/slider";
-@import "../app/shared/ui/wizard/wizard";
-@import "../app/shared/ui/tabs/tabs";
+  &:hover {
+    background-color: $background-highlight-hover;
+    border-color: $border-highlight;
+  }
+}
