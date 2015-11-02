@@ -28,7 +28,9 @@
   angular
     .module('guh.config')
     .constant('libs', {
-      '_': window._
+      '_': window._,
+      'moment': window.moment,
+      'Chart': window.Chart
     });
 
 }());

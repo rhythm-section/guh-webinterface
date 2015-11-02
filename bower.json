@@ -28,7 +28,10 @@
     "angular-messages": "~1.4.3",
     "angular-sanitize": "~1.4.3",
     "ngDialog": "~0.4.0",
-    "js-data-localstorage": "~2.1.1"
+    "js-data-localstorage": "~2.1.1",
+    "stacktrace-js": "~1.0.0",
+    "moment": "~2.10.6",
+    "angular-chart.js": "~0.8.4"
   },
   "devDependencies": {},
   "overrides": {
@@ -37,6 +40,12 @@
     },
     "angular-animate": {
       "main": "./angular-animate.js"
+    },
+    "angular-chart.js": {
+      "main": [
+        "./dist/angular-chart.css",
+        "./dist/angular-chart.js"
+      ]
     },
     "angular-hotkeys": {
       "main": "./build/hotkeys.js"
@@ -65,6 +74,9 @@
     "lodash": {
       "main": "./lodash.js"
     },
+    "moment": {
+      "main": "./min/moment.min.js"
+    },
     "ngDialog": {
       "main": [
         "./css/ngDialog.css",
@@ -73,6 +85,9 @@
     },
     "reconnectingWebsocket": {
       "main": "./reconnecting-websocket.js"
+    },
+    "stacktrace-js": {
+      "main": "./dist/stacktrace.js"
     }
   },
   "resolutions": {
