@@ -29,7 +29,6 @@
     "angular-sanitize": "~1.4.3",
     "ngDialog": "~0.4.0",
     "js-data-localstorage": "~2.1.1",
-    "stacktrace-js": "~1.0.0",
     "moment": "~2.10.6",
     "angular-chart.js": "~0.8.4"
   },
@@ -85,9 +84,6 @@
     },
     "reconnectingWebsocket": {
       "main": "./reconnecting-websocket.js"
-    },
-    "stacktrace-js": {
-      "main": "./dist/stacktrace.js"
     }
   },
   "resolutions": {
