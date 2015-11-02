@@ -206,7 +206,7 @@
       vm.valid = false;
 
       if(angular.isDefined(vm.host)) {
-        vm.valid = validIpAddressRegex.test(vm.host) ||validHostnameRegex.test(vm.host);
+        vm.valid = validIpAddressRegex.test(vm.host) || validHostnameRegex.test(vm.host);
       }
     }
 
@@ -250,28 +250,30 @@
       _loadData();
     });
 
-    $scope.$on('WebsocketConnectionError', function(event, data) {
-      /* jshint unused:false */
+    angular.forEach(['WebsocketConnectionError', 'WebsocketConnectionLost'], function(websocketEvent) {
+      $scope.$on(websocketEvent, function(event, data) {
+        /* jshint unused:false */
 
-      // Clear localstorage entry if already saved
-      return DSSettings
-        .find('admin')
-        .then(function(data) {
-          DSSettings
-            .destroy('admin')
-            .then(function() {
-              $log.log('localstorage successful deleted', DSSettings.get('admin'));
-            });
-        })
-        .finally(function() {
-          // Reset to default
-          resetHost();
+        // Clear localstorage entry if already saved
+        return DSSettings
+          .find('admin')
+          .then(function(data) {
+            DSSettings
+              .destroy('admin')
+              .then(function() {
+                $log.log('localstorage successful deleted', DSSettings.get('admin'));
+              });
+          })
+          .finally(function() {
+            // Reset to default
+            // resetHost();
 
-          // Setup
-          vm.check = false;
-          vm.setup = true;
-          vm.load = false;
-        });
+            // Setup
+            vm.check = false;
+            vm.setup = true;
+            vm.load = false;
+          });
+      });
     });
 
 
