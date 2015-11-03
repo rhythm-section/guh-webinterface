@@ -25,7 +25,7 @@
   <!-- Actions -->
   <guh-tab heading="Control">
     <p ng-if="service.actions.length === 0">This service doesn't have any controls.</p>
-    <guh-action device-id="{{ service.id }}" action-type-id="{{ action.actionType.id }}" ng-repeat="action in device.actions | orderBy: 'name' track by $index"></guh-action>
+    <guh-action device-id="{{ service.id }}" action-type-id="{{ action.actionType.id }}" ng-repeat="action in service.actions | orderBy: 'name' track by $index"></guh-action>
   </guh-tab>
 
   <!-- States -->
