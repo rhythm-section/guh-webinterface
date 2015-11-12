@@ -125,7 +125,7 @@
               value = '0.0.0.0';
               break;
             case 'ipV6':
-              value = '0000.0000.0000.0000.0000.0000.0000.0000.0000';
+              value = '0:0:0:0:0:0:0:0';
               break;
             case 'mac':
               value = '00:00:00:00:00:00';
@@ -360,6 +360,10 @@
 
         // Watch template
         var templateWatch = scope.$watch('formField.template', function(newValue) {
+          if(element === null) {
+            return;
+          }
+
           templateUrl = newValue;
 
           ctrl.init();
@@ -385,8 +389,7 @@
 
         // Watch state
         DSState.on('DS.change', function(DSState, state) {
-          if(angular.isDefined(scope) && scope !== null) {
-            $log.log('STATE CHANGED', scope);
+          if(angular.isDefined(scope) && scope !== null && angular.isDefined(scope.formField.state)) {
             scope.$apply(function() {
               scope.formField.value = scope.formField.state.value;
             });
