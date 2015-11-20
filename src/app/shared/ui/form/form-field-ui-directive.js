@@ -258,10 +258,13 @@
          */
 
         function selectValueOperator() {
+          // $log.log('selectValueOperator', vm);
+
           // Remove all accurances of this scope in formCtrl
-          if(vm.formCtrl) {
-            vm.formCtrl.removeFormField($scope);
-          }
+          // if(vm.formCtrl) {
+          //   $log.log('removeFormField', $scope);
+          //   vm.formCtrl.removeFormField($scope);
+          // }
 
           // Reset
           vm.is = null;
@@ -348,7 +351,13 @@
 
         // Watch selected operator
         var selectedOperatorWatch = scope.$watch('formField.selectedOperator', function(newValue) {
+          $log.log('$watch', newValue, scope);
+
           if(formCtrl && !ctrl.valueOperator) {
+            // Remove old formField if operator changed
+            // $log.log('REMOVE');
+            // formCtrl.removeFormField(scope);
+
             // Add formField if valueOperator not set
             formCtrl.addFormField(scope);
           }

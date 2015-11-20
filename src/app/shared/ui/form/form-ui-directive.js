@@ -81,17 +81,30 @@
          */
 
         function addFormField(formFieldScope) {
+          $log.log('------------------------------------------------------------------------');
+          $log.log('addFormField', formFieldScope);
+          $log.log('vm.formFields', vm.formFields);
           vm.formFields.push(formFieldScope);
+          $log.log('vm.formFields', vm.formFields);
+          $log.log('------------------------------------------------------------------------');
         }
 
         function removeFormField(formFieldScope) {
+          $log.log('------------------------------------------------------------------------');
+          $log.log('removeFormField', formFieldScope);
+          $log.log('vm.formFields', vm.formFields);
           vm.formFields = vm.formFields.filter(function(formField) {
             return formField.$id === formFieldScope.$id;
           });
+          $log.log('vm.formFields', vm.formFields);
+          $log.log('------------------------------------------------------------------------');
         }
 
         function updateFormField(formFieldScopeId, selectedOperator) {
+          // $log.log('updateFormField', formFieldScopeId, selectedOperator);
+
           if(angular.isDefined(formFieldScopeId) && angular.isDefined(selectedOperator)) {
+            // $log.log('updateFormField', vm.formFields);
             var index = libs._.findIndex(vm.formFields, { '$id': formFieldScopeId });
 
             if(index !== -1) {
@@ -101,12 +114,16 @@
         }
 
         function submit() {
+          // $log.log('SUBMIT vm.formFields', vm.formFields);
+
           // Check if form is valid
           if($scope[vm.name].$valid) {
             var paramDescriptors = [];
             var params = [];
 
             angular.forEach(vm.formFields, function(scope) {
+              $log.log('FORMFIELD', scope.formField.name, scope.formField.value);
+
               // if(angular.isDefined(scope.formField.selectedValueOperator)) {
                 // if(angular.toJson(scope.formField.selectedValueOperator) === angular.toJson(app.valueOperator.between)) {
                 //   // Between

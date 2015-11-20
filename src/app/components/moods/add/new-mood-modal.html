@@ -27,127 +27,107 @@
   </svg>
 </button>
 
-<div guh-wizard handle="newMood" show-navigation="true">
-  <div guh-wizard-step class="list" title="What should this mood do when turned on?">
+<div style="position: fixed; left: 21px; top: 126px; width: 294px; height: 420px; border: 1px solid #eee; padding: 21px; overflow-y: scroll;">
+  <pre>{{ newMood.rule | json }}</pre>
+</div>
 
-    <div guh-wizard handle="addEnterActions" show-navigation="false">
-      <div guh-wizard-step>
-        <div ng-if="newMood.enterActionDevices.length === 0">No configured devices where found which can be controlled with a mood.</div>
-        <div ng-repeat="device in newMood.enterActionDevices | orderBy: 'name' track by $index" ng-if="newMood.enterActionDevices.length > 0" class="list">
-          <!-- Device -->
-          <div class="item-divider">
-            <span>{{ device.name }}, {{ device.deviceClass.name }}</span>
-          </div>
+<div guh-wizard handle="newMood">
+  <!-- Select vendor -->
+  <div guh-wizard-step class="list" title="Select a thing">
+    <p class="item" ng-repeat="thing in newMood.things | orderBy: 'name' track by $index" ng-click="newMood.selectThing(thing)">
+      {{ thing.name }}
+      <svg class="icon">
+        <use xlink:href="./assets/svg/ui/ui.symbol.svg#chevron-right"></use>
+      </svg>
+    </p>
 
-          <!-- Actions -->
-          <p class="item" ng-class="{ 'selected': newMood.selectedEnterActionTypes[device.id][actionType.id] }" ng-if="actionType.paramTypes.length === 0" ng-click="newMood.selectEnterAction(device, actionType)" ng-repeat="actionType in device.deviceClass.actionTypes" ng-mouseenter="remove = true" ng-mouseleave="remove = false" ng-init="remove = false">
-            <span>{{ actionType.name }}</span>
-            <svg class="icon" ng-show="!newMood.selectedEnterActionTypes[device.id][actionType.id]">
-              <use xlink:href="./assets/svg/ui/ui.symbol.svg#plus"></use>
-            </svg>
-            <svg class="icon" ng-show="newMood.selectedEnterActionTypes[device.id][actionType.id]">
-              <use xlink:href="./assets/svg/ui/ui.symbol.svg#checkmark" ng-show="!remove"></use>
-              <use xlink:href="./assets/svg/ui/ui.symbol.svg#close" ng-show="remove"></use>
-            </svg>
-          </p>
-          <p class="item" ng-class="{ 'selected': newMood.selectedEnterActionTypes[device.id][actionType.id] }" ng-if="actionType.paramTypes.length > 0" ng-click="newMood.selectEnterAction(device, actionType)" ng-repeat="actionType in device.deviceClass.actionTypes" ng-mouseenter="remove = true" ng-mouseleave="remove = false" ng-init="remove = false">
-            <span>{{ actionType.name }}</span>
-            <svg class="icon" ng-show="!newMood.selectedEnterActionTypes[device.id][actionType.id]">
-              <use xlink:href="./assets/svg/ui/ui.symbol.svg#chevron-right"></use>
-            </svg>
-            <svg class="icon" ng-show="newMood.selectedEnterActionTypes[device.id][actionType.id]">
-              <use xlink:href="./assets/svg/ui/ui.symbol.svg#checkmark" ng-show="!remove"></use>
-              <use xlink:href="./assets/svg/ui/ui.symbol.svg#close" ng-show="remove"></use>
-            </svg>
-          </p>
-        </div>
-      </div>
+    <button type="button" ng-click="newMood.save()">Save Rule</button>
+  </div>
 
-      <div guh-wizard-step>
-        <guh-form name="setActionParams"
-                  on-form-submit="newMood.addEnterActionParams(params)"
-                  class="list">
+  <!-- Select thing -->
+  <div guh-wizard-step title="Select a thing">
+    <!-- <div class="list" ng-if="newMood.selectedThing.deviceClass.eventTypes.length > 0">
+      <h3 class="item-divider">Events</h3>
+      <p class="item" ng-repeat="eventType in newMood.selectedThing.deviceClass.eventTypes | orderBy: 'name' track by $index" ng-click="newMood.selectTrigger(eventType)">
+        {{ eventType.name }}
+        <svg class="icon">
+          <use xlink:href="./assets/svg/ui/ui.symbol.svg#chevron-right"></use>
+        </svg>
+      </p>
+    </div> -->
 
-          <guh-form-field label="{{ paramType.name }}"
-                          name="{{ paramType.name }}"
-                          param-type="paramType"
-                          template="{{ paramType.inputTemplateUrl }}"
-                          ng-repeat="paramType in newMood.selectedEnterActionType.paramTypes track by $index"
-                          class="item"></guh-form-field>
+    <!-- <div class="list" ng-if="newMood.selectedThing.deviceClass.stateTypes.length > 0">
+      <h3 class="item-divider">States</h3>
+      <p class="item" ng-repeat="stateType in newMood.selectedThing.deviceClass.stateTypesLinked | orderBy: 'name' track by $index" ng-click="newMood.selectTrigger(stateType)">
+        {{ stateType.name }}
+        <svg class="icon">
+          <use xlink:href="./assets/svg/ui/ui.symbol.svg#chevron-right"></use>
+        </svg>
+      </p>
+    </div> -->
 
-          <button type="submit" class="full">Save action details</button>
-        </guh-form>
-      </div>
+    <div class="list" ng-if="newMood.selectedThing.deviceClass.actionTypes.length > 0">
+      <!-- <h3 class ="item-divider">Actions</h3> -->
+      <p class="item" ng-repeat="actionType in newMood.selectedThing.deviceClass.actionTypesLinked | orderBy: 'name' track by $index" ng-click="newMood.selectAction(actionType)">
+        {{ actionType.name }}
+        <svg class="icon">
+          <use xlink:href="./assets/svg/ui/ui.symbol.svg#chevron-right"></use>
+        </svg>
+      </p>
     </div>
   </div>
 
-  <div guh-wizard-step title="What should this mood do when turned off?">
-    <div guh-wizard handle="addExitActions" show-navigation="false">
-      <div guh-wizard-step>
-        <div ng-if="newMood.exitActionDevices.length === 0">No configured devices where found which can be controlled with a mood.</div>
-        <div ng-repeat="device in newMood.exitActionDevices | orderBy: 'name' track by $index" ng-if="newMood.exitActionDevices.length > 0" class="list">
-          <!-- Device -->
-          <div class="item-divider">
-            <span>{{ device.name }}, {{ device.deviceClass.name }}</span>
-          </div>
-
-          <!-- Actions -->
-          <p class="item" ng-class="{ 'selected': newMood.selectedExitActionTypes[device.id][actionType.id] }" ng-if="actionType.paramTypes.length === 0" ng-click="newMood.selectExitAction(device, actionType)" ng-repeat="actionType in device.deviceClass.actionTypes" ng-mouseenter="remove = true" ng-mouseleave="remove = false" ng-init="remove = false">
-            <span>{{ actionType.name }}</span>
-            <svg class="icon" ng-show="!newMood.selectedExitActionTypes[device.id][actionType.id]">
-              <use xlink:href="./assets/svg/ui/ui.symbol.svg#plus"></use>
-            </svg>
-            <svg class="icon" ng-show="newMood.selectedExitActionTypes[device.id][actionType.id]">
-              <use xlink:href="./assets/svg/ui/ui.symbol.svg#checkmark" ng-show="!remove"></use>
-              <use xlink:href="./assets/svg/ui/ui.symbol.svg#close" ng-show="remove"></use>
-            </svg>
-          </p>
-          <p class="item" ng-class="{ 'selected': newMood.selectedExitActionTypes[device.id][actionType.id] }" ng-if="actionType.paramTypes.length > 0" ng-click="newMood.selectExitAction(device, actionType)" ng-repeat="actionType in device.deviceClass.actionTypes" ng-mouseenter="remove = true" ng-mouseleave="remove = false" ng-init="remove = false">
-            <span>{{ actionType.name }}</span>
-            <svg class="icon" ng-show="!newMood.selectedExitActionTypes[device.id][actionType.id]">
-              <use xlink:href="./assets/svg/ui/ui.symbol.svg#chevron-right"></use>
-            </svg>
-            <svg class="icon" ng-show="newMood.selectedExitActionTypes[device.id][actionType.id]">
-              <use xlink:href="./assets/svg/ui/ui.symbol.svg#checkmark" ng-show="!remove"></use>
-              <use xlink:href="./assets/svg/ui/ui.symbol.svg#close" ng-show="remove"></use>
-            </svg>
-          </p>
-        </div>
-      </div>
-
-      <div guh-wizard-step>
-        <guh-form name="setActionParams"
-                  on-form-submit="newMood.addExitActionParams(params)"
-                  class="list">
-
-          <guh-form-field label="{{ paramType.name }}"
-                          name="{{ paramType.name }}"
-                          param-type="paramType"
-                          template="{{ paramType.inputTemplateUrl }}"
-                          ng-repeat="paramType in newMood.selectedExitActionType.paramTypes track by $index"
-                          class="item"></guh-form-field>
-
-          <button type="submit" class="full">Save action details</button>
-        </guh-form>
-      </div>
-    </div>
-  </div>
-
-  <div guh-wizard-step title="How should this mood be called?">
-    <guh-form name="setName"
-              on-form-submit="newMood.save(params)"
+  <!-- Select details -->
+  <div guh-wizard-step title="Set parameters">
+    <!-- ActionType -->
+    <guh-form ng-if="newMood.isActionType()"
+              name="setActionParams"
+              on-form-submit="newMood.selectActionDetails(params)"
               class="list">
 
-      <guh-form-field  label="Name"
-                       name="Name"
-                       param-type="newMood.rule.name"
-                       template="app/shared/ui/form/form-field-templates/form-field-text.html"
-                       class="item"></guh-form-field>
+      <guh-form-field label="{{ paramType.name }}"
+                      name="{{ paramType.name }}"
+                      param-type="paramType"
+                      template="{{ paramType.inputTemplateUrl }}"
+                      ng-repeat="paramType in newMood.selectedAction.paramTypes track by $index"
+                      class="item"></guh-form-field>
 
-      <footer>
-        <button type="submit" ng-disabled="newMood.loading" class="full">Save mood</button>
-      </footer>
+      <button type="submit" class="full">Save action details</button>
+    </guh-form>
 
+    <!-- EventType -->
+    <guh-form ng-if="newMood.isEventType()"
+              name="setEventTypeParams"
+              on-form-submit="newMood.selectDetails(paramDescriptors)"
+              class="list">
+
+      <div ng-repeat="paramType in newMood.selectedTrigger.paramTypes track by $index">
+        <guh-form-field label=""
+                        name="{{ paramType.name }}"
+                        param-type="paramType"
+                        template="{{ paramType.inputTemplateUrl }}"
+                        value-operator="true"
+                        class="item"></guh-form-field>
+      </div>
+
+      <button type="submit" class="full">Save trigger details</button>
+    </guh-form>
+
+    <!-- StateType -->
+    <guh-form ng-if="newMood.isStateType()"
+              name="setStateType"
+              on-form-submit="newMood.selectDetails(paramDescriptors)"
+              class="list">
+
+      <guh-form-field ng-if="newMood.selectedTrigger"
+                      label=""
+                      name="{{ newMood.selectedTrigger.name }}"
+                      state-type="newMood.selectedTrigger"
+                      template="{{ newMood.selectedTrigger.inputTemplateUrl }}"
+                      value-operator="true"
+                      class="item"></guh-form-field>
+
+      <button type="submit" class="full">Save trigger details</button>
     </guh-form>
   </div>
 </div>
