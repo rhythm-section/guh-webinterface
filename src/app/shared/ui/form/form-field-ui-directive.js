@@ -394,7 +394,7 @@
 
         // Watch state
         DSState.on('DS.change', function(DSState, state) {
-          if(angular.isDefined(scope) && scope !== null) {
+          if(angular.isDefined(scope) && scope !== null && angular.isDefined(scope.formField.state)) {
             $log.log('STATE CHANGED', scope);
             scope.$apply(function() {
               scope.formField.value = scope.formField.state.value;

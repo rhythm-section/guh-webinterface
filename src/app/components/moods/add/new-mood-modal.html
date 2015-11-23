@@ -33,7 +33,7 @@
 
 <div guh-wizard handle="newMood">
   <!-- Select vendor -->
-  <div guh-wizard-step class="list" title="Select a thing">
+  <!-- <div guh-wizard-step class="list" title="Select a thing">
     <p class="item" ng-repeat="thing in newMood.things | orderBy: 'name' track by $index" ng-click="newMood.selectThing(thing)">
       {{ thing.name }}
       <svg class="icon">
@@ -42,7 +42,7 @@
     </p>
 
     <button type="button" ng-click="newMood.save()">Save Rule</button>
-  </div>
+  </div> -->
 
   <!-- Select thing -->
   <div guh-wizard-step title="Select a thing">
@@ -66,15 +66,21 @@
       </p>
     </div> -->
 
-    <div class="list" ng-if="newMood.selectedThing.deviceClass.actionTypes.length > 0">
-      <!-- <h3 class ="item-divider">Actions</h3> -->
-      <p class="item" ng-repeat="actionType in newMood.selectedThing.deviceClass.actionTypesLinked | orderBy: 'name' track by $index" ng-click="newMood.selectAction(actionType)">
+    <div class="list" ng-if="thing.deviceClass.actionTypes.length > 0" ng-repeat="thing in newMood.things | orderBy: 'name' track by $index">
+      <h3 class="item-divider">
+        {{ thing.name }}
+        <span class="item-divider__description">{{ thing.deviceClass.vendor.name === thing.deviceClass.name || thing.deviceClass.name === thing.name ? thing.deviceClass.vendor.name : thing.deviceClass.vendor.name + ' &middot; ' + thing.deviceClass.name }}</span>
+      </h3>
+
+      <p class="item" ng-repeat="actionType in thing.deviceClass.actionTypesLinked | orderBy: 'name' track by $index" ng-click="newMood.selectAction(thing, actionType)">
         {{ actionType.name }}
         <svg class="icon">
           <use xlink:href="./assets/svg/ui/ui.symbol.svg#chevron-right"></use>
         </svg>
       </p>
     </div>
+
+    <button type="button" ng-click="newMood.save()">Save Rule</button>
   </div>
 
   <!-- Select details -->

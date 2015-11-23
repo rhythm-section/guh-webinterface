@@ -51,6 +51,7 @@
 
     // Public methods
     vm.addTrigger = addTrigger;
+    vm.executeActions = executeActions;
 
     function _init() {
       var moodId = $stateParams.moodId;
@@ -146,6 +147,19 @@
         showClose: false,
         template: 'app/components/moods/detail/add-trigger.html'
       });
+    }
+
+    function executeActions() {
+      $log.log('executeActions');
+
+      mood
+        .executeActions()
+        .then(function(response) {
+          $log.log('Actions successfully executed.', response);
+        })
+        .catch(function(error) {
+          $log.log('Actions not executed', error);
+        });
     }
 
 

@@ -74,8 +74,6 @@
          * Private methods
          */
 
-
-
         /*
          * Public methods
          */
@@ -169,6 +167,13 @@
 
       function formLink(scope, element, attrs) {
         /* jshint unused: false */
+
+        // On destroy
+        scope.$on('$destroy', function() {
+          scope = null;
+          element.remove();
+          element = null;
+        });
       }
     }
 

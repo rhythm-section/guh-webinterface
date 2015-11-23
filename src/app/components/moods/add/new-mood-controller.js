@@ -53,13 +53,13 @@
 
     // View methods
     vm.isActionType = isActionType;
-    vm.isEventType = isEventType;
-    vm.isStateType = isStateType;
-    vm.selectThing = selectThing;
+    // vm.isEventType = isEventType;
+    // vm.isStateType = isStateType;
+    // vm.selectThing = selectThing;
     vm.selectAction = selectAction;
     vm.selectActionDetails = selectActionDetails;
-    vm.selectTrigger = selectTrigger;
-    vm.selectTriggerDetails = selectTriggerDetails;
+    // vm.selectTrigger = selectTrigger;
+    // vm.selectTriggerDetails = selectTriggerDetails;
     vm.save = save;
 
 
@@ -80,55 +80,63 @@
     }
 
     function _setThings() {
-      vm.things = DSDevice.getAll();
+      var devices = DSDevice.getAll();
+      vm.things = devices.filter(_hasActions);
     }
 
-    function _addStateEvaluator(stateDescriptor) {
-      var stateEvaluator = {
-        operator: app.stateOperator.StateOperatorAnd,
-        stateDescriptor: stateDescriptor
-      };
-
-      if(angular.isUndefined(vm.rule.stateEvaluator)) {
-        vm.rule.stateEvaluator = stateEvaluator;
-      } else {
-        if(angular.isUndefined(vm.rule.stateEvaluator.childEvaluators)) {
-          vm.rule.stateEvaluator.childEvaluators = [];
-        }
-
-        vm.rule.stateEvaluator.childEvaluators.push(stateEvaluator);
-      }
+    function _hasActions(device) {
+      return angular.isDefined(device.deviceClass) && device.deviceClass.actionTypes.length > 0;
     }
+
+    // function _addStateEvaluator(stateDescriptor) {
+    //   var stateEvaluator = {
+    //     operator: app.stateOperator.StateOperatorAnd,
+    //     stateDescriptor: stateDescriptor
+    //   };
+
+    //   if(angular.isUndefined(vm.rule.stateEvaluator)) {
+    //     vm.rule.stateEvaluator = stateEvaluator;
+    //   } else {
+    //     if(angular.isUndefined(vm.rule.stateEvaluator.childEvaluators)) {
+    //       vm.rule.stateEvaluator.childEvaluators = [];
+    //     }
+
+    //     vm.rule.stateEvaluator.childEvaluators.push(stateEvaluator);
+    //   }
+    // }
 
 
     function isActionType() {
       return DSActionType.is(vm.selectedAction);
     }
 
-    function isEventType() {
-      return DSEventType.is(vm.selectedTrigger);
-    }
+    // function isEventType() {
+    //   return DSEventType.is(vm.selectedTrigger);
+    // }
 
-    function isStateType() {
-      return DSStateType.is(vm.selectedTrigger);
-    }
+    // function isStateType() {
+    //   return DSStateType.is(vm.selectedTrigger);
+    // }
 
-    function selectThing(thing) {
-      $log.log('thing', thing);
+    // function selectThing(thing) {
+    //   $log.log('thing', thing);
+    //   vm.selectedThing = thing;
+
+    //   // Next step
+    //   $rootScope.$broadcast('wizard.next', 'newMood');
+    // }
+
+    function selectAction(thing, action) {
       vm.selectedThing = thing;
-
-      // Next step
-      $rootScope.$broadcast('wizard.next', 'newMood');
-    }
-
-    function selectAction(action) {
-      vm.selectedAction = null;
       vm.selectedAction = action;
 
       if(isActionType()) {
-        $log.log('Action', action);
-
         if(action.paramTypes.length === 0) {
+          var ruleAction = vm.selectedThing.getAction(vm.selectedAction, []);
+          
+          vm.rule.actions.push(ruleAction);
+          vm.selectedAction = null;
+
           $rootScope.$broadcast('wizard.prev', 'newMood');
         } else if(action.paramTypes.length > 0) {
           $rootScope.$broadcast('wizard.next', 'newMood');
@@ -138,60 +146,60 @@
 
     function selectActionDetails(params) {
       var ruleActionParams = vm.selectedAction.getRuleActionParams(params);
-      $log.log('params', params);
-      $log.log('ruleActionParams', ruleActionParams);
       var ruleAction = vm.selectedThing.getAction(vm.selectedAction, params);
-      $log.log('ruleAction', ruleAction);
+
       vm.rule.actions.push(ruleAction);
-      $rootScope.$broadcast('wizard.prev', 'newMood');
-      $rootScope.$broadcast('wizard.prev', 'newMood');
-    }
-
-    function selectTrigger(trigger) {
-      vm.selectedTrigger = null;
-      vm.selectedTrigger = trigger;
-      $log.log('TRIGGER', trigger);
-
-      if(isEventType()) {
-        if(trigger.paramTypes.length === 0) {
-          $rootScope.$broadcast('wizard.prev', 'newMood');
-        } else if(trigger.paramTypes.length > 0) {
-          $rootScope.$broadcast('wizard.next', 'newMood');
-        }
-      } else if(isActionType()) {
-        $log.log('NEXT');
-        $rootScope.$broadcast('wizard.next', 'newMood');
-      }
-    }
-
-    function selectTriggerDetails(paramDescriptors) {
-      $log.log('selectTriggerDetails', paramDescriptors);
-
-      if(isEventType()) {        
-        if(angular.isUndefined(vm.rule.eventDescriptors)) {
-          vm.rule.eventDescriptors = [];
-        }
-
-        vm.rule.eventDescriptors.push(vm.selectedThing.getEventDescriptor(vm.selectedTrigger, paramDescriptors));
-      } else if(isStateType()) {
-        angular.forEach(paramDescriptors, function(paramDescriptor) {
-          var stateDescriptor = vm.selectedThing.getStateDescriptor(vm.selectedTrigger, paramDescriptor);
-          _addStateEvaluator(stateDescriptor);
-
-          // var stateDescriptor = {
-          //   deviceId: vm.selectedThing.id,
-          //   operator: paramDescriptor.operator,
-          //   stateTypeId: vm.selectedTrigger.id,
-          //   value: paramDescriptor.value
-          // };
-
-          // _addStateEvaluator(stateDescriptor);
-        });
-      }
+      vm.selectedAction = null;
 
       $rootScope.$broadcast('wizard.prev', 'newMood');
       $rootScope.$broadcast('wizard.prev', 'newMood');
     }
+
+    // function selectTrigger(trigger) {
+    //   vm.selectedTrigger = null;
+    //   vm.selectedTrigger = trigger;
+    //   $log.log('TRIGGER', trigger);
+
+    //   if(isEventType()) {
+    //     if(trigger.paramTypes.length === 0) {
+    //       $rootScope.$broadcast('wizard.prev', 'newMood');
+    //     } else if(trigger.paramTypes.length > 0) {
+    //       $rootScope.$broadcast('wizard.next', 'newMood');
+    //     }
+    //   } else if(isActionType()) {
+    //     $log.log('NEXT');
+    //     $rootScope.$broadcast('wizard.next', 'newMood');
+    //   }
+    // }
+
+    // function selectTriggerDetails(paramDescriptors) {
+    //   $log.log('selectTriggerDetails', paramDescriptors);
+
+    //   if(isEventType()) {        
+    //     if(angular.isUndefined(vm.rule.eventDescriptors)) {
+    //       vm.rule.eventDescriptors = [];
+    //     }
+
+    //     vm.rule.eventDescriptors.push(vm.selectedThing.getEventDescriptor(vm.selectedTrigger, paramDescriptors));
+    //   } else if(isStateType()) {
+    //     angular.forEach(paramDescriptors, function(paramDescriptor) {
+    //       var stateDescriptor = vm.selectedThing.getStateDescriptor(vm.selectedTrigger, paramDescriptor);
+    //       _addStateEvaluator(stateDescriptor);
+
+    //       // var stateDescriptor = {
+    //       //   deviceId: vm.selectedThing.id,
+    //       //   operator: paramDescriptor.operator,
+    //       //   stateTypeId: vm.selectedTrigger.id,
+    //       //   value: paramDescriptor.value
+    //       // };
+
+    //       // _addStateEvaluator(stateDescriptor);
+    //     });
+    //   }
+
+    //   $rootScope.$broadcast('wizard.prev', 'newMood');
+    //   $rootScope.$broadcast('wizard.prev', 'newMood');
+    // }
 
     function save() {
       DSRule

@@ -38,9 +38,20 @@ $color: $grey;
 .list > .item-divider {
   border-bottom: none;
   color: $c-turquoise;
-  @include rem(height, 3);
-  @include rem(margin, 1.5, 0, 0);
+  @include rem(height, 4.5);
+  @include rem(margin, 1.5, 0);
+  overflow: hidden;
   @include rem(padding, 1.5);
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  width: 100%;
+}
+
+.item-divider__description {
+  display: block;
+  @include rem(font-size, 0.8);
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
 }
 
 .list > .item {

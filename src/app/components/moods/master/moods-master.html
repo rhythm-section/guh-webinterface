@@ -21,10 +21,13 @@
 -->
 
 
-<ul class="tiles">
-  <li class="item" ng-repeat="mood in moods.configured | orderBy: 'name' track by $index">
+<ul class="tiles" style="margin-top: 105px">
+  <!-- <li class="item" ng-repeat="mood in moods.configured | orderBy: 'name' track by $index"> -->
+  <li class="tile" ng-repeat="mood in moods.configured | orderBy: 'name' track by $index">
     <a ui-sref="guh.moods.detail({ moodId: mood.id })">
-      <h2 class="name">{{ mood.name }}</h2>
+      <h2 class="content">Test {{ mood.name }}</h2>
     </a>
   </li>
 </ul>
+
+<!-- <button type="button" class="button" guh-morphing-modal>Morphing Modal</button> -->
