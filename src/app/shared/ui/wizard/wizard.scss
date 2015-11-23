@@ -138,9 +138,11 @@ $color-border: $grey;
     z-index: 9998;
   }
 
-  .wizard__content {
+  &> .wizard > .wizard__content {
     @include rem(padding, 7.5, 0, 6);
+  }
 
+  .wizard__content {
     @include media($min-width-s) {
       margin: 0 auto;
       @include rem(width, 30);
