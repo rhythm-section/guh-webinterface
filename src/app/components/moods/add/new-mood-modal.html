@@ -33,7 +33,7 @@
     <div guh-wizard handle="addEnterActions" show-navigation="false">
       <div guh-wizard-step>
         <div ng-if="newMood.enterActionDevices.length === 0">No configured devices where found which can be controlled with a mood.</div>
-        <div ng-repeat="device in newMood.enterActionDevices | orderBy: 'name' track by $index" ng-if="newMood.enterActionDevices.length > 0" class="list">
+        <div ng-repeat="device in newMood.enterActionDevices | orderBy: 'name' track by $index" ng-if="newMood.enterActionDevices.length > 0" class="list">
           <!-- Device -->
           <div class="item-divider">
             <span>{{ device.name }}, {{ device.deviceClass.name }}</span>
@@ -85,7 +85,7 @@
     <div guh-wizard handle="addExitActions" show-navigation="false">
       <div guh-wizard-step>
         <div ng-if="newMood.exitActionDevices.length === 0">No configured devices where found which can be controlled with a mood.</div>
-        <div ng-repeat="device in newMood.exitActionDevices | orderBy: 'name' track by $index" ng-if="newMood.exitActionDevices.length > 0" class="list">
+        <div ng-repeat="device in newMood.exitActionDevices | orderBy: 'name' track by $index" ng-if="newMood.exitActionDevices.length > 0" class="list">
           <!-- Device -->
           <div class="item-divider">
             <span>{{ device.name }}, {{ device.deviceClass.name }}</span>
