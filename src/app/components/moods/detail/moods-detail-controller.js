@@ -52,6 +52,7 @@
     // Public methods
     vm.addTrigger = addTrigger;
     vm.executeActions = executeActions;
+    vm.executeExitActions = executeExitActions;
 
     function _init() {
       var moodId = $stateParams.moodId;
@@ -102,10 +103,16 @@
         angular.forEach(vm.actions, function(action, index) {
           var actionType = DSActionType.get(action.actionTypeId);
           
-          vm.actions[index].phrase = actionType.phrase;
+          vm.actions[index].device = DSDevice.get(action.deviceId);
+          vm.actions[index].actionType = actionType;
+          vm.actions[index].device = DSDevice.get(action.deviceId);
 
           // RuleActionParams
-          angular.forEach(action.ruleActionParams, function(ruleActionParam) {
+          angular.forEach(action.ruleActionParams, function(ruleActionParam, index) {
+            if(angular.isDefined(actionType.paramTypes[index])) {
+              ruleActionParam.unit = actionType.paramTypes[index].unit;
+            }
+
             if(angular.isUndefined(ruleActionParam.value)) {
               ruleActionParam.value = null;
             }
@@ -122,9 +129,15 @@
           var actionType = DSActionType.get(exitAction.actionTypeId);
 
           vm.exitActions[index].phrase = actionType.phrase;
+          vm.exitActions[index].actionType = actionType;
+          vm.exitActions[index].device = DSDevice.get(exitAction.deviceId);
 
           // RuleActionParams
-          angular.forEach(exitAction.ruleActionParams, function(ruleActionParam) {
+          angular.forEach(exitAction.ruleActionParams, function(ruleActionParam, index) {
+            if(angular.isDefined(actionType.paramTypes[index])) {
+              ruleActionParam.unit = actionType.paramTypes[index].unit;
+            }
+
             if(angular.isUndefined(ruleActionParam.value)) {
               ruleActionParam.value = null;
             }
@@ -150,10 +163,19 @@
     }
 
     function executeActions() {
-      $log.log('executeActions');
-
       mood
         .executeActions()
+        .then(function(response) {
+          $log.log('Actions successfully executed.', response);
+        })
+        .catch(function(error) {
+          $log.log('Actions not executed', error);
+        });
+    }
+
+    function executeExitActions() {
+      mood
+        .executeExitActions()
         .then(function(response) {
           $log.log('Actions successfully executed.', response);
         })

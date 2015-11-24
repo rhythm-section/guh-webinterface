@@ -34,3 +34,8 @@ $fill: $grey;
   fill: $fill;
   @include rem(width, 1.5);
 }
+
+.icon_inline {
+  display: inline-block;
+  @include rem(margin-bottom, -0.3);
+}

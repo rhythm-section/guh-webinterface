@@ -145,12 +145,20 @@
             templateUrl: 'app/components/moods/master/moods-master.html'
           });
 
-          $stateProvider.state('guh.moods.detail', {
-            controller: 'MoodsDetailCtrl',
-            controllerAs: 'mood',
-            url: '/:moodId',
-            templateUrl: 'app/components/moods/detail/moods-detail.html'
-          });
+            $stateProvider.state('guh.moods.master.current', {
+              controller: 'MoodsDetailCtrl',
+              controllerAs: 'mood',
+              params: { moodId: null },
+              url: '/:moodId',
+              templateUrl: 'app/components/moods/detail/moods-detail.html'
+            });
+
+          // $stateProvider.state('guh.moods.detail', {
+          //   controller: 'MoodsDetailCtrl',
+          //   controllerAs: 'mood',
+          //   url: '/:moodId',
+          //   templateUrl: 'app/components/moods/detail/moods-detail.html'
+          // });
       
     }
 

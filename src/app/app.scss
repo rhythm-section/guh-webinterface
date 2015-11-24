@@ -66,6 +66,7 @@
  *
  */
 
+@import "../assets/scss/modules/action";
 @import "../assets/scss/modules/button";
 @import "../assets/scss/modules/container";
 @import "../assets/scss/modules/content";
@@ -80,7 +81,7 @@
 
 
 /*
- * Directives (Shared UI)
+ * Components (Shared UI)
  */
 
 @import "../app/shared/ui/action-bar/action-bar";

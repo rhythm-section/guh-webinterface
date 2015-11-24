@@ -36,9 +36,9 @@ $color: $grey;
 }
 
 .list > .item-divider {
-  border-bottom: none;
+  border-bottom: 1px solid rgba($border-color, 0.1);
   color: $c-turquoise;
-  @include rem(height, 4.5);
+  @include rem(height, 6);
   @include rem(margin, 1.5, 0);
   overflow: hidden;
   @include rem(padding, 1.5);
@@ -55,8 +55,6 @@ $color: $grey;
 }
 
 .list > .item {
-  // border-bottom: 1px solid rgba($c-grey, 0.1);
-  // border-top: 1px solid rgba($border-color, 0.1);
   color: $color;
   cursor: pointer;
   display: block;

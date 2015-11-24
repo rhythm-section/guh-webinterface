@@ -21,22 +21,62 @@
 -->
 
 
-<div>
-  <h2>{{ mood.name }}</h2>
-</div>
+<guh-tabset id="device-state">
+  <!-- EnterActions -->
+  <guh-tab heading="ON Actions">
+    <p ng-if="mood.actions.length === 0">No actions defined.</p>
+    <div ng-if="mood.actions.length > 0">
+      <div class="action" ng-repeat="action in mood.actions track by $index">
+        <p>
+          {{ action.device.name ? action.device.name : action.device.deviceClass.name }}
+          <svg class="icon icon_inline">
+            <use xlink:href="./assets/svg/ui/ui.symbol.svg#arrow-right-c"></use>
+          </svg>
+          {{ action.actionType.name }}
+        </p>
+        <div ng-if="action.ruleActionParams.length > 0" ng-repeat="ruleActionParam in action.ruleActionParams">
+          <p class="name" ng-if="ruleActionParam.value !== undefined">{{ ruleActionParam.name }}: {{ ruleActionParam.value }} {{ ruleActionParam.unit | unit }}</p>
+          <p class="name" ng-if="ruleActionParam.eventParamName !== undefined">Value of {{ ruleActionParam.name }} = Value of {{ ruleActionParam.eventParamName }} ({{ ruleActionParam.eventType.name }})</p>
+        </div>
+      </div>
+    </div>
+    <button type="button" ng-click="mood.executeActions()">Turn on</button>
+  </guh-tab>
+
+  <!-- ExitActions -->
+  <guh-tab heading="OFF Actions">  
+    <p ng-if="mood.exitActions.length === 0">No actions defined.</p>
+    <div ng-if="mood.exitActions.length > 0">
+      <div class="action" ng-repeat="exitAction in mood.exitActions track by $index">
+        <p>
+          {{ exitAction.device.name ? exitAction.device.name : exitAction.device.deviceClass.name }}
+          <svg class="icon icon_inline">
+            <use xlink:href="./assets/svg/ui/ui.symbol.svg#arrow-right-c"></use>
+          </svg>
+          {{ exitAction.actionType.name }}
+        </p>
+        <div ng-if="exitAction.ruleActionParams.length > 0" ng-repeat="ruleActionParam in exitAction.ruleActionParams">
+          <p class="name" ng-if="ruleActionParam.value !== undefined">{{ ruleActionParam.name }}: {{ ruleActionParam.value }} {{ ruleActionParam.unit | unit }}</p>
+          <p class="name" ng-if="ruleActionParam.eventParamName !== undefined">Value of {{ ruleActionParam.name }} = Value of {{ ruleActionParam.eventParamName }} ({{ ruleActionParam.eventType.name }})</p>
+        </div>
+      </div>
+    </div>
+    <button type="button" ng-click="mood.executeExitActions()">Turn off</button>
+  </guh-tab>
+</guh-tabset>
 
 
-<div class="left">
+<!-- <div class="left"> -->
   <!-- Event descriptors -->
-  <div ng-if="mood.eventDescriptors.length > 0">
+  <!-- <div ng-if="mood.eventDescriptors.length > 0">
     <div ng-repeat="eventDescriptor in mood.eventDescriptors track by $index">
       <p>{{ eventDescriptor.phrase }}{{ eventDescriptor.paramDescriptors.length > 0 ? ':' : '.' }}</p>
       <p ng-if="eventDescriptor.paramDescriptors.length > 0" ng-repeat="paramDescriptor in eventDescriptor.paramDescriptors">{{ paramDescriptor.name }} {{ paramDescriptor.operator | operator }} {{ paramDescriptor.value }}</p>
     </div>
-  </div>
+  </div> -->
 
   <!-- State evaluator -->
-  <div ng-if="mood.stateEvaluator && mood.stateEvaluator.stateDescriptor">
+  <!-- <div ng-if="mood.stateEvaluator && mood.stateEvaluator.stateDescriptor">
     <p>{{ mood.stateEvaluator.stateDescriptor.phrase }} {{ mood.stateEvaluator.stateDescriptor.operator | operator }} {{ mood.stateEvaluator.stateDescriptor.value }}.</p>
 
     <div ng-if="mood.stateEvaluator.childEvaluators.length > 0">
@@ -45,12 +85,12 @@
   </div>
 
   <button class="full" ng-click="mood.addTrigger()">Add/Edit trigger</button>
-</div>
+</div> -->
 
 
-<div class="middle">
+<!-- <div class="middle"> -->
   <!-- Actions -->
-  <h3>When mood is turned on:</h3>
+  <!-- <h3>When mood is turned on:</h3>
   <div ng-if="mood.actions.length > 0">
     <div ng-repeat="action in mood.actions track by $index">
       <p>{{ action.phrase }}{{ action.ruleActionParams.length > 0 ? ':' : '' }}</p>
@@ -59,10 +99,10 @@
         <p ng-if="ruleActionParam.eventParamName !== undefined">Value of {{ ruleActionParam.name }} = Value of {{ ruleActionParam.eventParamName }} ({{ ruleActionParam.eventType.name }})</p>
       </div>
     </div>
-  </div>
+  </div> -->
 
   <!-- Exit actions -->
-  <h3>When mood is turned off:</h3>
+  <!-- <h3>When mood is turned off:</h3>
   <div ng-if="mood.exitActions.length > 0">
     <div ng-repeat="exitAction in mood.exitActions track by $index">
       <p>{{ exitAction.phrase }}{{ exitAction.ruleActionParams.length > 0 ? ':' : '.' }}</p>
@@ -72,6 +112,4 @@
       </div>
     </div>
   </div>
-</div>
-
-<button type="button" ng-click="mood.executeActions()">Execute</button>
+</div> -->
