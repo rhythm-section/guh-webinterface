@@ -39,9 +39,9 @@
     .module('guh.devices')
     .controller('EditDeviceCtrl', EditDeviceCtrl);
 
-  EditDeviceCtrl.$inject = ['$log', '$scope', '$state', '$stateParams', 'DSDevice'];
+  EditDeviceCtrl.$inject = ['$log', '$scope', '$state', '$stateParams', 'DSDevice', 'ngDialog'];
 
-  function EditDeviceCtrl($log, $scope, $state, $stateParams, DSDevice) {
+  function EditDeviceCtrl($log, $scope, $state, $stateParams, DSDevice, ngDialog) {
 
     var vm = this;
     var currentDevice = {};
@@ -89,7 +89,19 @@
         .catch(function(error) {
           // TODO: Build general error handler
           // TODO: Handle error when device in use (rules)
-          $log.error(error);
+          ngDialog.open({
+            className: 'modal small',
+            controller: 'RemoveDeviceCtrl',
+            controllerAs: 'remove',
+            data: {
+              error: error,
+              device: currentDevice
+            },
+            disableAnimation: true,
+            overlay: true,
+            showClose: false,
+            template: 'app/components/devices/remove/remove-device-modal.html'
+          });
         });
     }
 

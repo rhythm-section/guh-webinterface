@@ -161,6 +161,28 @@ form {
   }
 }
 
+select {
+  background-color: $background;
+  border-bottom: 1px solid rgba($c-grey, 0.1);
+  @include rem(padding, 0.7, 1.5, 0.8);
+  position: relative;
+  width: 100%;
+}
+
+.label-container {
+  padding: 0;
+  position: relative;
+
+  span {
+    @include rem(padding, 0, 1.5);
+  }
+  
+  .icon {
+    position: absolute;
+      @include rem(bottom, 0.8);
+      @include rem(right, 1.5);
+  }
+}
 
 
 

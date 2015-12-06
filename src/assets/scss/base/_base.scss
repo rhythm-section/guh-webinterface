@@ -121,6 +121,7 @@ img {
 
 button,
 input,
+select,
 textarea {
   @include appearance(none);
   background-color: transparent;
@@ -136,9 +137,13 @@ button {
   border: 1px solid $border;
   color: $color-button;
   cursor: pointer;
+  @include rem(height, 3);
+  overflow: hidden;
   @include rem(padding, 0.7, 1.5, 0.8);
   // @include rem(height, 4.5);
+  text-overflow: ellipsis;
   @include transition(background-color 0.2s, border-color 0.2s, color 0.2s);
+  white-space: nowrap;
 
   &::-moz-focus-inner {
     border: 0;
