@@ -64,8 +64,6 @@
 
 
     function _init() {
-      var devices = DSDevice.getAll();
-
       if(angular.isDefined($scope.ngDialogData)) {
         var error = $scope.ngDialogData.error;
         vm.device = $scope.ngDialogData.device;
