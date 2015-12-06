@@ -31,13 +31,13 @@
       <li ng-class="{ active: wizard.isActive(step) }" ng-repeat="step in wizard.steps track by $index"></li>
     </ul>
 
-    <button class="wizard__prev" ng-click="wizard.prev()" ng-show="wizard.hasPrev()">
+    <button class="wizard__prev" ng-click="wizard.prev()" ng-show="wizard.showNavigation && wizard.hasPrev()">
       <svg class="icon">
         <use xlink:href="./assets/svg/ui/ui.symbol.svg#chevron-left"></use>
       </svg>
     </button>
 
-    <button class="wizard__next" ng-click="wizard.next()" ng-show="wizard.hasNext()">
+    <button class="wizard__next" ng-click="wizard.next()" ng-show="wizard.showNavigation && wizard.hasNext()">
       <svg class="icon">
         <use xlink:href="./assets/svg/ui/ui.symbol.svg#chevron-right"></use>
       </svg>
