@@ -375,7 +375,7 @@
               $compile(element.contents())(scope);
             });
           } else {
-            if(angular.isString(templateUrl)) {
+            if(angular.isString(templateUrl) || element !== null) {
               $http.get(templateUrl, { cache: $templateCache }).success(function(template) {
                 // Replace guhFormField-directive with proper HTML input
                 element.html(template);
