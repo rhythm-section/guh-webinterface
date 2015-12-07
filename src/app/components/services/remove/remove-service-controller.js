@@ -62,7 +62,7 @@
     vm.setPolicy = setPolicy;
     vm.getPolicyLabel = getPolicyLabel;
 
-t
+
     function _init() {
       if(angular.isDefined($scope.ngDialogData)) {
         var error = $scope.ngDialogData.error;
