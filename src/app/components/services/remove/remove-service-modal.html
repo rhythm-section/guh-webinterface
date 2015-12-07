@@ -27,8 +27,7 @@
   </svg>
 </button>
 
-<!-- <div guh-wizard handle="removeService" show-navigation="false"> -->
-<div guh-wizard handle="removeService">
+<div guh-wizard handle="removeService" show-prev="false" show-next="false">
   <div guh-wizard-step title="Remove {{ remove.service.name }}">
     <p>{{ remove.service.name }} is managed by another service: <span>{{ remove.parentService.name }} ({{ remove.parentService.deviceClass.vendor.name === remove.parentService.deviceClass.name || remove.parentService.deviceClass.name === remove.parentService.name ? remove.parentService.deviceClass.vendor.name : remove.parentService.deviceClass.vendor.name + ', ' + remove.parentService.deviceClass.name }})</span></p>
 

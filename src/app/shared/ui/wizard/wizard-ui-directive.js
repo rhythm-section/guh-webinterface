@@ -36,7 +36,9 @@
     var directive = {
       bindToController: {
         handle: '@',
-        showNavigation: '='
+        showNavigation: '=',
+        showNext: '=',
+        showPrev: '='
       },
       controller: wizardCtrl,
       controllerAs: 'wizard',

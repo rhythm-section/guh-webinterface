@@ -27,8 +27,7 @@
   </svg>
 </button>
 
-<!-- <div guh-wizard handle="removeDevice" show-navigation="false"> -->
-<div guh-wizard handle="removeDevice">
+<div guh-wizard handle="removeDevice" show-prev="false" show-next="false">
   <div guh-wizard-step title="Remove {{ remove.device.name }}">
     <p>{{ remove.device.name }} is managed by another device: <span>{{ remove.parentDevice.name }} ({{ remove.parentDevice.deviceClass.vendor.name === remove.parentDevice.deviceClass.name || remove.parentDevice.deviceClass.name === remove.parentDevice.name ? remove.parentDevice.deviceClass.vendor.name : remove.parentDevice.deviceClass.vendor.name + ', ' + remove.parentDevice.deviceClass.name }})</span></p>
 
