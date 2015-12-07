@@ -1,0 +1,63 @@
+<!-- 
+  Copyright (C) 2015 Lukas Mayerhofer <lukas.mayerhofer@guh.guru>
+  
+  Permission is hereby granted, free of charge, to any person obtaining a copy
+  of this software and associated documentation files (the "Software"), to deal
+  in the Software without restriction, including without limitation the rights
+  to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+  copies of the Software, and to permit persons to whom the Software is
+  furnished to do so, subject to the following conditions:
+  
+  The above copyright notice and this permission notice shall be included in all
+  copies or substantial portions of the Software.
+  
+  THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+  IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+  FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+  AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+  LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+  OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+  SOFTWARE.
+-->
+
+
+<button class="close" ng-click="closeThisDialog()">
+  <svg class="icon">
+    <use xlink:href="./assets/svg/ui/ui.symbol.svg#close"></use>
+  </svg>
+</button>
+
+<div guh-wizard handle="removeDevice" show-prev="false" show-next="false">
+  <div guh-wizard-step title="Remove {{ remove.device.name }}">
+    <p>{{ remove.device.name }} is managed by another device: <span>{{ remove.parentDevice.name }} ({{ remove.parentDevice.deviceClass.vendor.name === remove.parentDevice.deviceClass.name || remove.parentDevice.deviceClass.name === remove.parentDevice.name ? remove.parentDevice.deviceClass.vendor.name : remove.parentDevice.deviceClass.vendor.name + ', ' + remove.parentDevice.deviceClass.name }})</span></p>
+
+    <p>To remove {{ remove.device.name ? remove.device.name : remove.device.deviceClass.name }}, {{ remove.parentDevice.name ? remove.parentDevice.name : remove.parentDevice.deviceClass.name }} has to be removed too.</p>
+
+    <p ng-if="remove.childDevices.length > 1">Be aware when removing {{ remove.parentDevice.name ? remove.parentDevice.name : remove.parentDevice.deviceClass.name }} all it's connected devices are removed too:</p>
+    <p ng-if="remove.childDevices.length > 1" ng-repeat="childDevice in remove.childDevices | orderBy: 'name' track by $index">{{ childDevice.name ? childDevice.name : childDevice.deviceClass.name }}</p>
+
+    <button class="button" ng-click="remove.removeAll()">Remove {{ remove.parentDevice.name ? remove.parentDevice.name : remove.parentDevice.deviceClass.name }} and {{ remove.childDevices.length > 1 ? remove.childDevices.length + ' connected devices' : (remove.device.name ? remove.device.name : remove.device.deviceClass.name) }}</button>
+  </div>
+
+  <div guh-wizard-step title="Associated rules">
+    <p>There {{ remove.rules.length > 1 ? 'are several rules' : 'is a rule' }} associated with {{ remove.childDevices.length > 1 ? 'some devices' : 'a device' }} that should be removed. Should this rule{{ remove.rules.length > 1 ? 's' : '' }} be updated or removed?</p>
+
+    <ul class="list">
+      <li ng-repeat="rule in remove.rules | orderBy: 'name' track by $index">
+        <guh-form-field label="{{ rule.name }}"
+                name="{{ rule.id }}"
+                param-type="{
+                  allowedValues: [remove.policyAllowedValues.update.label, remove.policyAllowedValues.remove.label],
+                  name: 'Type',
+                  type: 'String'
+                }"
+                state="{
+                  value: remove.getPolicyLabel(remove.rulePolicies[rule.id])
+                }"
+                template="app/shared/ui/form/form-field-templates/form-field-select-execute.html"
+                on-value-change="remove.setPolicy(params[0].value, rule.id)"></guh-form-field>
+      </li>
+    </ul>
+    <button class="button" type="button" ng-click="remove.removeAll()">Update/Remove associated rules</button>
+  </div>
+</div>

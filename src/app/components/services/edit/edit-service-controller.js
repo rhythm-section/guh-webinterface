@@ -39,9 +39,9 @@
     .module('guh.devices')
     .controller('EditServiceCtrl', EditServiceCtrl);
 
-  EditServiceCtrl.$inject = ['$log', '$scope', '$state', '$stateParams', 'DSDevice'];
+  EditServiceCtrl.$inject = ['$log', '$scope', '$state', '$stateParams', 'DSDevice', 'ngDialog'];
 
-  function EditServiceCtrl($log, $scope, $state, $stateParams, DSDevice) {
+  function EditServiceCtrl($log, $scope, $state, $stateParams, DSDevice, ngDialog) {
 
     var vm = this;
     var currentDevice = {};
@@ -89,7 +89,19 @@
         .catch(function(error) {
           // TODO: Build general error handler
           // TODO: Handle error when device in use (rules)
-          $log.error(error);
+          ngDialog.open({
+            className: 'modal small',
+            controller: 'RemoveServiceCtrl',
+            controllerAs: 'remove',
+            data: {
+              error: error,
+              service: currentDevice
+            },
+            disableAnimation: true,
+            overlay: true,
+            showClose: false,
+            template: 'app/components/services/remove/remove-service-modal.html'
+          });
         });
     }
 

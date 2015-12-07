@@ -22,5 +22,10 @@
 
 
 <!-- <div>Create template for <strong>select</strong></div> -->
-<label>{{ formField.name }}</label>
-<select ng-model="formField.value" ng-options="value for value in formField.paramType.allowedValues"></select>
+<label class="label-container">
+  <span>{{ formField.label }}</span>
+  <select ng-model="formField.value" ng-options="value for value in formField.paramType.allowedValues"></select>
+  <svg class="icon">
+    <use xlink:href="./assets/svg/ui/ui.symbol.svg#chevron-down"></use>
+  </svg>
+</label>
