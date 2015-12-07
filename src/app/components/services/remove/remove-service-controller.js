@@ -39,9 +39,9 @@
     .module('guh.services')
     .controller('RemoveServiceCtrl', RemoveServiceCtrl);
 
-  RemoveServiceCtrl.$inject = ['$log', '$rootScope', '$scope', '$state', 'DSDevice', 'DSRule', 'ngDialog'];
+  RemoveServiceCtrl.$inject = ['$log', '$rootScope', '$scope', '$timeout', '$state', 'DSDevice', 'DSRule', 'ngDialog'];
 
-  function RemoveServiceCtrl($log, $rootScope, $scope, $state, DSDevice, DSRule, ngDialog) {
+  function RemoveServiceCtrl($log, $rootScope, $scope, $timeout, $state, DSDevice, DSRule, ngDialog) {
 
     var vm = this;
     vm.policyAllowedValues = {
@@ -62,7 +62,7 @@
     vm.setPolicy = setPolicy;
     vm.getPolicyLabel = getPolicyLabel;
 
-
+t
     function _init() {
       if(angular.isDefined($scope.ngDialogData)) {
         var error = $scope.ngDialogData.error;
@@ -75,8 +75,6 @@
     function _checkError(error) {
       var errorCode = error.data ? (error.data.error ? error.data.error : (error.data.deviceError) ? error.data.deviceError : null) : null;
 
-      $log.log('checkError', errorCode);
-
       if(errorCode) {
         switch(errorCode) {
           case 'DeviceErrorDeviceIsChild':
@@ -85,6 +83,7 @@
           case 'DeviceErrorDeviceInRule':
             var ruleIds = error.data.ruleIds ? error.data.ruleIds : [];
             _setRules(ruleIds);
+            _initPolicies();
             break;
           default:
             $log.error(error);
@@ -96,14 +95,22 @@
 
     function _setServices() {
       if(DSDevice.is(vm.service)) {
-        // Parent
-        vm.parentService = DSDevice.get(vm.service.parentId);
+        var currentService = vm.service;
 
-        // Children
-        if(DSDevice.is(vm.parentService)) {
-          vm.childServices = DSDevice.getAll().filter(function(service) {
-            return service.parentId === vm.parentService.id;
-          });
+        while(angular.isDefined(currentService.parentId)) {
+          // Parent
+          vm.parentService = DSDevice.get(currentService.parentId);
+          
+          // Children
+          if(DSDevice.is(vm.parentService)) {
+            var childServices = DSDevice.getAll().filter(function(service) {
+              return service.parentId === vm.parentService.id;
+            });
+
+            vm.childServices.push(childServices);
+          }
+
+          currentService = vm.parentService;
         }
       }
     }
@@ -114,7 +121,9 @@
       });
 
       // Go to step 2
-      $rootScope.$broadcast('wizard.next', 'removeService');
+      $timeout(function() {
+        $rootScope.$broadcast('wizard.next', 'removeService');
+      }, 200);
     }
 
     function _initPolicies() {
@@ -125,7 +134,9 @@
 
 
     function removeAll() {
+      var serviceToDelete = DSDevice.is(vm.parentService) ? vm.parentService : vm.service;
       var params = {};
+
       params.removePolicyList = [];
       angular.forEach(vm.rulePolicies, function(policy, ruleId) {
         params.removePolicyList.push({
@@ -134,25 +145,22 @@
         });
       });
 
-      vm.parentService
-        .remove(params)
-        .then(function(response) {
-          $log.log('Service successfully removed', response);
+      if(DSDevice.is(serviceToDelete)) {
+        serviceToDelete
+          .remove(params)
+          .then(function(response) {
+            ngDialog.closeAll();
 
-          ngDialog.closeAll();
-
-          $state.go('guh.services.master', { bypassCache: true }, {
-            reload: true,
-            inherit: false,
-            notify: true
+            $state.go('guh.services.master', { bypassCache: true }, {
+              reload: true,
+              inherit: false,
+              notify: true
+            });
+          })
+          .catch(function(error) {
+            _checkError(error);
           });
-        })
-        .catch(function(error) {
-          _checkError(error);
-        })
-        .finally(function() {
-          _initPolicies();
-        });
+      }
     }
 
     function setPolicy(policyLabel, ruleId) {

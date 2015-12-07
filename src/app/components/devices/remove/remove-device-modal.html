@@ -27,16 +27,17 @@
   </svg>
 </button>
 
-<div guh-wizard handle="removeDevice" show-navigation="false">
+<!-- <div guh-wizard handle="removeDevice" show-navigation="false"> -->
+<div guh-wizard handle="removeDevice">
   <div guh-wizard-step title="Remove {{ remove.device.name }}">
     <p>{{ remove.device.name }} is managed by another device: <span>{{ remove.parentDevice.name }} ({{ remove.parentDevice.deviceClass.vendor.name === remove.parentDevice.deviceClass.name || remove.parentDevice.deviceClass.name === remove.parentDevice.name ? remove.parentDevice.deviceClass.vendor.name : remove.parentDevice.deviceClass.vendor.name + ', ' + remove.parentDevice.deviceClass.name }})</span></p>
 
-    <p>To remove {{ remove.device.name }}, {{ remove.parentDevice.name }} has to be removed too.</p>
+    <p>To remove {{ remove.device.name ? remove.device.name : remove.device.deviceClass.name }}, {{ remove.parentDevice.name ? remove.parentDevice.name : remove.parentDevice.deviceClass.name }} has to be removed too.</p>
 
-    <p ng-if="remove.childDevices.length > 1">Be aware when removing {{ remove.parentDevice.name }} all it's connected devices are removed too:</p>
-    <p ng-if="remove.childDevices.length > 1" ng-repeat="childDevice in remove.childDevices | orderBy: 'name' track by $index">{{ childDevice.name }}</p>
+    <p ng-if="remove.childDevices.length > 1">Be aware when removing {{ remove.parentDevice.name ? remove.parentDevice.name : remove.parentDevice.deviceClass.name }} all it's connected devices are removed too:</p>
+    <p ng-if="remove.childDevices.length > 1" ng-repeat="childDevice in remove.childDevices | orderBy: 'name' track by $index">{{ childDevice.name ? childDevice.name : childDevice.deviceClass.name }}</p>
 
-    <button class="button" ng-click="remove.removeAll()">Remove {{ remove.parentDevice.name }} and {{ remove.childDevices.length > 1 ? remove.childDevices.length + ' connected devices' : remove.device.name }}</button>
+    <button class="button" ng-click="remove.removeAll()">Remove {{ remove.parentDevice.name ? remove.parentDevice.name : remove.parentDevice.deviceClass.name }} and {{ remove.childDevices.length > 1 ? remove.childDevices.length + ' connected devices' : (remove.device.name ? remove.device.name : remove.device.deviceClass.name) }}</button>
   </div>
 
   <div guh-wizard-step title="Associated rules">
