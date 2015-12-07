@@ -35,7 +35,7 @@
     <p>To remove {{ remove.service.name ? remove.service.name : remove.service.deviceClass.name }}, {{ remove.parentService.name ? remove.parentService.name : remove.parentService.deviceClass.name }} has to be removed too.</p>
 
     <p ng-if="remove.childServices.length > 1">Be aware when removing {{ remove.parentService.name ? remove.parentService.name : remove.parentService.deviceClass.name }} all it's connected services are removed too:</p>
-    <p ng-if="remove.childServices.length > 1" ng-repeat="childService in remove.childServices | orderBy: 'name' track by $index">{{ childService.name }}</p>
+    <p ng-if="remove.childServices.length > 1" ng-repeat="childService in remove.childServices | orderBy: 'name' track by $index">{{ childService.name ? childService.name : childService.deviceClass.name }}</p>
 
     <button class="button" ng-click="remove.removeAll()">Remove {{ remove.parentService.name ? remove.parentService.name : remove.parentService.deviceClass.name }} and {{ remove.childServices.length > 1 ? remove.childServices.length + ' connected services' : (remove.service.name ? remove.service.name : remove.service.deviceClass.name) }}</button>
   </div>
