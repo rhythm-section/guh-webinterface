@@ -29,11 +29,12 @@
     .module('guh')
     .controller('AppCtrl', AppCtrl);
 
-  AppCtrl.$inject = ['$log', '$rootScope', '$scope', '$animate', '$timeout', '$state', '$stateParams', 'app', 'libs', 'websocketService', 'ngDialog'];
+  AppCtrl.$inject = ['$log', '$rootScope', '$scope', '$animate', '$timeout', '$state', '$stateParams', 'app', 'libs', 'errors', 'websocketService', 'ngDialog'];
 
-  function AppCtrl($log, $rootScope, $scope, $animate, $timeout, $state, $stateParams, app, libs, websocketService, ngDialog) {
+  function AppCtrl($log, $rootScope, $scope, $animate, $timeout, $state, $stateParams, app, libs, errors, websocketService, ngDialog) {
 
     var vm = this;
+    var notification = null;
     var connectionErrorModal = null;
     
     vm.$state = $state;
@@ -67,6 +68,34 @@
       if(connectionErrorModal) {
         connectionErrorModal.close();
         connectionErrorModal = null;
+      }
+    });
+
+    // Common Notification Handler
+    $scope.$on('notification', function(event, data) {
+      var type = data.type ? data.type : null;
+      var args = data.args ? data.args : null;
+      var error = args.data && args.data.error ? args.data.error : null;
+      var errorMessage = angular.isDefined(libs._.findKey(errors, error)) ? errors[libs._.findKey(errors, error)][error] : '';
+      var notificationMessage = (errorMessage === '') ? '[' + error + ']' : errorMessage + ' [' + error + ']';
+
+      // Close previous notification
+      if(notification && angular.isDefined(notification.id)) {
+        if(ngDialog.isOpen(notification.id)) {
+          ngDialog.close(notification.id);
+        }
+      }
+
+      // Show notification
+      if(notificationMessage) {
+        notification = ngDialog.open({
+          className: 'notification notification_error',
+          closeByDocument: false,
+          overlay: false,
+          plain: true,
+          showClose: false,
+          template: '<p>' + notificationMessage + '</p><button class="close" type="button" ng-click="closeThisDialog()"><svg class="icon"><use xlink:href="./assets/svg/ui/ui.symbol.svg#close"></use></svg></button>'
+        });
       }
     });
 

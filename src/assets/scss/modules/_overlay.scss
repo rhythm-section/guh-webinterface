@@ -25,13 +25,36 @@
 
 $black: #000;
 $grey: #676767;
+$red: #F07363;
 $white: #fff;
 
 
 $background-overlay: $white;
 $background-content: transparent;
+$background-error: $red;
 $color: $grey;
+$color-error: $white;
 
+
+@include keyframes(slidein) {
+  from {
+    @include transform(translateY(100%));
+  }
+
+  to {
+    @include transform(translateY(0%));
+  }
+}
+
+@include keyframes(slideout) {
+  from {
+    @include transform(translateY(0%));
+  }
+
+  to {
+    @include transform(translateY(100%));
+  }
+}
 
 @include keyframes(flyin) {
   from { 
@@ -58,6 +81,22 @@ $color: $grey;
     filter: blur(6px);
     @include transform(scale(1.1));
     opacity: 0;
+  }
+}
+
+
+.modal,
+.notification {
+  .close {
+    background-color: transparent;
+    border: none;
+    @include rem(height, 7.5);
+    @include rem(padding, 3);
+    position: fixed;
+      right: 0;
+      top: 0;
+    @include rem(width, 7.5);
+    z-index: 9999;
   }
 }
 
@@ -110,21 +149,20 @@ $color: $grey;
       }
     }
   }
-
-  .close {
-    background-color: transparent;
-    border: none;
-    @include rem(height, 7.5);
-    @include rem(padding, 3);
-    position: fixed;
-      right: 0;
-      top: 0;
-    @include rem(width, 7.5);
-    z-index: 9999;
-  }
 }
 
-.modal_error {
+.modal.modal_error {
+  @include animation(flyin 0.4s);
+  @include transition(all 0.4s);
+
+  &.ngdialog-closing {
+    @include animation(flyout 0.4s);
+  }
+
+  .ngdialog-overlay {
+    background-color: rgba(255, 255, 255, 0.8);
+  }
+
   .ngdialog-content {
     position: relative;
 
@@ -143,6 +181,50 @@ $color: $grey;
         @include rem(margin-bottom, 1.5);
       }
     }
+  }
+}
+
+.notification {
+  @include animation(slidein 0.4s);
+  @include transition(all 0.4s);
+
+  &.ngdialog-closing {
+    @include animation(slideout 0.4s);
+  }
+}
+
+.notification.notification_error {
+  @include rem(height, 7.5);
+  top: auto;
+
+  // .ngdialog-overlay {
+  //   @include animation(slideout 4s);
+  //   height: inherit;
+  //   // top: auto;
+  // }
+
+  .ngdialog-content {
+    background-color: $background-error;
+    box-shadow: 0px 1px 3px 0px rgba(0, 0, 0, 0.3);
+    color: $color-error;
+    height: inherit;
+    // position: fixed;
+    //   bottom: 0;
+    //   left: 0;
+    // width: 100%;
+
+    &> p {
+      @include rem(padding, 3);
+    }
+  }
+
+  .close {
+    bottom: 0;
+    top: auto;
+  }
+
+  .icon {
+    fill: $color-error;
   }
 }
 
