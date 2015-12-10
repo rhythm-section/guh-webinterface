@@ -104,8 +104,6 @@
         function execute(params) {
           var device = DSDevice.get(vm.deviceId);
 
-          $log.log('EXECUTE ACTION', vm.actionType, params);
-
           device.executeAction(vm.actionType, params)
             .then(function(response) {
               $log.log('Action executed', response);
