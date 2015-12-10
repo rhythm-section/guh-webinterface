@@ -35,7 +35,6 @@
 
     var vm = this;
     var notification = null;
-    var notificationTimer = null;
     var connectionErrorModal = null;
     
     vm.$state = $state;
