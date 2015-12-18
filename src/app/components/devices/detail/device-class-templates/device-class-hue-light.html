@@ -54,6 +54,15 @@
       <p class="value" ng-switch-default>{{ state.value }} {{ state.stateType.unit | unit }}</p>
     </div>
   </guh-tab>
+
+  <!-- Settings -->
+  <guh-tab heading="Settigs">
+    <p ng-if="device.params.length === 0">This device doesn't have any settings to show you.</p>
+    <div ng-repeat="param in device.params track by $index" class="param">
+      <p class="name">{{ param.name }}</p>
+      <p class="value">{{ param.value }}</p>
+    </div>
+  </guh-tab>
 </guh-tabset>
 
 <p ng-show="!device.statesObject.reachable.value">The connection to the hue light or hue bridge was lost. Please check if the light is connected to the bridge with the following IP address: {{ device.paramsObject.hostAddress.value }}. Please also check if the hue bridge is connected to your local network.</p>

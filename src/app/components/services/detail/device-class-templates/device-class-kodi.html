@@ -40,6 +40,15 @@
       <p class="name">{{ state.stateType.name }}</p>
     </div>
   </guh-tab>
+
+  <!-- Settings -->
+  <guh-tab heading="Settigs">
+    <p ng-if="service.params.length === 0">This service doesn't have any settings to show you.</p>
+    <div ng-repeat="param in service.params track by $index" class="param">
+      <p class="name">{{ param.name }}</p>
+      <p class="value">{{ param.value }}</p>
+    </div>
+  </guh-tab>
 </guh-tabset>
 
 <p ng-show="!service.statesObject.connected.value">The connection to Kodi was lost. Please check if Kodi is turned on and is reachable under the following address: {{ service.paramsObject.ip.value }}:{{ service.paramsObject.port.value }}</p>
