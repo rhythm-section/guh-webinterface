@@ -21,6 +21,17 @@
 -->
 
 
+<!-- <guh-slider start-index="0" on-change="devices.setCurrent(slideIndex)">
+  <guh-slider-item ng-repeat="device in devices.configured track by $index">
+    <h2 class="heading">{{ device.name }}</h2>
+    <p class="heading heading_sub">{{ device.deviceClass.vendor.name === device.deviceClass.name || device.deviceClass.name === device.name ? device.deviceClass.vendor.name : device.deviceClass.vendor.name + ' &middot; ' + device.deviceClass.name }}</p> -->
+
+    <!-- <p>currentSlide: {{ devices.currentSlide }}</p> -->
+    <!-- <p>$index: {{ $index }}</p> -->
+    <!-- <div class="detail" ng-if="devices.currentSlide === $index" ui-view></div>
+  </guh-slider-item>
+</guh-slider> -->
+
 <guh-slider on-change="devices.setCurrent(slideIndex)">
   <guh-slider-item ng-repeat="device in devices.configured track by $index" index="$index">
     <!-- <svg class="icon">
