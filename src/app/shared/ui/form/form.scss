@@ -56,6 +56,12 @@ textarea {
   width: 100%;
 }
 
+input,
+textarea,
+select {
+  border-bottom: 1px solid $border;
+}
+
 input[type="email"],
 input[type="text"],
 input[type="password"] {
@@ -89,6 +95,32 @@ input[type="submit"] {
   &:hover {
     background-color: $background-highlight-hover;
     border-color: $border-highlight;
+  }
+}
+
+button:disabled {
+  cursor: auto;
+
+  &:hover {
+    background-color: inherit;
+    color: inherit;
+  }
+}
+
+select {
+  @include rem(padding, 1.5);
+  position: relative;
+  width: 100%;
+
+  &::after {
+    background-color: $border;
+    content: "";
+    display: block;
+    @include rem(height, 4.5);
+    position: absolute;
+      right: 0;
+      top: 0;
+    @include rem(width, 4.5);
   }
 }
 

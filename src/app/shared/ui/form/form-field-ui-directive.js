@@ -29,15 +29,16 @@
     .module('guh.ui')
     .directive('guhFormField', guhFormField);
 
-    guhFormField.$inject = ['$log', '$http', '$templateCache', '$compile', 'libs', 'app', 'DSState'];
+    guhFormField.$inject = ['libs', 'app', '$log', '$templateRequest', '$compile', 'DSState'];
 
-    function guhFormField($log, $http, $templateCache, $compile, libs, app, DSState) {
+    function guhFormField(libs, app, $log, $templateRequest, $compile, DSState) {
       var directive = {
         bindToController: {
           changeCallback: '&onValueChange',
           label: '@',
           name: '@',
           paramType: '=',
+          placeholder: '@',
           required: '@',
           state: '=',
           template: '@',
@@ -48,7 +49,7 @@
         controller: formFieldCtrl,
         controllerAs: 'formField',
         link: formFieldLink,
-        require: '?^^guhForm',
+        require: ['guhFormField', '?^^guhForm'],
         restrict: 'E',
         scope: {}
       };
@@ -56,57 +57,74 @@
       return directive;
 
 
-      function formFieldCtrl($scope, $attrs) {
-        
-        /*
-         * Variables
-         */
+      function formFieldCtrl($scope, $element, $attrs) {
 
         /* jshint validthis: true */
         var vm = this;
         var throttleCallback = null;
         var debounceCallback = null;
 
-
-        /*
-         * API
-         */
-
-        // Variables
         vm.availableValueOperators = [];
         vm.selectedValueOperator = app.valueOperator.is;
         vm.is = null;
         vm.from = null;
         vm.to = null;
 
-        // Methods
         vm.init = init;
-        vm.setValue = setValue;
+        vm.setValueOperators = setValueOperators;
         vm.selectValueOperator = selectValueOperator;
+        vm.setValue = setValue;
 
 
-        /*
-         * Private methods
-         */
-
-        function init() {
-          _setDefaults();
-          _setValueOperators();
-
-          if(vm.valueOperator) {
-            vm.is = app.valueOperator.is;
-            vm.is.paramType = angular.copy(vm.paramType);
-            vm.is.stateType = angular.copy(vm.stateType);
-
-            if(vm.selectedValueOperator) {
-              // Reset
-              if(angular.toJson(vm.selectedValueOperator) !== angular.toJson(app.valueOperator.is)) {
-                vm.selectedValueOperator = app.valueOperator.is;
-              }
-
-              vm.selectedOperator = vm.selectedValueOperator.operators[0];
-              vm.selectValueOperator();
+        function _setDefaults() {
+          // State
+          if(angular.isDefined(vm.state) && vm.state !== null) {
+            // Value
+            if(angular.isDefined(vm.state.value) && vm.state.value !== null) {
+              vm.value = vm.state.value;
+            } else if(angular.isDefined(vm.state.defaultValue) && vm.state.defaultValue !== null) {
+              vm.value = vm.state.defaultValue;
+            } else {
+              vm.value = _getDefault(vm.state.type);
             }
+
+            // Placeholder
+            vm.placeholder = _getDefault(vm.state.type);
+          } else if(angular.isDefined(vm.template) && vm.template !== '') {
+            var filename = vm.template.substring(vm.template.lastIndexOf('/') + 1, vm.template.lastIndexOf('.'));
+            var type = filename.replace('form-field-', '');
+
+            // Value
+            vm.value = _getDefault(type);
+
+            // Placeholder
+            vm.placeholder = _getDefault(type);
+          }
+
+          // StateType
+          if(angular.isDefined(vm.stateType) && vm.stateType !== null) {
+            // Min & max value
+            vm.minValue = vm.stateType.minValue ? vm.stateType.minValue : 0;
+            vm.maxValue = vm.stateType.maxValue ? vm.stateType.maxValue : 100;
+
+            // Select options
+            vm.selectOptions = vm.stateType.possibleValues ? vm.stateType.possibleValues : [];
+
+            // Unit
+            vm.unit = vm.stateType.unit ? app.unit[vm.stateType.unit] : undefined;
+          }
+
+          // ParamType
+          if(angular.isDefined(vm.paramType)) {
+            // Min & max value
+            vm.minValue = vm.paramType.minValue ? vm.paramType.minValue : 0;
+            vm.maxValue = vm.paramType.maxValue ? vm.paramType.maxValue : 100;
+
+            // Select options
+            vm.selectOptions = vm.paramType.allowedValues ? vm.paramType.allowedValues : [];
+
+            // Unit
+            vm.unit = vm.paramType.unit ? app.unit[vm.paramType.unit] : undefined;
           }
         }
 
@@ -131,6 +149,7 @@
               value = '00:00:00:00:00:00';
               break;
             case 'mail':
+            case 'search':
             case 'text':
             case 'textarea':
               value = '';
@@ -145,45 +164,17 @@
             case 'select':
               break;
             case 'not-available':
-              value = null;
+              value = '';
               break;
             default:
-              value = null;
+              value = '';
               break;
           }
 
           return value;
         }
 
-        function _setDefaults() {
-          // Value
-          if(angular.isDefined(vm.state) && vm.state !== null) {
-            if(angular.isDefined(vm.state.value) && vm.state.value !== null) {
-              vm.value = vm.state.value;
-            } else if(angular.isDefined(vm.state.defaultValue) && vm.state.defaultValue !== null) {
-              vm.value = vm.state.defaultValue;
-            } else {
-              vm.value = _getDefault(vm.state.type);
-            }
-          } else if(angular.isDefined(vm.template) && vm.template !== '') {
-            var filename = vm.template.substring(vm.template.lastIndexOf('/') + 1, vm.template.lastIndexOf('.'));
-            var type = filename.replace('form-field-', '');
-
-            vm.value = _getDefault(type);
-          }
-
-          // ParamType
-          if(angular.isDefined(vm.paramType)) {
-            // Min & max value
-            vm.minValue = vm.paramType.minValue ? vm.paramType.minValue : 0;
-            vm.maxValue = vm.paramType.maxValue ? vm.paramType.maxValue : 100;
-
-            // Unit
-            vm.unit = vm.paramType.unit ? app.unit[vm.paramType.unit] : undefined;
-          }
-        }
-
-        function _setValueOperators() {
+        function setValueOperators() {
           var type = '';
 
           if(angular.isDefined(vm.paramType)) {
@@ -193,19 +184,19 @@
           }
 
           switch(type) {
-            case 'bool':
+            case 'Bool':
               vm.availableValueOperators = [
                 app.valueOperator.is
               ];
               break;
-            case 'QString':
+            case 'String':
               vm.availableValueOperators = [
                 app.valueOperator.is
               ];
               break;
-            case 'int':
-            case 'uint':
-            case 'double':
+            case 'Int':
+            case 'Uint':
+            case 'Double':
               vm.availableValueOperators = [
                 app.valueOperator.is,
                 app.valueOperator.isNot,
@@ -218,26 +209,9 @@
         }
 
         function _invokeCallback() {
-          // TODO: Validate if no parent form => not necessary?
-
-          // if(vm.value === null) {
-          //   $log.log('value is NULL');
-          //   vm.changeCallback({
-          //     params: []
-          //   });
-          // } else if($attrs.onValueChange) {
-          //   $log.log('$attrs.onValueChange', $attrs.onValueChange);
-          //   vm.changeCallback({
-          //     params: [{
-          //       name: vm.name,
-          //       value: vm.value
-          //     }]
-          //   });
-          // }
-
           // Invoke callback function only if defined (if not defined, params can be passed to callback inside guh-form)
-          if($attrs.onValueChange) {
-            if(vm.value === null) {
+          if(angular.isFunction(vm.changeCallback)) {
+            if(vm.value === '') {
               vm.changeCallback({
                 params: []
               });
@@ -253,19 +227,35 @@
         }
 
 
-        /*
-         * Public methods
-         */
+        function init() {
+          // Set default values and placholder text
+          _setDefaults();
+          vm.setValueOperators();
 
-        function selectValueOperator() {
-          // $log.log('selectValueOperator', vm);
-
-          // Remove all accurances of this scope in formCtrl
-          // if(vm.formCtrl) {
-          //   $log.log('removeFormField', $scope);
-          //   vm.formCtrl.removeFormField($scope);
+          // if(vm.valueOperator) {
+          //   vm.selectValueOperator();
+          //   vm.setValueOperators();
           // }
 
+          // If current formfield is the valueoperator
+          if(vm.valueOperator) {
+            vm.is = app.valueOperator.is;
+            vm.is.paramType = vm.paramType;
+            vm.is.stateType = vm.stateType;
+
+            if(vm.selectedValueOperator) {
+              // Reset
+              if(angular.toJson(vm.selectedValueOperator) !== angular.toJson(app.valueOperator.is)) {
+                vm.selectedValueOperator = app.valueOperator.is;
+              }
+
+              vm.selectedOperator = vm.selectedValueOperator.operators[0];
+              vm.selectValueOperator();
+            }
+          }
+        };
+
+        function selectValueOperator() {
           // Reset
           vm.is = null;
           vm.from = null;
@@ -274,20 +264,20 @@
           if(angular.toJson(vm.selectedValueOperator) === angular.toJson(app.valueOperator.between)) {
             vm.is = null;
 
-            vm.from = angular.copy(vm.selectedValueOperator);
-            vm.from.paramType = angular.copy(vm.paramType);
-            vm.from.stateType = angular.copy(vm.stateType);
-            vm.from.operator = angular.copy(vm.selectedValueOperator.operators[0]);
+            vm.from = vm.selectedValueOperator;
+            vm.from.paramType = vm.paramType ? vm.paramType : undefined;
+            vm.from.stateType = vm.stateType ? vm.stateType : undefined;
+            vm.from.operator = vm.selectedValueOperator.operators[0];
 
-            vm.to = angular.copy(vm.selectedValueOperator);
-            vm.to.paramType = angular.copy(vm.paramType);
-            vm.to.stateType = angular.copy(vm.stateType);
-            vm.to.operator = angular.copy(vm.selectedValueOperator.operators[1]);
+            vm.to = vm.selectedValueOperator;
+            vm.to.paramType = vm.paramType ? vm.paramType : undefined;
+            vm.to.stateType = vm.stateType ? vm.stateType : undefined;
+            vm.to.operator = vm.selectedValueOperator.operators[1];
           } else {
             vm.is = angular.copy(vm.selectedValueOperator);
-            vm.is.paramType = angular.copy(vm.paramType);
-            vm.is.stateType = angular.copy(vm.stateType);
-            vm.is.operator = angular.copy(vm.selectedValueOperator.operators[0]);
+            vm.is.paramType = vm.paramType ? vm.paramType : undefined;
+            vm.is.stateType = vm.stateType ? vm.stateType : undefined;
+            vm.is.operator = vm.selectedValueOperator.operators[0];
 
             vm.from = null;
             vm.to = null;
@@ -335,96 +325,71 @@
               _invokeCallback();
           }
         }
-
-
-        // _init();
-        
       }
 
 
-      function formFieldLink(scope, element, attrs, formCtrl) {
-        var ctrl = scope.formField;
-        var templateUrl = ctrl.template;
+      function formFieldLink(scope, element, attrs, formCtrls) {
+        var formFieldCtrl = formCtrls[0] || null;
+        var formCtrl = formCtrls[1] || null;
+        var previousScope = null;
 
-        // Add parent controller to access it from this controller
-        ctrl.formCtrl = formCtrl;
+        // Get template via $http or $templateCache and append it to the guh-form-field element. After that link and compile the template to get updated data.
+        function setTemplate(template) {
+          // If value-operator was set to true, ignore the passed template and append a select field which is then responsible for showing the correct guh-form-fields.
+          var templateUrl = attrs.valueOperator ? app.basePaths.ui + 'form/value-operator.html' : template;
+          
+          if(angular.isString(templateUrl) && templateUrl !== '') {
+            $templateRequest(templateUrl, true)
+              .then(function(template) {
+                // Destroy previous scope to avoid memory leak
+                if(previousScope) {
+                  if(formCtrl) {
+                    formCtrl.removeFormField(previousScope);
+                  }
 
-        // Watch selected operator
-        var selectedOperatorWatch = scope.$watch('formField.selectedOperator', function(newValue) {
-          $log.log('$watch', newValue, scope);
+                  previousScope.$destroy();
+                  previousScope = null;
+                }
 
-          if(formCtrl && !ctrl.valueOperator) {
-            // Remove old formField if operator changed
-            // $log.log('REMOVE');
-            // formCtrl.removeFormField(scope);
+                previousScope = scope.$new();
 
-            // Add formField if valueOperator not set
-            formCtrl.addFormField(scope);
-          }
+                if(previousScope && formCtrl && !formFieldCtrl.valueOperator) {
+                  formCtrl.addFormField(previousScope);
+                }
 
-          if(formCtrl) {
-            formCtrl.updateFormField(scope.$id, newValue);
-          }
-        });
-
-        // Watch template
-        var templateWatch = scope.$watch('formField.template', function(newValue) {
-          templateUrl = newValue;
-
-          ctrl.init();
-
-          if(ctrl.valueOperator) {
-            $http.get('app/shared/ui/form/value-operator.html', { cache: $templateCache }).success(function(template) {
-              // Replace guhFormField-directive with proper HTML input
-              element.html(template);
-              $compile(element.contents())(scope);
-            });
-          } else {
-            if(angular.isString(templateUrl)) {
-              $http.get(templateUrl, { cache: $templateCache }).success(function(template) {
-                // Replace guhFormField-directive with proper HTML input
                 element.html(template);
-                $compile(element.contents())(scope);
+                $compile(element.contents())(previousScope);
+
+                // Initialize formfield
+                if(formFieldCtrl) {
+                  formFieldCtrl.init();
+                }
+              })
+              .catch(function(error) {
+                $log.error('guh.ui.directive:formField', error);
               });
-            } else {
-              $log.error('guh.ui.guhFormField:directive', 'TemplateURL is not set.');
-            }
+          } else {
+            $log.error('guh.ui.directive:formField', 'No template has been specified or the specified template is not of type "String".');
           }
+        }
+
+        // Observes
+        attrs.$observe('template', function(template) {
+          setTemplate(template);
         });
 
-        // Watch state
-        DSState.on('DS.change', function(DSState, state) {
-          if(angular.isDefined(scope) && scope !== null && angular.isDefined(scope.formField.state)) {
-            $log.log('STATE CHANGED', scope);
-            scope.$apply(function() {
-              scope.formField.value = scope.formField.state.value;
-            });
-          }
-        });
 
-        // On destroy
+        // Cleanup
         scope.$on('$destroy', function() {
-          // Remove previously added formFields
-          if(formCtrl) {
-            formCtrl.removeFormField(scope);
+          if(previousScope) {
+            if(formCtrl) {
+              formCtrl.removeFormField(previousScope);
+            }
+
+            previousScope.$destroy();
+            previousScope = null;
           }
-
-          // Remove bindings
-          // Link: http://angular-tips.com/blog/2013/08/removing-the-unneeded-watches/
-          // Link: http://api.jquery.com/off/
-          selectedOperatorWatch();
-          templateWatch();
-
-          if(scope && angular.isFunction(scope.formField.state)) {
-            scope.formField.state.off();
-          }
-
-          scope = null;
-
-          element.remove();
-          element = null;
         });
-        
       }
     }
 
