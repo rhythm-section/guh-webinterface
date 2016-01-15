@@ -65,6 +65,7 @@
       vm.addStep = addStep;
       vm.prev = prev;
       vm.next = next;
+      vm.goToStep = goToStep;
       vm.hasPrev = hasPrev;
       vm.hasNext = hasNext;
       vm.isActive = isActive;
@@ -134,6 +135,20 @@
         }
       }
 
+      function goToStep(step) {
+        var step = step - 1;
+
+        if(step === currentStep) {
+          return;
+        } else if(currentStep >= 0 && step <= vm.steps.length) {
+          vm.steps[currentStep].element.removeClass('current');
+          currentStep = step;
+        }
+
+        vm.steps[currentStep].element.addClass('current');
+        vm.title = vm.steps[currentStep].scope.wizardStep.title;
+      }
+
       function isActive(step) {
         return currentStep === libs._.findIndex(vm.steps, step);
       }
@@ -164,6 +179,13 @@
       scope.$on('wizard.next', function(event, handle) {
         if(handle === wizardCtrl.handle) {
           wizardService.getByHandle(handle).wizard.next();
+        }
+      });
+
+      // Go to certain step
+      scope.$on('wizard.goToStep', function(event, handle, step) {
+        if(handle === wizardCtrl.handle) {
+          wizardService.getByHandle(handle).wizard.goToStep(step);
         }
       });
 
