@@ -29,9 +29,9 @@
     .module('guh.ui')
     .directive('guhTabset', guhTabset);
 
-    guhTabset.$inject = ['$log', 'libs', 'hotkeys'];
+    guhTabset.$inject = ['$log', '$sce', 'libs', 'hotkeys'];
 
-    function guhTabset($log, libs, hotkeys) {
+    function guhTabset($log, $sce, libs, hotkeys) {
       var directive = {
         bindToController: {
           disabled: '='
@@ -92,7 +92,7 @@
           }
 
           angular.forEach(vm.tabs, function(tab, index) {
-            vm.tabHeadings[index] = tab.heading.slice(0, hotkeyIndex) + '<span>' + tab.heading.slice(hotkeyIndex, hotkeyIndex + 1) + '</span>' + tab.heading.slice(hotkeyIndex + 1);  
+            vm.tabHeadings[index] = $sce.trustAsHtml(tab.heading.slice(0, hotkeyIndex) + '<span>' + tab.heading.slice(hotkeyIndex, hotkeyIndex + 1) + '</span>' + tab.heading.slice(hotkeyIndex + 1));
             
             hotkey = tab.heading.charAt(hotkeyIndex).toLowerCase();
 
@@ -124,7 +124,6 @@
 
         function init() {
           _addHotkeys();
-          $log.log('vm.tabs', vm.tabs);
         }
 
         function addTab(tab) {
