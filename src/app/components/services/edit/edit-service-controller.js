@@ -39,12 +39,14 @@
     .module('guh.devices')
     .controller('EditServiceCtrl', EditServiceCtrl);
 
-  EditServiceCtrl.$inject = ['$log', '$scope', '$state', '$stateParams', 'DSDevice'];
+  EditServiceCtrl.$inject = ['$log', '$scope', '$state', '$stateParams', 'DSDevice', 'modalInstance'];
 
-  function EditServiceCtrl($log, $scope, $state, $stateParams, DSDevice) {
+  function EditServiceCtrl($log, $scope, $state, $stateParams, DSDevice, modalInstance) {
 
     var vm = this;
     var currentDevice = {};
+
+    vm.modalInstance = modalInstance;
 
     // Public methods
     vm.remove = remove;
@@ -84,7 +86,8 @@
             inherit: false,
             notify: true
           });
-          $scope.closeThisDialog();
+          
+          modalInstance.close();
         })
         .catch(function(error) {
           // TODO: Build general error handler
