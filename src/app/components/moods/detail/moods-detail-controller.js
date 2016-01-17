@@ -50,7 +50,6 @@
     vm.triggerModal = null;
 
     // Public methods
-    vm.addTrigger = addTrigger;
     vm.executeActions = executeActions;
     vm.executeExitActions = executeExitActions;
 
@@ -71,6 +70,8 @@
         });
       } else {
         mood = DSRule.get(moodId);
+
+        $log.log('mood', mood);
 
         vm.actions = mood.actions;
         vm.active = mood.active;
@@ -149,17 +150,6 @@
           });
         });
       }
-    }
-
-    function addTrigger() {
-      vm.triggerModal = ngDialog.open({
-        className: 'modal',
-        controller: 'AddTriggerCtrl',
-        controllerAs: 'addTrigger',
-        overlay: true,
-        showClose: false,
-        template: 'app/components/moods/detail/add-trigger.html'
-      });
     }
 
     function executeActions() {
