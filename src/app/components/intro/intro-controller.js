@@ -119,8 +119,8 @@
     function _findDeviceClassRelations(deviceClasses) {
       return angular.forEach(deviceClasses, function(deviceClass) {
         deviceClass.actionTypesLinked = DSDeviceClass.getAllActionTypes(deviceClass.id);
+        deviceClass.eventTypesLinked = DSDeviceClass.getAllEventTypes(deviceClass.id);
         deviceClass.stateTypesLinked = DSDeviceClass.getAllStateTypes(deviceClass.id);
-        return DSDeviceClass.loadRelations(deviceClass, ['eventType']);
       });
     }
 
