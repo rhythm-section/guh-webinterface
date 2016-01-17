@@ -39,15 +39,16 @@
     .module('guh.moods')
     .controller('EditMoodCtrl', EditMoodCtrl);
 
-  EditMoodCtrl.$inject = ['$log', '$rootScope', '$scope', '$state', '$stateParams', 'DSRule', 'DSDevice'];
+  EditMoodCtrl.$inject = ['$log', '$rootScope', '$scope', '$state', '$stateParams', 'DSRule', 'DSDevice', 'modalInstance'];
 
-  function EditMoodCtrl($log, $rootScope, $scope, $state, $stateParams, DSRule, DSDevice) {
+  function EditMoodCtrl($log, $rootScope, $scope, $state, $stateParams, DSRule, DSDevice, modalInstance) {
 
     var vm = this;
 
     // Public variables
     vm.rule = {};
     vm.ruleId = '';
+    vm.modalInstance = modalInstance;
 
     // Public methods
     vm.remove = remove;
@@ -86,8 +87,7 @@
           device
             .remove()
             .then(function() {
-              // Close dialog and update mood master view with new mood
-              $scope.closeThisDialog();
+              modalInstance.close();
 
               $state.go('guh.moods.master', { bypassCache: true }, {
                 reload: true,
