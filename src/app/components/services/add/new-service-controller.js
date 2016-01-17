@@ -41,7 +41,7 @@
 
   NewServiceCtrl.$inject = ['$log', '$rootScope', '$scope', '$state', '$stateParams', 'app', 'libs', 'DSHttpAdapter', 'DSVendor', 'DSDevice', 'modalInstance'];
 
-  function NewServiceCtrl($log, $rootScope, $scope, $state, $stateParams, app, libs, DSHttpAdapter, DSVendor, DSDevice) {
+  function NewServiceCtrl($log, $rootScope, $scope, $state, $stateParams, app, libs, DSHttpAdapter, DSVendor, DSDevice, modalInstance) {
 
     var vm = this;
 
