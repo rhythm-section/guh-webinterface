@@ -23,7 +23,7 @@
 
 <select ng-model="formField.selectedValueOperator" ng-change="formField.selectValueOperator()" ng-options="operator as operator.label for (key, operator) in formField.availableValueOperators track by operator.id" name="operator"></select>
 
-<guh-form-field label=""
+<guh-form-field label="{{ formField.label }}"
                 name="{{ formField.name }}"
                 param-type="formField.is.paramType"
                 template="{{ formField.template }}"
@@ -32,7 +32,7 @@
                 class="item"
                 ng-if="formField.is"></guh-form-field>
 
-<guh-form-field label=""
+<guh-form-field label="{{ formField.label }}"
                 name="{{ formField.name }}"
                 param-type="formField.from.paramType"
                 template="{{ formField.template }}"
@@ -41,7 +41,7 @@
                 class="item"
                 ng-if="formField.from"></guh-form-field>
 
-<guh-form-field label=""
+<guh-form-field label="{{ formField.label }}"
                 name="{{ formField.name }}"
                 param-type="formField.to.paramType"
                 template="{{ formField.template }}"

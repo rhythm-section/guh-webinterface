@@ -15,19 +15,12 @@
   IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
   FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
   AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
-  LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+  LIABILITY, WHETHER IN AN ActionType OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
   OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
   SOFTWARE.
 -->
 
 
-<div class="tabset">
-  <ul>
-    <li ng-repeat="tab in tabset.tabs track by $index">
-      <!-- <a href="" ng-class="{ 'active': tab.active, 'hotkey': tab.hotkey, 'disabled': tab.disabled }" ng-click="tabset.selectTab(tab)">{{ tab.heading }}</a> -->
-      <a href="" ng-class="{ 'active': tab.active, 'hotkey': tab.hotkey, 'disabled': tabset.disabled }" ng-click="tabset.selectTab(tab)" ng-bind-html="tabset.tabHeadings[$index]"></a>
-    </li>
-  </ul>
-
-  <ng-transclude ng-hide="tabset.disabled"></ng-transclude>
+<div class="modal" ng-if="morphModal.modals">
+  <guh-morph-modal-dialog class="modal__dialog" modal="modal" ng-repeat="modal in morphModal.modals | orderBy: 'id' track by $index"></guh-morph-modal-dialog>
 </div>

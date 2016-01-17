@@ -29,9 +29,9 @@
     .module('guh.ui')
     .directive('guhTabset', guhTabset);
 
-    guhTabset.$inject = ['$log', 'hotkeys'];
+    guhTabset.$inject = ['$log', '$sce', 'libs', 'hotkeys'];
 
-    function guhTabset($log, hotkeys) {
+    function guhTabset($log, $sce, libs, hotkeys) {
       var directive = {
         bindToController: {
           disabled: '='
@@ -52,11 +52,13 @@
         
         /* jshint validthis: true */
         var vm = this;
+        vm.init = init;
 
         /*
          * Variables
          */
         vm.tabs = [];
+        vm.tabHeadings = [];
         vm.disabled = (vm.disabled === undefined) ? false : vm.disabled;
 
         /*
@@ -65,37 +67,71 @@
         vm.addTab = addTab;
         vm.selectTab = selectTab;
 
-        function addTab(tab) {
-          var hotkey = tab.heading.charAt(0).toLowerCase();
+        function _addHotkeys() {
+          var tabLengthArray = [];
+          var hotkey = '';
+          var hotkeyIndex = 0;
 
+          angular.forEach(vm.tabs, function(tab) {
+            tabLengthArray.push(tab.heading.length);
+          });
+
+          while(hotkeyIndex < libs._.min(tabLengthArray)) {
+            var hotkeyArray = [];
+            angular.forEach(vm.tabs, function(tab) {
+              hotkeyArray.push(tab.heading.charAt(hotkeyIndex).toLowerCase());
+            });
+
+            // If some of the hotkeys are the same check characters on the next index
+            if(hotkeyArray.length !== libs._.uniq(hotkeyArray).length) {
+              hotkeyIndex++;
+            } else {
+              // Index found
+              break;
+            }
+          }
+
+          angular.forEach(vm.tabs, function(tab, index) {
+            vm.tabHeadings[index] = $sce.trustAsHtml(tab.heading.slice(0, hotkeyIndex) + '<span>' + tab.heading.slice(hotkeyIndex, hotkeyIndex + 1) + '</span>' + tab.heading.slice(hotkeyIndex + 1));
+            
+            hotkey = tab.heading.charAt(hotkeyIndex).toLowerCase();
+
+            // Bind hotkey only if combo is letter (a-z)
+            if(hotkey.match(/[a-z]/)) {
+              tab.hotkey = true;
+
+              hotkeys
+                .bindTo($scope)
+                .add({
+                  combo: hotkey,
+                  description: tab.heading,
+                  callback: function(event, hotkey) {
+                    event.preventDefault();
+
+                    angular.forEach(vm.tabs, function(tab) {
+                      if(tab.heading === hotkey.description) {
+                        selectTab(tab);
+                      }
+                    });
+                  }
+                });
+            } else {
+              tab.hotkey = false;
+            }
+          });
+        }
+
+
+        function init() {
+          _addHotkeys();
+        }
+
+        function addTab(tab) {
           vm.tabs.push(tab);
 
           // Set first tab active
           if(vm.tabs.length === 1) {
             tab.active = true;
-          }
-
-          // Bind hotkey only if combo is letter (a-z)
-          if(hotkey.match(/[a-z]/)) {
-            tab.hotkey = true;
-
-            hotkeys
-              .bindTo($scope)
-              .add({
-                combo: hotkey,
-                description: tab.heading,
-                callback: function(event, hotkey) {
-                  event.preventDefault();
-
-                  angular.forEach(vm.tabs, function(tab) {
-                    if(tab.heading === hotkey.description) {
-                      selectTab(tab);
-                    }
-                  });
-                }
-              });
-          } else {
-            tab.hotkey = false;
           }
         }
 
@@ -115,8 +151,9 @@
       }
 
 
-      function tabsetLink(scope, element, attrs) {
+      function tabsetLink(scope, element, attrs, tabsetCtrl) {
         /* jshint unused: false */
+        tabsetCtrl.init();
       }
     }
 

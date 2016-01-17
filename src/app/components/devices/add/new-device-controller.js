@@ -39,14 +39,15 @@
     .module('guh.devices')
     .controller('NewDeviceCtrl', NewDeviceCtrl);
 
-  NewDeviceCtrl.$inject = ['$log', '$rootScope', '$scope', '$state', '$stateParams', 'app', 'libs', 'DSHttpAdapter', 'DSVendor', 'DSDevice'];
+  NewDeviceCtrl.$inject = ['$log', '$rootScope', '$scope', '$state', '$stateParams', 'app', 'libs', 'DSHttpAdapter', 'DSVendor', 'DSDevice', 'modalInstance'];
 
-  function NewDeviceCtrl($log, $rootScope, $scope, $state, $stateParams, app, libs, DSHttpAdapter, DSVendor, DSDevice) {
+  function NewDeviceCtrl($log, $rootScope, $scope, $state, $stateParams, app, libs, DSHttpAdapter, DSVendor, DSDevice, modalInstance) {
 
     var vm = this;
 
     // Public variables
     vm.supportedVendors = [];
+    vm.modalInstance = modalInstance;
 
     // Public methods
     vm.reset = reset;
@@ -181,7 +182,7 @@
 
           DSDevice.inject(device);
 
-          $scope.closeThisDialog();
+          modalInstance.close();
 
           $state.go('guh.devices.master', { bypassCache: true }, {
             reload: true,
@@ -198,7 +199,7 @@
       DSDevice
         .add(deviceClassId, deviceDescriptorId, deviceParams)
         .then(function(device) {
-          $scope.closeThisDialog();
+          modalInstance.close();
 
           $state.go('guh.devices.master', { bypassCache: true }, {
             reload: true,

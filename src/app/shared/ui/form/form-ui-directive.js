@@ -67,14 +67,13 @@
         vm.addFormField = addFormField;
         vm.removeFormField = removeFormField;
         vm.updateFormField = updateFormField;
+        vm.setFormField = setFormField;
         vm.submit = submit;
 
 
         /*
          * Private methods
          */
-
-
 
         /*
          * Public methods
@@ -85,9 +84,21 @@
         }
 
         function removeFormField(formFieldScope) {
-          vm.formFields = vm.formFields.filter(function(formField) {
-            return formField.$id === formFieldScope.$id;
+          var remainingFormFields = [];
+
+          angular.forEach(vm.formFields, function(formField) {
+            if(formField.$id !== formFieldScope.$id) {
+              remainingFormFields.push(formField);
+            }
           });
+
+          vm.formFields = remainingFormFields;
+          
+          // vm.formFields = vm.formFields.filter(function(formField) {
+          //   $log.log('formField.$id', formField.$id);
+          //   $log.log('formFieldScope.$id', formFieldScope.$id);
+          //   return formField.$id === formFieldScope.$id;
+          // });
         }
 
         function updateFormField(formFieldScopeId, selectedOperator) {
@@ -100,37 +111,24 @@
           }
         }
 
+        function setFormField(formFieldScope) {
+          var index = libs._.findIndex(vm.formFields, { '$id': formFieldScope.$id });
+
+          if(index === -1) {
+            // Add
+            vm.formFields.push(formFieldScope);
+          } else {
+            // Update if already there
+            vm.formFields[index] = formFieldScope;
+          }
+        }
+
         function submit() {
           // Check if form is valid
           if($scope[vm.name].$valid) {
-            var paramDescriptors = [];
             var params = [];
 
             angular.forEach(vm.formFields, function(scope) {
-              // if(angular.isDefined(scope.formField.selectedValueOperator)) {
-                // if(angular.toJson(scope.formField.selectedValueOperator) === angular.toJson(app.valueOperator.between)) {
-                //   // Between
-                //   paramDescriptors.push({
-                //     name: scope.formField.from.name,
-                //     operator: scope.formField.selectedOperator,
-                //     value: scope.formField.from.value,
-                //   });
-
-                //   paramDescriptors.push({
-                //     name: scope.formField.to.name,
-                //     operator: scope.formField.selectedOperator,
-                //     value: scope.formField.to.value,
-                //   });
-                // } else {
-                  // Is, is not, greater than, less than
-                  paramDescriptors.push({
-                    name: scope.formField.name,
-                    operator: scope.formField.selectedOperator,
-                    value: scope.formField.value,
-                  });
-                // }
-              // }
-
               params.push({
                 name: scope.formField.name,
                 value: scope.formField.value
@@ -139,19 +137,27 @@
 
             // TODO: Validation
             vm.submitCallback({
-              paramDescriptors: paramDescriptors,
               params: params
             });
           } else {
-            $log.log('Form not valid.');
+            $log.log('guh.ui.directive:guhForm', 'Form is not valid.');
           }
         }
         
       }
 
 
-      function formLink(scope, element, attrs) {
+      function formLink(scope, elem, attrs, formCtrl) {
         /* jshint unused: false */
+
+        // On destroy
+        scope.$on('$destroy', function() {
+          // Destroy appended guh-form-fields
+          angular.forEach(formCtrl.formFields, function(formFieldScope) {
+            formFieldScope.$destroy();
+            formFieldScope = null;
+          });
+        });
       }
     }
 

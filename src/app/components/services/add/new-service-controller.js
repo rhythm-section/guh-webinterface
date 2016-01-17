@@ -39,14 +39,15 @@
     .module('guh.devices')
     .controller('NewServiceCtrl', NewServiceCtrl);
 
-  NewServiceCtrl.$inject = ['$log', '$rootScope', '$scope', '$state', '$stateParams', 'app', 'libs', 'DSHttpAdapter', 'DSVendor', 'DSDevice'];
+  NewServiceCtrl.$inject = ['$log', '$rootScope', '$scope', '$state', '$stateParams', 'app', 'libs', 'DSHttpAdapter', 'DSVendor', 'DSDevice', 'modalInstance'];
 
-  function NewServiceCtrl($log, $rootScope, $scope, $state, $stateParams, app, libs, DSHttpAdapter, DSVendor, DSDevice) {
+  function NewServiceCtrl($log, $rootScope, $scope, $state, $stateParams, app, libs, DSHttpAdapter, DSVendor, DSDevice, modalInstance) {
 
     var vm = this;
 
     // Public variables
     vm.supportedVendors = [];
+    vm.modalInstance = modalInstance;
 
     // Public methods
     vm.reset = reset;
@@ -190,7 +191,7 @@
         .add(deviceClassId, deviceDescriptorId, deviceParams)
         .then(function(device) {
           /* jshint unused:true */
-          $scope.closeThisDialog();
+          modalInstance.close();
 
           $state.go('guh.services.master', { bypassCache: true }, {
             reload: true,

@@ -25,10 +25,10 @@
 
 /**
  * @ngdoc interface
- * @name guh.devices.controller:DevicesDetailCtrl
+ * @name guh.moods.controller:NewMoodCtrl
  *
  * @description
- * Load and show details of certain device.
+ * Add a new mood.
  *
  */
 
@@ -39,249 +39,360 @@
     .module('guh.moods')
     .controller('NewMoodCtrl', NewMoodCtrl);
 
-  NewMoodCtrl.$inject = ['$log', '$rootScope', '$scope', '$state', 'DSDevice', 'DSRule', 'DSHttpAdapter', 'libs', 'app'];
+  NewMoodCtrl.$inject = ['app', 'libs', '$log', '$rootScope', '$state', '$stateParams', 'MorphModal', 'DSRule', 'modalInstance'];
 
-  function NewMoodCtrl($log, $rootScope, $scope, $state, DSDevice, DSRule, DSHttpAdapter, libs, app) {
+  function NewMoodCtrl(app, libs, $log, $rootScope, $state, $stateParams, MorphModal, DSRule, modalInstance) {
 
-    // View data
     var vm = this;
-    vm.rule = {};
-    vm.enterActionDevices = [];
-    vm.exitActionDevices = [];
+    var actionModal = null;
+    var eventModal = null;
+    var stateModal = null;
+    var exitActionModal = null;
 
-    vm.selectedEnterActionDevice = {};
-    vm.selectedExitActionDevice = {};
+    vm.modalInstance = modalInstance;
+    vm.rule = null;
+    vm.actions = [];
+    vm.events = [];
+    vm.states = [];
+    vm.exitActions = [];
+    vm.exitActionsDisabled = false;
 
-    vm.selectedEnterActionType = {};
-    vm.selectedExitActionType = {};
+    vm.addAction = addAction;
+    vm.deleteAction = deleteAction;
+    vm.hasActions = hasActions;
+    vm.addEvent = addEvent;
+    vm.deleteEvent = deleteEvent;
+    vm.addState = addState;
+    vm.deleteState = deleteState;
+    vm.addExitAction = addExitAction;
+    vm.deleteExitAction = deleteExitAction;
+    vm.hasExitActions = hasExitActions;
+    vm.isDisabled = isDisabled;
+    vm.enterRuleDetails = enterRuleDetails;
+    vm.isValid = isValid;
+    vm.setDetails = setDetails;
 
-    vm.selectedEnterActionTypes = {};
-    vm.selectedExitActionTypes = {};
-
-    // View methods
-    vm.selectEnterAction = selectEnterAction;
-    vm.selectExitAction = selectExitAction;
-    vm.addEnterActionParams = addEnterActionParams;
-    vm.addExitActionParams = addExitActionParams;
-    vm.save = save;
-
+    vm.addModal = function() {
+      MorphModal
+        .add({
+          controller: 'NewMoodCtrl',
+          controllerAs: 'newMood',
+          data: null,
+          templateUrl: 'app/components/moods/add/new-mood-modal.html'
+        })
+        .then(function(modal) {
+          $log.log('modal', modal);
+          modal.open();
+        })
+        .catch(function(error) {
+          $log.log('error', error);
+        });
+    };
 
     function _init() {
-      // Prepare rule object
       vm.rule = {
         actions: [],
         enabled: true,
+        executable: true,
         name: ''
       };
-
-      // Set devices with actions
-      _setActionDevices();
     }
 
-    function _setActionDevices() {
-      // TODO: Replace this with initialData from app-routes.js (new dialog/modal service needed)
-      var devices = DSDevice.getAll();
-      var actionDevices = devices.filter(_hasActions);
-
-      vm.enterActionDevices = angular.copy(actionDevices);
-      vm.exitActionDevices = angular.copy(actionDevices);
-    }
-
-    function _hasActions(device) {
-      return angular.isDefined(device.deviceClass) && device.deviceClass.actionTypes.length > 0 && device.name.indexOf('mood-toggle') === -1;
-    }
-
-    function _getRuleActionData(device, actionType, ruleActionParams) {
-      var ruleAction = {};
-
-      if(angular.isDefined(device) && angular.isDefined(actionType)) {
-        ruleAction.actionTypeId = actionType.id;
-        ruleAction.deviceId = device.id;
-
-        if(actionType.paramTypes.length > 0 && angular.isDefined(ruleActionParams)) {
-          ruleAction.ruleActionParams = angular.copy(ruleActionParams);
-        }
-      }
-
-      return ruleAction;
-    }
-
-    function _isSelected(enterExitAction, actionType) {
-      var ruleActions = enterExitAction === 'enter' ? vm.rule.actions : vm.rule.exitActions;
-      var isSelected = false;
-
-      isSelected = libs._.some(ruleActions, 'actionTypeId', actionType.id);
-
-      return isSelected;
-    }
-
-    function _removeRuleAction(enterExitAction, device, actionType) {
-      var ruleActions = enterExitAction === 'enter' ? vm.rule.actions : vm.rule.exitActions;
-      
-      var removedRuleAction = libs._.remove(ruleActions, function(ruleAction) {
-        return (ruleAction.deviceId === device.id && ruleAction.actionTypeId === actionType.id);
-      });
-
-      $log.log('removedRuleAction', removedRuleAction, ruleActions);
-
-      return removedRuleAction;
-    }
-
-    function _saveRule() {
-      return DSRule
-        .create(vm.rule)
-        .then(function(rule) {
-          $log.log('guh.moods.NewMoodCtrl:controller | Rule created successfully.', rule);
-
-          // Add id to view data
-          vm.rule.id = rule.id;
-
-          // Create toggle-button for created mood
-          var toggleButtonId = 'c0f511f9-70f5-499b-bd70-2c0e9ddd68c4';
-          var toggleButtonParams = [{
-            name: 'name',
-            value: 'mood-toggle-button-' + rule.id
-          }];
-
-          return {
-            id: toggleButtonId,
-            params: toggleButtonParams
-          };
-        });
-    }
-
-    function _addToggleButton(toggleButton) {
-      return DSDevice.add(toggleButton.id, undefined, toggleButton.params);
-    }
-
-    function _updateRule(device) {
-      DSDevice
-        .find(device.id, { bypassCache: true })
-        .then(function(device) {
-          // Get device relations
-          DSDevice
-            .loadRelations(device, ['deviceClass'])
-            .then(function(device) {
-              // Create stateEvaluator for toggle-button
-              var stateEvaluator = {
-                stateDescriptor: {
-                  deviceId: device.id,
-                  operator: 'ValueOperatorEquals',
-                  stateTypeId: device.deviceClass.stateTypes[0].id,
-                  value: true
-                }
-              };
-
-              // Get created rule and add created stateEvaluator
-              vm.rule.stateEvaluator = stateEvaluator;
-
-              $log.log('vm.rule', vm.rule);
-
-              // Update created rule with created stateEvaluator
-              DSHttpAdapter
-                .PUT(app.apiUrl + '/rules/' + vm.rule.id, vm.rule)
-                .then(function() {
-                  DSDevice.inject(vm.rule);
-
-                  // Close dialog and update mood master view with new mood
-                  $scope.closeThisDialog();
-
-                  $state.go('guh.moods.master', { bypassCache: true }, {
-                    reload: true,
-                    inherit: false,
-                    notify: true
-                  });
-                })
-                .catch(function(error) {
-                  $log.log('guh.moods.NewMoodCtrl:controller | Rule not updated.', error);
-                });
-            })
-            .catch(function(error) {
-              $log.log('guh.moods.NewMoodCtrl:controller | Relations of device not loaded.', error);
-            });
+    function _addModal(modalData) {
+      MorphModal
+        .add(modalData)
+        .then(function(modal) {
+          modal.open();
         })
         .catch(function(error) {
-          $log.log('guh.moods.NewMoodCtrl:controller | Device not found.', error);
+          $log.error(error);
         });
     }
 
-    function selectEnterAction(device, actionType) {
-      if(vm.selectedEnterActionTypes[device.id] && vm.selectedEnterActionTypes[device.id][actionType.id]) {
-        // Remove ruleAction
-        _removeRuleAction('enter', device, actionType);
-        vm.selectedEnterActionTypes[device.id][actionType.id] = _isSelected('enter', actionType);
-      } else {
-        // Add ruleAction
-        var ruleAction = _getRuleActionData(device, actionType);
-
-        vm.rule.actions.push(ruleAction);
-
-        if(actionType.paramTypes.length > 0) {
-          vm.selectedEnterActionDevice = device;
-          vm.selectedEnterActionType = actionType;
-          $rootScope.$broadcast('wizard.next', 'addEnterActions');
-        }
-
-        // Add "selected" class
-        if(!vm.selectedEnterActionTypes[device.id]) {
-          vm.selectedEnterActionTypes[device.id] = {};
-        }
-        vm.selectedEnterActionTypes[device.id][actionType.id] = _isSelected('enter', actionType);
+    function _getStateEvaluator() {
+      var stateEvaluator = {
+        operator: app.stateOperator.StateOperatorAnd
       }
-    }
 
-    function selectExitAction(device, actionType) {
-      if(vm.selectedExitActionTypes[device.id] && vm.selectedExitActionTypes[device.id][actionType.id]) {
-        // Remove ruleAction
-        _removeRuleAction('exit', device, actionType);
-        vm.selectedExitActionTypes[device.id][actionType.id] = _isSelected('exit', actionType);
-      } else {
-        // Add ruleAction
-        var ruleAction = _getRuleActionData(device, actionType);
+      $log.log('vm.states', vm.states);
 
-        if(angular.isUndefined(vm.rule.exitActions)) {
-          vm.rule.exitActions = [];
+      var stateDescriptors = [];
+      angular.forEach(vm.states, function(state) {
+        stateDescriptors = stateDescriptors.concat(state.stateDescriptors);
+      });
+
+      $log.log('stateDescriptors', stateDescriptors);
+
+      
+      angular.forEach(stateDescriptors, function(stateDescriptor, index) {
+        $log.log('stateDescriptor', stateDescriptor, index);
+
+        if(index === 0) {
+          stateEvaluator.stateDescriptor = stateDescriptor;
+        } else {
+          if(angular.isUndefined(stateEvaluator.childEvaluators)) {
+            stateEvaluator.childEvaluators = [];
+          }
+
+          stateEvaluator.childEvaluators.push({
+            operator: app.stateOperator.StateOperatorAnd,
+            stateDescriptor: stateDescriptor
+          });
         }
+      });
+      
+      return stateEvaluator;
+    }
 
-        vm.rule.exitActions.push(ruleAction);
+    function _indexOf(objectToFind, array) {
+      var index = -1;
 
-        if(actionType.paramTypes.length > 0) {
-          vm.selectedExitActionDevice = device;
-          vm.selectedExitActionType = actionType;
-          $rootScope.$broadcast('wizard.next', 'addExitActions');
+      angular.forEach(array, function(currentObject, currentIndex) {
+        if(angular.equals(currentObject, objectToFind)) {
+          $log.log('Object found', objectToFind, array);
+          index = currentIndex;
         }
+      });
 
-        // Add "selected" class
-        if(!vm.selectedExitActionTypes[device.id]) {
-          vm.selectedExitActionTypes[device.id] = {};
-        }
-        vm.selectedExitActionTypes[device.id][actionType.id] = _isSelected('exit', actionType);
-      }
+      return index;
     }
 
-    function addEnterActionParams(params) {
-      var ruleAction = _getRuleActionData(vm.selectedEnterActionDevice, vm.selectedEnterActionType, params);
-      vm.rule.actions[vm.rule.actions.length - 1] = ruleAction;
-      $rootScope.$broadcast('wizard.prev', 'addEnterActions');
-    }
 
-    function addExitActionParams(params) {
-      var ruleAction = _getRuleActionData(vm.selectedExitActionDevice, vm.selectedExitActionType, params);
-      vm.rule.exitActions[vm.rule.exitActions.length - 1] = ruleAction;
-      $rootScope.$broadcast('wizard.prev', 'addExitActions');
-    }
+    function addAction() {
+      var modalData = {
+        controller: 'AddActionCtrl',
+        controllerAs: 'addAction',
+        data: null,
+        templateUrl: app.basePaths.moods + 'add/add-action.html'
+      };
 
-    function save(params) {
-      // Set name
-      vm.rule.name = params[0].value;
-
-      _saveRule()
-        .then(_addToggleButton)
-        .then(_updateRule)
+      MorphModal
+        .add(modalData)
+        .then(function(modal) {
+          modal.open();
+          actionModal = modal;
+        })
         .catch(function(error) {
-          $log.log('guh.moods.NewMoodCtrl:controller | Error while saving mood.', error);
+          $log.error(error);
         });
     }
+
+    function deleteAction(actionToDelete) {
+      vm.actions.splice(_indexOf(actionToDelete, vm.actions), 1);
+    }
+
+    function hasActions() {
+      return angular.isDefined(vm.actions) && angular.isArray(vm.actions) && vm.actions.length > 0;
+    }
+
+    function addEvent() {
+      var modalData = {
+        controller: 'AddEventCtrl',
+        controllerAs: 'addEvent',
+        data: null,
+        templateUrl: app.basePaths.moods + 'add/add-event.html'
+      };
+
+      MorphModal
+        .add(modalData)
+        .then(function(modal) {
+          modal.open();
+          eventModal = modal;
+        })
+        .catch(function(error) {
+          $log.error(error);
+        });
+    }
+
+    function deleteEvent(eventToDelete) {
+      vm.events.splice(_indexOf(eventToDelete, vm.events), 1);
+
+      if(vm.events.length === 0) {
+        vm.exitActionsDisabled = false;
+      }
+    }
+
+    function hasEvents() {
+      return angular.isDefined(vm.events) && angular.isArray(vm.events) && vm.events.length > 0;
+    }
+
+    function addState() {
+      var modalData = {
+        controller: 'AddStateCtrl',
+        controllerAs: 'addState',
+        data: null,
+        templateUrl: app.basePaths.moods + 'add/add-state.html'
+      };
+
+      MorphModal
+        .add(modalData)
+        .then(function(modal) {
+          modal.open();
+          stateModal = modal;
+        })
+        .catch(function(error) {
+          $log.error(error);
+        });
+    }
+
+    function deleteState(stateToDelete) {
+      vm.states.splice(_indexOf(stateToDelete, vm.states), 1);
+    }
+
+    function hasStates() {
+      return angular.isDefined(vm.states) && angular.isArray(vm.states) && vm.states.length > 0;
+    }
+
+    function addExitAction() {
+      if(vm.exitActionsDisabled) {
+        return;
+      }
+
+      var modalData = {
+        controller: 'AddActionCtrl',
+        controllerAs: 'addAction',
+        data: null,
+        templateUrl: app.basePaths.moods + 'add/add-action.html'
+      };
+
+      MorphModal
+        .add(modalData)
+        .then(function(modal) {
+          modal.open();
+          exitActionModal = modal;
+        })
+        .catch(function(error) {
+          $log.error(error);
+        });
+    }
+
+    function deleteExitAction(actionToDelete) {
+      vm.exitActions.splice(_indexOf(actionToDelete, vm.exitActions), 1);
+    }
+
+    function hasExitActions() {
+      return angular.isDefined(vm.exitActions) && angular.isArray(vm.exitActions) && vm.exitActions.length > 0;
+    }
+
+    function isDisabled() {
+      if(hasEvents() && hasExitActions()) {
+        return 'list__item_isDisabled';
+      }
+
+      return;
+    }
+
+    function isValid() {
+      return hasActions() ||
+             (hasActions() && hasEvents()) ||
+             (hasActions() && hasEvents() && hasStates()) ||
+             (hasActions() && hasStates() && hasExitActions());
+    }
+
+    function setDetails() {
+      $rootScope.$broadcast('wizard.next', 'addRule');
+    }
+
+    function enterRuleDetails(params) {
+      // Details
+      var name = libs._.find(params, function(param) {
+        return param.name === 'Name';
+      });
+
+      vm.rule.name = angular.isDefined(name) ? name.value : 'Mood';
+
+      // Actions
+      if(hasActions()) {
+        vm.rule.actions = vm.actions.map(function(action) {
+          return action.ruleAction;
+        });
+      }
+
+      // EventDescriptors
+      if(hasEvents()) {
+        // vm.rule.eventDescriptors = vm.events.map(function(eventItem) {
+        //   return eventItem.eventDescriptor;
+        // });
+        // $log.log('vm.rule.eventDescriptors', vm.rule.eventDescriptors);
+
+        if(vm.events.length > 1) {
+          vm.rule.eventDescriptorList = vm.events.map(function(eventItem) {
+            return eventItem.eventDescriptor;
+          });
+        } else {
+          vm.rule.eventDescriptor = vm.events[0].eventDescriptor;
+        }
+        $log.log('vm.rule', vm.rule);
+      }
+
+      // StateEvaluator
+      if(hasStates()) {
+        vm.rule.stateEvaluator = _getStateEvaluator();
+        $log.log('Mood has states!', vm.rule.stateEvaluator);
+      }
+
+      // ExitActions
+      if(hasExitActions() && !hasEvents()) {
+        vm.rule.exitActions = vm.exitActions.map(function(action) {
+          return action.ruleAction;
+        });
+      }
+
+      // Save
+      DSRule
+        .create(vm.rule)
+        .then(function(rule) {
+          modalInstance.close();
+          $state.go('guh.moods.master', { bypassCache: true }, {
+            reload: true,
+            inherit: false,
+            notify: true
+          });
+        });
+    }
+
+
+    $rootScope.$on('modals.close', function(event, modal, data) {
+      $log.log('Event: modals.close', event, modal, data);
+
+      if(data) {
+        if(actionModal && modal.id === actionModal.id) {
+          // Add actions
+          vm.actions.push({
+            thing: data.thing,
+            actionType: data.actionType,
+            ruleAction: data.ruleAction,
+            params: data.params
+          });
+          // vm.rule.actions.push(data.ruleAction);
+        } else if(eventModal && modal.id === eventModal.id) {
+          // Add events
+          vm.events.push({
+            thing: data.thing,
+            eventType: data.eventType,
+            eventDescriptor: data.eventDescriptor
+          });
+
+          vm.exitActionsDisabled = true;
+        } else if(stateModal && modal.id === stateModal.id) {
+          // Add states
+          vm.states.push({
+            thing: data.thing,
+            stateType: data.stateType,
+            stateDescriptors: data.stateDescriptors,
+            title: data.title
+          });
+        } else if(exitActionModal && modal.id === exitActionModal.id) {
+          // Add exitActions
+          vm.exitActions.push({
+            thing: data.thing,
+            actionType: data.actionType,
+            ruleAction: data.ruleAction,
+            params: data.params
+          });
+        }
+      }
+    });
 
 
     _init();

@@ -88,15 +88,20 @@ $color-error: $white;
 .modal,
 .notification {
   .close {
+    z-index: 9999;
+  }
+}
+
+.notification {
+  .close {
     background-color: transparent;
     border: none;
-    @include rem(height, 7.5);
-    @include rem(padding, 3);
-    position: fixed;
-      right: 0;
-      top: 0;
-    @include rem(width, 7.5);
-    z-index: 9999;
+    @include rem(height, 4.5);
+    @include rem(padding, 1.5);
+    position: absolute;
+      @include rem(right, 1.5);
+      @include rem(top, 1.5);
+    @include rem(width, 4.5);
   }
 }
 
@@ -219,8 +224,8 @@ $color-error: $white;
   }
 
   .close {
-    bottom: 0;
-    top: auto;
+    // bottom: 0;
+    // top: auto;
   }
 
   .icon {

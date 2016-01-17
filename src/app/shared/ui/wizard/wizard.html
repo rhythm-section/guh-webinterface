@@ -24,6 +24,12 @@
 <!-- <div> -->
   <h3 class="wizard__title heading">{{ wizard.title }}</h3>
 
+  <button class="wizard__prev" ng-click="wizard.prev()" ng-show="wizard.hasPrev()">
+    <svg class="icon">
+      <use xlink:href="./assets/svg/ui/ui.symbol.svg#chevron-left"></use>
+    </svg>
+  </button>
+
   <div class="wizard__content" ng-transclude></div>
 
   <div class="wizard__navigation">

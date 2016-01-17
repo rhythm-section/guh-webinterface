@@ -24,52 +24,90 @@
 
 
 /**
- * @ngdoc overview
- * @name guh
+ * @ngdoc interface
+ * @name guh.moods.controller:AddActionCtrl
  *
  * @description
- * Module container for whole app.
+ * Add a new action to a rule.
  *
  */
 
-(function() {
+(function(){
   'use strict';
 
   angular
-    .module('guh', [
-      // Angular
-      'ngSanitize',
-      'ngAnimate',
-      'ngMessages',
+    .module('guh.moods')
+    .controller('AddActionCtrl', AddActionCtrl);
 
-      // Libraries
-      'ui.router',
-      'cfp.hotkeys',
-      'ngDialog',
-      'chart.js',
+  AddActionCtrl.$inject = ['$q', '$timeout', '$log', '$rootScope', 'DSDevice', 'modalInstance'];
 
-      // Configuration
-      'guh.config',
+  function AddActionCtrl($q, $timeout, $log, $rootScope, DSDevice, modalInstance) {
 
-      // Filters
-      'guh.filter',
-      
-      // Utilities
-      'guh.utils',
+    var vm = this;
 
-      // Services (guh-libjs)
-      'guh.logging',
-      'guh.api',
-      'guh.models',
+    vm.modalInstance = modalInstance;
+    vm.things = [];
+    vm.currentThing = null;
+    vm.currentActionType = null;
 
-      // Directives
-      'guh.ui',
+    vm.selectThing = selectThing;
+    vm.hasCurrentThingSet = hasCurrentThingSet;
+    vm.selectActionType = selectActionType;
+    vm.hasCurrentActionType = hasCurrentActionType;
+    vm.addActionParams = addActionParams;
 
-      // App
-      'guh.intro',
-      'guh.moods',
-      'guh.devices',
-      'guh.services'
-    ]);
+
+    function _init() {
+      _setThings();
+    }
+
+    function _hasActions(device) {
+      return angular.isDefined(device.deviceClass) &&
+             angular.isDefined(device.deviceClass.actionTypes) &&
+             device.deviceClass.actionTypes.length > 0;
+      // return 'deviceClass' in device && 
+      //        device.deviceClass.hasOwnProperty('actionTypes') && 
+      //        device.deviceClass.actionTypes.length > 0;
+    }
+
+    function _setThings() {
+      var things = DSDevice.getAll();
+      vm.things = things.filter(_hasActions);
+    }
+
+
+    function selectThing(thing) {
+      vm.currentThing = thing;
+      $log.log('vm.currentThing', vm.currentThing);
+      $rootScope.$broadcast('wizard.next', 'addAction');
+    }
+
+    function hasCurrentThingSet() {
+      return vm.currentThing !== null;
+    }
+
+    function selectActionType(actionType) {
+      vm.currentActionType = actionType;
+      $rootScope.$broadcast('wizard.next', 'addAction');
+    }
+
+    function hasCurrentActionType() {
+      return vm.currentActionType !== null;
+    }
+
+    function addActionParams(params) {
+      var ruleAction = vm.currentThing.getAction(vm.currentActionType, params);
+      modalInstance.close({
+        thing: vm.currentThing,
+        actionType: vm.currentActionType,
+        params: params,
+        ruleAction: ruleAction
+      });
+    }
+
+
+    _init();
+
+  }
 
 }());

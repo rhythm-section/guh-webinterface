@@ -39,6 +39,7 @@
     
     vm.$state = $state;
     vm.$stateParams = $stateParams;
+    vm.test = 'TEST';
 
 
     // Websocket Connection Error
@@ -87,7 +88,7 @@
       }
 
       // Show notification
-      if(notificationMessage) {
+      if(error && notificationMessage) {
         notification = ngDialog.open({
           className: 'notification notification_error',
           closeByDocument: false,

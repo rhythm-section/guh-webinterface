@@ -23,66 +23,77 @@
  * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 
 
-$black: #000;
-$grey: #676767;
-$white: #fff;
+/**
+ * @ngdoc interface
+ * @name guh.moods.controller:AddEventCtrl
+ *
+ * @description
+ * Add a new event to a rule.
+ *
+ */
 
-$background-current: $white;
-$border: $black;
-$color: $black;
-$color-current: $grey;
+(function(){
+  'use strict';
+
+  angular
+    .module('guh.moods')
+    .controller('AddEventCtrl', AddEventCtrl);
+
+  AddEventCtrl.$inject = ['$log', '$rootScope', 'DSDevice', 'modalInstance'];
+
+  function AddEventCtrl($log, $rootScope, DSDevice, modalInstance) {
+
+    var vm = this;
+
+    vm.modalInstance = modalInstance;
+    vm.things = [];
+    vm.currentThing = null;
+    vm.currentEventType = null;
+
+    vm.selectThing = selectThing;
+    vm.hasCurrentThing = hasCurrentThing;
+    vm.selectEventType = selectEventType;
 
 
-.slider {
-  height: 100%;
-  overflow: hidden;
-  position: fixed;
-    left: 0;
-    top: 0;
-  width: 100%;
-}
+    function _init() {
+      _setThings();
+    }
 
-.slider__content-container {
-  @include transition(transform 0.2s ease-out);
-}
+    function _hasEvents(device) {
+      return angular.isDefined(device.deviceClass) &&
+             angular.isDefined(device.deviceClass.eventTypes) &&
+             device.deviceClass.eventTypes.length > 0;
+    }
 
-.slider__item {
-  background-color: transparent;
-  border-left: 1px solid rgba($border, 0.05);
-  color: rgba($color, 0.3);
-  float: left;
-  height: 100%;
-  overflow: hidden;
-  @include rem(padding, 6);
-  position: relative;
-  @include transition(background-color 0.4s ease-in, box-shadow 0.2s ease-out, color 0.4s ease-in, width 0.2s ease-in-out);
-  @include user-select(none);
+    function _setThings() {
+      var things = DSDevice.getAll();
+      vm.things = things.filter(_hasEvents);
+    }
 
-  .content_content-center {
-    @include transform(translateY(-50%));
-    @include transition(top 0.4s ease-in-out, transform 0.4s ease-in-out);
-    top: 50%;
+
+    function selectThing(thing) {
+      vm.currentThing = thing;
+      $rootScope.$broadcast('wizard.next', 'addEvent');
+    }
+
+    function hasCurrentThing() {
+      return vm.currentThing !== null;
+    }
+
+    function selectEventType(eventType) {
+      var eventDescriptor = vm.currentThing.getEventDescriptor(eventType);
+      vm.currentEventType = eventType;
+
+      modalInstance.close({
+        thing: vm.currentThing,
+        eventType: vm.currentEventType,
+        eventDescriptor: eventDescriptor
+      });
+    }
+
+
+    _init();
+
   }
-}
 
-.slider__item-dummy {
-  border-color: transparent;
-  float: left;
-  height: 100%;
-}
-
-.slider__item-current {
-  border-left-color: transparent;
-  overflow-y: scroll;
-}
-
-.slider__item-details {
-  background-color: $background-current;
-  box-shadow: 0px 0px 12px 0px rgba(0, 0, 0, 0.3);
-  color: $color-current;
-
-  .content_content-center {
-    @include transform(translateY(0%));
-    top: 0%;
-  }
-}
+}());

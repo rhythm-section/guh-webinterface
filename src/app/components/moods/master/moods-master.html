@@ -21,10 +21,18 @@
 -->
 
 
-<ul class="tiles">
-  <li class="item" ng-repeat="mood in moods.configured | orderBy: 'name' track by $index">
-    <a ui-sref="guh.moods.detail({ moodId: mood.id })">
-      <h2 class="name">{{ mood.name }}</h2>
-    </a>
-  </li>
-</ul>
+<guh-slider on-change="moods.setCurrent(slideIndex)">
+  <guh-slider-item ng-repeat="mood in moods.configured track by $index" index="$index">
+    <h2 class="heading">{{ mood.name === '' ? 'Mood' : mood.name }}</h2>
+    <p class="heading heading_sub">
+      <span ng-repeat="ruleAction in mood.actions track by $index">
+        <span ng-repeat="ruleActionParam in ruleAction.ruleActionParams track by $index">
+          {{ $parent.$index === 0 && $index === 0 ? '' : '&nbsp;&middot;' }}
+          {{ ruleActionParam.name }}
+        </span>
+      </span>
+    </p>
+
+    <div class="detail" ng-if="moods.currentSlide === $index" ui-view></div>
+  </guh-slider-item>
+</guh-slider>

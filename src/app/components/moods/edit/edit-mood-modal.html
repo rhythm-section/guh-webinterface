@@ -21,13 +21,13 @@
 -->
 
 
-<div class="inner-content">
-  <button class="close" ng-click="closeThisDialog()">
-    <svg class="icon">
-      <use xlink:href="./assets/svg/ui/ui.symbol.svg#close"></use>
-    </svg>
-  </button>
+<button class="close" ng-click="editMood.modalInstance.close()">
+  <svg class="icon">
+    <use xlink:href="./assets/svg/ui/ui.symbol.svg#close"></use>
+  </svg>
+</button>
 
+<div class="inner-content">
   <h3>Edit {{ editMood.rule.name }}</h3>
-  <button ng-click="editMood.remove()">Remove</button>
+  <button class="button" ng-click="editMood.remove()">Remove</button>
 </div>

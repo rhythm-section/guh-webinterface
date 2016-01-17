@@ -69,6 +69,7 @@
         basePaths: {
           devices: 'app/components/devices/',
           services: 'app/components/services/',
+          moods: 'app/components/moods/',
           ui: 'app/shared/ui/'
         },
 
@@ -209,6 +210,27 @@
           UnitPercentage: '%',
           UnitEuro: '€',
           UnitDollar: '$'
+        },
+
+        basicTag: {
+          BasicTagService: 'service',
+          BasicTagDevice: 'device',
+          BasicTagSensor: 'sensor',
+          BasicTagActuator: 'actuator',
+          BasicTagLighting: 'lighting',
+          BasicTagEnergy: 'energy',
+          BasicTagMultimedia: 'multimedia',
+          BasicTagWeather: 'weather',
+          BasicTagGateway: 'gateway',
+          BasicTagHeating: 'heating',
+          BasicTagCooling: 'cooling',
+          BasicTagNotification: 'notification',
+          BasicTagSecurity: 'security',
+          BasicTagTime: 'time',
+          BasicTagShading: 'shading',
+          BasicTagAppliance: 'appliance',
+          BasicTagCamera: 'camera',
+          BasicTagLock: 'lock'
         }
       };
     })());

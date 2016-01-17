@@ -25,12 +25,15 @@
 
 $grey: #676767;
 
-$fill: $grey;
-
 
 .icon {
   display: block;
   @include rem(height, 1.5);
-  fill: $fill;
+  fill: $grey;
   @include rem(width, 1.5);
+}
+
+.icon_inline {
+  display: inline-block;
+  @include rem(margin-bottom, -0.3);
 }

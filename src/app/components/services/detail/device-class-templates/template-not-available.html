@@ -34,13 +34,13 @@
     <div ng-switch="state.stateType.unit" ng-repeat="state in service.states track by $index" class="state">
       <p class="name">{{ state.stateType.name }}</p>
       <p class="value" ng-switch-when="UnitUnixTime">{{ state.value * 1000 | date: 'dd.MM.yyyy' }}, {{ state.value * 1000 | date: 'HH:mm' }}</p>
-      <p class="value" ng-switch-when="UnitEuroPerMegaWattHour">{{ state.value / 10 }} €-Cent / kWh</p>
-      <p class="value" ng-switch-default>{{ state.value }} {{ state.stateType.unit | unit }}</p>
+      <p class="value" ng-switch-when="UnitEuroPerMegaWattHour">{{ state.value / 10 | number: 2 }} €-Cent / kWh</p>
+      <p class="value" ng-switch-default>{{ state.value | number: 2 }} {{ state.stateType.unit | unit }}</p>
     </div>
   </guh-tab>
 
   <!-- Settings -->
-  <guh-tab heading="Settigs">
+  <guh-tab heading="Settings">
     <p ng-if="service.params.length === 0">This service doesn't have any settings to show you.</p>
     <div ng-repeat="param in service.params track by $index" class="param">
       <p class="name">{{ param.name }}</p>

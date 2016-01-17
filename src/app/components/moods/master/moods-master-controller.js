@@ -39,9 +39,9 @@
     .module('guh.moods')
     .controller('MoodsMasterCtrl', MoodsMasterCtrl);
 
-  MoodsMasterCtrl.$inject = ['$log', '$state', '$stateParams', 'app', 'DSRule'];
+  MoodsMasterCtrl.$inject = ['$log', '$filter', '$state', '$stateParams', 'app', 'DSRule', 'DSDevice'];
 
-  function MoodsMasterCtrl($log, $state, $stateParams, app, DSRule) {
+  function MoodsMasterCtrl($log, $filter, $state, $stateParams, app, DSRule, DSDevice) {
 
     // Don't show debugging information
     DSRule.debug = false;
@@ -50,6 +50,9 @@
     
     // Public variables
     vm.configured = [];
+
+    // Public methods
+    vm.setCurrent = setCurrent;
 
 
     function _init() {
@@ -63,7 +66,25 @@
           }
         });
       } else {
-        vm.configured = moods;
+        // Sort by name
+        vm.configured = $filter('orderBy')(moods, 'name');
+
+        angular.forEach(vm.configured, function(rule) {
+          rule.actionDeviceNames = [];
+          angular.forEach(rule.actions, function(action) {
+            var actionDevice = DSDevice.get(action.deviceId);
+            rule.actionDeviceNames.push(actionDevice.name);
+          });
+        });
+      }
+    }
+
+
+    function setCurrent(index) {
+      vm.currentSlide = index;
+
+      if(index !== -1 && index <= vm.configured.length) {
+        $state.go('guh.moods.master.current', { moodId: vm.configured[index].id });
       }
     }
 

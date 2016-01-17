@@ -21,40 +21,30 @@
 -->
 
 
-<button class="close" ng-click="newDevice.modalInstance.close()">
+<button class="close" ng-click="addEvent.modalInstance.close()">
   <svg class="icon">
     <use xlink:href="./assets/svg/ui/ui.symbol.svg#close"></use>
   </svg>
 </button>
 
-<div guh-wizard handle="newDevice">
-  <!-- Select vendor -->
-  <div guh-wizard-step class="list" title="Select a vendor">
-    <div class="list__item list__item_isClickable" ng-repeat="vendor in newDevice.supportedVendors | orderBy: 'name' track by $index" ng-click="newDevice.selectVendor(vendor)">
-      {{ vendor.name }}
+<div guh-wizard handle="addEvent">
+  <!-- Select device -->
+  <div class="list" guh-wizard-step title="Choose a device" is-valid="addEvent.hasCurrentThing()">
+    <div class="list__item list__item_isClickable" ng-click="addEvent.selectThing(thing)" ng-repeat="thing in addEvent.things | orderBy: 'name' track by $index">
+      <span>{{ thing.name }}</span>
       <svg class="icon">
         <use xlink:href="./assets/svg/ui/ui.symbol.svg#chevron-right"></use>
       </svg>
     </div>
   </div>
 
-  <!-- Select deviceClass -->
-  <div guh-wizard-step class="list" title="Select your device">
-    <div class="list__item list__item_isClickable" ng-repeat="deviceClass in newDevice.supportedDeviceClasses | orderBy: 'name' track by $index" ng-click="newDevice.selectDeviceClass(deviceClass)">
-      {{ deviceClass.name }}
+  <!-- Select eventType -->
+  <div class="list" guh-wizard-step title="Choose a trigger and save it">
+    <div class="list__item list__item_isClickable" ng-click="addEvent.selectEventType(eventType)" ng-repeat="eventType in addEvent.currentThing.deviceClass.eventTypes track by $index">
+      <span>{{ eventType.name }}</span>
       <svg class="icon">
-        <use xlink:href="./assets/svg/ui/ui.symbol.svg#chevron-right"></use>
+        <use xlink:href="./assets/svg/ui/ui.symbol.svg#plus"></use>
       </svg>
     </div>
-  </div>
-
-  <!-- Create method -->
-  <div guh-wizard-step ng-show="newDevice.createMethod" title="Enter device details">
-    <ng-include src="newDevice.createMethod.addTemplate" class="content"></ng-include>
-  </div>
-
-  <!-- Setup method -->
-  <div guh-wizard-step ng-show="newDevice.setupMethod" title="Pair device">
-    <ng-include src="newDevice.setupMethod.addTemplate" class="content"></ng-include>
   </div>
 </div>

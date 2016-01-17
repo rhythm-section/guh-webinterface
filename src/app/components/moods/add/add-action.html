@@ -21,40 +21,45 @@
 -->
 
 
-<button class="close" ng-click="newDevice.modalInstance.close()">
+<button class="close" ng-click="addAction.modalInstance.close()">
   <svg class="icon">
     <use xlink:href="./assets/svg/ui/ui.symbol.svg#close"></use>
   </svg>
 </button>
 
-<div guh-wizard handle="newDevice">
-  <!-- Select vendor -->
-  <div guh-wizard-step class="list" title="Select a vendor">
-    <div class="list__item list__item_isClickable" ng-repeat="vendor in newDevice.supportedVendors | orderBy: 'name' track by $index" ng-click="newDevice.selectVendor(vendor)">
-      {{ vendor.name }}
+<div guh-wizard handle="addAction">
+  <!-- Select device -->
+  <div class="list" guh-wizard-step title="Choose a device" is-valid="addAction.hasCurrentThingSet()">
+    <div class="list__item list__item_isClickable" ng-click="addAction.selectThing(thing)" ng-repeat="thing in addAction.things | orderBy: 'name' track by $index">
+      <span>{{ thing.name }}</span>
       <svg class="icon">
         <use xlink:href="./assets/svg/ui/ui.symbol.svg#chevron-right"></use>
       </svg>
     </div>
   </div>
 
-  <!-- Select deviceClass -->
-  <div guh-wizard-step class="list" title="Select your device">
-    <div class="list__item list__item_isClickable" ng-repeat="deviceClass in newDevice.supportedDeviceClasses | orderBy: 'name' track by $index" ng-click="newDevice.selectDeviceClass(deviceClass)">
-      {{ deviceClass.name }}
+  <!-- Select actionType -->
+  <div class="list" guh-wizard-step title="Choose a control" is-valid="addAction.hasCurrentActionType()">
+    <div class="list__item list__item_isClickable" ng-click="addAction.selectActionType(actionType)" ng-repeat="actionType in addAction.currentThing.deviceClass.actionTypesLinked track by $index">
+      <span>{{ actionType.name }}</span>
       <svg class="icon">
         <use xlink:href="./assets/svg/ui/ui.symbol.svg#chevron-right"></use>
       </svg>
     </div>
   </div>
 
-  <!-- Create method -->
-  <div guh-wizard-step ng-show="newDevice.createMethod" title="Enter device details">
-    <ng-include src="newDevice.createMethod.addTemplate" class="content"></ng-include>
-  </div>
+  <!-- Enter actionType details -->
+  <div guh-wizard-step title="Enter details">
+    <guh-form name="enterActionParams"
+              on-form-submit="addAction.addActionParams(params)">
 
-  <!-- Setup method -->
-  <div guh-wizard-step ng-show="newDevice.setupMethod" title="Pair device">
-    <ng-include src="newDevice.setupMethod.addTemplate" class="content"></ng-include>
+      <guh-form-field label="{{ paramType.name }}"
+                      name="{{ paramType.name }}"
+                      param-type="paramType"
+                      template="{{ paramType.inputTemplateUrl }}"
+                      ng-repeat="paramType in addAction.currentActionType.paramTypes track by $index"></guh-form-field>
+
+      <button type="submit" class="full">Save action</button>
+    </guh-form>
   </div>
 </div>

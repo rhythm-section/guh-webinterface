@@ -21,7 +21,7 @@
 -->
 
 
-<button class="close" ng-click="closeThisDialog()">
+<button class="close" ng-click="newService.modalInstance.close()">
   <svg class="icon">
     <use xlink:href="./assets/svg/ui/ui.symbol.svg#close"></use>
   </svg>
@@ -30,22 +30,22 @@
 <div guh-wizard handle="newService">
   <!-- Select vendor -->
   <div guh-wizard-step class="list" title="Select the vendor of your service">
-    <p class="item" ng-repeat="vendor in newService.supportedVendors | orderBy: 'name' track by $index" ng-click="newService.selectVendor(vendor)">
+    <div class="list__item list__item_isClickable" ng-repeat="vendor in newService.supportedVendors | orderBy: 'name' track by $index" ng-click="newService.selectVendor(vendor)">
       {{ vendor.name }}
       <svg class="icon">
         <use xlink:href="./assets/svg/ui/ui.symbol.svg#chevron-right"></use>
       </svg>
-    </p>
+    </div>
   </div>
 
   <!-- Select deviceClass -->
   <div guh-wizard-step class="list" title="Select your service">
-    <p class="item" ng-repeat="deviceClass in newService.supportedDeviceClasses | orderBy: 'name' track by $index" ng-click="newService.selectDeviceClass(deviceClass)">
+    <div class="list__item list__item_isClickable" ng-repeat="deviceClass in newService.supportedDeviceClasses | orderBy: 'name' track by $index" ng-click="newService.selectDeviceClass(deviceClass)">
       {{ deviceClass.name }}
       <svg class="icon">
         <use xlink:href="./assets/svg/ui/ui.symbol.svg#chevron-right"></use>
       </svg>
-    </p>
+    </div>
   </div>
 
   <!-- Create method -->
