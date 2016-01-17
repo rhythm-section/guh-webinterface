@@ -378,6 +378,15 @@
           setTemplate(template);
         });
 
+        // Watch state
+        DSState.on('DS.change', function(DSState, state) {
+          if(angular.isDefined(scope) && scope !== null && angular.isDefined(scope.formField.state) && scope.formField.state !== null) {
+            scope.$apply(function() {
+              scope.formField.value = scope.formField.state.value;
+            });
+          }
+        });
+
 
         // Cleanup
         scope.$on('$destroy', function() {
