@@ -25,10 +25,10 @@
 
 /**
  * @ngdoc interface
- * @name guh.devices.controller:DevicesDetailCtrl
+ * @name guh.moods.controller:NewMoodCtrl
  *
  * @description
- * Load and show details of certain device.
+ * Add a new mood.
  *
  */
 
@@ -39,116 +39,344 @@
     .module('guh.moods')
     .controller('NewMoodCtrl', NewMoodCtrl);
 
-  NewMoodCtrl.$inject = ['$log', '$rootScope', 'app', 'DSDevice', 'DSActionType', 'DSEventType', 'DSStateType', 'DSRule'];
+  NewMoodCtrl.$inject = ['app', 'libs', '$log', '$rootScope', '$state', '$stateParams', 'MorphModal', 'DSRule', 'modalInstance'];
 
-  function NewMoodCtrl($log, $rootScope, app, DSDevice, DSActionType, DSEventType, DSStateType, DSRule) {
+  function NewMoodCtrl(app, libs, $log, $rootScope, $state, $stateParams, MorphModal, DSRule, modalInstance) {
 
-    // View data
     var vm = this;
-    var isExitAction = false;
+    var actionModal = null;
+    var eventModal = null;
+    var stateModal = null;
+    var exitActionModal = null;
 
-    vm.rule = {};
-    vm.things = [];
-    vm.selectedThing = {};
-    vm.selectedAction = {};
+    vm.modalInstance = modalInstance;
+    vm.rule = null;
+    vm.actions = [];
+    vm.events = [];
+    vm.states = [];
+    vm.exitActions = [];
+    vm.exitActionsDisabled = false;
 
-    // View methods
-    vm.isActionType = isActionType;
-    vm.selectEnterAction = selectEnterAction;
-    vm.selectExitAction = selectExitAction;
-    vm.selectActionDetails = selectActionDetails;
-    vm.save = save;
+    vm.addAction = addAction;
+    vm.deleteAction = deleteAction;
+    vm.hasActions = hasActions;
+    vm.addEvent = addEvent;
+    vm.deleteEvent = deleteEvent;
+    vm.addState = addState;
+    vm.deleteState = deleteState;
+    vm.addExitAction = addExitAction;
+    vm.deleteExitAction = deleteExitAction;
+    vm.hasExitActions = hasExitActions;
+    vm.isDisabled = isDisabled;
+    vm.enterRuleDetails = enterRuleDetails;
+    vm.isValid = isValid;
+    vm.setDetails = setDetails;
 
+    vm.addModal = function() {
+      MorphModal
+        .add({
+          controller: 'NewMoodCtrl',
+          controllerAs: 'newMood',
+          data: null,
+          templateUrl: 'app/components/moods/add/new-mood-modal.html'
+        })
+        .then(function(modal) {
+          $log.log('modal', modal);
+          modal.open();
+        })
+        .catch(function(error) {
+          $log.log('error', error);
+        });
+    };
 
     function _init() {
       vm.rule = {
         actions: [],
         enabled: true,
         executable: true,
-        exitActions: [],
         name: ''
       };
-
-      _setThings();
     }
 
-    function _setThings() {
-      var devices = DSDevice.getAll();
-      vm.things = devices.filter(_hasActions);
+    function _addModal(modalData) {
+      MorphModal
+        .add(modalData)
+        .then(function(modal) {
+          modal.open();
+        })
+        .catch(function(error) {
+          $log.error(error);
+        });
     }
 
-    function _hasActions(device) {
-      return angular.isDefined(device.deviceClass) && device.deviceClass.actionTypes.length > 0;
-    }
+    function _getStateEvaluator() {
+      var stateEvaluator = {
+        operator: app.stateOperator.StateOperatorAnd
+      }
 
-    function _selectAction(thing, action) {
-      vm.selectedThing = thing;
-      vm.selectedAction = action;
+      angular.forEach(vm.states, function(state, index) {
+        var stateDescriptor = state.stateDescriptor;
 
-      if(isActionType()) {
-        if(action.paramTypes.length === 0) {
-          var ruleAction = vm.selectedThing.getAction(vm.selectedAction, []);
-          
-          $log.log('isExitAction', isExitAction);
-
-          if(isExitAction) {
-            vm.rule.exitActions.push(ruleAction);
-            $rootScope.$broadcast('wizard.prev', 'exitActions');
-          } else {
-            vm.rule.actions.push(ruleAction);
-            $rootScope.$broadcast('wizard.prev', 'enterActions');
-          }
-          
-          vm.selectedAction = null;
+        if(index === 0) {
+          stateEvaluator.stateDescriptor = stateDescriptor;
         } else {
-          if(isExitAction) {
-            $rootScope.$broadcast('wizard.next', 'exitActions');
-          } else {
-            $rootScope.$broadcast('wizard.next', 'enterActions');
+          if(angular.isUndefined(stateEvaluator.childEvaluators)) {
+            stateEvaluator.childEvaluators = [];
           }
-        }    
+
+          stateEvaluator.childEvaluators.push({
+            operator: app.stateOperator.StateOperatorAnd,
+            stateDescriptor: stateDescriptor
+          });
+        }
+      });
+
+      return stateEvaluator;
+    }
+
+    function _indexOf(objectToFind, array) {
+      var index = -1;
+
+      angular.forEach(array, function(currentObject, currentIndex) {
+        if(angular.equals(currentObject, objectToFind)) {
+          $log.log('Object found', objectToFind, array);
+          index = currentIndex;
+        }
+      });
+
+      return index;
+    }
+
+
+    function addAction() {
+      var modalData = {
+        controller: 'AddActionCtrl',
+        controllerAs: 'addAction',
+        data: null,
+        templateUrl: app.basePaths.moods + 'add/add-action.html'
+      };
+
+      MorphModal
+        .add(modalData)
+        .then(function(modal) {
+          modal.open();
+          actionModal = modal;
+        })
+        .catch(function(error) {
+          $log.error(error);
+        });
+    }
+
+    function deleteAction(actionToDelete) {
+      vm.actions.splice(_indexOf(actionToDelete, vm.actions), 1);
+    }
+
+    function hasActions() {
+      return angular.isDefined(vm.actions) && angular.isArray(vm.actions) && vm.actions.length > 0;
+    }
+
+    function addEvent() {
+      var modalData = {
+        controller: 'AddEventCtrl',
+        controllerAs: 'addEvent',
+        data: null,
+        templateUrl: app.basePaths.moods + 'add/add-event.html'
+      };
+
+      MorphModal
+        .add(modalData)
+        .then(function(modal) {
+          modal.open();
+          eventModal = modal;
+        })
+        .catch(function(error) {
+          $log.error(error);
+        });
+    }
+
+    function deleteEvent(eventToDelete) {
+      vm.events.splice(_indexOf(eventToDelete, vm.events), 1);
+
+      if(vm.events.length === 0) {
+        vm.exitActionsDisabled = false;
       }
     }
 
-    function isActionType() {
-      return DSActionType.is(vm.selectedAction);
+    function hasEvents() {
+      return angular.isDefined(vm.events) && angular.isArray(vm.events) && vm.events.length > 0;
     }
 
-    function selectEnterAction(thing, enterAction) {
-      isExitAction = false;
-      _selectAction(thing, enterAction);
+    function addState() {
+      var modalData = {
+        controller: 'AddStateCtrl',
+        controllerAs: 'addState',
+        data: null,
+        templateUrl: app.basePaths.moods + 'add/add-state.html'
+      };
+
+      MorphModal
+        .add(modalData)
+        .then(function(modal) {
+          modal.open();
+          stateModal = modal;
+        })
+        .catch(function(error) {
+          $log.error(error);
+        });
     }
 
-    function selectExitAction(thing, enterAction) {
-      isExitAction = true;
-      _selectAction(thing, enterAction);
+    function deleteState(stateToDelete) {
+      vm.states.splice(_indexOf(stateToDelete, vm.states), 1);
     }
 
-    function selectActionDetails(params) {
-      var ruleActionParams = vm.selectedAction.getRuleActionParams(params);
-      var ruleAction = vm.selectedThing.getAction(vm.selectedAction, params);
+    function hasStates() {
+      return angular.isDefined(vm.states) && angular.isArray(vm.states) && vm.states.length > 0;
+    }
 
-      if(isExitAction) {
-        vm.rule.exitActions.push(ruleAction);
-        $rootScope.$broadcast('wizard.prev', 'exitActions');
-      } else {
-        vm.rule.actions.push(ruleAction);
-        $rootScope.$broadcast('wizard.prev', 'enterActions');
+    function addExitAction() {
+      if(vm.exitActionsDisabled) {
+        return;
       }
-      
-      vm.selectedAction = null;
+
+      var modalData = {
+        controller: 'AddActionCtrl',
+        controllerAs: 'addAction',
+        data: null,
+        templateUrl: app.basePaths.moods + 'add/add-action.html'
+      };
+
+      MorphModal
+        .add(modalData)
+        .then(function(modal) {
+          modal.open();
+          exitActionModal = modal;
+        })
+        .catch(function(error) {
+          $log.error(error);
+        });
     }
 
-    function save() {
+    function deleteExitAction(actionToDelete) {
+      vm.exitActions.splice(_indexOf(actionToDelete, vm.exitActions), 1);
+    }
+
+    function hasExitActions() {
+      return angular.isDefined(vm.exitActions) && angular.isArray(vm.exitActions) && vm.exitActions.length > 0;
+    }
+
+    function isDisabled() {
+      $log.log('isDisabled', hasEvents());
+      if(hasEvents() && hasExitActions()) {
+        return 'list__item_isDisabled';
+      }
+
+      return;
+    }
+
+    function isValid() {
+      return hasActions() ||
+             (hasActions() && hasEvents()) ||
+             (hasActions() && hasEvents() && hasStates()) ||
+             (hasActions() && hasStates() && hasExitActions());
+    }
+
+    function setDetails() {
+      $rootScope.$broadcast('wizard.next', 'addRule');
+    }
+
+    function enterRuleDetails(params) {
+      // Details
+      var name = libs._.find(params, function(param) {
+        return param.name === 'Name';
+      });
+
+      vm.rule.name = angular.isDefined(name) ? name.value : 'Mood';
+
+      // Actions
+      if(hasActions()) {
+        vm.rule.actions = vm.actions.map(function(action) {
+          return action.ruleAction;
+        });
+      }
+
+      // EventDescriptors
+      if(hasEvents()) {
+        if(vm.events.length > 1) {
+          vm.rule.eventDescriptorList = vm.events.map(function(eventItem) {
+            return eventItem.eventDescriptor;
+          });
+        } else {
+          vm.rule.eventDescriptor = vm.events[0].eventDescriptor;
+        }
+      }
+
+      // StateEvaluator
+      if(hasStates()) {
+        vm.rule.stateEvaluator = _getStateEvaluator();
+      }
+
+      // ExitActions
+      if(hasExitActions() && !hasEvents()) {
+        vm.rule.exitActions = vm.exitActions.map(function(action) {
+          return action.ruleAction;
+        });
+      }
+
+      // Save
       DSRule
         .create(vm.rule)
         .then(function(rule) {
-          $log.log('Mood was created.', rule);
-        })
-        .catch(function(error) {
-          $log.log('guh.moods.NewMoodCtrl:controller | Error while saving mood.', error);
+          modalInstance.close();
+          $state.go('guh.moods.master', { bypassCache: true }, {
+            reload: true,
+            inherit: false,
+            notify: true
+          });
         });
     }
+
+
+    $rootScope.$on('modals.close', function(event, modal, data) {
+      $log.log('Event: modals.close', event, modal, data);
+
+      if(data) {
+        if(actionModal && modal.id === actionModal.id) {
+          // Add actions
+          vm.actions.push({
+            thing: data.thing,
+            actionType: data.actionType,
+            ruleAction: data.ruleAction,
+            params: data.params
+          });
+          // vm.rule.actions.push(data.ruleAction);
+        } else if(eventModal && modal.id === eventModal.id) {
+          // Add events
+          vm.events.push({
+            thing: data.thing,
+            eventType: data.eventType,
+            eventDescriptor: data.eventDescriptor
+          });
+
+          vm.exitActionsDisabled = true;
+        } else if(stateModal && modal.id === stateModal.id) {
+          // Add states
+          vm.states.push({
+            thing: data.thing,
+            stateType: data.stateType,
+            stateDescriptors: data.stateDescriptors,
+            title: data.title
+          });
+        } else if(exitActionModal && modal.id === exitActionModal.id) {
+          // Add exitActions
+          vm.exitActions.push({
+            thing: data.thing,
+            actionType: data.actionType,
+            ruleAction: data.ruleAction,
+            params: data.params
+          });
+        }
+      }
+    });
 
 
     _init();
