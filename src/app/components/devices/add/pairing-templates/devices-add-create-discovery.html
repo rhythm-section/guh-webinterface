@@ -34,8 +34,11 @@
 <!-- Discovered devices -->
 <p ng-show="newDevice.discoveredDevices.length > 0">Select your desired device/plugin.</p>
 <ul class="list" ng-show="newDevice.discoveredDevices.length > 0">
-  <li class="item" ng-repeat="device in newDevice.discoveredDevices track by $index | orderBy: 'name'" ng-click="newDevice.add(device)">
-    <p>{{ device.title }} ({{ device.description }})</p>
+  <li class="list__item list__item_isClickable" ng-repeat="device in newDevice.discoveredDevices track by $index | orderBy: 'name'" ng-click="newDevice.add(device)">
+    {{ device.title }} ({{ device.description }})
+    <svg class="icon">
+      <use xlink:href="./assets/svg/ui/ui.symbol.svg#plus"></use>
+    </svg>
   </li>
 </ul>
 
