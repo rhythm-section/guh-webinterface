@@ -29,9 +29,9 @@
     .module('guh.ui')
     .directive('guhWizard', wizardDirective);
 
-  wizardDirective.$inject = ['$log', '$animate', 'libs', 'wizardService'];
+  wizardDirective.$inject = ['$log', '$q', '$animate', 'libs', 'wizardService'];
 
-  function wizardDirective($log, $animate, libs, wizardService) {
+  function wizardDirective($log, $q, $animate, libs, wizardService) {
 
     var directive = {
       bindToController: {
@@ -55,6 +55,7 @@
       /* jshint validthis: true */
       var vm = this;
       var currentStep;
+      var nextStep;
 
       // Public variables
       vm.steps = [];
@@ -69,13 +70,14 @@
       vm.hasPrev = hasPrev;
       vm.hasNext = hasNext;
       vm.isActive = isActive;
+      vm.isValid = isValid;
 
 
       function init() {
         currentStep = 0;
 
         if(vm.steps.length > 0) {
-          vm.steps[currentStep].element.addClass('current');
+          vm.steps[currentStep].element.addClass('wizard__step_current');
         }
 
         vm.title = vm.steps[currentStep].scope.wizardStep.title;
@@ -99,8 +101,8 @@
 
       function prev() {
         if(hasPrev()) {
-          vm.steps[currentStep].element.removeClass('current');
-          vm.steps[currentStep - 1].element.addClass('current');
+          vm.steps[currentStep].element.removeClass('wizard__step_current');
+          vm.steps[currentStep - 1].element.addClass('wizard__step_current');
           // $animate
           //   .removeClass(vm.steps[currentStep].element, 'current');
 
@@ -114,9 +116,9 @@
       }
 
       function next() {
-        if(hasNext()) {
-          vm.steps[currentStep].element.removeClass('current');
-          vm.steps[currentStep + 1].element.addClass('current');
+        if(hasNext() && isValid(currentStep + 1)) {
+          vm.steps[currentStep].element.removeClass('wizard__step_current');
+          vm.steps[currentStep + 1].element.addClass('wizard__step_current');
           // $animate
           //   .addClass(vm.steps[currentStep].element, 'slide-out-left')
           //   .then(function() {
@@ -140,12 +142,12 @@
 
         if(step === currentStep) {
           return;
-        } else if(currentStep >= 0 && step <= vm.steps.length) {
-          vm.steps[currentStep].element.removeClass('current');
+        } else if(currentStep >= 0 && step <= vm.steps.length && isValid(step)) {
+          vm.steps[currentStep].element.removeClass('wizard__step_current');
           currentStep = step;
         }
 
-        vm.steps[currentStep].element.addClass('current');
+        vm.steps[currentStep].element.addClass('wizard__step_current');
         vm.title = vm.steps[currentStep].scope.wizardStep.title;
       }
 
@@ -153,13 +155,37 @@
         return currentStep === libs._.findIndex(vm.steps, step);
       }
 
+      function isValid(nextStep) {
+        var isValid = false;
+        var validCallback = vm.steps[currentStep].ctrl.validCallback;
+
+        // If no isValid-Callback defined user can go
+        // Is there a better way to check if the passed attribute is 'undefined'? (http://stackoverflow.com/questions/21935099/how-to-check-if-a-method-argument-of-a-directive-is-specified-in-angularjs)
+        if(angular.isUndefined(vm.steps[currentStep].attributes.isValid)) {
+          return true;
+        }
+
+        if(angular.isFunction(validCallback)) {
+          return validCallback();
+        }
+
+        $log.error('guh.ui.directive:guhWizard', 'The value of "is-valid" has to be a function.');
+        return false;
+      }
+
     }
 
     function wizardLink(scope, element, attrs, wizardCtrl) {
 
       function _init() {
+        $log.log('WIZARD');
+
         // Add proper styles
         element.addClass('wizard');
+
+        if(wizardCtrl.showNavigation) {
+          element.addClass('wizard_show_navigation');
+        }
 
         // Save handle for later retrieval
         wizardService.addHandle(scope);

@@ -29,18 +29,19 @@
     .module('guh.ui')
     .directive('guhWizardStep', wizardStep);
 
-  wizardStep.$inject = [];
+  wizardStep.$inject = ['$log'];
 
-  function wizardStep() {
+  function wizardStep($log) {
 
     var directive = {
       bindToController: {
-        title: '@'
+        title: '@',
+        validCallback: '&isValid'
       },
       controller: wizardStepCtrl,
       controllerAs: 'wizardStep',
       link: wizardStepLink,
-      require: '^^guhWizard',
+      require: ['^guhWizardStep', '^^guhWizard'],
       restrict: 'A',
       scope: {}
     };
@@ -48,16 +49,29 @@
     return directive;
 
 
-    function wizardStepCtrl() {
+    function wizardStepCtrl() {}
 
-    }
+    function wizardStepLink(scope, element, attributes, ctrls) {
+      var wizardStepCtrl = angular.isDefined(ctrls[0]) ? ctrls[0] : null;
+      var wizardCtrl = angular.isDefined(ctrls[1]) ? ctrls[1] : null;
+      
+      if(!wizardStepCtrl) {
+        $log.error('guh.ui.directive:guhWizardStep', 'No controller for wizardStep defined.');
+        return;
+      }
 
-    function wizardStepLink(scope, element, attributes, wizardCtrl) {
+      if(!wizardCtrl) {
+        $log.error('guh.ui.directive:guhWizardStep', 'No parent controller (wizard) defined for wizardStep.');
+        return;
+      }
+
       // Add proper styles
-      element.addClass('wizard-step');
+      element.addClass('wizard__step');
 
       // Add step to wizard
       wizardCtrl.addStep({
+        attributes: attributes,
+        ctrl: wizardStepCtrl,
         element: element,
         scope: scope
       });
