@@ -114,8 +114,18 @@
         operator: app.stateOperator.StateOperatorAnd
       }
 
-      angular.forEach(vm.states, function(state, index) {
-        var stateDescriptor = state.stateDescriptor;
+      $log.log('vm.states', vm.states);
+
+      var stateDescriptors = [];
+      angular.forEach(vm.states, function(state) {
+        stateDescriptors = stateDescriptors.concat(state.stateDescriptors);
+      });
+
+      $log.log('stateDescriptors', stateDescriptors);
+
+      
+      angular.forEach(stateDescriptors, function(stateDescriptor, index) {
+        $log.log('stateDescriptor', stateDescriptor, index);
 
         if(index === 0) {
           stateEvaluator.stateDescriptor = stateDescriptor;
@@ -130,7 +140,7 @@
           });
         }
       });
-
+      
       return stateEvaluator;
     }
 
@@ -265,7 +275,6 @@
     }
 
     function isDisabled() {
-      $log.log('isDisabled', hasEvents());
       if(hasEvents() && hasExitActions()) {
         return 'list__item_isDisabled';
       }
@@ -301,6 +310,11 @@
 
       // EventDescriptors
       if(hasEvents()) {
+        // vm.rule.eventDescriptors = vm.events.map(function(eventItem) {
+        //   return eventItem.eventDescriptor;
+        // });
+        // $log.log('vm.rule.eventDescriptors', vm.rule.eventDescriptors);
+
         if(vm.events.length > 1) {
           vm.rule.eventDescriptorList = vm.events.map(function(eventItem) {
             return eventItem.eventDescriptor;
@@ -308,11 +322,13 @@
         } else {
           vm.rule.eventDescriptor = vm.events[0].eventDescriptor;
         }
+        $log.log('vm.rule', vm.rule);
       }
 
       // StateEvaluator
       if(hasStates()) {
         vm.rule.stateEvaluator = _getStateEvaluator();
+        $log.log('Mood has states!', vm.rule.stateEvaluator);
       }
 
       // ExitActions
