@@ -28,7 +28,7 @@ $grey: #676767;
 $color: $grey;
 
 
-.state {
+.param {
   @include rem(margin-bottom, 1.5);
 
   .value {

@@ -90,8 +90,6 @@
           modalInstance.close();
         })
         .catch(function(error) {
-          // TODO: Build general error handler
-          // TODO: Handle error when device in use (rules)
           $log.error(error);
         });
     }

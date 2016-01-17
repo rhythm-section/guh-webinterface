@@ -78,6 +78,19 @@
           html: '.html'
         },
 
+        // Basic types
+        basicTypes: {
+          uuid: 'Uuid',
+          string: 'String',
+          int: 'Int',
+          unsignedInt: 'Uint',
+          double: 'Double',
+          bool: 'Bool',
+          variant: 'Variant',
+          color: 'Color',
+          object: 'Object'
+        },
+
         // Input types
         inputTypes: {
           InputTypeIPv4Address: '-ipV4',

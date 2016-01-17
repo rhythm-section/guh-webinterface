@@ -83,7 +83,7 @@
     function setCurrent(index) {
       vm.currentSlide = index;
 
-      if(index !== -1) {
+      if(index !== -1 && index <= vm.configured.length) {
         $state.go('guh.moods.master.current', { moodId: vm.configured[index].id });
       }
     }

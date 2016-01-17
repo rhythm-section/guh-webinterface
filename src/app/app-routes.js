@@ -29,9 +29,17 @@
     .module('guh')
     .config(config);
 
-    config.$inject = ['$urlRouterProvider', '$stateProvider'];
+    config.$inject = ['$provide', '$urlRouterProvider', '$stateProvider', 'guhLoggingProvider'];
 
-    function config($urlRouterProvider, $stateProvider) {
+    function config($provide, $urlRouterProvider, $stateProvider, guhLoggingProvider) {
+
+      /*
+       * Logging
+       */
+
+      guhLoggingProvider.enhance('error');
+      guhLoggingProvider.after('error', 'broadcast');
+
 
       /*
        * URLs

@@ -129,7 +129,9 @@
         scope.$on('ngDialog.closing', function (event, $dialog) {
           $timeout(function() {
             var dialog = document.getElementById($dialog.attr('id'));
-            dialog.remove();
+            if(dialog) {
+              dialog.remove();
+            }
 
             var body = angular.element(document).find('body');
             var remainingDialogs = document.getElementsByClassName('ngdialog');
