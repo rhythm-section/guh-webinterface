@@ -29,9 +29,9 @@
     .module('guh.ui')
     .directive('guhActionBar', guhActionBar);
 
-    guhActionBar.$inject = ['$log', '$filter', '$rootScope', '$timeout', '$state', 'ngDialog'];
+    guhActionBar.$inject = ['$log', '$filter', '$rootScope', '$timeout', '$state', 'ngDialog', 'MorphModal'];
 
-    function guhActionBar($log, $filter, $rootScope, $timeout, $state, ngDialog) {
+    function guhActionBar($log, $filter, $rootScope, $timeout, $state, ngDialog, MorphModal) {
       var directive = {
         bindToController: {
 
@@ -56,8 +56,6 @@
         vm.showEdit = false;
         vm.openAddModal = openAddModal;
         vm.openEditModal = openEditModal;
-        vm.closeAddModal = closeAddModal;
-        vm.closeEditModal = closeEditModal;
         vm.modal = null;
         
         var stateCtrlAs = '';
@@ -72,14 +70,6 @@
 
           vm.showAdd = true;
           vm.showEdit = true;
-
-          // if(stateCtrlAs.charAt(stateCtrlAs.length - 1) === 's') {
-          //   vm.showAdd = true;
-          //   vm.showEdit = false;
-          // } else {
-          //   vm.showAdd = false;
-          //   vm.showEdit = true;
-          // }
         }
 
         function openAddModal() {
@@ -87,16 +77,19 @@
           var addControllerAs = 'new' + $filter('capitalize')(stateCtrlAsSingular);
           var addTemplate = 'new-' + stateCtrlAsSingular + '-modal';
 
-          vm.modal = ngDialog.open({
-            // className: 'ngdialog-theme-default',
-            className: 'modal small',
-            controller: addController,
-            controllerAs: addControllerAs,
-            disableAnimation: true,
-            overlay: true,
-            showClose: false,
-            template: 'app/components/' + stateCtrlAsPlural + '/add/' + addTemplate + '.html'
-          });
+          MorphModal
+            .add({
+              controller: addController,
+              controllerAs: addControllerAs,
+              data: null,
+              templateUrl: 'app/components/' + stateCtrlAsPlural + '/add/' + addTemplate + '.html'
+            })
+            .then(function(modal) {
+              modal.open();
+            })
+            .catch(function(error) {
+              $log.log('error', error);
+            });
         }
 
         function openEditModal() {
@@ -104,24 +97,19 @@
           var editControllerAs = 'edit' + $filter('capitalize')(stateCtrlAsSingular);
           var editTemplate = 'edit-' + stateCtrlAsSingular + '-modal';
 
-          vm.modal = ngDialog.open({
-            // className: 'ngdialog-theme-default',
-            className: 'modal small',
-            controller: editController,
-            controllerAs: editControllerAs,
-            disableAnimation: true,
-            overlay: true,
-            showClose: false,
-            template: 'app/components/' + stateCtrlAsPlural + '/edit/' + editTemplate + '.html'
-          });
-        }
-
-        function closeAddModal() {
-          $log.log('closeAddModal');
-        }
-
-        function closeEditModal() {
-          $log.log('closeEditModal');
+          MorphModal
+            .add({
+              controller: editController,
+              controllerAs: editControllerAs,
+              data: null,
+              templateUrl: 'app/components/' + stateCtrlAsPlural + '/edit/' + editTemplate + '.html'
+            })
+            .then(function(modal) {
+              modal.open();
+            })
+            .catch(function(error) {
+              $log.error('error', error);
+            });
         }
       }
 
@@ -135,21 +123,16 @@
 
         scope.$on('ngDialog.opened', function (event, $dialog) {
           var remainingDialogs = document.getElementsByClassName('ngdialog');
-          $log.log('remainingDialogs', remainingDialogs.length);
         });
 
         // Becaus of bug that ngDialog.closed is not working (see below), this is needed to remove the dialog. The timeout is needed because of the animation
         scope.$on('ngDialog.closing', function (event, $dialog) {
           $timeout(function() {
-            $log.log('ngDialog closing: ' + $dialog.attr('id'));
-
             var dialog = document.getElementById($dialog.attr('id'));
             dialog.remove();
 
             var body = angular.element(document).find('body');
             var remainingDialogs = document.getElementsByClassName('ngdialog');
-
-            $log.log('remainingDialogs', remainingDialogs.length);
 
             // If last dialog was removed
             if(remainingDialogs.length === 0) {
