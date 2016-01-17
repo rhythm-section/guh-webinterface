@@ -51,15 +51,13 @@
   <!-- Enter actionType details -->
   <div guh-wizard-step title="Enter details">
     <guh-form name="enterActionParams"
-              on-form-submit="addAction.addActionParams(params)"
-              class="list">
+              on-form-submit="addAction.addActionParams(params)">
 
       <guh-form-field label="{{ paramType.name }}"
                       name="{{ paramType.name }}"
                       param-type="paramType"
                       template="{{ paramType.inputTemplateUrl }}"
-                      ng-repeat="paramType in addAction.currentActionType.paramTypes track by $index"
-                      class="list__item"></guh-form-field>
+                      ng-repeat="paramType in addAction.currentActionType.paramTypes track by $index"></guh-form-field>
 
       <button type="submit" class="full">Save action</button>
     </guh-form>
