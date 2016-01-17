@@ -121,6 +121,7 @@ img {
 
 button,
 input,
+select,
 textarea {
   @include appearance(none);
   background-color: transparent;

@@ -100,11 +100,7 @@ input[type="submit"] {
 
 button:disabled {
   cursor: auto;
-
-  &:hover {
-    background-color: inherit;
-    color: inherit;
-  }
+  opacity: 0.2;
 }
 
 select {

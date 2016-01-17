@@ -25,19 +25,162 @@
 
 $grey: #676767;
 $white: #fff;
-
-$background: transparent;
-$border-color: $grey;
-$color: $grey;
+$green: #7cc09a;
+$red: #f07363;
+$turquoise: #57baae;
 
 
 .list {
-  @include rem(padding, 0, 1.5);
+  @include rem(margin, 1.5, 0, 0);
+}
+
+.list__item,
+.list__item-divider {
+  position: relative;
+
+  &> .button {
+    background-color: transparent;
+    border: none;
+    border-radius: 50%;
+    margin: 0;
+    max-width: none;
+    @include rem(padding, 0.5);
+    position: absolute;
+      @include rem(right, 1);
+
+    .icon {
+      border-radius: 100%;
+      cursor: pointer;
+      fill: rgba($grey, 0.2);
+      @include transition(background, 0.2s);
+
+      &:hover {
+        fill: $grey;
+      }
+
+      &.icon_add:hover {
+        fill: $green;
+      }
+
+      &.icon_delete:hover {
+        fill: $red;
+      }
+    }
+  }
+
+  &> .icon {
+    position: absolute;
+  }
+}
+
+.list__item_warning {
+  color: $red;
+}
+
+.list__item {
+  background-color: $white;
+  border-bottom: 1px solid rgba($grey, 0.1);
+  display: block;
+  @include rem(padding, 1.5);
+  width: 100%;
+
+  &:nth-child(even) {
+    // background-color: rgba($grey, 0.1);
+  }
+
+  &:last-child {
+    border-bottom-color: transparent;
+  }
+
+  .title,
+  .description {
+    @include rem(height, 1.5);
+    overflow: hidden;
+    @include rem(padding-right, 3);
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    width: 100%;
+  }
+
+  .description {
+    @include rem(font-size, 0.8);
+  }
+
+  &> .button {
+    @include rem(top, 1);
+  }
+
+  &> .icon {
+    fill: $grey;
+    @include rem(right, 1.5);
+    @include rem(top, 1.5);
+  }
+}
+
+.list__item.list__item_hasDescription {
+  @include rem(height, 6);
+}
+
+.list__item.list__item_isClickable {
+  background-color: $white;
+  color: $grey;
+  cursor: pointer;
+
+  .icon {
+    fill: rgba($grey, 0.2);
+    @include transition(fill 0.2s);
+  }
+
+  &:hover .icon {
+    fill: $grey;
+  }
+
+  &:hover .icon.icon_add {
+    fill: $green;
+  }
+
+  &:hover .icon.icon_delete {
+    fill: $red;
+  }
+}
+
+.list__item.list__item_isDisabled {
+  cursor: auto;
+  color: rgba($grey, 0.2);
+
+  .icon {
+    fill: rgba($grey, 0.2);
+  }
+
+  &:hover {
+    background-color: $white;
+  }
+}
+
+.list__item-divider {
+  @include rem(font-size, 0.8);
+  letter-spacing: 0.1em;
+  @include rem(margin, 3, 0, 0);
+  @include rem(padding, 0.7, 1.5, 0.8);
+  text-transform: uppercase;
+
+  &:first-child {
+    margin-top: 0;
+  }
+
+  &> .button {
+    top: 0;
+  }
+
+  &> .icon {
+    @include rem(right, 1.5);
+    top: 0;
+  }
 }
 
 .list > .item-divider {
-  border-bottom: 1px solid rgba($border-color, 0.1);
-  color: $c-turquoise;
+  border-bottom: 1px solid rgba($grey, 0.2);
+  color: $turquoise;
   @include rem(height, 6);
   @include rem(margin, 1.5, 0);
   overflow: hidden;
@@ -55,7 +198,7 @@ $color: $grey;
 }
 
 .list > .item {
-  color: $color;
+  color: $grey;
   cursor: pointer;
   display: block;
   @include rem(height, 4.5);

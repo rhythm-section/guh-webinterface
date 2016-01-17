@@ -43,6 +43,7 @@ $turquoise: #57baae;
 }
 
 .wizard__title {
+  @include rem(font-size, 1.5);
   @include rem(height, 4.5);
   @include rem(padding, 1.5, 4.5);
   overflow: hidden;
