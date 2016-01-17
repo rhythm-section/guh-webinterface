@@ -39,12 +39,13 @@
     .module('guh.devices')
     .controller('EditDeviceCtrl', EditDeviceCtrl);
 
-  EditDeviceCtrl.$inject = ['$log', '$scope', '$state', '$stateParams', 'DSDevice'];
+  EditDeviceCtrl.$inject = ['$log', '$scope', '$state', '$stateParams', 'DSDevice', 'modalInstance'];
 
-  function EditDeviceCtrl($log, $scope, $state, $stateParams, DSDevice) {
+  function EditDeviceCtrl($log, $scope, $state, $stateParams, DSDevice, modalInstance) {
 
     var vm = this;
     var currentDevice = {};
+    vm.modalInstance = modalInstance;
 
     // Public methods
     vm.remove = remove;
@@ -78,13 +79,13 @@
       currentDevice
         .remove()
         .then(function(response) {
-          $log.log('Device succesfully removed', response);
           $state.go('guh.devices.master', {}, {
             reload: true,
             inherit: false,
             notify: true
           });
-          $scope.closeThisDialog();
+          
+          modalInstance.close();
         })
         .catch(function(error) {
           // TODO: Build general error handler
