@@ -1,0 +1,157 @@
+/* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
+ *                                                                                     *
+ * Copyright (C) 2015 Lukas Mayerhofer <lukas.mayerhofer@guh.guru>                     *
+ *                                                                                     *
+ * Permission is hereby granted, free of charge, to any person obtaining a copy        *
+ * of this software and associated documentation files (the "Software"), to deal       *
+ * in the Software without restriction, including without limitation the rights        *
+ * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell           *
+ * copies of the Software, and to permit persons to whom the Software is               *
+ * furnished to do so, subject to the following conditions:                            *
+ *                                                                                     *
+ * The above copyright notice and this permission notice shall be included in all      *
+ * copies or substantial portions of the Software.                                     *
+ *                                                                                     *
+ * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR          *
+ * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,            *
+ * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE         *
+ * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER              *
+ * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,       *
+ * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE       *
+ * SOFTWARE.                                                                           *
+ *                                                                                     *
+ * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
+
+
+$white: #fff;
+$black: #000;
+$grey: #676767;
+$green: #7cc09a;
+$turquoise: #57baae;
+
+
+/*
+ * Size & Layout
+ */
+
+.modal {
+  // filter: url("assets/svg/blur.svg#gaussian_blur");
+  overflow-y: scroll;
+  opacity: 1;
+  @include transform-style(preserve-3d);
+  position: fixed;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    top: 0;
+  z-index: 9997;
+}
+
+.modal__dialog {
+  background-color: $white;
+  box-shadow: 0px 6px 16px 0px rgba($black, 0.3);
+  border-radius: 2px;
+  display: block;
+  @include rem(margin-top, 4.5);
+  @include rem(padding, 1.5);
+  position: absolute;
+    left: 50%;
+    top: 0%;
+  @include transform(translateX(-50%));
+  width: 80%;
+
+  &::after {
+    content: "";
+    display: block;
+    @include rem(height, 1.5);
+    position: absolute;
+      @include rem(bottom, -4.5);
+      left: 0;
+    width: 100%;
+  }
+
+  p {
+    @include rem(margin-top, 1.5);
+    @include rem(padding, 0, 1.5);
+  }
+
+  .close {
+    border: none;
+    @include rem(padding, 1.5);
+    position: absolute;
+      @include rem(right, 1.5);
+      @include rem(top, 1.5);
+    z-index: 9998;
+  }
+
+  @include media($min-width-m) {
+    width: 60%;
+  }
+
+  @include media($min-width-l) {
+    width: 40%;
+  }
+
+  .inner-content {
+    h3 {
+      @include rem(font-size, 1.5);
+      @include rem(height, 4.5);
+      @include rem(padding, 1.5, 4.5);
+      text-align: center;
+      width: 100%;
+      z-index: 9998;
+    }
+  }
+}
+
+
+/*
+ * Colors & Typography
+ */
+
+
+
+
+/*
+ * State
+ */
+
+.modal.modal_background {
+  background-color: rgba($green, 0.96);
+  @include transition(opacity 0.2s);
+}
+
+.modal {
+  
+}
+
+.modal.ng-enter,
+.modal.ng-leave.ng-leave-active {
+  opacity: 0;
+}
+
+.modal.ng-leave,
+.modal.ng-enter.ng-enter-active {
+  opacity: 1;
+}
+
+.modal__dialog {
+  @include transition(all 0.4s);
+}
+
+.modal__dialog.ng-enter,
+.modal__dialog.ng-leave.ng-leave-active {
+  opacity: 0;
+  @include transform(translateX(-50%) translateY(40%));
+}
+
+.modal__dialog.ng-leave,
+.modal__dialog.ng-enter.ng-enter-active {
+  opacity: 1;
+  @include transform(translateX(-50%) translateY(0%));
+}
+
+.modal__dialog.modal__dialog_inactive {
+  opacity: 0.4;
+  @include transform(translateX(-60%));
+}
