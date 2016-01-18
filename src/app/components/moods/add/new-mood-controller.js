@@ -357,13 +357,25 @@
 
       if(data) {
         if(actionModal && modal.id === actionModal.id) {
+          var enhancedParams = angular.copy(data.params);
+
+          angular.forEach(data.params, function(param, index) {
+            var paramType = libs._.find(data.actionType.paramTypes, function(paramType) {
+              return paramType.name === param.name;
+            });
+
+            enhancedParams[index].unit = paramType.unit;
+          });
+
           // Add actions
           vm.actions.push({
             thing: data.thing,
             actionType: data.actionType,
             ruleAction: data.ruleAction,
-            params: data.params
+            params: data.params,
+            enhancedParams: enhancedParams
           });
+
           // vm.rule.actions.push(data.ruleAction);
         } else if(eventModal && modal.id === eventModal.id) {
           // Add events
@@ -383,12 +395,23 @@
             title: data.title
           });
         } else if(exitActionModal && modal.id === exitActionModal.id) {
+          var enhancedParams = angular.copy(data.params);
+
+          angular.forEach(data.params, function(param, index) {
+            var paramType = libs._.find(data.actionType.paramTypes, function(paramType) {
+              return paramType.name === param.name;
+            });
+
+            enhancedParams[index].unit = paramType.unit;
+          });
+
           // Add exitActions
           vm.exitActions.push({
             thing: data.thing,
             actionType: data.actionType,
             ruleAction: data.ruleAction,
-            params: data.params
+            params: data.params,
+            enhancedParams: enhancedParams
           });
         }
       }

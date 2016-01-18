@@ -39,9 +39,9 @@
     .module('guh.moods')
     .controller('AddStateCtrl', AddStateCtrl);
 
-  AddStateCtrl.$inject = ['app', '$log', '$rootScope', 'DSDevice', 'modalInstance'];
+  AddStateCtrl.$inject = ['app', '$filter', '$log', '$rootScope', 'DSDevice', 'modalInstance'];
 
-  function AddStateCtrl(app, $log, $rootScope, DSDevice, modalInstance) {
+  function AddStateCtrl(app, $filter, $log, $rootScope, DSDevice, modalInstance) {
 
     var vm = this;
 
@@ -150,7 +150,7 @@
     function addStateParams(params) {
       var stateDescriptors = [];
       var title = '';
-      var unit = vm.currentStateType.unit ? vm.currentStateType.unit : '';
+      var unit = vm.currentStateType.unit ? $filter('unit')(vm.currentStateType.unit) : '';
       
       if(angular.toJson(vm.selectedValueOperator) === angular.toJson(app.valueOperator.between)) {
         if(params.length !== 2) {

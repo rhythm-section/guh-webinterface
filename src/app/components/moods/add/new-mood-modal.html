@@ -38,7 +38,7 @@
       <div class="list__item-divider">When turned ON control...</div>
       <!-- Actions: List -->
       <div class="list__item list__item_hasDescription" ng-repeat="action in newMood.actions track by $index">
-        <div class="title">{{ action.actionType.name }} (<span ng-repeat="param in action.params track by $index">{{ param.name }}={{ param.value }}{{ param.unit ? ' ' + param.unit : '' }}{{ ($index === action.params.length - 1) ? '' : ', ' }}</span>)</div>
+        <div class="title">{{ action.actionType.name }} (<span ng-repeat="param in action.enhancedParams track by $index">{{ param.name }}={{ param.value }}{{ param.unit | unit }}{{ ($index === action.params.length - 1) ? '' : ', ' }}</span>)</div>
         <div class="description">{{ action.thing.name }}</div>
         <button class="button" type="button" ng-click="newMood.deleteAction(action)">
           <svg class="icon icon_delete">
@@ -108,7 +108,7 @@
       <!-- ExitActions: List -->
       <div class="list__item list__item_warning" ng-show="newMood.exitActionsDisabled">When trigger were added the mood can only be turned on.</div>
       <div class="list__item list__item_hasDescription" ng-class="{ 'list__item_isDisabled': newMood.exitActionsDisabled }" ng-repeat="action in newMood.exitActions track by $index">
-        <div class="title">{{ action.actionType.name }} (<span ng-repeat="param in action.params track by $index">{{ param.name }}={{ param.value }}{{ param.unit ? ' ' + param.unit : '' }}{{ ($index === action.params.length - 1) ? '' : ', ' }}</span>)</div>
+        <div class="title">{{ action.actionType.name }} (<span ng-repeat="param in action.enhancedParams track by $index">{{ param.name }}={{ param.value }}{{ param.unit | unit }}{{ ($index === action.params.length - 1) ? '' : ', ' }}</span>)</div>
         <div class="description">{{ action.thing.name }}</div>
         <button class="button" type="button" ng-click="newMood.deleteExitAction(action)">
           <svg class="icon icon_delete">
