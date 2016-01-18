@@ -37,7 +37,6 @@
     <div ng-switch="state.stateType.unit" ng-repeat="state in device.states track by $index" class="state">
       <p class="name">{{ state.stateType.name }}</p>
       <p class="value" ng-switch-when="UnitUnixTime">{{ state.value * 1000 | date: 'dd.MM.yyyy' }}, {{ state.value * 1000 | date: 'HH:mm' }}</p>
-      <p class="value" ng-switch-when="UnitEuroPerMegaWattHour">{{ state.value / 10 | number: 2 }} €-Cent / kWh</p>
       <p class="value" ng-switch-default>{{ state.value }} {{ state.stateType.unit | unit }}</p>
     </div>
   </guh-tab>
