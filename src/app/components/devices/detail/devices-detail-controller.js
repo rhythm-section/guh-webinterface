@@ -39,9 +39,9 @@
     .module('guh.devices')
     .controller('DevicesDetailCtrl', DevicesDetailCtrl);
 
-  DevicesDetailCtrl.$inject = ['$log', '$scope', '$filter', '$state', '$stateParams', 'libs', 'DSDevice', 'DSState', 'DSDeviceClass'];
+  DevicesDetailCtrl.$inject = ['app', '$log', '$scope', '$filter', '$state', '$stateParams', 'libs', 'DSDevice', 'DSState', 'DSDeviceClass'];
 
-  function DevicesDetailCtrl($log, $scope, $filter, $state, $stateParams, libs, DSDevice, DSState, DSDeviceClass) {
+  function DevicesDetailCtrl(app, $log, $scope, $filter, $state, $stateParams, libs, DSDevice, DSState, DSDeviceClass) {
 
     // Don't show debugging information
     DSDevice.debug = false;
@@ -72,6 +72,7 @@
       }
 
       device = DSDevice.get(deviceId);
+      $log.log('device', device);
 
       if(angular.isUndefined(device)) {
         $state.go('guh.intro', {
@@ -92,6 +93,24 @@
         vm.paramsObject = {};
         vm.states = device.states;
         vm.statesObject = {};
+
+        // Filter values of type "Double" to show only two digits after decimal point
+        angular.forEach(vm.params, function(param) {
+          // Find paramType to param
+          var paramType = libs._.find(device.deviceClass.paramTypes, function(paramType) {
+            return paramType.name === param.name;
+          });
+
+          if(paramType.type === app.basicTypes.double) {
+            vm.params[index].value = $filter('number')(vm.params[index].value, '2');
+          }
+        });
+
+        angular.forEach(vm.states, function(state, index) {
+          if(state.stateType.type === app.basicTypes.double) {
+            vm.states[index].value = $filter('number')(vm.states[index].value, '2');
+          }
+        });
 
         // Wait for templateUrl check
         device.deviceClass.templateUrl
