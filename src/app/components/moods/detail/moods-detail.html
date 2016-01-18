@@ -66,11 +66,11 @@
 
   <!-- Events -->
   <guh-tab heading="Trigger">
-    <p ng-if="mood.eventDescriptors.length === 0">No triggers defined.</p>
-    <div ng-if="mood.eventDescriptors.length > 0">
-      <div ng-repeat="eventDescriptor in mood.eventDescriptors track by $index">
-        <p>{{ eventDescriptor.phrase }}{{ eventDescriptor.paramDescriptors.length > 0 ? ':' : '.' }}</p>
-        <p ng-if="eventDescriptor.paramDescriptors.length > 0" ng-repeat="paramDescriptor in eventDescriptor.paramDescriptors">{{ paramDescriptor.name }} {{ paramDescriptor.operator | operator }} {{ paramDescriptor.value }}</p>
+    <p ng-if="mood.events.length === 0">No triggers defined.</p>
+    <div ng-if="mood.events.length > 0">
+      <div class="event" ng-repeat="event in mood.events track by $index">
+        <p>{{ event.eventType.name }}</p>
+        <p class="name">{{ event.device.name }}</p>
       </div>
     </div>
   </guh-tab>

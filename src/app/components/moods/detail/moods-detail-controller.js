@@ -75,6 +75,7 @@
         vm.active = mood.active;
         vm.enabled = mood.enabled;
         vm.eventDescriptors = mood.eventDescriptors;
+        vm.events = [];
         vm.exitActions = mood.exitActions;
         vm.id = mood.id;
         vm.name = mood.name;
@@ -82,21 +83,16 @@
         vm.states = [];
 
         // Event descriptors
-        angular.forEach(vm.eventDescriptors, function(eventDescriptor, index) {
-          var eventType = DSEventType.get(eventDescriptor.eventTypeId);
-          vm.eventDescriptors[index].phrase = eventType.phrase;
+        angular.forEach(vm.eventDescriptors, function(eventDescriptor) {
+          vm.events.push(_createEvent(eventDescriptor));
         });
 
         // State evaluator
         if(angular.isDefined(vm.stateEvaluator) && angular.isDefined(vm.stateEvaluator.stateDescriptor)) {
           vm.states.push(_createState(vm.stateEvaluator.stateDescriptor));
         }
-        angular.forEach(vm.stateEvaluator.childEvaluators, function(childEvaluator, index) {
+        angular.forEach(vm.stateEvaluator.childEvaluators, function(childEvaluator) {
           vm.states.push(_createState(childEvaluator.stateDescriptor));
-          // if(angular.isDefined(childEvaluator.stateDescriptor)) {
-          //   var stateType = DSStateType.get(childEvaluator.stateDescriptor.stateTypeId);
-          //   vm.stateEvaluator.childEvaluators[index].stateDescriptor.phrase = stateType.phrase;
-          // }
         });
 
         // Enter actions
@@ -149,6 +145,17 @@
           });
         });
       }
+    }
+
+    function _createEvent(eventDescriptor) {
+      var device = DSDevice.get(eventDescriptor.deviceId);
+      var eventType = DSEventType.get(eventDescriptor.eventTypeId);
+
+      vm.events.push({
+        device: device,
+        eventType: eventType,
+        eventDescriptor: eventDescriptor
+      });
     }
 
     function _createState(stateDescriptor) {
