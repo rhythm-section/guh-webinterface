@@ -23,7 +23,7 @@
 
 <guh-tabset id="device-state">
   <!-- EnterActions -->
-  <guh-tab heading="ON Actions">
+  <guh-tab heading="ON">
     <p ng-if="mood.actions.length === 0">Nothing to turn ON.</p>
     <div ng-if="mood.actions.length > 0">
       <div class="action" ng-repeat="action in mood.actions track by $index">
@@ -44,7 +44,7 @@
   </guh-tab>
 
   <!-- ExitActions -->
-  <guh-tab heading="OFF Actions">  
+  <guh-tab heading="OFF">  
     <p ng-if="mood.exitActions.length === 0">Nothing to turn OFF.</p>
     <div ng-if="mood.exitActions.length > 0">
       <div class="action" ng-repeat="exitAction in mood.exitActions track by $index">
