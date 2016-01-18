@@ -28,16 +28,16 @@
     <div ng-if="mood.actions.length > 0">
       <div class="action" ng-repeat="action in mood.actions track by $index">
         <p>
-          {{ action.device.name ? action.device.name : action.device.deviceClass.name }}
-          <svg class="icon icon_inline">
-            <use xlink:href="./assets/svg/ui/ui.symbol.svg#arrow-right-c"></use>
-          </svg>
           {{ action.actionType.name }}
+          <div ng-if="action.ruleActionParams.length > 0" ng-repeat="ruleActionParam in action.ruleActionParams track by $index">
+            <svg class="icon icon_inline">
+              <use xlink:href="./assets/svg/ui/ui.symbol.svg#arrow-right-c"></use>
+            </svg>
+            <span ng-if="ruleActionParam.value !== undefined">{{ ruleActionParam.name }}:&nbsp;{{ ruleActionParam.value }}{{ ruleActionParam.unit | unit }}</span>
+            <span ng-if="ruleActionParam.eventParamName !== undefined">Value of {{ ruleActionParam.name }} = Value of {{ ruleActionParam.eventParamName }} ({{ ruleActionParam.eventType.name }})</span>
+          </div>
         </p>
-        <div ng-if="action.ruleActionParams.length > 0" ng-repeat="ruleActionParam in action.ruleActionParams">
-          <p class="name" ng-if="ruleActionParam.value !== undefined">{{ ruleActionParam.name }}: {{ ruleActionParam.value }} {{ ruleActionParam.unit | unit }}</p>
-          <p class="name" ng-if="ruleActionParam.eventParamName !== undefined">Value of {{ ruleActionParam.name }} = Value of {{ ruleActionParam.eventParamName }} ({{ ruleActionParam.eventType.name }})</p>
-        </div>
+        <p class="name">{{ action.device.name ? action.device.name : action.device.deviceClass.name }}</p>
       </div>
     </div>
     <button type="button" ng-click="mood.executeActions()">Turn on</button>
@@ -49,16 +49,16 @@
     <div ng-if="mood.exitActions.length > 0">
       <div class="action" ng-repeat="exitAction in mood.exitActions track by $index">
         <p>
-          {{ exitAction.device.name ? exitAction.device.name : exitAction.device.deviceClass.name }}
-          <svg class="icon icon_inline">
-            <use xlink:href="./assets/svg/ui/ui.symbol.svg#arrow-right-c"></use>
-          </svg>
           {{ exitAction.actionType.name }}
+          <div ng-if="exitAction.ruleActionParams.length > 0" ng-repeat="ruleActionParam in exitAction.ruleActionParams">
+            <svg class="icon icon_inline">
+              <use xlink:href="./assets/svg/ui/ui.symbol.svg#arrow-right-c"></use>
+            </svg>
+            <span ng-if="ruleActionParam.value !== undefined">{{ ruleActionParam.name }}:&nbsp;{{ ruleActionParam.value }}{{ ruleActionParam.unit | unit }}</span>
+            <span ng-if="ruleActionParam.eventParamName !== undefined">Value of {{ ruleActionParam.name }} = Value of {{ ruleActionParam.eventParamName }} ({{ ruleActionParam.eventType.name }})</span>
+          </div>
         </p>
-        <div ng-if="exitAction.ruleActionParams.length > 0" ng-repeat="ruleActionParam in exitAction.ruleActionParams">
-          <p class="name" ng-if="ruleActionParam.value !== undefined">{{ ruleActionParam.name }}: {{ ruleActionParam.value }} {{ ruleActionParam.unit | unit }}</p>
-          <p class="name" ng-if="ruleActionParam.eventParamName !== undefined">Value of {{ ruleActionParam.name }} = Value of {{ ruleActionParam.eventParamName }} ({{ ruleActionParam.eventType.name }})</p>
-        </div>
+        <p class="name">{{ exitAction.device.name ? exitAction.device.name : exitAction.device.deviceClass.name }}</p>
       </div>
     </div>
     <button type="button" ng-click="mood.executeExitActions()">Turn off</button>
