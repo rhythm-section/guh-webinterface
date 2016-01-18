@@ -77,13 +77,11 @@
 
   <!-- States -->
   <guh-tab heading="Conditions">
-    <p ng-if="!(mood.stateEvaluator && mood.stateEvaluator.stateDescriptor)">No conditions defined.</p>
-    <div ng-if="mood.stateEvaluator && mood.stateEvaluator.stateDescriptor">
-      <p>{{ mood.stateEvaluator.stateDescriptor.phrase }} {{ mood.stateEvaluator.stateDescriptor.operator | operator }} {{ mood.stateEvaluator.stateDescriptor.value }}.</p>
-
-      <div ng-if="mood.stateEvaluator.childEvaluators.length > 0">
-        <p ng-repeat="childEvaluator in mood.stateEvaluator.childEvaluators">{{ childEvaluator.stateDescriptor.phrase }} {{ childEvaluator.stateDescriptor.operator | operator }} {{ childEvaluator.stateDescriptor.value }}.</p>
-      </div>
+    <p ng-if="mood.states.length === 0">No conditions defined.</p>
+    <div class="state" ng-switch="state.stateType.unit" ng-repeat="state in mood.states track by $index">
+      <p ng-switch-when="UnitUnixTime">{{ state.stateType.name }} {{ state.stateDescriptor.operator | operator }} {{ state.stateDescriptor.value * 1000 | date: 'dd.MM.yyyy' }}, {{ state.stateDescriptor.value * 1000 | date: 'HH:mm' }}</p>
+      <p ng-switch-default>{{ state.stateType.name }} {{ state.stateDescriptor.operator | operator }} {{ state.stateDescriptor.value }} {{ state.stateType.unit | unit }}</p>
+      <p class="name">{{ state.device.name }}</p>
     </div>
   </guh-tab>
 </guh-tabset>

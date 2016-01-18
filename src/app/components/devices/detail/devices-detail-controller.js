@@ -72,7 +72,6 @@
       }
 
       device = DSDevice.get(deviceId);
-      $log.log('device', device);
 
       if(angular.isUndefined(device)) {
         $state.go('guh.intro', {
