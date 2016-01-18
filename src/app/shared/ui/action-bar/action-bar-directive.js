@@ -69,7 +69,13 @@
           stateCtrlAsPlural = stateCtrlAsSingular + 's';
 
           vm.showAdd = true;
-          vm.showEdit = true;
+
+          // Check if inside detail view to show or hide edit button
+          if($state.is('guh.devices.master.current') || $state.is('guh.services.master.current') || $state.is('guh.moods.master.current')) {
+            vm.showEdit = true;
+          } else {
+            vm.showEdit = false;
+          }
         }
 
         function openAddModal() {
