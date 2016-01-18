@@ -47,6 +47,7 @@
 
     vm.modalInstance = modalInstance;
     vm.things = [];
+    vm.stateTypes = [];
     vm.currentThing = null;
     vm.currentStateType = null;
     vm.availableValueOperators = [];
@@ -115,18 +116,16 @@
       }
     }
 
-    function _getStateEvaluator(stateDescriptors) {
-      var stateEvaluator = {};
-
-
-
-      return stateEvaluator;
-    }
-
 
     function selectThing(thing) {
       vm.currentThing = thing;
+      vm.stateTypes = [];
       vm.currentStateType = null;
+
+      // Filter states with value type of 'UnitUnixTime'
+      vm.stateTypes = vm.currentThing.deviceClass.stateTypesLinked.filter(function(stateType) {
+        return stateType.unit !== 'UnitUnixTime';
+      });
 
       $rootScope.$broadcast('wizard.next', 'addStateWizard');
     }
