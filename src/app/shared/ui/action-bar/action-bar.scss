@@ -95,6 +95,13 @@ $color: $grey-dark;
   }
 }
 
+.action-bar.action-bar_buttonCount_1 {
+  button:first-child {
+    @include rem(border-bottom-left-radius, 1.5);
+    @include rem(border-top-left-radius, 1.5);
+  }
+}
+
 // .action-bar {
 //   text-align: right;
 

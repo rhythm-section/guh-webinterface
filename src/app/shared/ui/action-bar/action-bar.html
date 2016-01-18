@@ -21,7 +21,7 @@
 -->
 
 
-<div class="action-bar">
+<div class="action-bar" ng-class="{ 'action-bar_buttonCount_1' : !actionBar.showEdit }">
   <button ng-show="actionBar.showAdd" ng-click="actionBar.openAddModal()">
     <span>Add</span>
     <svg class="icon">
