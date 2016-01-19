@@ -55,29 +55,20 @@
         function enter(modalElement, modalDialogElement) {
           $animate
             .enter(modalDialogElement, modalElement)
-            .then(function() {
-              $log.log('MODALDIALOG ENTERED');
-            });
+            .then(function() {});
         }
 
         function leave(modalElement, modalDialogElement, modal) {
-          $log.log('modal', modal);
-          $log.log('vm.modals', vm.modals);
-
           $animate
             .leave(modalDialogElement)
             .then(function() {
               modal.scope.$destroy();
               delete vm.modals[modal.id];
 
-              $log.log('vm.modals', vm.modals);
-
               // If last modal was closed
               if(libs._.isEmpty(vm.modals)) {
                 vm.modals = null;
               }
-
-              $log.log('vm.modals', vm.modals);
 
               $animate.leave(modalElement);
             });
@@ -172,12 +163,10 @@
         });
 
         $rootScope.$on('modals.close', function(event, modal) {
-          $log.log('CLOSE');
           closeModal(modal);
         });
 
         $rootScope.$on('modals.closeAll', function(event, modal) {
-          $log.log('CLOSE ALL');
           angular.forEach(vm.modals, function(modal) {
             closeModal(modal);
           });
@@ -185,9 +174,7 @@
       }
 
 
-      function morphModalLink(scope, element, attrs, morphModalCtrl) {
-        $log.log('morphModalLink');
-      }
+      function morphModalLink(scope, element, attrs, morphModalCtrl) {}
 
     }
 
