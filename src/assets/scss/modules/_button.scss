@@ -66,3 +66,7 @@ $color-highlight: $white;
     border-color: $border-highlight;
   }
 }
+
+.button.button_type_submit {
+  @include rem(margin-top, 3);
+}

@@ -39,16 +39,18 @@
     .module('guh.devices')
     .controller('EditServiceCtrl', EditServiceCtrl);
 
-  EditServiceCtrl.$inject = ['$log', '$scope', '$state', '$stateParams', 'DSDevice', 'modalInstance'];
+  EditServiceCtrl.$inject = ['$log', '$scope', '$state', '$stateParams', 'DSDevice', 'DSRule', 'modalInstance', 'MorphModal'];
 
-  function EditServiceCtrl($log, $scope, $state, $stateParams, DSDevice, modalInstance) {
+  function EditServiceCtrl($log, $scope, $state, $stateParams, DSDevice, DSRule, modalInstance, MorphModal) {
 
     var vm = this;
-    var currentDevice = {};
+    var currentService = {};
+    var services = [];
 
+    // View variables
     vm.modalInstance = modalInstance;
 
-    // Public methods
+    // View methods
     vm.remove = remove;
 
 
@@ -57,14 +59,12 @@
 
       _findDevice(bypassCache, deviceId)
         .then(function(device) {
-          $log.log('deviceId', deviceId);
-          $log.log('currentDevice', currentDevice);
-          currentDevice = device;
+          currentService = device;
 
           vm.name = device.name;
         })
         .catch(function(error) {
-          $log.error('guh.controller.DevicesEditCtrl', error);
+          $log.error('guh.controller.ServicesEditCtrl', error);
         });
     }
 
@@ -76,11 +76,75 @@
       return DSDevice.find(deviceId);
     }
 
+    function _getErrorData(error) {
+      var errorCode = error.data ? (error.data.error ? error.data.error : (error.data.deviceError) ? error.data.deviceError : null) : null;
+      var errorData = {};
+
+      if(errorCode) {
+        switch(errorCode) {
+          case 'DeviceErrorDeviceIsChild':
+            services = _getServices();
+            errorData.services = services;
+            break;
+          case 'DeviceErrorDeviceInRule':
+            var ruleIds = error.data.ruleIds ? error.data.ruleIds : [];
+            errorData.moods = _getMoods(ruleIds);
+            break;
+          default:
+            $log.error(error);
+        }
+      } else {
+        $log.error(error);
+      }
+
+      return errorData;
+    }
+
+    function _getServices() {
+      var serviceToDelete = currentService;
+      var services = {
+        parentService: {},
+        childServices: []
+      };
+
+      if(DSDevice.is(serviceToDelete)) {
+        while(angular.isDefined(serviceToDelete.parentId)) {
+          // Parent
+          var parentService = DSDevice.get(serviceToDelete.parentId);
+          var childServices = [];
+          
+          // Children
+          if(DSDevice.is(parentService)) {
+            var currentChildServices = DSDevice.getAll().filter(function(service) {
+              return service.parentId === parentService.id;
+            });
+
+            childServices = childServices.concat(currentChildServices);
+          }
+
+          // Override serviceToDelete with it's parent to traverse up
+          serviceToDelete = parentService;
+        }
+
+        services.parentService = parentService;
+
+        // Filter serviceToDelete from childServices
+        services.childServices = childServices.filter(function(childService) {
+          return childService.id === serviceToDelete.id;
+        });
+      }
+
+      return services;
+    }
+
+    function _getMoods(ruleIds) {
+      return DSRule.getAll(ruleIds);
+    }
+
     function remove() {
-      currentDevice
+      currentService
         .remove()
         .then(function(response) {
-          $log.log('Device succesfully removed', response);
           $state.go('guh.services.master', {}, {
             reload: true,
             inherit: false,
@@ -90,7 +154,22 @@
           modalInstance.close();
         })
         .catch(function(error) {
-          $log.error(error);
+          MorphModal
+            .add({
+              controller: 'RemoveServiceCtrl',
+              controllerAs: 'removeService',
+              data: {
+                currentService: currentService,
+                errorData: _getErrorData(error)
+              },
+              templateUrl: 'app/components/services/remove/remove-service-modal.html'
+            })
+            .then(function(modal) {
+              modal.open();
+            })
+            .catch(function(error) {
+              $log.error('error', error);
+            });
         });
     }
 

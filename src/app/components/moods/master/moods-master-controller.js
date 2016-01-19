@@ -39,9 +39,9 @@
     .module('guh.moods')
     .controller('MoodsMasterCtrl', MoodsMasterCtrl);
 
-  MoodsMasterCtrl.$inject = ['$log', '$filter', '$state', '$stateParams', 'app', 'DSRule', 'DSDevice'];
+  MoodsMasterCtrl.$inject = ['$log', '$scope', '$filter', '$state', '$stateParams', 'app', 'DSRule', 'DSDevice'];
 
-  function MoodsMasterCtrl($log, $filter, $state, $stateParams, app, DSRule, DSDevice) {
+  function MoodsMasterCtrl($log, $scope, $filter, $state, $stateParams, app, DSRule, DSDevice) {
 
     // Don't show debugging information
     DSRule.debug = false;
@@ -87,6 +87,17 @@
         $state.go('guh.moods.master.current', { moodId: vm.configured[index].id });
       }
     }
+
+
+    $scope.$on('ReloadView', function(event, data) {
+      $log.log('Reload view!', event, data);
+
+      $state.go($state.current, $stateParams, {
+        reload: true,
+        inherit: false,
+        notify: true
+      });
+    });
 
 
     _init();
