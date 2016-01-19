@@ -62,6 +62,12 @@ select {
   border-bottom: 1px solid rgba($grey-dark, 0.2);
 }
 
+textarea {
+  border: 1px solid rgba($grey-dark, 0.2);
+  @include rem(height, 6);
+  @include rem(padding, 0.7, 0.7, 0.8);
+}
+
 input[type="email"],
 input[type="text"],
 input[type="password"] {
@@ -181,6 +187,8 @@ input[type="checkbox"] {
 }
 
 form {
+  @include rem(margin-bottom, 3);
+
   label,
   .label {
     text-align: left;
