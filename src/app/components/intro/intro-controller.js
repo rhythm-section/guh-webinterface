@@ -45,7 +45,6 @@
     
     var vm = this;
     var protocol = $location.protocol();
-    var port = $location.port();
     var ssl = protocol.charAt(protocol.length - 1) === 's' ? true : false;
 
     // State variables
