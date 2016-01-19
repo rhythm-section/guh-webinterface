@@ -82,11 +82,10 @@
 
       if(app.environment === 'development') {
         app.apiUrl = app.protocol.restApi + '://' + app.host + ':' + app.port.restApi + '/api/v1';
-        app.websocketUrl = app.protocol.websocket + '://' + app.host + ':' + app.port.websocket;
       } else {
         app.apiUrl = app.protocol.restApi + '://' + app.host + ':' + port + '/api/v1';
-        app.websocketUrl = app.protocol.websocket + '://' + app.host + ':' + port;
       }
+      app.websocketUrl = app.protocol.websocket + '://' + app.host + ':' + app.port.websocket;
 
       // Override basepath for templates
       modelsHelper.setBasePath();
