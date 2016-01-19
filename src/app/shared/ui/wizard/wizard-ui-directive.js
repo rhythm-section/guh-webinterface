@@ -180,8 +180,6 @@
     function wizardLink(scope, element, attrs, wizardCtrl) {
 
       function _init() {
-        $log.log('WIZARD');
-
         // Add proper styles
         element.addClass('wizard');
 
