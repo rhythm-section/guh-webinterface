@@ -24,7 +24,7 @@
 <guh-tabset disabled="!service.statesObject.connected.value">
   <!-- Actions -->
   <guh-tab heading="Control">
-    <p ng-if="service.actions.length === 0">This device doesn't have any controls.</p>
+    <p ng-if="service.actions.length === 0">This service doesn't have any controls.</p>
 
     <guh-action device-id="{{ service.id }}" action-type-id="{{ service.actionsObject.setVolume.actionType.id }}"></guh-action>
     <guh-remote-player action="service.actionsObject.pressButton" device-id="{{ service.id }}"></guh-remote-player>
@@ -34,7 +34,7 @@
 
   <!-- States -->
   <guh-tab heading="State">
-    <p ng-if="service.states.length === 0">This device doesn't have a state to show you.</p>
+    <p ng-if="service.states.length === 0">This service doesn't have a state to show you.</p>
     <div ng-repeat="state in service.states track by $index" class="state">
       <p class="value">{{ state.value }}</p>
       <p class="name">{{ state.stateType.name }}</p>
