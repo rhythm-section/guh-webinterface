@@ -45,6 +45,7 @@
     
     var vm = this;
     var protocol = $location.protocol();
+    var port = $location.port();
     var ssl = protocol.charAt(protocol.length - 1) === 's' ? true : false;
 
     // State variables
@@ -79,8 +80,13 @@
       app.protocol.websocket = ssl ? 'wss' : 'ws';
       app.host = vm.host;
 
-      app.apiUrl = app.protocol.restApi + '://' + app.host + ':' + app.port.restApi + '/api/v1';
-      app.websocketUrl = app.protocol.websocket + '://' + app.host + ':' + app.port.websocket;
+      if(app.environment === 'development') {
+        app.apiUrl = app.protocol.restApi + '://' + app.host + ':' + app.port.restApi + '/api/v1';
+        app.websocketUrl = app.protocol.websocket + '://' + app.host + ':' + app.port.websocket;
+      } else {
+        app.apiUrl = app.protocol.restApi + '://' + app.host + ':' + port + '/api/v1';
+        app.websocketUrl = app.protocol.websocket + '://' + app.host + ':' + port;
+      }
 
       // Override basepath for templates
       modelsHelper.setBasePath();
