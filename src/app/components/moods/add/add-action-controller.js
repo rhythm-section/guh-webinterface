@@ -39,9 +39,9 @@
     .module('guh.moods')
     .controller('AddActionCtrl', AddActionCtrl);
 
-  AddActionCtrl.$inject = ['$q', '$timeout', '$log', '$rootScope', 'DSDevice', 'modalInstance'];
+  AddActionCtrl.$inject = ['libs', '$q', '$timeout', '$log', '$rootScope', 'DSDevice', 'modalInstance'];
 
-  function AddActionCtrl($q, $timeout, $log, $rootScope, DSDevice, modalInstance) {
+  function AddActionCtrl(libs, $q, $timeout, $log, $rootScope, DSDevice, modalInstance) {
 
     var vm = this;
 
@@ -49,6 +49,7 @@
     vm.things = [];
     vm.currentThing = null;
     vm.currentActionType = null;
+    vm.currentState = null;
 
     vm.selectThing = selectThing;
     vm.hasCurrentThingSet = hasCurrentThingSet;
@@ -65,9 +66,6 @@
       return angular.isDefined(device.deviceClass) &&
              angular.isDefined(device.deviceClass.actionTypes) &&
              device.deviceClass.actionTypes.length > 0;
-      // return 'deviceClass' in device && 
-      //        device.deviceClass.hasOwnProperty('actionTypes') && 
-      //        device.deviceClass.actionTypes.length > 0;
     }
 
     function _setThings() {
@@ -78,7 +76,6 @@
 
     function selectThing(thing) {
       vm.currentThing = thing;
-      $log.log('vm.currentThing', vm.currentThing);
       $rootScope.$broadcast('wizard.next', 'addAction');
     }
 
@@ -88,6 +85,15 @@
 
     function selectActionType(actionType) {
       vm.currentActionType = actionType;
+
+      if(actionType.hasState) {
+        vm.currentState = libs._.find(vm.currentThing.deviceClass.stateTypes, function(stateType) {
+          return stateType.id === actionType.id;
+        });
+      } else {
+        vm.currentState = null;
+      }
+
       $rootScope.$broadcast('wizard.next', 'addAction');
     }
 

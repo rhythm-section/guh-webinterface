@@ -59,25 +59,22 @@ textarea {
 input,
 textarea,
 select {
-  border-bottom: 1px solid $border;
+  border-bottom: 1px solid rgba($grey-dark, 0.2);
 }
 
 input[type="email"],
 input[type="text"],
 input[type="password"] {
   background-color: $background;
-  border-bottom: 1px solid $border;
-  color: $c-white;
+  border-bottom: 1px solid rgba($grey-dark, 0.2);
+  color: $grey-dark;
   @include rem(margin, 0, 0, 1.5);
   @include rem(padding, 0.7, 1.5, 0.8);
   @include transition(border 0.2s ease-in-out);
 
-  &:hover {
-    border-bottom-color: $border-hover;
-  }
-
+  &:hover,
   &:focus {
-    border-bottom-color: $border-focus;
+    border-bottom-color: rgba($grey-dark, 0.4);
   }
 }
 
@@ -104,6 +101,7 @@ button:disabled {
 }
 
 select {
+  border-radius: 0px;
   @include rem(padding, 1.5);
   position: relative;
   width: 100%;
@@ -158,25 +156,25 @@ input[type="checkbox"] {
   input[type="email"],
   input[type="text"],
   input[type="password"] {
-    border-bottom: 1px solid rgba($c-grey, 0.1);
+    border-bottom: 1px solid rgba($grey-dark, 0.2);
     color: $c-grey;
 
     &:hover,
     &:focus {
-      border-bottom-color: rgba($c-grey, 0.2);
+      border-bottom-color: rgba($grey-dark, 0.4);
     }
   }
 
   .checkbox {
-    border-bottom: 1px solid rgba($c-grey, 0.1);
+    border-bottom: 1px solid rgba($grey-dark, 0.2);
 
     label {
       &:hover .icon {
-        fill: rgba($c-grey, 0.2);
+        fill: rgba($grey-dark, 0.4);
       }
 
       &.active .icon {
-        fill: $c-grey;
+        fill: rgba($grey-dark, 0.2);
       }
     }
   }
@@ -191,7 +189,7 @@ form {
 
 select {
   background-color: $background;
-  border-bottom: 1px solid rgba($c-grey, 0.1);
+  border-bottom: 1px solid rgba($grey-dark, 0.2);
   @include rem(padding, 0.7, 1.5, 0.8);
   position: relative;
   width: 100%;

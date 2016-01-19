@@ -39,7 +39,6 @@
     
     vm.$state = $state;
     vm.$stateParams = $stateParams;
-    vm.test = 'TEST';
 
 
     // Websocket Connection Error
@@ -78,7 +77,7 @@
       var args = data.args ? data.args : null;
       var error = args.data && args.data.error ? args.data.error : null;
       var errorMessage = angular.isDefined(libs._.findKey(errors, error)) ? errors[libs._.findKey(errors, error)][error] : '';
-      var notificationMessage = (errorMessage === '') ? '[' + error + ']' : errorMessage + ' [' + error + ']';
+      var notificationMessage = (errorMessage === '') ? '[' + error + ']' : '[' + error + '] ' + errorMessage;
 
       // Close previous notification
       if(notification && angular.isDefined(notification.id)) {

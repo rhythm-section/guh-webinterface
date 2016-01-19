@@ -39,14 +39,15 @@
     .module('guh.moods')
     .controller('AddStateCtrl', AddStateCtrl);
 
-  AddStateCtrl.$inject = ['app', '$log', '$rootScope', 'DSDevice', 'modalInstance'];
+  AddStateCtrl.$inject = ['app', '$filter', '$log', '$rootScope', 'DSDevice', 'modalInstance'];
 
-  function AddStateCtrl(app, $log, $rootScope, DSDevice, modalInstance) {
+  function AddStateCtrl(app, $filter, $log, $rootScope, DSDevice, modalInstance) {
 
     var vm = this;
 
     vm.modalInstance = modalInstance;
     vm.things = [];
+    vm.stateTypes = [];
     vm.currentThing = null;
     vm.currentStateType = null;
     vm.availableValueOperators = [];
@@ -115,18 +116,16 @@
       }
     }
 
-    function _getStateEvaluator(stateDescriptors) {
-      var stateEvaluator = {};
-
-
-
-      return stateEvaluator;
-    }
-
 
     function selectThing(thing) {
       vm.currentThing = thing;
+      vm.stateTypes = [];
       vm.currentStateType = null;
+
+      // Filter states with value type of 'UnitUnixTime'
+      vm.stateTypes = vm.currentThing.deviceClass.stateTypesLinked.filter(function(stateType) {
+        return stateType.unit !== 'UnitUnixTime';
+      });
 
       $rootScope.$broadcast('wizard.next', 'addStateWizard');
     }
@@ -151,7 +150,7 @@
     function addStateParams(params) {
       var stateDescriptors = [];
       var title = '';
-      var unit = vm.currentStateType.unit ? vm.currentStateType.unit : '';
+      var unit = vm.currentStateType.unit ? $filter('unit')(vm.currentStateType.unit) : '';
       
       if(angular.toJson(vm.selectedValueOperator) === angular.toJson(app.valueOperator.between)) {
         if(params.length !== 2) {

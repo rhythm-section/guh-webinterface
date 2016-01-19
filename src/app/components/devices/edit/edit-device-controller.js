@@ -39,15 +39,18 @@
     .module('guh.devices')
     .controller('EditDeviceCtrl', EditDeviceCtrl);
 
-  EditDeviceCtrl.$inject = ['$log', '$scope', '$state', '$stateParams', 'DSDevice', 'modalInstance'];
+  EditDeviceCtrl.$inject = ['$log', '$scope', '$state', '$stateParams', 'DSDevice', 'DSRule', 'modalInstance', 'MorphModal'];
 
-  function EditDeviceCtrl($log, $scope, $state, $stateParams, DSDevice, modalInstance) {
+  function EditDeviceCtrl($log, $scope, $state, $stateParams, DSDevice, DSRule, modalInstance, MorphModal) {
 
     var vm = this;
     var currentDevice = {};
+    var devices = [];
+
+    // View variables
     vm.modalInstance = modalInstance;
 
-    // Public methods
+    // View methods
     vm.remove = remove;
 
 
@@ -56,8 +59,6 @@
 
       _findDevice(bypassCache, deviceId)
         .then(function(device) {
-          $log.log('deviceId', deviceId);
-          $log.log('currentDevice', currentDevice);
           currentDevice = device;
 
           vm.name = device.name;
@@ -75,6 +76,72 @@
       return DSDevice.find(deviceId);
     }
 
+    function _getErrorData(error) {
+      var errorCode = error.data ? (error.data.error ? error.data.error : (error.data.deviceError) ? error.data.deviceError : null) : null;
+      var errorData = {};
+
+      if(errorCode) {
+        switch(errorCode) {
+          case 'DeviceErrorDeviceIsChild':
+            devices = _getDevices();
+            errorData.devices = devices;
+            break;
+          case 'DeviceErrorDeviceInRule':
+            var ruleIds = error.data.ruleIds ? error.data.ruleIds : [];
+            errorData.moods = _getMoods(ruleIds);
+            break;
+          default:
+            $log.error(error);
+        }
+      } else {
+        $log.error(error);
+      }
+
+      return errorData;
+    }
+
+    function _getDevices() {
+      var deviceToDelete = currentDevice;
+      var devices = {
+        parentDevice: {},
+        childDevices: []
+      };
+
+      if(DSDevice.is(deviceToDelete)) {
+        while(angular.isDefined(deviceToDelete.parentId)) {
+          // Parent
+          var parentDevice = DSDevice.get(deviceToDelete.parentId);
+          var childDevices = [];
+          
+          // Children
+          if(DSDevice.is(parentDevice)) {
+            var currentChildDevices = DSDevice.getAll().filter(function(device) {
+              return device.parentId === parentDevice.id;
+            });
+
+            childDevices = childDevices.concat(currentChildDevices);
+          }
+
+          // Override deviceToDelete with it's parent to traverse up
+          deviceToDelete = parentDevice;
+        }
+
+        devices.parentDevice = parentDevice;
+
+        // Filter deviceToDelete from childDevices
+        devices.childDevices = childDevices.filter(function(childDevice) {
+          return childDevice.id === deviceToDelete.id;
+        });
+      }
+
+      return devices;
+    }
+
+    function _getMoods(ruleIds) {
+      return DSRule.getAll(ruleIds);
+    }
+
+
     function remove() {
       currentDevice
         .remove()
@@ -88,7 +155,22 @@
           modalInstance.close();
         })
         .catch(function(error) {
-          $log.error(error);
+          MorphModal
+            .add({
+              controller: 'RemoveDeviceCtrl',
+              controllerAs: 'removeDevice',
+              data: {
+                currentDevice: currentDevice,
+                errorData: _getErrorData(error)
+              },
+              templateUrl: 'app/components/devices/remove/remove-device-modal.html'
+            })
+            .then(function(modal) {
+              modal.open();
+            })
+            .catch(function(error) {
+              $log.error('error', error);
+            });
         });
     }
 

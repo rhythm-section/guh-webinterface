@@ -39,24 +39,29 @@
     .module('guh.services')
     .controller('RemoveServiceCtrl', RemoveServiceCtrl);
 
-  RemoveServiceCtrl.$inject = ['$log', '$rootScope', '$scope', '$timeout', '$state', 'DSDevice', 'DSRule', 'ngDialog'];
+  RemoveServiceCtrl.$inject = ['$log', '$rootScope', '$scope', '$timeout', '$state', 'DSDevice', 'DSRule', 'modalInstance'];
 
-  function RemoveServiceCtrl($log, $rootScope, $scope, $timeout, $state, DSDevice, DSRule, ngDialog) {
+  function RemoveServiceCtrl($log, $rootScope, $scope, $timeout, $state, DSDevice, DSRule, modalInstance) {
 
     var vm = this;
+    vm.modalInstance = modalInstance;
+
     vm.policyAllowedValues = {
       update: {
-        label: 'Update rule',
+        label: 'Update mood',
         value: 'RemovePolicyUpdate'
       },
       remove: {
-        label: 'Remove rule',
+        label: 'Remove mood',
         value: 'RemovePolicyCascade'
       }
     };
-    vm.parentService = {};
+    vm.currentService = {};
+    vm.parentService = null;
     vm.childServices = [];
+    vm.moods = [];
     vm.rulePolicies = {};
+    vm.servicePoliciesSet = false;
 
     vm.removeAll = removeAll;
     vm.setPolicy = setPolicy;
@@ -64,11 +69,24 @@
 
 
     function _init() {
-      if(angular.isDefined($scope.ngDialogData)) {
-        var error = $scope.ngDialogData.error;
-        vm.service = $scope.ngDialogData.service;
+      if(angular.isDefined(modalInstance.data)) {
+        var errorData = angular.isDefined(modalInstance.data.errorData) ? modalInstance.data.errorData : null;
 
-        _checkError(error);
+        vm.currentService = angular.isDefined(modalInstance.data.currentService) ? modalInstance.data.currentService : null;
+
+        // Check if associated services are available
+        if(angular.isDefined(errorData.services)) {
+          vm.parentService = errorData.services.parentService;
+          vm.childServices = errorData.services.childServices;
+        }
+
+        if(angular.isDefined(errorData.moods)) {
+          if((!vm.parentService)) {
+            vm.servicePoliciesSet = true;
+          }
+
+          vm.moods = errorData.moods;
+        }
       }
     }
 
@@ -77,12 +95,9 @@
 
       if(errorCode) {
         switch(errorCode) {
-          case 'DeviceErrorDeviceIsChild':
-            _setServices();
-            break;
           case 'DeviceErrorDeviceInRule':
             var ruleIds = error.data.ruleIds ? error.data.ruleIds : [];
-            _setRules(ruleIds);
+            _setMoods(ruleIds);
             _initPolicies();
             break;
           default:
@@ -93,37 +108,9 @@
       }
     }
 
-    function _setServices() {
-      if(DSDevice.is(vm.service)) {
-        var currentService = vm.service;
-
-        while(angular.isDefined(currentService.parentId)) {
-          // Parent
-          vm.parentService = DSDevice.get(currentService.parentId);
-          
-          // Children
-          if(DSDevice.is(vm.parentService)) {
-            var childServices = DSDevice.getAll().filter(function(service) {
-              return service.parentId === vm.parentService.id;
-            });
-
-            vm.childServices.push(childServices);
-          }
-
-          currentService = vm.parentService;
-        }
-      }
-    }
-
-    function _setRules(ruleIds) {
-      vm.rules = ruleIds.map(function(ruleId) {
-        return DSRule.get(ruleId);
-      });
-
-      // Go to step 2
-      $timeout(function() {
-        $rootScope.$broadcast('wizard.next', 'removeService');
-      }, 200);
+    function _setMoods(ruleIds) {
+      vm.moods = DSRule.getAll(ruleIds);
+      vm.servicePoliciesSet = true;
     }
 
     function _initPolicies() {
@@ -134,8 +121,12 @@
 
 
     function removeAll() {
-      var serviceToDelete = DSDevice.is(vm.parentService) ? vm.parentService : vm.service;
+      var serviceToDelete = DSDevice.is(vm.parentService) ? vm.parentService : vm.currentService;
       var params = {};
+
+      if(vm.parentService || (!vm.parentService && vm.moods.length > 0)) {
+        vm.servicePoliciesSet = true;
+      }
 
       params.removePolicyList = [];
       angular.forEach(vm.rulePolicies, function(policy, ruleId) {
@@ -149,8 +140,9 @@
         serviceToDelete
           .remove(params)
           .then(function(response) {
-            ngDialog.closeAll();
+            modalInstance.closeAll();
 
+            // Update services and moods
             $state.go('guh.services.master', { bypassCache: true }, {
               reload: true,
               inherit: false,

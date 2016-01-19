@@ -61,6 +61,7 @@
 
       // Public variables
       vm.steps = [];
+      vm.title = '';
 
       // Public methods
       vm.init = init;
@@ -80,9 +81,8 @@
 
         if(vm.steps.length > 0) {
           vm.steps[currentStep].element.addClass('wizard__step_current');
+          vm.title = vm.steps[currentStep].scope.wizardStep.title;
         }
-
-        vm.title = vm.steps[currentStep].scope.wizardStep.title;
       }
 
       function setNavigation(navigation) {

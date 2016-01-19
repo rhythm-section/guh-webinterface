@@ -21,43 +21,49 @@
 -->
 
 
-<button class="close" ng-click="closeThisDialog()">
+<button class="close" ng-click="removeDevice.modalInstance.close()">
   <svg class="icon">
     <use xlink:href="./assets/svg/ui/ui.symbol.svg#close"></use>
   </svg>
 </button>
 
-<div guh-wizard handle="removeDevice" show-prev="false" show-next="false">
-  <div guh-wizard-step title="Remove {{ remove.device.name }}">
-    <p>{{ remove.device.name }} is managed by another device: <span>{{ remove.parentDevice.name }} ({{ remove.parentDevice.deviceClass.vendor.name === remove.parentDevice.deviceClass.name || remove.parentDevice.deviceClass.name === remove.parentDevice.name ? remove.parentDevice.deviceClass.vendor.name : remove.parentDevice.deviceClass.vendor.name + ', ' + remove.parentDevice.deviceClass.name }})</span></p>
+<div class="inner-content" ng-if="!removeDevice.devicePoliciesSet && removeDevice.parentDevice">
+  <h3>Connected devices found</h3>
 
-    <p>To remove {{ remove.device.name ? remove.device.name : remove.device.deviceClass.name }}, {{ remove.parentDevice.name ? remove.parentDevice.name : remove.parentDevice.deviceClass.name }} has to be removed too.</p>
+  <p>{{ removeDevice.currentDevice.name }} is managed by another device: <span>{{ removeDevice.parentDevice.name }} ({{ removeDevice.parentDevice.deviceClass.vendor.name === removeDevice.parentDevice.deviceClass.name || removeDevice.parentDevice.deviceClass.name === removeDevice.parentDevice.name ? removeDevice.parentDevice.deviceClass.vendor.name : removeDevice.parentDevice.deviceClass.vendor.name + ', ' + removeDevice.parentDevice.deviceClass.name }})</span></p>
 
-    <p ng-if="remove.childDevices.length > 1">Be aware when removing {{ remove.parentDevice.name ? remove.parentDevice.name : remove.parentDevice.deviceClass.name }} all it's connected devices are removed too:</p>
-    <p ng-if="remove.childDevices.length > 1" ng-repeat="childDevice in remove.childDevices | orderBy: 'name' track by $index">{{ childDevice.name ? childDevice.name : childDevice.deviceClass.name }}</p>
+  <p>To remove {{ removeDevice.currentDevice.name ? removeDevice.currentDevice.name : removeDevice.currentDevice.deviceClass.name }}, {{ removeDevice.parentDevice.name ? removeDevice.parentDevice.name : removeDevice.parentDevice.deviceClass.name }} has to be removed too.</p>
 
-    <button class="button" ng-click="remove.removeAll()">Remove {{ remove.parentDevice.name ? remove.parentDevice.name : remove.parentDevice.deviceClass.name }} and {{ remove.childDevices.length > 1 ? remove.childDevices.length + ' connected devices' : (remove.device.name ? remove.device.name : remove.device.deviceClass.name) }}</button>
-  </div>
+  <p ng-if="removeDevice.childDevices.length > 0">Be aware when removing {{ removeDevice.parentDevice.name ? removeDevice.parentDevice.name : removeDevice.parentDevice.deviceClass.name }} all it's connected devices are removed too:</p>
 
-  <div guh-wizard-step title="Associated rules">
-    <p>There {{ remove.rules.length > 1 ? 'are several rules' : 'is a rule' }} associated with {{ remove.childDevices.length > 1 ? 'some devices' : 'a device' }} that should be removed. Should this rule{{ remove.rules.length > 1 ? 's' : '' }} be updated or removed?</p>
+  <ul class="list" ng-if="removeDevice.childDevices.length > 0" ng-repeat="childDevice in removeDevice.childDevices | orderBy: 'name' track by $index">
+    <li class="list__item">{{ childDevice.name ? childDevice.name : childDevice.deviceClass.name }}</li>
+  </ul>
 
-    <ul class="list">
-      <li ng-repeat="rule in remove.rules | orderBy: 'name' track by $index">
-        <guh-form-field label="{{ rule.name }}"
-                name="{{ rule.id }}"
-                param-type="{
-                  allowedValues: [remove.policyAllowedValues.update.label, remove.policyAllowedValues.remove.label],
-                  name: 'Type',
-                  type: 'String'
-                }"
-                state="{
-                  value: remove.getPolicyLabel(remove.rulePolicies[rule.id])
-                }"
-                template="app/shared/ui/form/form-field-templates/form-field-select-execute.html"
-                on-value-change="remove.setPolicy(params[0].value, rule.id)"></guh-form-field>
-      </li>
-    </ul>
-    <button class="button" type="button" ng-click="remove.removeAll()">Update/Remove associated rules</button>
-  </div>
+  <button class="button button_type_submit" type="button" ng-click="removeDevice.removeAll()">Remove {{ removeDevice.parentDevice.name ? removeDevice.parentDevice.name : removeDevice.parentDevice.deviceClass.name }} and {{ removeDevice.childDevices.length > 0 ? (removeDevice.childDevices.length + 1) + ' connected devices' : (removeDevice.currentDevice.name ? removeDevice.currentDevice.name : removeDevice.currentDevice.deviceClass.name) }}</button>
+</div>
+
+<div class="inner-content" ng-if="removeDevice.devicePoliciesSet && removeDevice.moods.length > 0">
+  <h3>Associated moods found</h3>
+
+  <p>The following mood{{ removeDevice.moods.length > 1 ? 's' : '' }} are associated with {{ removeDevice.childDevices.length > 1 ? 'some devices' : 'a device' }} that should be removed. Should the mood{{ removeDevice.moods.length > 1 ? 's' : '' }} be removed? If you don't remove the moods, the device{{ removeDevice.childDevices.length > 1 ? 's aren\'t' : ' isn\'t' }} removed aswell.</p>
+
+  <ul>
+    <li ng-repeat="mood in removeDevice.moods | orderBy: 'name' track by $index">
+      <guh-form-field label="{{ mood.name }}"
+              name="{{ mood.id }}"
+              param-type="{
+                allowedValues: [removeDevice.policyAllowedValues.update.label, removeDevice.policyAllowedValues.remove.label],
+                name: 'Type',
+                type: 'String'
+              }"
+              state="{
+                value: removeDevice.getPolicyLabel(removeDevice.rulePolicies[mood.id])
+              }"
+              template="app/shared/ui/form/form-field-templates/form-field-select-execute.html"
+              on-value-change="removeDevice.setPolicy(params[0].value, mood.id)"></guh-form-field>
+    </li>
+  </ul>
+
+  <button class="button button_type_submit" type="button" ng-click="removeDevice.removeAll()">Remove associated mood{{ removeDevice.moods.length > 1 ? 's' : '' }}</button>
 </div>

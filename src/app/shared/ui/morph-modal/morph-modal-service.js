@@ -73,13 +73,15 @@
       return deferred.promise;
     }
 
-    function initialize(scope, animation) {
+    function initialize(scope, animation, data) {
       return {
         id: ++id,
         scope: scope || $rootScope.$new(),
         animation: animation || 'fade-in',
+        data: data || null,
         open: open,
-        close: close
+        close: close,
+        closeAll: closeAll
       }
     }
 
@@ -88,16 +90,22 @@
         animation: this.animation,
         controller: this.controller,
         controllerAs: this.controllerAs,
+        data: this.data,
         id: this.id,
         template: this.template,
         scope: this.scope,
-        close: this.close
+        close: this.close,
+        closeAll: this.closeAll
       };
       $rootScope.$emit('modals.open', modal);
     }
 
     function close(data) {
       $rootScope.$emit('modals.close', this, data);
+    }
+
+    function closeAll(data) {
+      $rootScope.$emit('modals.closeAll', this, data);
     }
 
 
@@ -110,7 +118,7 @@
 
       getTemplate(options.template, options.templateUrl)
         .then(function(template) {
-          var modal = initialize(options.scope, options.animation);
+          var modal = initialize(options.scope, options.animation, options.data);
           
           if(options.controller && options.controllerAs) {
             modal.controller = options.controller;
@@ -120,7 +128,6 @@
           }
 
           modal.template = template;
-          modal.isOpen = false;
           modals.push(modal);
 
           deferred.resolve(modal);

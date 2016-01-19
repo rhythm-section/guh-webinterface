@@ -23,85 +23,26 @@
  * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 
 
-/**
- * @ngdoc interface
- * @name guh.moods.controller:MoodsMasterCtrl
- *
- * @description
- * Load and list configured moods.
- *
- */
+$grey: #676767;
 
-(function(){
-  'use strict';
-
-  angular
-    .module('guh.moods')
-    .controller('MoodsMasterCtrl', MoodsMasterCtrl);
-
-  MoodsMasterCtrl.$inject = ['$log', '$scope', '$filter', '$state', '$stateParams', 'app', 'DSRule', 'DSDevice'];
-
-  function MoodsMasterCtrl($log, $scope, $filter, $state, $stateParams, app, DSRule, DSDevice) {
-
-    // Don't show debugging information
-    DSRule.debug = false;
-
-    var vm = this;
-    
-    // Public variables
-    vm.configured = [];
-
-    // Public methods
-    vm.setCurrent = setCurrent;
+$color: $grey;
 
 
-    function _init() {
-      var moods = DSRule.getAll();
+.event {
+  @include rem(margin-bottom, 1.5);
 
-      if(!app.dataLoaded) {
-        $state.go('guh.intro', {
-          previousState: {
-            name: $state.current.name,
-            params: {}
-          }
-        });
-      } else {
-        // Sort by name
-        vm.configured = $filter('orderBy')(moods, 'name');
-
-        angular.forEach(vm.configured, function(rule) {
-          rule.actionDeviceNames = [];
-          angular.forEach(rule.actions, function(action) {
-            var actionDevice = DSDevice.get(action.deviceId);
-            rule.actionDeviceNames.push(actionDevice.name);
-          });
-        });
-      }
-    }
-
-
-    function setCurrent(index) {
-      vm.currentSlide = index;
-
-      if(index !== -1 && index <= vm.configured.length) {
-        $state.go('guh.moods.master.current', { moodId: vm.configured[index].id });
-      }
-    }
-
-
-    $scope.$on('ReloadView', function(event, data) {
-      $log.log('Reload view!', event, data);
-
-      $state.go($state.current, $stateParams, {
-        reload: true,
-        inherit: false,
-        notify: true
-      });
-    });
-
-
-    _init();
-
+  .value {
+    color: $color;
+    @include rem(font-size, 1.2);
+    @include rem(line-height, 1.5);
   }
 
-}());
+  .name {
+    color: rgba($color, 0.6);
+    @include rem(font-size, 0.8);
+    // letter-spacing: 0.2em;
+    @include rem(line-height, 1.5);
+    // @include rem(margin, 0.2, 0, 1.3);
+    text-transform: uppercase;
+  }
+}

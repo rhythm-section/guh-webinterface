@@ -61,6 +61,9 @@
         }
 
         function leave(modalElement, modalDialogElement, modal) {
+          $log.log('modal', modal);
+          $log.log('vm.modals', vm.modals);
+
           $animate
             .leave(modalDialogElement)
             .then(function() {
@@ -86,6 +89,33 @@
 
         function moveForeground(modalElement, modalDialogElement) {
           return $animate.removeClass(modalDialogElement, 'modal__dialog_inactive');
+        }
+
+        function closeModal(modal) {
+          var children = $element.children();
+          var modalDialogElement = $element[0].querySelector('.modal__dialog_' + modal.id);
+          var modalElement = angular.element(modalDialogElement).parent();
+
+          if(children.length > 0) {
+            $animate
+              .leave(modalDialogElement)
+              .then(function() {
+                leave(modalElement, modalDialogElement, modal);
+              });
+
+            for(var i = 0; i < children.length; i++) {
+              var childModalElement = children[i];
+              var childModalDialogElement = childModalElement.querySelector('.modal__dialog');
+            
+              moveForeground(childModalElement, childModalDialogElement);
+            }
+          } else {
+            $animate
+              .leave(modalDialogElement)
+              .then(function() {
+                leave(modalElement, modalDialogElement, modal);
+              });
+          }
         }
 
 
@@ -142,34 +172,18 @@
         });
 
         $rootScope.$on('modals.close', function(event, modal) {
-          var children = $element.children();
-          var modalDialogElement = $element[0].querySelector('.modal__dialog_' + modal.id);
-          var modalElement = angular.element(modalDialogElement).parent();
+          $log.log('CLOSE');
+          closeModal(modal);
+        });
 
-
-          if(children.length > 0) {
-            $animate
-              .leave(modalDialogElement)
-              .then(function() {
-                leave(modalElement, modalDialogElement, modal);
-              });
-
-            for(var i = 0; i < children.length; i++) {
-              var childModalElement = children[i];
-              var childModalDialogElement = childModalElement.querySelector('.modal__dialog');
-            
-              moveForeground(childModalElement, childModalDialogElement);
-            }
-          } else {
-            $animate
-              .leave(modalDialogElement)
-              .then(function() {
-                leave(modalElement, modalDialogElement, modal);
-              });
-          }
+        $rootScope.$on('modals.closeAll', function(event, modal) {
+          $log.log('CLOSE ALL');
+          angular.forEach(vm.modals, function(modal) {
+            closeModal(modal);
+          });
         });
       }
-      
+
 
       function morphModalLink(scope, element, attrs, morphModalCtrl) {
         $log.log('morphModalLink');

@@ -40,7 +40,7 @@
 
   <!-- Select stateType -->
   <div class="list" guh-wizard-step title="Choose a condition" is-valid="addState.hasCurrentStateType()">
-    <div class="list__item list__item_isClickable" ng-click="addState.selectStateType(stateType)" ng-repeat="stateType in addState.currentThing.deviceClass.stateTypesLinked track by $index">
+    <div class="list__item list__item_isClickable" ng-click="addState.selectStateType(stateType)" ng-repeat="stateType in addState.stateTypes track by $index">
       <span>{{ stateType.name }}</span>
       <svg class="icon">
         <use xlink:href="./assets/svg/ui/ui.symbol.svg#chevron-right"></use>

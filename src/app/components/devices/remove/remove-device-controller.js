@@ -39,24 +39,29 @@
     .module('guh.devices')
     .controller('RemoveDeviceCtrl', RemoveDeviceCtrl);
 
-  RemoveDeviceCtrl.$inject = ['$log', '$rootScope', '$scope', '$timeout', '$state', 'DSDevice', 'DSRule', 'ngDialog'];
+  RemoveDeviceCtrl.$inject = ['$log', '$rootScope', '$scope', '$timeout', '$state', 'DSDevice', 'DSRule', 'modalInstance'];
 
-  function RemoveDeviceCtrl($log, $rootScope, $scope, $timeout, $state, DSDevice, DSRule, ngDialog) {
+  function RemoveDeviceCtrl($log, $rootScope, $scope, $timeout, $state, DSDevice, DSRule, modalInstance) {
 
     var vm = this;
+    vm.modalInstance = modalInstance;
+
     vm.policyAllowedValues = {
       update: {
-        label: 'Update rule',
+        label: 'Update mood',
         value: 'RemovePolicyUpdate'
       },
       remove: {
-        label: 'Remove rule',
+        label: 'Remove mood',
         value: 'RemovePolicyCascade'
       }
     };
-    vm.parentDevice = {};
+    vm.currentDevice = {};
+    vm.parentDevice = null;
     vm.childDevices = [];
+    vm.moods = [];
     vm.rulePolicies = {};
+    vm.devicePoliciesSet = false;
 
     vm.removeAll = removeAll;
     vm.setPolicy = setPolicy;
@@ -64,11 +69,24 @@
 
 
     function _init() {
-      if(angular.isDefined($scope.ngDialogData)) {
-        var error = $scope.ngDialogData.error;
-        vm.device = $scope.ngDialogData.device;
+      if(angular.isDefined(modalInstance.data)) {
+        var errorData = angular.isDefined(modalInstance.data.errorData) ? modalInstance.data.errorData : null;
 
-        _checkError(error);
+        vm.currentDevice = angular.isDefined(modalInstance.data.currentDevice) ? modalInstance.data.currentDevice : null;
+
+        // Check if associated devices are available
+        if(angular.isDefined(errorData.devices)) {
+          vm.parentDevice = errorData.devices.parentDevice;
+          vm.childDevices = errorData.devices.childDevices;
+        }
+
+        if(angular.isDefined(errorData.moods)) {
+          if((!vm.parentDevice)) {
+            vm.devicePoliciesSet = true;
+          }
+
+          vm.moods = errorData.moods;
+        }
       }
     }
 
@@ -77,12 +95,9 @@
 
       if(errorCode) {
         switch(errorCode) {
-          case 'DeviceErrorDeviceIsChild':
-            _setDevices();
-            break;
           case 'DeviceErrorDeviceInRule':
             var ruleIds = error.data.ruleIds ? error.data.ruleIds : [];
-            _setRules(ruleIds);
+            _setMoods(ruleIds);
             _initPolicies();
             break;
           default:
@@ -93,38 +108,10 @@
       }
     }
 
-    function _setDevices() {
-      if(DSDevice.is(vm.device)) {
-        var currentDevice = vm.device;
-
-        while(angular.isDefined(currentDevice.parentId)) {
-          // Parent
-          vm.parentDevice = DSDevice.get(currentDevice.parentId);
-
-          // Children
-          if(DSDevice.is(vm.parentDevice)) {
-            var childDevices = DSDevice.getAll().filter(function(device) {
-              return device.parentId === vm.parentDevice.id;
-            });
-
-            vm.childDevices.push(childDevices);
-          }
-
-          currentDevice = vm.parentDevice;
-        }
-      }
-    }
-
-    function _setRules(ruleIds) {
-      vm.rules = ruleIds.map(function(ruleId) {
-        return DSRule.get(ruleId);
-      });
-
-      // Go to step 2
-      $timeout(function() {
-        $rootScope.$broadcast('wizard.next', 'removeDevice');
-      }, 200);
-    }
+    function _setMoods(ruleIds) {
+      vm.moods = DSRule.getAll(ruleIds);
+      vm.devicePoliciesSet = true;
+    }    
 
     function _initPolicies() {
       angular.forEach(vm.rules, function(rule, index) {
@@ -136,6 +123,10 @@
     function removeAll() {
       var deviceToDelete = DSDevice.is(vm.parentDevice) ? vm.parentDevice : vm.device;
       var params = {};
+
+      if(vm.parentDevice || (!vm.parentDevice && vm.moods.length > 0)) {
+        vm.devicePoliciesSet = true;
+      }
 
       params.removePolicyList = [];
       angular.forEach(vm.rulePolicies, function(policy, ruleId) {
@@ -149,7 +140,7 @@
         deviceToDelete
           .remove(params)
           .then(function(response) {
-            ngDialog.closeAll();
+            modalInstance.closeAll();
 
             $state.go('guh.devices.master', { bypassCache: true }, {
               reload: true,

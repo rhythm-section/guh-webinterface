@@ -94,6 +94,24 @@
         vm.states = service.states;
         vm.statesObject = {};
 
+        // Filter values of type "Double" to show only two digits after decimal point
+        angular.forEach(vm.params, function(param) {
+          // Find paramType to param
+          var paramType = libs._.find(service.deviceClass.paramTypes, function(paramType) {
+            return paramType.name === param.name;
+          });
+
+          if(paramType.type === app.basicTypes.double) {
+            vm.params[index].value = $filter('number')(vm.params[index].value, '2');
+          }
+        });
+
+        angular.forEach(vm.states, function(state, index) {
+          if(state.stateType.type === app.basicTypes.double) {
+            vm.states[index].value = $filter('number')(vm.states[index].value, '2');
+          }
+        });
+
         // Wait for templateUrl check
         service.deviceClass.templateUrl
           .then(function(fileExists) {

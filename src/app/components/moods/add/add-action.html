@@ -56,6 +56,7 @@
       <guh-form-field label="{{ paramType.name }}"
                       name="{{ paramType.name }}"
                       param-type="paramType"
+                      state="addAction.currentState"
                       template="{{ paramType.inputTemplateUrl }}"
                       ng-repeat="paramType in addAction.currentActionType.paramTypes track by $index"></guh-form-field>
 
