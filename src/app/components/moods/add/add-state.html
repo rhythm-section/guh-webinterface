@@ -65,21 +65,21 @@
       <!-- Is, is not, greater than, less than -->
       <guh-form-field label="{{ addState.currentStateType.name }}"
                       name="{{ addState.currentStateType.name }}"
-                      state-type="addState.isStateType"
+                      state-type="addState.isStateType.stateType"
                       template="{{ addState.currentStateType.inputTemplateUrl }}"
                       ng-if="addState.isStateType"></guh-form-field>
 
       <!-- From -->
       <guh-form-field label="{{ addState.currentStateType.name }}"
                       name="{{ addState.currentStateType.name }}"
-                      state-type="addState.fromStateType"
+                      state-type="addState.fromStateType.stateType"
                       template="{{ addState.currentStateType.inputTemplateUrl }}"
                       ng-if="addState.fromStateType"></guh-form-field>
 
       <!-- To -->
       <guh-form-field label="{{ addState.currentStateType.name }}"
                       name="{{ addState.currentStateType.name }}"
-                      state-type="addState.toStateType"
+                      state-type="addState.toStateType.stateType"
                       template="{{ addState.currentStateType.inputTemplateUrl }}"
                       ng-if="addState.toStateType"></guh-form-field>
 
