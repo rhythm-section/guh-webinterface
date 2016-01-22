@@ -109,6 +109,7 @@
 
             // Select options
             vm.selectOptions = vm.stateType.possibleValues ? vm.stateType.possibleValues : [];
+            vm.value = vm.selectOptions.length > 0 ? vm.selectOptions[0] : undefined;
 
             // Unit
             vm.unit = vm.stateType.unit ? app.unit[vm.stateType.unit] : undefined;
@@ -122,6 +123,7 @@
 
             // Select options
             vm.selectOptions = vm.paramType.allowedValues ? vm.paramType.allowedValues : [];
+            vm.value = vm.selectOptions.length > 0 ? vm.selectOptions[0] : undefined;
 
             // Unit
             vm.unit = vm.paramType.unit ? app.unit[vm.paramType.unit] : undefined;
