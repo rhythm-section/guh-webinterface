@@ -19,3 +19,17 @@
   OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
   SOFTWARE.
 -->
+
+
+<p class="padding">{{ newDevice.displayMessage }}</p>
+
+<guh-form name="enterSecret"
+          on-form-submit="newDevice.confirmPairing(params)"
+          class="list">
+
+  <guh-form-field label="Secret"
+                  name="Secret"
+                  template="app/shared/ui/form/form-field-templates/form-field-text.html"></guh-form-field>
+
+  <button class="button" type="submit">OK</button>
+</guh-form>

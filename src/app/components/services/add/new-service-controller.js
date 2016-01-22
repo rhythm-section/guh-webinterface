@@ -56,6 +56,7 @@
     vm.discoverDevices = discoverDevices;
     vm.back = back;
     vm.add = add;
+    vm.confirmPairing = confirmPairing;
     vm.save = save;
 
 
@@ -153,6 +154,8 @@
     }
 
     function pairDevice(deviceClassId, deviceDescriptorId, deviceParams) {
+      $log.log('pairDevice', deviceClassId, deviceDescriptorId, deviceParams);
+
       DSDevice
         .pair(deviceClassId, deviceDescriptorId, deviceParams)
         .then(function(pairingData) {
@@ -184,6 +187,32 @@
       } else {
         save(deviceClassId, deviceDescriptorId, deviceParams);
       }
+    }
+
+    function confirmPairing(params) {
+      var secret = libs._.find(params, function(param) {
+        return param.name === 'Secret';
+      });
+      var secretValue = angular.isDefined(secret) ? secret.value : undefined;
+
+      DSDevice
+        .confirmPairing(vm.pairingTransactionId, secretValue)
+        .then(function(response) {
+          var device = response.data;
+
+          DSDevice.inject(device);
+
+          modalInstance.close();
+
+          $state.go('guh.services.master', { bypassCache: true }, {
+            reload: true,
+            inherit: false,
+            notify: true
+          });
+        })
+        .catch(function(error) {
+          $log.error(error);
+        });
     }
 
     function save(deviceClassId, deviceDescriptorId, deviceParams) {

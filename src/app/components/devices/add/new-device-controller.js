@@ -174,9 +174,14 @@
       }
     }
 
-    function confirmPairing() {
+    function confirmPairing(params) {
+      var secret = libs._.find(params, function(param) {
+        return param.name === 'Secret';
+      });
+      var secretValue = angular.isDefined(secret) ? secret.value : undefined;
+
       DSDevice
-        .confirmPairing(vm.pairingTransactionId)
+        .confirmPairing(vm.pairingTransactionId, secretValue)
         .then(function(response) {
           var device = response.data;
 
