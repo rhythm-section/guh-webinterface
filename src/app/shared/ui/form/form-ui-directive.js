@@ -75,6 +75,77 @@
          * Private methods
          */
 
+        function _getDefaultFromType(type) {
+          var value;
+
+          switch(type) {
+            case 'checkbox':
+            case 'toggle-button':
+              value = false;
+              break;
+            case 'mail':
+            case 'search':
+            case 'text':
+            case 'textarea':
+            case 'ipV4':
+            case 'ipV6':
+            case 'mac':
+              value = '';
+              break;
+            case 'number-decimal':
+              value = 0.0;
+              break;
+            case 'number-integer':
+            case 'range':
+              value = 0;
+              break;
+            case 'select':
+              break;
+            case 'not-available':
+              value = '';
+              break;
+            default:
+              value = '';
+              break;
+          }
+
+          return value;
+        }
+
+        function _getDefaultValue(formField) {
+          var value = '';
+
+          // State
+          if(angular.isDefined(formField.state) && formField.state !== null) {
+            if(angular.isDefined(formField.state.value) && formField.state.value !== null) {
+              value = formField.state.value;
+            } else if(angular.isDefined(formField.state.defaultValue) && formField.state.defaultValue !== null) {
+              value = formField.state.defaultValue;
+            } else {
+              value = _getDefaultFromType(formField.state.type);
+            }
+          } else if(angular.isDefined(formField.template) && formField.template !== '') {
+            var filename = formField.template.substring(formField.template.lastIndexOf('/') + 1, formField.template.lastIndexOf('.'));
+            var type = filename.replace('form-field-', '');
+
+            // Value
+            value = _getDefaultFromType(type);
+          }
+
+          // StateType
+          if(angular.isDefined(formField.stateType) && formField.stateType !== null) {
+            value = formField.selectOptions.length > 0 ? formField.selectOptions[0] : value;
+          }
+
+          // ParamType
+          if(angular.isDefined(formField.paramType)) {
+            value = formField.selectOptions.length > 0 ? formField.selectOptions[0] : value;
+          }
+
+          return value;
+        }
+
+
         /*
          * Public methods
          */
@@ -129,6 +200,11 @@
             var params = [];
 
             angular.forEach(vm.formFields, function(scope) {
+              // Set default value if undefined
+              if(angular.isUndefined(scope.formField.value)) {
+                scope.formField.value = _getDefaultValue(scope.formField);
+              }
+
               params.push({
                 name: scope.formField.name,
                 value: scope.formField.value

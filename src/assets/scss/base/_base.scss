@@ -59,6 +59,10 @@ body,
   height: 100%;
 }
 
+.main {
+  overflow-y: scroll;
+}
+
 html {
   @include linear-gradient(to bottom, $background-light, $background-dark);
   box-sizing: border-box;
@@ -127,6 +131,8 @@ textarea {
   background-color: transparent;
   border: none;
   color: $color-button;
+  font-family: 'Ubuntu';
+  font-weight: 400;
   @include rem(font-size, 1);
   @include rem(line-height, 1.5);
   outline: none;
