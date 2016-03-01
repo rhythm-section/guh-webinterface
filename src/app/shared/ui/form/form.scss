@@ -84,6 +84,13 @@ input[type="password"] {
   }
 }
 
+input[type="password"].input_type_readonly {
+  border: none;
+  @include rem(font-size, 1.2);
+  margin: 0;
+  padding: 0;
+}
+
 button[type="submit"],
 input[type="submit"] {
   background-color: $background-highlight;
