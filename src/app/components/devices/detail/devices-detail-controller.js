@@ -90,6 +90,7 @@
         vm.name = (device.name === 'Name') ? device.deviceClass.name : device.name;
         vm.params = device.params;
         vm.paramsObject = {};
+        vm.enhancedParams = [];
         vm.states = device.states;
         vm.statesObject = {};
 
@@ -150,6 +151,16 @@
         // Params
         angular.forEach(vm.params, function(param) {
           vm.paramsObject[$filter('camelCase')(param.name)] = param;
+        });
+
+        // Enhanced Params
+        angular.forEach(vm.params, function(param) {
+          vm.enhancedParams.push({
+            param: param,
+            paramType: libs._.find(vm.deviceClass.paramTypes, function(paramType) {
+              return param.name === paramType.name;
+            })
+          });
         });
 
         // States

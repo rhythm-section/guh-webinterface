@@ -40,10 +40,13 @@
 
   <!-- Settings -->
   <guh-tab heading="Settings">
-    <p ng-if="service.params.length === 0">This service doesn't have any settings to show you.</p>
-    <div ng-repeat="param in service.params track by $index" class="param">
-      <p class="name">{{ param.name }}</p>
-      <p class="value">{{ param.value }}</p>
+    <p ng-if="service.enhancedParams.length === 0">This service doesn't have any settings to show you.</p>
+    <div ng-switch="enhancedParam.paramType.inputType" ng-repeat="enhancedParam in service.enhancedParams track by $index" class="param">
+      <p class="name">{{ enhancedParam.param.name }}</p>
+      <p class="value" ng-switch-when="InputTypePassword">
+        <input class="input_type_readonly" ng-model="enhancedParam.param.value" type="password" disabled />
+      </p>
+      <p class="value" ng-switch-default>{{ enhancedParam.param.value }}</p>
     </div>
   </guh-tab>
 </guh-tabset>
