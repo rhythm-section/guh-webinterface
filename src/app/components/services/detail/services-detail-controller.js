@@ -172,6 +172,15 @@
     }
 
 
+    DSState.on('DS.change', function(DSState, newState) {
+      angular.forEach(vm.states, function(state, index) {
+        if(state.stateType.type === app.basicTypes.double && state.stateType.id === newState.stateType.id) {
+          vm.states[index].value = $filter('number')(newState.value, '2');
+        }
+      });
+    });
+
+
     _init();
 
   }
