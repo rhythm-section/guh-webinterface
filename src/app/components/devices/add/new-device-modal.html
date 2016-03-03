@@ -48,9 +48,21 @@
     </div>
   </div>
 
-  <!-- Create method -->
-  <div guh-wizard-step ng-show="newDevice.createMethod" title="Enter device details">
+  <!-- Create method / Device configuration -->
+  <div guh-wizard-step ng-show="newDevice.createMethod" title="Set device configuration">
     <ng-include src="newDevice.createMethod.addTemplate" class="content"></ng-include>
+  </div>
+
+  <!-- Device information -->
+  <div guh-wizard-step title="Set device information">
+    <form name="deviceMetadata" ng-submit="newDevice.save()">
+      <label for="name">Name</label>
+      <input id="name" name="name" type="text" ng-model="newDevice.name" />
+
+      <footer>
+        <button type="submit" ng-disabled="newDevice.name.length === 0" class="full">Add {{ newDevice.selectedDeviceClass.name }}</button>
+      </footer>
+    </form>
   </div>
 
   <!-- Setup method -->

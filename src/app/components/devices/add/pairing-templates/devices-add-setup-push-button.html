@@ -21,4 +21,6 @@
 -->
 
 <p class="padding">{{ newDevice.displayMessage }}.</p>
-<button class="button button-full" ng-click="newDevice.confirmPairing()">OK</button>
+<form name="pushButton" ng-submit="newDevice.confirmPairing()">
+  <button class="button" type="submit">OK</button>
+</form>

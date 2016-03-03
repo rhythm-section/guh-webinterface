@@ -22,7 +22,7 @@
 
 
 <guh-form name="createDevice"
-          on-form-submit="newDevice.add(params)"
+          on-form-submit="newDevice.create(params)"
           ng-show="newDevice.selectedDeviceClass.paramTypes.length > 0">
 
   <guh-form-field  label="{{ paramType.name }}"
@@ -32,7 +32,7 @@
                    ng-repeat="paramType in newDevice.selectedDeviceClass.paramTypes track by $index"></guh-form-field>
 
   <footer>
-    <button type="submit" ng-disabled="newDevice.loading" class="full">Add {{ newDevice.selectedDeviceClass.name }}</button>
+    <button type="submit" ng-disabled="newDevice.loading" class="full">Save configuration</button>
   </footer>
 
 </guh-form>
