@@ -48,6 +48,10 @@
     // Public variables
     vm.supportedVendors = [];
     vm.modalInstance = modalInstance;
+    vm.deviceClassId = '';
+    vm.deviceDescriptorId = '';
+    vm.deviceParams = [];
+    vm.name = '';
 
     // Public methods
     vm.reset = reset;
@@ -55,7 +59,7 @@
     vm.selectDeviceClass = selectDeviceClass;
     vm.discoverDevices = discoverDevices;
     vm.back = back;
-    vm.add = add;
+    vm.create = create;
     vm.confirmPairing = confirmPairing;
     vm.save = save;
 
@@ -113,9 +117,18 @@
       vm.selectedDeviceClass = deviceClass;
       vm.createMethod = deviceClass.getCreateMethod();
       vm.setupMethod = deviceClass.getSetupMethod();
+      vm.deviceClassId = vm.selectedDeviceClass.id;
 
       // Next step
-      $rootScope.$broadcast('wizard.next', 'newDevice');
+      if(vm.createMethod.title === 'User') {
+        if(vm.selectedDeviceClass.paramTypes.length > 0) {
+          $rootScope.$broadcast('wizard.next', 'newDevice');
+        } else {
+          $rootScope.$broadcast('wizard.goToStep', 'newDevice', 4);
+        }
+      } else {
+        $rootScope.$broadcast('wizard.next', 'newDevice');
+      }
     }
 
     function discoverDevices(params) {
@@ -140,9 +153,9 @@
         });
     }
 
-    function pairDevice(deviceClassId, deviceDescriptorId, deviceParams) {
+    function pairDevice() {
       DSDevice
-        .pair(deviceClassId, deviceDescriptorId, deviceParams)
+        .pair(vm.deviceClassId, vm.deviceDescriptorId, vm.deviceParams, vm.name)
         .then(function(pairingData) {
           vm.displayMessage = pairingData.data.displayMessage;
           vm.pairingTransactionId = pairingData.data.pairingTransactionId;
@@ -160,18 +173,11 @@
       $rootScope.$broadcast('wizard.prev', 'newDevice');
     }
 
-    // deviceData can be device information (discovered device) or params (user created device)
-    function add(deviceData) {
-      var deviceClassId = vm.selectedDeviceClass.id;
-      var deviceDescriptorId = (angular.isDefined(deviceData) && angular.isString(deviceData.id)) ? deviceData.id : '';
-      var deviceParams = (deviceDescriptorId === '' && angular.isDefined(deviceData) && angular.isArray(deviceData)) ? deviceData : [];
+    function create(deviceData) {
+      vm.deviceDescriptorId = (angular.isDefined(deviceData) && angular.isString(deviceData.id)) ? deviceData.id : '';
+      vm.deviceParams = (vm.deviceDescriptorId === '' && angular.isDefined(deviceData) && angular.isArray(deviceData)) ? deviceData : [];
 
-      // Without setupMethod the device can be saved directly
-      if(vm.setupMethod) {
-        pairDevice(deviceClassId, deviceDescriptorId, deviceParams);
-      } else {
-        save(deviceClassId, deviceDescriptorId, deviceParams);
-      }
+      $rootScope.$broadcast('wizard.next', 'newDevice');
     }
 
     function confirmPairing(params) {
@@ -200,21 +206,26 @@
         });
     }
 
-    function save(deviceClassId, deviceDescriptorId, deviceParams) {
-      DSDevice
-        .add(deviceClassId, deviceDescriptorId, deviceParams)
-        .then(function(device) {
-          modalInstance.close();
+    function save() {
+      // Without setupMethod the device can be saved directly
+      if(vm.setupMethod) {
+        pairDevice();
+      } else {
+        DSDevice
+          .add(vm.deviceClassId, vm.deviceDescriptorId, vm.deviceParams, vm.name)
+          .then(function(device) {
+            modalInstance.close();
 
-          $state.go('guh.devices.master', { bypassCache: true }, {
-            reload: true,
-            inherit: false,
-            notify: true
+            $state.go('guh.devices.master', { bypassCache: true }, {
+              reload: true,
+              inherit: false,
+              notify: true
+            });
+          })
+          .catch(function(error) {
+            $log.log(error);
           });
-        })
-        .catch(function(error) {
-          $log.log(error);
-        });
+      }
     }
 
 
