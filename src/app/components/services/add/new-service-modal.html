@@ -27,7 +27,7 @@
   </svg>
 </button>
 
-<div guh-wizard handle="newService">
+<div guh-wizard handle="newService" show-prev="false" show-next="false">
   <!-- Select vendor -->
   <div guh-wizard-step class="list" title="Select the vendor of your service">
     <div class="list__item list__item_isClickable" ng-repeat="vendor in newService.supportedVendors | orderBy: 'name' track by $index" ng-click="newService.selectVendor(vendor)">
@@ -48,9 +48,21 @@
     </div>
   </div>
 
-  <!-- Create method -->
-  <div guh-wizard-step ng-show="newService.createMethod" title="Enter service details">
+  <!-- Create method / Device configuration -->
+  <div guh-wizard-step ng-show="newService.createMethod" title="Set service configuration">
     <ng-include src="newService.createMethod.addTemplate" class="content"></ng-include>
+  </div>
+
+  <!-- Service information -->
+  <div guh-wizard-step title="Set service information">
+    <form name="serviceMetadata" ng-submit="newService.save()">
+      <label for="name">Name</label>
+      <input id="name" name="name" type="text" ng-model="newService.name" />
+
+      <footer>
+        <button type="submit" ng-disabled="newService.name.length === 0" class="full">Add {{ newService.selectedDeviceClass.name }}</button>
+      </footer>
+    </form>
   </div>
 
   <!-- Setup method -->

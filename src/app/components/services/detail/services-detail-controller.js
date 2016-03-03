@@ -102,7 +102,7 @@
             return paramType.name === param.name;
           });
 
-          if(paramType.type === app.basicTypes.double) {
+          if(angular.isDefined(paramType) && paramType.type === app.basicTypes.double) {
             vm.params[index].value = $filter('number')(vm.params[index].value, '2');
           }
         });

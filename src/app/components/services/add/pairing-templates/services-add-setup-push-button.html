@@ -21,4 +21,6 @@
 -->
 
 <p class="padding">{{ newService.displayMessage }}.</p>
-<button class="button button-full" ng-click="newService.confirmPairing()">OK</button>
+<form name="pushButton" ng-submit="newService.confirmPairing()">
+  <button class="button" type="submit">OK</button>
+</form>
