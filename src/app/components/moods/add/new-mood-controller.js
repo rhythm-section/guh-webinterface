@@ -340,14 +340,10 @@
 
       // Save
       DSRule
-        .create(vm.rule)
-        .then(function(rule) {
+        .add(vm.rule)
+        .then(function(data) {
+          /* jshint unused:true */
           modalInstance.close();
-          $state.go('guh.moods.master', { bypassCache: true }, {
-            reload: true,
-            inherit: false,
-            notify: true
-          });
         });
     }
 
