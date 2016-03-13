@@ -69,7 +69,8 @@
     function _init() {
       var services = DSDevice.getAll();
 
-      if(libs._.size(DS.store.device.completedQueries) <= 1) {
+      // if(libs._.size(DS.store.device.completedQueries) <= 1) {
+      if(angular.isArray(services) && services.length === 0) {
         $state.go('guh.intro', {
           previousState: {
             name: $state.current.name,
