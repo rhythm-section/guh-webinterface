@@ -144,13 +144,8 @@
     function remove() {
       currentService
         .remove()
-        .then(function(response) {
-          $state.go('guh.services.master', {}, {
-            reload: true,
-            inherit: false,
-            notify: true
-          });
-          
+        .then(function(data) {
+          /* jshint unused:true */
           modalInstance.close();
         })
         .catch(function(error) {

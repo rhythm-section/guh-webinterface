@@ -145,13 +145,8 @@
     function remove() {
       currentDevice
         .remove()
-        .then(function(response) {
-          $state.go('guh.devices.master', {}, {
-            reload: true,
-            inherit: false,
-            notify: true
-          });
-          
+        .then(function(data) {
+          /* jshint unused:true */
           modalInstance.close();
         })
         .catch(function(error) {
