@@ -40,7 +40,10 @@
           // disabled: '=',
           heading: '@'
         },
-        templateUrl: 'app/shared/ui/tabs/tab.html',
+        // templateUrl: 'app/shared/ui/tabs/tab.html',
+        // Template has to be used here because of the following "Bug": https://github.com/angular/angular.js/issues/8877
+        // tl;dr: Because of async nature of templateUrl it can happen that tabsetLink is called before all tabs are added to the tabsetCtrl
+        template: '<div ng-transclude class="tab" ng-show="active"></div>',
         transclude: true
       };
 
