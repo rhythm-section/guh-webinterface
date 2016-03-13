@@ -39,9 +39,9 @@
     .module('guh.intro')
     .controller('IntroCtrl', IntroCtrl);
 
-  IntroCtrl.$inject = ['$log', '$rootScope', '$scope', '$q', '$location', '$timeout', '$state', '$stateParams', 'host', 'websocketService', 'libs', 'app', 'modelsHelper', 'DS', 'DSVendor', 'DSDeviceClass', 'DSDevice', 'DSState', 'DSRule', 'DSSettings'];
+  IntroCtrl.$inject = ['$log', '$rootScope', '$scope', '$q', '$location', '$timeout', '$state', '$stateParams', 'host', 'websocketService', 'libs', 'app', 'modelsHelper', 'DS', 'DSPlugin', 'DSVendor', 'DSDeviceClass', 'DSDevice', 'DSState', 'DSRule', 'DSSettings'];
 
-  function IntroCtrl($log, $rootScope, $scope, $q, $location, $timeout, $state, $stateParams, host, websocketService, libs, app, modelsHelper, DS, DSVendor, DSDeviceClass, DSDevice, DSState, DSRule, DSSettings) {
+  function IntroCtrl($log, $rootScope, $scope, $q, $location, $timeout, $state, $stateParams, host, websocketService, libs, app, modelsHelper, DS, DSPlugin, DSVendor, DSDeviceClass, DSDevice, DSState, DSRule, DSSettings) {
     
     var vm = this;
     var protocol = $location.protocol();
@@ -113,15 +113,19 @@
         });
     }
 
-    function _findAllVendors() {
-      return DSVendor.findAll();
+    function _loadPlugins() {
+      return DSPlugin.load();
     }
 
-    function _findAllDeviceClasses() {
-      return DSDeviceClass.findAll();
+    function _loadVendors() {
+      return DSVendor.load();
     }
 
-    function _findDeviceClassRelations(deviceClasses) {
+    function _loadDeviceClasses() {
+      return DSDeviceClass.load();
+    }
+
+    function _linkRelations(deviceClasses) {
       return angular.forEach(deviceClasses, function(deviceClass) {
         deviceClass.actionTypesLinked = DSDeviceClass.getAllActionTypes(deviceClass.id);
         deviceClass.eventTypesLinked = DSDeviceClass.getAllEventTypes(deviceClass.id);
@@ -129,65 +133,25 @@
       });
     }
 
-    function _findAllDevices() {
-      return DSDevice.findAll();
+    function _loadDevices() {
+      return DSDevice.load();
     }
 
-    // TODO: Find out why this isn't working (deviceClass relations are working because they are already loaded when deviceClasses are loaded)
-    function _findDeviceRelations(devices) {
-      return angular.forEach(devices, function(device) {
-        return DSDevice.loadRelations(device, ['deviceClass']);
-      });
-    }
-
-    function _findStates(devices) {
-      return angular.forEach(devices, function(device) {
-        return DS
-          .adapters
-          .http
-          .GET(app.apiUrl + '/devices/' + device.id + '/states')
-          .then(function(response) {
-            // var states = DSState.createCollection(response.data);
-            var states = [];
-            angular.forEach(response.data, function(state) {
-              var stateToInject = {};
-
-              state.deviceId = device.id;
-              stateToInject = DSState.createInstance(state);
-              states.push(stateToInject);
-            });
-
-            device.states = DSState.inject(states);
-
-            return device;
-          });
-      });
-    }
-
-    function _findAllRules() {
-      return DSRule.findAll();
-    }
-
-    function _findRuleDetails(rules) {
-      return angular.forEach(rules, function(rule) {
-        return DSRule.find(rule.id, { bypassCache: true });
-      });
+    function _loadRules() {
+      return DSRule.load();
     }
 
     function _loadData() {
       $q.all([
-          _findAllVendors(),
-          _findAllDeviceClasses()
-            .then(_findDeviceClassRelations),
-          _findAllDevices()
-            .then(_findDeviceRelations)
-            .then(_findStates),
-          _findAllRules()
-            .then(_findRuleDetails)
+          _loadPlugins(),
+          _loadVendors(),
+          _loadDeviceClasses()
+            .then(_linkRelations),
+          _loadDevices(),
+          _loadRules()
         ])
         .then(function(data) {
           /* jshint unused:false */
-
           app.dataLoaded = true;
 
           // Wait some time to avoid flickering when visiting intro-page where data is already loaded
