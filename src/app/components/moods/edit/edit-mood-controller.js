@@ -70,13 +70,8 @@
       vm.rule
         .remove()
         .then(function() {
+          /* jshint unused:true */
           modalInstance.close();
-
-          $state.go('guh.moods.master', { bypassCache: true }, {
-            reload: true,
-            inherit: false,
-            notify: true
-          });
         })
         .catch(function(error) {
           $log.error('guh.moods.EditMoodCtrl:controller - ', error);
