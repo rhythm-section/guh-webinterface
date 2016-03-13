@@ -37,7 +37,6 @@
         require: '^guhTabset',
         restrict: 'E',
         scope: {
-          // disabled: '=',
           heading: '@'
         },
         // templateUrl: 'app/shared/ui/tabs/tab.html',

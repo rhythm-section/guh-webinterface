@@ -33,9 +33,7 @@
 
     function guhTabset($log, $sce, libs, hotkeys) {
       var directive = {
-        bindToController: {
-          disabled: '='
-        },
+        bindToController: {},
         controller: tabsetCtrl,
         controllerAs: 'tabset',
         link: tabsetLink,
@@ -59,7 +57,6 @@
          */
         vm.tabs = [];
         vm.tabHeadings = [];
-        vm.disabled = (vm.disabled === undefined) ? false : vm.disabled;
 
         /*
          * Methods
@@ -136,10 +133,6 @@
         }
 
         function selectTab(selectedTab) {
-          if(selectedTab.disabled) {
-            return;
-          }
-
           angular.forEach(vm.tabs, function(tab) {
             if(tab.active && tab !== selectedTab) {
               tab.active = false;
