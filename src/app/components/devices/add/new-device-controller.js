@@ -141,10 +141,10 @@
 
       vm.selectedDeviceClass
         .discover(params)
-        .then(function(discoveredDevices) {
+        .then(function(data) {
           vm.discover = true;
           vm.loading = false;
-          vm.discoveredDevices = discoveredDevices.data;
+          vm.discoveredDevices = data.deviceDescriptors;
         })
         .catch(function(error) {
           vm.discover = true;
@@ -157,8 +157,8 @@
       DSDevice
         .pair(vm.deviceClassId, vm.deviceDescriptorId, vm.deviceParams, vm.name)
         .then(function(pairingData) {
-          vm.displayMessage = pairingData.data.displayMessage;
-          vm.pairingTransactionId = pairingData.data.pairingTransactionId;
+          vm.displayMessage = pairingData.displayMessage;
+          vm.pairingTransactionId = pairingData.pairingTransactionId;
 
           // Next step
           $rootScope.$broadcast('wizard.next', 'newDevice');
@@ -188,18 +188,9 @@
 
       DSDevice
         .confirmPairing(vm.pairingTransactionId, secretValue)
-        .then(function(response) {
-          var device = response.data;
-
-          DSDevice.inject(device);
-
+        .then(function(data) {
+          /* jshint unused:true */
           modalInstance.close();
-
-          $state.go('guh.devices.master', { bypassCache: true }, {
-            reload: true,
-            inherit: false,
-            notify: true
-          });
         })
         .catch(function(error) {
           $log.error(error);
@@ -213,14 +204,9 @@
       } else {
         DSDevice
           .add(vm.deviceClassId, vm.deviceDescriptorId, vm.deviceParams, vm.name)
-          .then(function(device) {
+          .then(function(data) {
+            /* jshint unused:true */
             modalInstance.close();
-
-            $state.go('guh.devices.master', { bypassCache: true }, {
-              reload: true,
-              inherit: false,
-              notify: true
-            });
           })
           .catch(function(error) {
             $log.log(error);
