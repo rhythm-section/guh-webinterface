@@ -77,6 +77,35 @@
 
 
         function _setDefaults() {
+          // ParamType
+          if(angular.isDefined(vm.paramType)) {
+            // Min & max value
+            vm.minValue = vm.paramType.minValue ? vm.paramType.minValue : 0;
+            vm.maxValue = vm.paramType.maxValue ? vm.paramType.maxValue : 100;
+
+            // Select options
+            vm.selectOptions = vm.paramType.allowedValues ? vm.paramType.allowedValues : [];
+            vm.value = vm.selectOptions.length > 0 ? vm.selectOptions[0] : undefined;
+
+            // Unit
+            vm.unit = vm.paramType.unit ? app.unit[vm.paramType.unit] : undefined;
+          }
+
+          // StateType
+          if(angular.isDefined(vm.stateType) && vm.stateType !== null) {
+            // Min & max value
+            vm.minValue = vm.stateType.minValue ? vm.stateType.minValue : 0;
+            vm.maxValue = vm.stateType.maxValue ? vm.stateType.maxValue : 100;
+
+            // Select options
+            vm.selectOptions = vm.stateType.possibleValues ? vm.stateType.possibleValues : [];
+            vm.value = vm.selectOptions.length > 0 ? vm.selectOptions[0] : undefined;
+
+            // Unit
+            vm.unit = vm.stateType.unit ? app.unit[vm.stateType.unit] : undefined;
+          }
+
+
           // State
           if(angular.isDefined(vm.state) && vm.state !== null) {
             // Value
@@ -99,34 +128,6 @@
 
             // Placeholder
             vm.placeholder = _getDefault(type);
-          }
-
-          // StateType
-          if(angular.isDefined(vm.stateType) && vm.stateType !== null) {
-            // Min & max value
-            vm.minValue = vm.stateType.minValue ? vm.stateType.minValue : 0;
-            vm.maxValue = vm.stateType.maxValue ? vm.stateType.maxValue : 100;
-
-            // Select options
-            vm.selectOptions = vm.stateType.possibleValues ? vm.stateType.possibleValues : [];
-            vm.value = vm.selectOptions.length > 0 ? vm.selectOptions[0] : undefined;
-
-            // Unit
-            vm.unit = vm.stateType.unit ? app.unit[vm.stateType.unit] : undefined;
-          }
-
-          // ParamType
-          if(angular.isDefined(vm.paramType)) {
-            // Min & max value
-            vm.minValue = vm.paramType.minValue ? vm.paramType.minValue : 0;
-            vm.maxValue = vm.paramType.maxValue ? vm.paramType.maxValue : 100;
-
-            // Select options
-            vm.selectOptions = vm.paramType.allowedValues ? vm.paramType.allowedValues : [];
-            vm.value = vm.selectOptions.length > 0 ? vm.selectOptions[0] : undefined;
-
-            // Unit
-            vm.unit = vm.paramType.unit ? app.unit[vm.paramType.unit] : undefined;
           }
         }
 
@@ -382,10 +383,10 @@
 
         // Watch state
         DSState.on('DS.change', function(DSState, state) {
-          if(angular.isDefined(scope) && scope !== null && angular.isDefined(scope.formField.state) && scope.formField.state !== null) {
-            scope.$apply(function() {
+          if(angular.isDefined(scope) && scope !== null) {
+            if(angular.isDefined(scope.formField.state) && DSState.is(scope.formField.state)) {
               scope.formField.value = scope.formField.state.value;
-            });
+            }
           }
         });
 
