@@ -11,6 +11,7 @@ fi
 echo "License check PASSED"
 
 npm install
+npm rebuild node-sass
 bower install
 gulp -e production -d
 
