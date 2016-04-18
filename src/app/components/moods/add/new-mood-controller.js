@@ -310,25 +310,14 @@
 
       // EventDescriptors
       if(hasEvents()) {
-        // vm.rule.eventDescriptors = vm.events.map(function(eventItem) {
-        //   return eventItem.eventDescriptor;
-        // });
-        // $log.log('vm.rule.eventDescriptors', vm.rule.eventDescriptors);
-
-        if(vm.events.length > 1) {
-          vm.rule.eventDescriptorList = vm.events.map(function(eventItem) {
-            return eventItem.eventDescriptor;
-          });
-        } else {
-          vm.rule.eventDescriptor = vm.events[0].eventDescriptor;
-        }
-        $log.log('vm.rule', vm.rule);
+        vm.rule.eventDescriptors = vm.events.map(function(eventItem) {
+          return eventItem.eventDescriptor;
+        });
       }
 
       // StateEvaluator
       if(hasStates()) {
         vm.rule.stateEvaluator = _getStateEvaluator();
-        $log.log('Mood has states!', vm.rule.stateEvaluator);
       }
 
       // ExitActions
@@ -353,8 +342,6 @@
 
 
     $rootScope.$on('modals.close', function(event, modal, data) {
-      $log.log('Event: modals.close', event, modal, data);
-
       if(data) {
         if(actionModal && modal.id === actionModal.id) {
           var enhancedParams = angular.copy(data.params);
