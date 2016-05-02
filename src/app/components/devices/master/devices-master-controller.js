@@ -39,9 +39,9 @@
     .module('guh.devices')
     .controller('DevicesMasterCtrl', DevicesMasterCtrl);
 
-  DevicesMasterCtrl.$inject = ['$log', '$scope', '$filter', '$state', '$stateParams', 'DSDevice'];
+  DevicesMasterCtrl.$inject = ['$log', '$scope', '$filter', '$state', '$stateParams', 'libs', 'DS', 'DSDevice'];
 
-  function DevicesMasterCtrl($log, $scope, $filter, $state, $stateParams, DSDevice) {
+  function DevicesMasterCtrl($log, $scope, $filter, $state, $stateParams, libs, DS, DSDevice) {
     
     // Don't show debugging information
     DSDevice.debug = false;
