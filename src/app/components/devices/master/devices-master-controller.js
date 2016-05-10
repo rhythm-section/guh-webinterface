@@ -39,9 +39,9 @@
     .module('guh.devices')
     .controller('DevicesMasterCtrl', DevicesMasterCtrl);
 
-  DevicesMasterCtrl.$inject = ['$log', '$scope', '$filter', '$state', '$stateParams', 'libs', 'DS', 'DSDevice'];
+  DevicesMasterCtrl.$inject = ['$log', '$scope', '$filter', '$state', '$stateParams', 'app', 'DSDevice'];
 
-  function DevicesMasterCtrl($log, $scope, $filter, $state, $stateParams, libs, DS, DSDevice) {
+  function DevicesMasterCtrl($log, $scope, $filter, $state, $stateParams, app, DSDevice) {
     
     // Don't show debugging information
     DSDevice.debug = false;
@@ -69,7 +69,8 @@
     function _init() {
       var devices = DSDevice.getAll();
 
-      if(libs._.size(DS.store.device.completedQueries) <= 1) {
+      // if(libs._.size(DS.store.device.completedQueries) < 1) {
+      if(!app.dataLoaded) {
         $state.go('guh.intro', {
           previousState: {
             name: $state.current.name,
