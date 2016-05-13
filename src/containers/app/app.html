@@ -21,17 +21,13 @@
 -->
 
 
-<!DOCTYPE html>
-<html>
-  <head>
-    <meta charset="utf-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="description" content="">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>guh:app</title>
-  </head>
+<!-- Header -->
+<header>
+  <h1>App</h1>
+</header>
 
-  <body ng-app="app" ng-strict-di>
-    <guh-app></guh-app>
-  </body>
-</html>
+<!-- Content -->
+<div>
+  <h2>Server information</h2>
+  <pre>{{ app.serverInfo | json }}</pre>
+</div>

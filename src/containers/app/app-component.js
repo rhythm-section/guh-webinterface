@@ -23,27 +23,18 @@
  * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 
 
-// Vendor
-import 'es5-shim';
-import 'es6-shim';
+// Controller
+import controller from './app-controller';
 
-// Angular
-import angular from 'angular';
-
-// Guh
-import guhLib from 'guh-libjs';
-
-// Containers
-import appComponent from './containers/app/app-component';
+// Template
+import template from './app.html';
 
 
-const containers = angular
-  .module('app.containers', [])
-  .component('guhApp', appComponent)
-  .name;
+const appComponent = {
+  bindings: {},
+  controller: controller,
+  controllerAs: 'app',
+  template
+};
 
-angular
-  .module('app', [
-    guhLib,
-    containers
-  ]);
+export default appComponent;

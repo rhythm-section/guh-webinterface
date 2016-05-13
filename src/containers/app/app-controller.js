@@ -23,27 +23,29 @@
  * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 
 
-// Vendor
-import 'es5-shim';
-import 'es6-shim';
-
-// Angular
-import angular from 'angular';
-
-// Guh
-import guhLib from 'guh-libjs';
-
-// Containers
-import appComponent from './containers/app/app-component';
+// Actions
+import { actions } from 'guh-libjs';
 
 
-const containers = angular
-  .module('app.containers', [])
-  .component('guhApp', appComponent)
-  .name;
+class AppController {
 
-angular
-  .module('app', [
-    guhLib,
-    containers
-  ]);
+  constructor($scope, $ngRedux) {
+    const disconnect = $ngRedux.connect(
+      this.mapStateToThis,
+      actions.app
+    )(this);
+
+    $scope.$on('$destroy', disconnect);
+
+    console.log('AppController', this);
+  }
+
+  mapStateToThis(state) {
+    return state.app.toJS();
+  }
+  
+}
+
+AppController.$inject = ['$scope', '$ngRedux'];
+
+export default AppController;
