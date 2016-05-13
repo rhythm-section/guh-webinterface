@@ -23,18 +23,55 @@
  * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 
 
-// Controller
-import controller from './app-controller';
-
-// Template
-import template from './app.html';
+// Actions
+import * as guhLib from 'guh-libjs';
 
 
-const appComponent = {
-  bindings: {},
-  controller,
-  controllerAs: 'app',
-  template
-};
+class IntroController {
 
-export default appComponent;
+  constructor($ngRedux) {
+    this.disconnect = $ngRedux.connect(
+      this.mapStateToThis,
+      {
+        ...guhLib.actions.intro
+      }
+    )(this);
+
+    // Add steps
+    this.addStep({
+      name: 'connect',
+      containerType: 'guh-connection'
+    });
+
+    this.addStep({
+      name: 'load',
+      containerType: 'guh-load'
+    });
+
+    // Go to first step
+    this.goToStep('connect');
+  }
+
+  $onDestroy() {
+    this.disconnect();
+  }
+
+  mapStateToThis(state) {
+    const getVisibleStep = (steps, visibleStep) => {
+      return steps.get(visibleStep);
+    };
+
+    return {
+      steps: state.intro.get('steps').toJS(),
+      visibleStep: {
+        name: state.intro.get('visibleStep'),
+        data: getVisibleStep(state.intro.get('steps'), state.intro.get('visibleStep'))
+      }
+    }
+  }
+  
+}
+
+IntroController.$inject = ['$ngRedux'];
+
+export default IntroController;

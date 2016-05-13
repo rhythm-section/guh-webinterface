@@ -24,17 +24,20 @@
 
 
 // Controller
-import controller from './app-controller';
+import controller from './dynamic-container-controller';
 
 // Template
-import template from './app.html';
+import template from './dynamic-container.html';
 
 
-const appComponent = {
-  bindings: {},
+const dynamicContainerComponent = {
+  bindings: {
+    type: '<',
+    props: '<'
+  },
   controller,
-  controllerAs: 'app',
+  controllerAs: 'intro',
   template
 };
 
-export default appComponent;
+export default dynamicContainerComponent;

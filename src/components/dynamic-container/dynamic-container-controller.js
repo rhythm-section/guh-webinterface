@@ -23,18 +23,42 @@
  * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 
 
-// Controller
-import controller from './app-controller';
-
-// Template
-import template from './app.html';
+// Vendor
+import angular from 'angular';
 
 
-const appComponent = {
-  bindings: {},
-  controller,
-  controllerAs: 'app',
-  template
-};
+class DynamicContainerController {
 
-export default appComponent;
+  constructor($log, $scope, $compile, $element, $injector) {
+    let newScope = $scope.$new(true, $scope);
+    let properties = '';
+
+    // Build properties
+    for(let prop in this.props) {
+      if(!this.props.hasOwnProperty(prop)) {
+        continue;
+      }
+      properties = properties + ' ' + prop + '="' + this.props[prop] + '"';
+    }
+
+    let componentName = this.type.toLowerCase().replace(/-(.)/g, function(match, group1) {
+      return group1.toUpperCase();
+    });
+
+    // Check if Component (Directive) exists
+    if($injector.has(componentName + 'Directive')) {
+      let dynamicContainer = '<' + this.type + properties + '></' + this.type + '>';
+      let dynamicContainerContent = $compile(dynamicContainer)(newScope);
+      let htmlToReplace = $element[0].querySelector('.content');
+
+      angular.element(htmlToReplace).replaceWith(dynamicContainerContent);
+    } else {
+      $log.error('The Component (Directive) "' + componentName + '" is not defined.');
+    }
+  }
+  
+}
+
+DynamicContainerController.$inject = ['$log', '$scope', '$compile', '$element', '$injector'];
+
+export default DynamicContainerController;

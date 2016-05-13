@@ -33,15 +33,19 @@ import * as guhLib from 'guh-libjs';
 class AppController {
 
   constructor($scope, $ngRedux) {
-    const disconnect = $ngRedux.connect(
+    this.disconnect = $ngRedux.connect(
       this.mapStateToThis,
       {
-        // ...router.actions,
+        stateGo: router.stateGo,
+        stateReload: router.stateReload,
+        stateTransitionTo: router.stateTransitionTo,
         ...guhLib.actions.app
       }
     )(this);
+  }
 
-    $scope.$on('$destroy', disconnect);
+  $onDestroy() {
+    this.disconnect();
   }
 
   mapStateToThis(state) {

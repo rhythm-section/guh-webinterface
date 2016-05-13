@@ -24,17 +24,17 @@
 
 
 // Controller
-import controller from './app-controller';
+import controller from './intro-controller';
 
 // Template
-import template from './app.html';
+import template from './intro.html';
 
 
-const appComponent = {
+const introComponent = {
   bindings: {},
   controller,
-  controllerAs: 'app',
+  controllerAs: 'intro',
   template
 };
 
-export default appComponent;
+export default introComponent;

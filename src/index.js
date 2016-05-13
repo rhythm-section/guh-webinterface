@@ -33,17 +33,28 @@ import angular from 'angular';
 // Guh
 import guhLib from 'guh-libjs';
 
-// Containers
+// Container Components
 import appComponent from './containers/app/app-component';
+import introComponent from './containers/intro/intro-component';
+
+// Presentationsl Components
+import dynamicContainerComponent from './components/dynamic-container/dynamic-container-component';
 
 
 const containers = angular
   .module('app.containers', [])
   .component('guhApp', appComponent)
+  .component('guhIntro', introComponent)
+  .name;
+
+const components = angular
+  .module('app.components', [])
+  .component('guhDynamicContainer', dynamicContainerComponent)
   .name;
 
 angular
   .module('app', [
     guhLib,
-    containers
+    containers,
+    components
   ]);
