@@ -97,9 +97,16 @@
   },
   "dependencies": {
     "angular": "^1.5.5",
+    "angular-ui-router": "^0.2.18",
     "es5-shim": "^4.5.8",
     "es6-shim": "^0.35.1",
-    "lodash": "^4.12.0",
-    "node-bourbon": "^4.2.8"
+    "immutable": "^3.8.1",
+    "lodash": "^4.11.2",
+    "ng-redux": "=3.3.3",
+    "node-bourbon": "^4.2.8",
+    "redux": "^3.5.2",
+    "redux-logger": "^2.6.1",
+    "redux-thunk": "^2.0.1",
+    "redux-ui-router": "^0.5.1"
   }
 }

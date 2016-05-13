@@ -24,10 +24,18 @@
 <!-- Header -->
 <header>
   <h1>App</h1>
+  <nav>
+    <ul>
+      <li ui-sref-active="active"><a ui-sref="app.dashboard">Dashboard</a></li>
+      <li ui-sref-active="active"><a ui-sref="app.things">Things</a></li>
+      <li ui-sref-active="active"><a ui-sref="app.rules">Rules</a></li>
+    </ul>
+  </nav>
 </header>
 
 <!-- Content -->
 <div>
   <h2>Server information</h2>
+  <pre>{{ app.router | json }}</pre>
   <pre>{{ app.serverInfo | json }}</pre>
 </div>

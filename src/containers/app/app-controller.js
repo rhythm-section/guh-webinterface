@@ -23,8 +23,11 @@
  * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 
 
+// Vendor
+import * as router from 'redux-ui-router';
+
 // Actions
-import { actions } from 'guh-libjs';
+import * as guhLib from 'guh-libjs';
 
 
 class AppController {
@@ -32,16 +35,20 @@ class AppController {
   constructor($scope, $ngRedux) {
     const disconnect = $ngRedux.connect(
       this.mapStateToThis,
-      actions.app
+      {
+        // ...router.actions,
+        ...guhLib.actions.app
+      }
     )(this);
 
     $scope.$on('$destroy', disconnect);
-
-    console.log('AppController', this);
   }
 
   mapStateToThis(state) {
-    return state.app.toJS();
+    return {
+      router: state.router,
+      serverInfo: state.app.get('serverInfo').toJS()
+    }
   }
   
 }
