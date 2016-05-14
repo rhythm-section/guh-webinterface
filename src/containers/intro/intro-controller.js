@@ -23,7 +23,7 @@
  * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 
 
-// Actions
+// Constants & Actions
 import * as guhLib from 'guh-libjs';
 
 
@@ -39,17 +39,17 @@ class IntroController {
 
     // Add steps
     this.addStep({
-      name: 'connect',
+      name: guhLib.constants.appTypes.STEP_CONNECT,
       containerType: 'guh-connection'
     });
 
     this.addStep({
-      name: 'load',
+      name: guhLib.constants.appTypes.STEP_LOAD,
       containerType: 'guh-load'
     });
 
     // Go to first step
-    this.goToStep('connect');
+    this.goToStep(guhLib.constants.appTypes.STEP_CONNECT);
   }
 
   $onDestroy() {

@@ -23,41 +23,18 @@
  * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 
 
-// Vendor
-import 'es5-shim';
-import 'es6-shim';
+// Controller
+import controller from './connection-controller';
 
-// Angular
-import angular from 'angular';
-
-// Guh lib
-import * as guhLib from 'guh-libjs';
-
-// Container Components
-import appComponent from './containers/app/app-component';
-import introComponent from './containers/intro/intro-component';
-import connectionComponent from './containers/connection/connection-component';
-
-// Presentationsl Components
-import dynamicContainerComponent from './components/dynamic-container/dynamic-container-component';
+// Template
+import template from './connection.html';
 
 
-const containers = angular
-  .module('app.containers', [])
-  .component('guhApp', appComponent)
-  .component('guhIntro', introComponent)
-  .component('guhConnection', connectionComponent)
-  .name;
+const connectionComponent = {
+  bindings: {},
+  controller,
+  controllerAs: 'connection',
+  template
+};
 
-const components = angular
-  .module('app.components', [])
-  .component('guhDynamicContainer', dynamicContainerComponent)
-  .component('guhConnect', guhLib.components.connect)
-  .name;
-
-angular
-  .module('app', [
-    guhLib.default,
-    containers,
-    components
-  ]);
+export default connectionComponent;

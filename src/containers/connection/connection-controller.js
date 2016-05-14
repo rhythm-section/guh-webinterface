@@ -24,40 +24,53 @@
 
 
 // Vendor
-import 'es5-shim';
-import 'es6-shim';
+import * as uuid from 'node-uuid';
 
-// Angular
-import angular from 'angular';
-
-// Guh lib
+// Actions
 import * as guhLib from 'guh-libjs';
 
-// Container Components
-import appComponent from './containers/app/app-component';
-import introComponent from './containers/intro/intro-component';
-import connectionComponent from './containers/connection/connection-component';
 
-// Presentationsl Components
-import dynamicContainerComponent from './components/dynamic-container/dynamic-container-component';
+class ConnectionController {
 
+  constructor($log, $scope, $ngRedux, $location) {
+    console.log('guhLib.actions.websocket', guhLib.actions.websocket);
 
-const containers = angular
-  .module('app.containers', [])
-  .component('guhApp', appComponent)
-  .component('guhIntro', introComponent)
-  .component('guhConnection', connectionComponent)
-  .name;
+    const disconnect = $ngRedux.connect(
+      this.mapStateToThis,
+      {
+        ...guhLib.actions.websocket,
+        ...guhLib.actions.connection
+      }
+    )(this);
 
-const components = angular
-  .module('app.components', [])
-  .component('guhDynamicContainer', dynamicContainerComponent)
-  .component('guhConnect', guhLib.components.connect)
-  .name;
+    // Save default connection (current webinterface url)
+    this.addConnection({
+      id: uuid.v4(),
+      host: $location.host(),
+      port: $location.port(),
+      ssl: $location.protocol() === 'https' ? true : false,
+      isDefault: true
+    });
+  }
 
-angular
-  .module('app', [
-    guhLib.default,
-    containers,
-    components
-  ]);
+  $onDestroy() {
+    this.disconnect();
+  }
+
+  mapStateToThis(state) {
+    console.log('state', state);
+
+    return {
+      availableConnections: state.connection.get('availableConnections').toJS(),
+      defaultConnection: state.connection.get('defaultConnection'),
+      activeConnection: state.connection.get('activeConnection'),
+      // isFetching: state.connection.get('isFetching'),
+      websocketStatus: state.websocket.get('status')
+    };
+  }
+  
+}
+
+ConnectionController.$inject = ['$log', '$scope', '$ngRedux', '$location'];
+
+export default ConnectionController;
