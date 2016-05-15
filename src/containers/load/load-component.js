@@ -23,50 +23,18 @@
  * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 
 
-// Vendor
-import * as uuid from 'node-uuid';
+// Controller
+import controller from './load-controller';
 
-// Actions
-import * as guhLib from 'guh-libjs';
+// Template
+import template from './load.html';
 
 
-class ConnectionController {
+const loadComponent = {
+  bindings: {},
+  controller,
+  controllerAs: 'load',
+  template
+};
 
-  constructor($log, $scope, $ngRedux, $location) {
-    this.disconnect = $ngRedux.connect(
-      this.mapStateToThis,
-      {
-        ...guhLib.actions.websocket,
-        ...guhLib.actions.connection
-      }
-    )(this);
-
-    // Save default connection (current webinterface url)
-    this.addConnection({
-      id: uuid.v4(),
-      host: $location.host(),
-      port: $location.port(),
-      ssl: $location.protocol() === 'https' ? true : false,
-      isDefault: true
-    });
-  }
-
-  $onDestroy() {
-    this.disconnect();
-  }
-
-  mapStateToThis(state) {
-    return {
-      availableConnections: state.connection.get('availableConnections').toJS(),
-      defaultConnection: state.connection.get('defaultConnection'),
-      activeConnection: state.connection.get('activeConnection'),
-      // isFetching: state.connection.get('isFetching'),
-      websocketStatus: state.websocket.get('status')
-    };
-  }
-  
-}
-
-ConnectionController.$inject = ['$log', '$scope', '$ngRedux', '$location'];
-
-export default ConnectionController;
+export default loadComponent;

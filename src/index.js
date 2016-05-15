@@ -37,6 +37,7 @@ import * as guhLib from 'guh-libjs';
 import appComponent from './containers/app/app-component';
 import introComponent from './containers/intro/intro-component';
 import connectionComponent from './containers/connection/connection-component';
+import loadComponent from './containers/load/load-component';
 
 // Presentationsl Components
 import dynamicContainerComponent from './components/dynamic-container/dynamic-container-component';
@@ -47,6 +48,7 @@ const containers = angular
   .component('guhApp', appComponent)
   .component('guhIntro', introComponent)
   .component('guhConnection', connectionComponent)
+  .component('guhLoad', loadComponent)
   .name;
 
 const components = angular
@@ -55,9 +57,15 @@ const components = angular
   .component('guhConnect', guhLib.components.connect)
   .name;
 
+const services = angular
+  .module('app.services', [])
+  .service('LoadActions', guhLib.actions.load)
+  .name;
+
 angular
   .module('app', [
     guhLib.default,
     containers,
-    components
+    components,
+    services
   ]);

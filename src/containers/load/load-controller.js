@@ -23,32 +23,30 @@
  * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 
 
-// Vendor
-import * as uuid from 'node-uuid';
-
 // Actions
 import * as guhLib from 'guh-libjs';
 
 
-class ConnectionController {
+class LoadController {
 
-  constructor($log, $scope, $ngRedux, $location) {
+  constructor($log, $scope, $ngRedux, $location, LoadActions) {
+    this.loadActions = LoadActions;
+
     this.disconnect = $ngRedux.connect(
       this.mapStateToThis,
-      {
-        ...guhLib.actions.websocket,
-        ...guhLib.actions.connection
-      }
+      this.mapDispatchToThis.bind(this)
+      // (dispatch) => {
+      //   return {
+      //     loadData: (dataPartTypes) => dispatch(LoadActions.loadData(dataPartTypes))
+      //   };
+      // }
+      // guhLib.actions.load
     )(this);
 
-    // Save default connection (current webinterface url)
-    this.addConnection({
-      id: uuid.v4(),
-      host: $location.host(),
-      port: $location.port(),
-      ssl: $location.protocol() === 'https' ? true : false,
-      isDefault: true
-    });
+    // this.loadDataRequest([
+    //   'devices',
+    //   'deviceClasses'
+    // ]);
   }
 
   $onDestroy() {
@@ -57,16 +55,18 @@ class ConnectionController {
 
   mapStateToThis(state) {
     return {
-      availableConnections: state.connection.get('availableConnections').toJS(),
-      defaultConnection: state.connection.get('defaultConnection'),
-      activeConnection: state.connection.get('activeConnection'),
-      // isFetching: state.connection.get('isFetching'),
-      websocketStatus: state.websocket.get('status')
+      dataPartTypes: state.load.get('dataPartTypes')
+    };
+  }
+
+  mapDispatchToThis(dispatch) {
+    return {
+      loadData: (dataPartTypes) => dispatch(this.loadActions.loadData(dataPartTypes))
     };
   }
   
 }
 
-ConnectionController.$inject = ['$log', '$scope', '$ngRedux', '$location'];
+LoadController.$inject = ['$log', '$scope', '$ngRedux', '$location', 'LoadActions'];
 
-export default ConnectionController;
+export default LoadController;
