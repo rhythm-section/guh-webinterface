@@ -28,36 +28,28 @@
  */
 
 var gulp = require('gulp');
-var runSequence = require('run-sequence');
-var argsParser = require('../utils/args-parser');
-var logger = require('../utils/logger');
+
+
+/*
+ * Pipes
+ */
+
+var builtDeviceClassSvgSprites = require('../pipes/built-device-class-svg-sprites');
+
+
+/*
+ * Configuration
+ */
+
+var pathConfig = require('../config/gulp').paths;
 
 
 /*
  * Task
+ * 
  */
 
-gulp.task('production', function(done) {
-  // Setting node envrionment
-  process.env.NODE_ENV = 'production';
-  
-  runSequence(
-    'preprocess-app-config-production',
-    'copy-assets-production',
-    'build-ui-svg-sprites',
-    'build-vendor-svg-sprites',
-    'build-device-class-svg-sprites',
-    [
-      'build-templates-production',
-      'build-vendor-styles-production',
-      'build-app-styles-production',
-      'build-vendor-scripts-production',
-      'build-app-scripts-production',
-      'document-app-scripts-production'
-    ],
-    'build-index-production',
-    argsParser.isServer() ? 'app-server-production' : 'noop',
-    argsParser.isWatch() ? 'watch-production' : 'noop',
-    done
-  );
+gulp.task('build-device-class-svg-sprites', function() {
+  return builtDeviceClassSvgSprites.getPipe()
+    .pipe(gulp.dest(pathConfig.dest.development));
 });

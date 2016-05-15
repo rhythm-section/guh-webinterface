@@ -28,36 +28,44 @@
  */
 
 var gulp = require('gulp');
-var runSequence = require('run-sequence');
-var argsParser = require('../utils/args-parser');
-var logger = require('../utils/logger');
+var plumber = require('gulp-plumber');
+var svgSprite = require('gulp-svg-sprite');
+var gulpIgnore = require('gulp-ignore');
 
 
 /*
- * Task
+ * Configuration
  */
 
-gulp.task('production', function(done) {
-  // Setting node envrionment
-  process.env.NODE_ENV = 'production';
-  
-  runSequence(
-    'preprocess-app-config-production',
-    'copy-assets-production',
-    'build-ui-svg-sprites',
-    'build-vendor-svg-sprites',
-    'build-device-class-svg-sprites',
-    [
-      'build-templates-production',
-      'build-vendor-styles-production',
-      'build-app-styles-production',
-      'build-vendor-scripts-production',
-      'build-app-scripts-production',
-      'document-app-scripts-production'
-    ],
-    'build-index-production',
-    argsParser.isServer() ? 'app-server-production' : 'noop',
-    argsParser.isWatch() ? 'watch-production' : 'noop',
-    done
-  );
-});
+var pathConfig = require('../config/gulp').paths;
+var svgSpriteConfig = require('../config/gulp').svgSprite;
+var dynamicConfig = require('../config/gulp').dynamic;
+
+
+/*
+ * Pipes
+ */
+
+
+/*
+ * Pipe
+ */
+
+module.exports = {
+  getPipe: function() {
+    // Set output filepath + filename for css-files
+    svgSpriteConfig.mode.css.dest = 'assets/css/device-class';
+    svgSpriteConfig.mode.symbol.dest = 'assets/svg/device-class';
+
+    // Set prefix
+    svgSpriteConfig.mode.css.prefix = '.device-class-%s';
+
+    // Set output filepath + filename for svg-files
+    svgSpriteConfig.mode.css.sprite = '../../svg/device-class.css.svg';
+    svgSpriteConfig.mode.symbol.sprite = '../device-class/device-class.symbol.svg';
+
+    return gulp.src(pathConfig.svg.deviceClass)
+      .pipe(plumber())
+      .pipe(svgSprite(svgSpriteConfig));
+  }
+};
