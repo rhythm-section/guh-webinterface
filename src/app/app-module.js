@@ -66,10 +66,7 @@
       'guh.ui',
 
       // App
-      'guh.intro',
-      'guh.moods',
-      'guh.devices',
-      'guh.services'
+      'guh.containers'
     ]);
 
 }());

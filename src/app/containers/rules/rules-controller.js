@@ -21,8 +21,43 @@
  * SOFTWARE.                                                                           *
  *                                                                                     *
  * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
+ 
+(function() {
+  'use strict';
 
+  angular
+    .module('guh.containers')
+    .controller('RulesCtrl', RulesCtrl);
 
-.hotkey span {
-  text-decoration: underline;
-}
+  RulesCtrl.$inject = ['app', '$log', '$state', 'DSRule'];
+
+  /**
+   * @ngdoc controller
+   * @name guh.containers.controller:RulesCtrl
+   * @description Container component for rules.
+   *
+   */
+  function RulesCtrl(app, $log, $state, DSRule) {
+    
+    var vm = this;
+
+    vm.$onInit = onInit;
+
+    function onInit() {
+      if(!app.dataLoaded) {
+        $state.go('guh.intro', {
+          previousState: {
+            name: $state.current.name,
+            params: {}
+          }
+        });
+      }
+
+      vm.rules = DSRule.getAll();
+
+      $log.log('vm', vm);
+    }
+
+  }
+
+}());

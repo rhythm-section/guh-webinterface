@@ -23,25 +23,16 @@
  * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 
 
-$white: #fff;
+(function() {
+  'use strict';
 
-$background-border-page: $white;
+  angular
+    .module('guh.containers')
+    .component('guhDashboard', {
+      bindings: {},
+      controller: 'DashboardCtrl',
+      controllerAs: 'dashboard',
+      templateUrl: 'app/containers/dashboard/dashboard.html'
+    });
 
-
-/* Maybe consider using preserve-3d in parent element: http://zerosixthree.se/vertical-align-anything-with-just-3-lines-of-css/ */
-.content {
-  display: block;
-}
-
-.content_content-center {
-  position: relative;
-    top: 50%;
-  @include transform(translateY(-50%));
-}
-
-.content_border-page {
-  background-color: $background-border-page;
-  height: 100%;
-  overflow-y: scroll;
-  -webkit-overflow-scrolling: touch;
-}
+}());

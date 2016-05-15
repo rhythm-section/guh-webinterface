@@ -21,69 +21,41 @@
  * SOFTWARE.                                                                           *
  *                                                                                     *
  * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
+ 
+(function() {
+  'use strict';
 
+  angular
+    .module('guh.containers')
+    .controller('ThingsCtrl', ThingsCtrl);
 
-$black: #000;
-$white: #fff;
+  ThingsCtrl.$inject = ['app', '$log', '$state', 'DSDevice'];
 
-$background-active: $white;
-$color: $black;
-$color-active: $white;
+  /**
+   * @ngdoc controller
+   * @name guh.containers.controller:ThingsCtrl
+   * @description Container component for things.
+   *
+   */
+  function ThingsCtrl(app, $log, $state, DSDevice) {
+    
+    var vm = this;
 
+    vm.$onInit = onInit;
 
-.tiles {
-  overflow: auto;
-  width: 100%;
-}
+    function onInit() {
+      if(!app.dataLoaded) {
+        $state.go('guh.intro', {
+          previousState: {
+            name: $state.current.name,
+            params: {}
+          }
+        });
+      }
 
-.tile {
-  border-left: 1px solid rgba($color, 0.1);
-  border-top: 1px solid rgba($color, 0.1);
-  float: left;
-  position: relative;
-  width: 20%;
-
-  &:nth-child(5n + 1) {
-    border-left: none;
-  }
-
-  &:nth-child(1),
-  &:nth-child(2),
-  &:nth-child(3),
-  &:nth-child(4),
-  &:nth-child(5) {
-    border-top: none;
-  }
-
-  &:before {
-    content: "";
-    display: block;
-    padding-bottom: 100%;
-  }
-
-  a {
-    background-color: transparent;
-    color: rgba($color, 0.2);
-    display: block;
-    position: absolute;
-      bottom: 0;
-      left: 0;
-      right: 0;
-      top: 0;
-    text-align: center;
-    text-decoration: none;
-
-    &:hover {
-      background-color: rgba($background-active, 0.1);
-      color: $color-active;
+      vm.configuredDevices = DSDevice.getAll();
     }
+
   }
 
-  .content {
-    @include rem(margin-top, -2.25);
-    @include rem(padding, 0, 3);
-    position: absolute;
-      top: 50%;
-    width: 100%;
-  }
-}
+}());

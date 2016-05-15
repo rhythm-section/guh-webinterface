@@ -23,17 +23,18 @@
  * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 
 
-$grey: #676767;
+(function() {
+  'use strict';
 
+  angular
+    .module('guh.containers')
+    .component('guhIntro', {
+      bindings: {
+        host: '@'
+      },
+      controller: 'IntroCtrl',
+      controllerAs: 'intro',
+      templateUrl: 'app/containers/intro/intro.html'
+    });
 
-.icon {
-  display: block;
-  @include rem(height, 1.5);
-  fill: $grey;
-  @include rem(width, 1.5);
-}
-
-.icon_inline {
-  display: inline-block;
-  @include rem(margin-bottom, -0.3);
-}
+}());

@@ -23,188 +23,25 @@
  * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 
 
-$grey: #676767;
-$grey-dark: #676767;
-$grey-light: #f0f0f0;
-$grey-middle: #e3e3e3;
-$green: #7cc09a;
-$turquoise: #57baae;
-$white: #fff;
-
-$background: $white;
-$background-light: $green;
-$background-dark: $turquoise;
-$background-button: $white;
-$background-button-active: $grey-light;
-$border: $grey-light;
-$border-active: $grey-middle;
-$color-button: $grey;
-$color-text: $grey;
-$color-highlight: $turquoise;
-
 *,
 *:before,
 *:after {
   box-sizing: inherit;
 }
 
-html,
-body {
-  min-height: 100%;
-}
-
-html,
-body,
-.main {
-  height: 100%;
-}
-
-.main {
-  overflow-y: scroll;
-}
-
 html {
-  @include linear-gradient(to bottom, $background-light, $background-dark);
   box-sizing: border-box;
   @include rootsize();
 }
 
 body {
-  color: $color-text;
+  color: $grey;
   font-family: 'Ubuntu';
   font-weight: 400;
   @include rem(font-size, 1);
   @include rem(line-height, 1.5);
-  position: relative;
-}
-
-// Type
-h1,
-h2,
-h3,
-h4,
-h5,
-h6 {
-  
-}
-
-h2 {
-  @include rem(font-size, 2);
-  @include rem(line-height, 3);
-}
-
-p {
-
 }
 
 a {
-  color: $color-highlight;
-  outline: none;
+  color: inherit;
 }
-
-// Media
-img {
-  width: 100%;
-}
-
-// Form
-// form {
-
-// }
-
-// button,
-// label,
-// input {
-//   display: block;
-//   width: 100%;
-// }
-
-// label {
-//   @include rem(margin, 1.5, 0, 1);
-// }
-
-button,
-input,
-select,
-textarea {
-  @include appearance(none);
-  background-color: transparent;
-  border: none;
-  color: $color-button;
-  font-family: 'Ubuntu';
-  font-weight: 400;
-  @include rem(font-size, 1);
-  @include rem(line-height, 1.5);
-  outline: none;
-}
-
-button {
-  background-color: $background-button;
-  border: 1px solid $border;
-  color: $color-button;
-  cursor: pointer;
-  @include rem(height, 3);
-  overflow: hidden;
-  @include rem(padding, 0.7, 1.5, 0.8);
-  // @include rem(height, 4.5);
-  text-overflow: ellipsis;
-  @include transition(background-color 0.2s, border-color 0.2s, color 0.2s);
-  white-space: nowrap;
-
-  &::-moz-focus-inner {
-    border: 0;
-  }
-
-  &:hover {
-    background-color: $background-button-active;
-    border-color: $border-active;
-  }
-}
-
-// button:focus,
-// input:focus {
-//   outline: none;
-// }
-
-// // button,
-// input,
-// textarea {
-//   border-bottom: 1px solid $border-light;
-//   border-radius: 0;
-//   color: $color-text;
-//   @include rem(font-size, 1);
-//   @include rem(line-height, 1.5);
-//   @include rem(padding, 1, 0);
-
-//   &+ p {
-//     @include rem(margin, 1, 0);
-//   }
-// }
-
-// // button:focus,
-// input:focus {
-//   border-color: $border-dark;
-//   outline: none;
-// }
-
-// // button,
-// input[type="button"],
-// input[type="submit"] {
-//   // background-color: rgba($background-button, 0.2);
-//   background-color: transparent;
-//   border: 1px solid $border-light;
-//   @include rem(margin, 1.5, 0, 1);
-//   // @include rem(border-radius, 1.75);
-//   cursor: pointer;
-//   letter-spacing: 0.1em;
-//   outline: none;
-//   @include rem(padding, 1);
-//   text-transform: uppercase;
-//   @include transition(background 0.3s ease-in-out, color 0.3s ease-in-out);
-//   @include user-select(none);
-
-//   &:hover {
-//     background-color: $background-button;
-//     // color: $color-button;
-//   }
-// }

@@ -23,26 +23,16 @@
  * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 
 
-$grey: #676767;
+(function() {
+  'use strict';
 
-$color: $grey;
+  angular
+    .module('guh.containers')
+    .component('guhRules', {
+      bindings: {},
+      controller: 'RulesCtrl',
+      controllerAs: 'rules',
+      templateUrl: 'app/containers/rules/rules.html'
+    });
 
-
-.event {
-  @include rem(margin-bottom, 1.5);
-
-  .value {
-    color: $color;
-    @include rem(font-size, 1.2);
-    @include rem(line-height, 1.5);
-  }
-
-  .name {
-    color: rgba($color, 0.6);
-    @include rem(font-size, 0.8);
-    // letter-spacing: 0.2em;
-    @include rem(line-height, 1.5);
-    // @include rem(margin, 0.2, 0, 1.3);
-    text-transform: uppercase;
-  }
-}
+}());

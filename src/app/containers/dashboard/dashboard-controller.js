@@ -21,28 +21,39 @@
  * SOFTWARE.                                                                           *
  *                                                                                     *
  * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
+ 
+(function() {
+  'use strict';
 
+  angular
+    .module('guh.containers')
+    .controller('DashboardCtrl', DashboardCtrl);
 
-$grey: #676767;
+  DashboardCtrl.$inject = ['app', '$log', '$state', 'DSDevice', 'DSRule'];
 
-$color: $grey;
+  /**
+   * @ngdoc controller
+   * @name guh.containers.controller:DashboardCtrl
+   * @description Container component for the dashboard.
+   *
+   */
+  function DashboardCtrl(app, $log, $state, DSDevice, DSRule) {
+    
+    var vm = this;
 
+    vm.$onInit = onInit;
 
-.action {
-  @include rem(margin-bottom, 1.5);
+    function onInit() {
+      if(!app.dataLoaded) {
+        $state.go('guh.intro', {
+          previousState: {
+            name: $state.current.name,
+            params: {}
+          }
+        });
+      }
+    }
 
-  .value {
-    color: $color;
-    @include rem(font-size, 1.5);
-    @include rem(line-height, 1.5);
   }
 
-  .name {
-    color: rgba($color, 0.6);
-    @include rem(font-size, 0.8);
-    // letter-spacing: 0.2em;
-    @include rem(line-height, 1.5);
-    // @include rem(margin, 0.2, 0, 1.3);
-    text-transform: uppercase;
-  }
-}
+}());

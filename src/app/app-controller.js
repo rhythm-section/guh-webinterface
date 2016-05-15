@@ -29,16 +29,13 @@
     .module('guh')
     .controller('AppCtrl', AppCtrl);
 
-  AppCtrl.$inject = ['$log', '$rootScope', '$scope', '$animate', '$timeout', '$state', '$stateParams', 'app', 'libs', 'errors', 'websocketService', 'ngDialog'];
+  AppCtrl.$inject = ['$log', '$rootScope', '$scope', '$animate', '$timeout', 'app', 'libs', 'errors', 'websocketService', 'ngDialog'];
 
-  function AppCtrl($log, $rootScope, $scope, $animate, $timeout, $state, $stateParams, app, libs, errors, websocketService, ngDialog) {
+  function AppCtrl($log, $rootScope, $scope, $animate, $timeout, app, libs, errors, websocketService, ngDialog) {
 
     var vm = this;
     var notification = null;
     var connectionErrorModal = null;
-    
-    vm.$state = $state;
-    vm.$stateParams = $stateParams;
 
 
     // Websocket Connection Error

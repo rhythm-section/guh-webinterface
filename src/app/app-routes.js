@@ -74,99 +74,99 @@
       });
 
         $stateProvider.state('guh.intro', {
-          controller: 'IntroCtrl',
-          controllerAs: 'intro',
+          template: '<guh-intro host="{{ host }}"></guh-intro>',
+          url: '/intro',
+          resolve: {
+            host: ['host', function(host) {
+              return host;
+            }]
+          },
           params: {
             previousState: {}
           },
-          url: '/intro',
-          templateUrl: 'app/components/intro/intro.html'
+          controller: ['$scope', 'host', function($scope, host) {
+            $scope.host = host;
+          }]
         });
 
-        $stateProvider.state('guh.devices', {
-          abstract: true,
-          template: '<ui-view />',
-          url: '/devices'
+        $stateProvider.state('guh.dashboard', {
+          template: '<guh-dashboard></guh-dashboard>',
+          url: '/dashboard'
         });
 
-          $stateProvider.state('guh.devices.master', {
-            controller: 'DevicesMasterCtrl',
-            controllerAs: 'devices',
-            url: '',
-            templateUrl: 'app/components/devices/master/devices-master.html'
-          });
-
-            $stateProvider.state('guh.devices.master.current', {
-              controller: 'DevicesDetailCtrl',
-              controllerAs: 'device',
-              params: { deviceId: null },
-              url: '/:deviceId',
-              templateUrl: 'app/components/devices/detail/devices-detail.html'
-            });
-
-          // $stateProvider.state('guh.devices.detail', {
-          //   controller: 'DevicesDetailCtrl',
-          //   controllerAs: 'device',
-          //   params: { deviceId: null },
-          //   url: '/:deviceId',
-          //   templateUrl: 'app/components/devices/detail/devices-detail.html'
-          // });
-
-        $stateProvider.state('guh.services', {
-          abstract: true,
-          template: '<ui-view/>',
-          url: '/services'
+        $stateProvider.state('guh.things', {
+          template: '<guh-things></guh-things>',
+          url: '/things'
         });
 
-          $stateProvider.state('guh.services.master', {
-            controller: 'ServicesMasterCtrl',
-            controllerAs: 'services',
-            url: '',
-            templateUrl: 'app/components/services/master/services-master.html'
-          });
+        $stateProvider.state('guh.rules', {
+          template: '<guh-rules></guh-rules>',
+          url: '/rules'
+        });    
 
-            $stateProvider.state('guh.services.master.current', {
-              controller: 'ServicesDetailCtrl',
-              controllerAs: 'service',
-              params: { serviceId: null },
-              url: '/:serviceId',
-              templateUrl: 'app/components/services/detail/services-detail.html'
-            });
 
-          // $stateProvider.state('guh.services.detail', {
-          //   controller: 'ServicesDetailCtrl',
-          //   controllerAs: 'service',
-          //   url: '/:serviceId',
-          //   templateUrl: 'app/components/services/detail/services-detail.html'
-          // });
+        // $stateProvider.state('guh.devices', {
+        //   abstract: true,
+        //   template: '<ui-view />',
+        //   url: '/devices'
+        // });
 
-        $stateProvider.state('guh.moods', {
-          abstract: true,
-          template: '<ui-view/>',
-          url: '/moods'
-        });
+        //   $stateProvider.state('guh.devices.master', {
+        //     controller: 'DevicesMasterCtrl',
+        //     controllerAs: 'devices',
+        //     url: '',
+        //     templateUrl: 'app/components/devices/master/devices-master.html'
+        //   });
 
-          $stateProvider.state('guh.moods.master', {
-            controller: 'MoodsMasterCtrl',
-            controllerAs: 'moods',
-            url: '',
-            templateUrl: 'app/components/moods/master/moods-master.html'
-          });
+        //     $stateProvider.state('guh.devices.master.current', {
+        //       controller: 'DevicesDetailCtrl',
+        //       controllerAs: 'device',
+        //       params: { deviceId: null },
+        //       url: '/:deviceId',
+        //       templateUrl: 'app/components/devices/detail/devices-detail.html'
+        //     });
 
-            $stateProvider.state('guh.moods.master.current', {
-              controller: 'MoodsDetailCtrl',
-              controllerAs: 'mood',
-              params: { moodId: null },
-              url: '/:moodId',
-              templateUrl: 'app/components/moods/detail/moods-detail.html'
-            });
+        // $stateProvider.state('guh.services', {
+        //   abstract: true,
+        //   template: '<ui-view/>',
+        //   url: '/services'
+        // });
 
-          // $stateProvider.state('guh.moods.detail', {
-          //   controller: 'MoodsDetailCtrl',
-          //   controllerAs: 'mood',
-          //   url: '/:moodId',
-          //   templateUrl: 'app/components/moods/detail/moods-detail.html'
-          // });
+        //   $stateProvider.state('guh.services.master', {
+        //     controller: 'ServicesMasterCtrl',
+        //     controllerAs: 'services',
+        //     url: '',
+        //     templateUrl: 'app/components/services/master/services-master.html'
+        //   });
+
+        //     $stateProvider.state('guh.services.master.current', {
+        //       controller: 'ServicesDetailCtrl',
+        //       controllerAs: 'service',
+        //       params: { serviceId: null },
+        //       url: '/:serviceId',
+        //       templateUrl: 'app/components/services/detail/services-detail.html'
+        //     });
+
+        // $stateProvider.state('guh.moods', {
+        //   abstract: true,
+        //   template: '<ui-view/>',
+        //   url: '/moods'
+        // });
+
+        //   $stateProvider.state('guh.moods.master', {
+        //     controller: 'MoodsMasterCtrl',
+        //     controllerAs: 'moods',
+        //     url: '',
+        //     templateUrl: 'app/components/moods/master/moods-master.html'
+        //   });
+
+        //     $stateProvider.state('guh.moods.master.current', {
+        //       controller: 'MoodsDetailCtrl',
+        //       controllerAs: 'mood',
+        //       params: { moodId: null },
+        //       url: '/:moodId',
+        //       templateUrl: 'app/components/moods/detail/moods-detail.html'
+        //     });
       
     }
 
