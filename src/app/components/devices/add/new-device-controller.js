@@ -145,6 +145,8 @@
           vm.discover = true;
           vm.loading = false;
           vm.discoveredDevices = data.deviceDescriptors;
+          // vm.discoveredDevices = discoveredDevices.data;
+          // vm.discoveredDevices = discoveredDevices.deviceDescriptors;
         })
         .catch(function(error) {
           vm.discover = true;
@@ -157,6 +159,8 @@
       DSDevice
         .pair(vm.deviceClassId, vm.deviceDescriptorId, vm.deviceParams, vm.name)
         .then(function(pairingData) {
+          // vm.displayMessage = pairingData.data.displayMessage;
+          // vm.pairingTransactionId = pairingData.data.pairingTransactionId;
           vm.displayMessage = pairingData.displayMessage;
           vm.pairingTransactionId = pairingData.pairingTransactionId;
 
