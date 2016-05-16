@@ -21,34 +21,42 @@
  * SOFTWARE.                                                                           *
  *                                                                                     *
  * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
+ 
+(function() {
+  'use strict';
 
+  angular
+    .module('guh.containers')
+    .controller('SettingsCtrl', SettingsCtrl);
 
-*,
-*:before,
-*:after {
-  box-sizing: inherit;
-}
+  SettingsCtrl.$inject = ['app', '$log', '$state', 'DSPlugin'];
 
-html {
-  box-sizing: border-box;
-  @include rootsize();
-}
+  /**
+   * @ngdoc controller
+   * @name guh.containers.controller:SettingsCtrl
+   * @description Container component for things.
+   *
+   */
+  function SettingsCtrl(app, $log, $state, DSPlugin) {
+    
+    var vm = this;
 
-body {
-  color: $grey;
-  font-family: 'Ubuntu';
-  font-weight: 400;
-  @include rem(font-size, 1);
-  @include rem(line-height, 1.5);
-}
+    vm.$onInit = onInit;
 
-a {
-  color: inherit;
-}
+    function onInit() {
+      if(!app.dataLoaded) {
+        $state.go('guh.intro', {
+          previousState: {
+            name: $state.current.name,
+            params: {}
+          }
+        });
+      }
 
-.truncate {
-  text-overflow: ellipsis;
-  white-space: nowrap;
-  overflow: hidden;
-  width: 100%;
-}
+      vm.plugins = DSPlugin.getAll();
+      $log.log('vm.plugins', vm.plugins);
+    }
+
+  }
+
+}());

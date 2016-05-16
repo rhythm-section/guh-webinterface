@@ -23,62 +23,135 @@
  * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 
 
-@include keyframes(loading) {
-  from {
-    // @include transform(translateY(0%));
-    @include transform(scale(0.95));
-  }
-  65% {
-    // @include transform(translateY(10%));
-    @include transform(scale(1.05));
-  }
-  to {
-    // @include transform(translateY(0%));
-    @include transform(scale(0.95));
-  }
-}
+.TileItem {
+  text-align: center;
+  position: relative;
+  width: 50%;
+  @include rem(padding, 0, 0.25, 0.5);
 
+  &:hover {
+    cursor: pointer;
+  }
 
-.Intro {
-  @include rem(margin-top, 9);
+  &::after {
+    content: "";
+    display: block;
+    padding-top: 100%;
+  }
 }
 
 @include media($min-width-m) {
-  .Intro {
-    @include rem(margin-top, 12);
+  .TileItem {
+    width: 33.333333%;
   }
 }
 
-@include media($min-width-l) {
-  .Intro {
-    @include rem(margin-top, 6);
+@include media($min-width-xl) {
+  .TileItem {
+    width: 25%;
   }
 }
 
-.Intro__logo {
+// @include media($min-width-m) {
+//   .TileItem {
+//     width: 33.333333%;
+
+//     &::after {
+//       content: "";
+//       display: block;
+//       padding-top: 100%;
+//     }
+//   }
+// }
+
+// @include media($min-width-l) {
+//   .TileItem {
+//     width: 25%;
+//   }
+// }
+
+
+.TileItem__wrapper-outer {
+  background-color: rgba($grey, 0.05);
+  border-radius: 2%;
+//   overflow: hidden;
+  position: absolute;
+  @include rem(padding, 1.5, 0);
+  @include rem(bottom, 0.5);
+  @include rem(left, 0.25);
+  @include rem(right, 0.25);
+  @include rem(top, 0);
+  @include transform-style(preserve-3d);
+}
+
+
+.TileItem__wrapper-inner {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  width: 100%;
+  @include rem(margin-top, -1.5);
+  @include rem(padding, 0, 3);
+  @include transform(translateX(-50%) translateY(-50%));
+}
+
+
+.TileItem__icon svg {
+  // border-style: solid;
+  // border-color: $grey;
+  // border-radius: 100%;
   display: block;
   margin: 0 auto;
-  @include rem(height, 9);
-  // @include filter(drop-shadow(0px 15px 20px rgba($turquoise, 0.5)));
-  @include animation(loading 3.0s ease-in-out 0s infinite alternate);
+  fill: $grey;
+  stroke: $grey;
+  // @include rem(border-width, 0.2);
+  @include rem(height, 4);
+  @include rem(padding, 0.8);
+  @include rem(width, 4);
 }
 
-@include media($min-width-m) {
-  .Intro__logo {
-    @include rem(height, 12);
+// @include media($min-width-m) {
+//   .TileItem__icon {
+//     @include rem(height, 4.5);
+//     @include rem(width, 4.5);
+//   }
+// }
+
+
+.TileItem__title {
+  // font-weight: 700;
+//   @include rem(line-height, 1.5);
+  @include rem(margin, 1, 0, 0);
+}
+
+@include media($min-width-s) {
+  .TileItem__title {
+    @include rem(font-size, 1.2);
   }
 }
 
-.Intro__info {
+// @include media($min-width-m) {
+//   .TileItem__title {
+//     @include rem(font-size, 1.5);
+//   }
+// }
+
+// @include media($min-width-m) {
+//   .TileItem__title {
+//     @include rem(margin, 1.5, 0, 0);
+//   }
+// }
+
+
+.TileItem__description {
+  display: none;
   letter-spacing: 0.1em;
-  text-align: center;
   text-transform: uppercase;
-  padding-left: -0.1em;
-  @include rem(margin, 4.5, 0, 0);
 }
 
-.Intro__setup {
-  margin: 0 auto;
-  @include rem(margin-top, 1.5);
-  @include rem(padding, 1.5, 3);
+@include media($min-width-s) {
+  .TileItem__description {
+    display: block;
+    @include rem(font-size, 0.8);
+  }
 }

@@ -56,6 +56,8 @@
 
 @import "../assets/scss/base/reset";
 @import "../assets/scss/base/base";
+@import "../assets/scss/base/header";
+@import "../assets/scss/base/content";
 
 
 /*
@@ -70,4 +72,6 @@
  * Components
  */
 
-
+@import "containers/intro/intro";
+@import "components/tile-list/tile-list";
+@import "components/tile-item/tile-item";

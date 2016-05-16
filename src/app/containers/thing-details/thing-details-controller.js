@@ -21,34 +21,45 @@
  * SOFTWARE.                                                                           *
  *                                                                                     *
  * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
+ 
+(function() {
+  'use strict';
 
+  angular
+    .module('guh.containers')
+    .controller('ThingDetailsCtrl', ThingDetailsCtrl);
 
-*,
-*:before,
-*:after {
-  box-sizing: inherit;
-}
+  ThingDetailsCtrl.$inject = ['app', 'libs', '$log', '$state', '$stateParams', 'DSDevice'];
 
-html {
-  box-sizing: border-box;
-  @include rootsize();
-}
+  /**
+   * @ngdoc controller
+   * @name guh.containers.controller:ThingDetailsCtrl
+   * @description Container component for a single thing.
+   *
+   */
+  function ThingDetailsCtrl(app, libs, $log, $state, $stateParams, DSDevice) {
+    
+    var vm = this;
 
-body {
-  color: $grey;
-  font-family: 'Ubuntu';
-  font-weight: 400;
-  @include rem(font-size, 1);
-  @include rem(line-height, 1.5);
-}
+    vm.device = {};
 
-a {
-  color: inherit;
-}
+    vm.$onInit = onInit;
 
-.truncate {
-  text-overflow: ellipsis;
-  white-space: nowrap;
-  overflow: hidden;
-  width: 100%;
-}
+    function onInit() {
+      if(!app.dataLoaded) {
+        $state.go('guh.intro', {
+          previousState: {
+            name: $state.current.name,
+            params: $stateParams
+          }
+        });
+      }
+
+      if(libs._.has($stateParams, 'deviceId') && $stateParams.deviceId) {
+        vm.device = DSDevice.get($stateParams.deviceId);
+      }
+    }
+
+  }
+
+}());

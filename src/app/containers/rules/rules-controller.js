@@ -29,7 +29,7 @@
     .module('guh.containers')
     .controller('RulesCtrl', RulesCtrl);
 
-  RulesCtrl.$inject = ['app', '$log', '$state', 'DSRule'];
+  RulesCtrl.$inject = ['app', 'libs', '$log', '$state', '$stateParams', 'DSRule'];
 
   /**
    * @ngdoc controller
@@ -37,25 +37,35 @@
    * @description Container component for rules.
    *
    */
-  function RulesCtrl(app, $log, $state, DSRule) {
+  function RulesCtrl(app, libs, $log, $state, $stateParams, DSRule) {
     
     var vm = this;
 
     vm.$onInit = onInit;
+    vm.showDetails = showDetails;
+
 
     function onInit() {
+      var ruleId = (libs._.has($stateParams, 'ruleId') && $stateParams.ruleId) ? $stateParams.ruleId : null;
+
       if(!app.dataLoaded) {
         $state.go('guh.intro', {
           previousState: {
             name: $state.current.name,
-            params: {}
+            params: {
+              ruleId: ruleId
+            }
           }
         });
       }
 
       vm.rules = DSRule.getAll();
+    }
 
-      $log.log('vm', vm);
+    function showDetails(tileId) {
+      $state.go('guh.rules.current', {
+        ruleId: tileId
+      });
     }
 
   }

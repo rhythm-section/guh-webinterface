@@ -23,32 +23,9 @@
  * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 
 
-*,
-*:before,
-*:after {
-  box-sizing: inherit;
-}
-
-html {
-  box-sizing: border-box;
-  @include rootsize();
-}
-
-body {
-  color: $grey;
-  font-family: 'Ubuntu';
-  font-weight: 400;
-  @include rem(font-size, 1);
-  @include rem(line-height, 1.5);
-}
-
-a {
-  color: inherit;
-}
-
-.truncate {
-  text-overflow: ellipsis;
-  white-space: nowrap;
-  overflow: hidden;
-  width: 100%;
+.TileList {
+  @include display(flex);
+  @include flex-direction(row);
+  @include flex-wrap(wrap);
+  @include rem(padding, 0.5, 0.25, 0.25);
 }

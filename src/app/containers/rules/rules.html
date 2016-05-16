@@ -21,10 +21,8 @@
 -->
 
 
-<h1>Rules</h1>
+<guh-tile-list initial-visible-id="{{ rules.currentRule.id }}" on-select-tile="rules.showDetails(tileId)">
+  <guh-tile-item id="{{ rule.id }}" icon-url="./assets/svg/device-class/device-class.symbol.svg#default" title="{{rule.name }}" description="{{ rule.getDescription('&nbsp;&middot;&nbsp;') }}" ng-repeat="rule in rules.rules | orderBy:'name' track by $index"></guh-tile-item>
+</guh-tile-list>
 
-<ul>
-  <li ng-repeat="rule in rules.rules | orderBy:'name' track by $index">
-    <p>{{ rule.name }}</p>
-  </li>
-</ul>
+<div class="RuleDetails" ui-view></div>

@@ -23,32 +23,19 @@
  * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 
 
-*,
-*:before,
-*:after {
-  box-sizing: inherit;
-}
+/**
+ * @ngdoc overview
+ * @name guh.components
+ *
+ * @description
+ * Module for presentational components.
+ *
+ */
 
-html {
-  box-sizing: border-box;
-  @include rootsize();
-}
+(function() {
+  'use strict';
 
-body {
-  color: $grey;
-  font-family: 'Ubuntu';
-  font-weight: 400;
-  @include rem(font-size, 1);
-  @include rem(line-height, 1.5);
-}
+  angular
+    .module('guh.components', []);
 
-a {
-  color: inherit;
-}
-
-.truncate {
-  text-overflow: ellipsis;
-  white-space: nowrap;
-  overflow: hidden;
-  width: 100%;
-}
+}());

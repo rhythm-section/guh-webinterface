@@ -16,21 +16,21 @@
     "bower_components"
   ],
   "dependencies": {
-    "angular": "~1.4.3",
+    "angular": "~1.5.0",
     "angular-hotkeys": "chieffancypants/angular-hotkeys#~1.4.5",
-    "angular-ui-router": "~0.2.15",
+    "angular-ui-router": "^0.2.18",
     "guh-libjs": "guh/guh-libjs",
     "lodash": "~3.10.0",
-    "js-data": "~2.2.3",
+    "js-data": "~2.8.2",
     "js-data-angular": "~3.0.0",
     "reconnectingWebsocket": "~1.0.0",
-    "angular-animate": "~1.4.3",
-    "angular-messages": "~1.4.3",
-    "angular-sanitize": "~1.4.3",
-    "ngDialog": "~0.4.0",
     "js-data-localstorage": "~2.1.1",
     "moment": "~2.10.6",
-    "angular-chart.js": "~0.8.4"
+    "angular-chart.js": "~0.8.4",
+    "ng-dialog": "~0.5.6",
+    "angular-animate": "~1.5.0",
+    "angular-messages": "~1.5.0",
+    "angular-sanitize": "~1.5.0"
   },
   "devDependencies": {},
   "overrides": {
@@ -85,8 +85,5 @@
     "reconnectingWebsocket": {
       "main": "./reconnecting-websocket.js"
     }
-  },
-  "resolutions": {
-    "angular": "~1.4.3"
   }
 }

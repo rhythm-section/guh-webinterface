@@ -21,34 +21,39 @@
  * SOFTWARE.                                                                           *
  *                                                                                     *
  * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
+ 
+(function() {
+  'use strict';
 
+  angular
+    .module('guh.components')
+    .controller('TileItemCtrl', TileItemCtrl);
 
-*,
-*:before,
-*:after {
-  box-sizing: inherit;
-}
+  TileItemCtrl.$inject = ['$log', '$element'];
 
-html {
-  box-sizing: border-box;
-  @include rootsize();
-}
+  /**
+   * @ngdoc controller
+   * @name guh.containers.controller:TileItemCtrl
+   * @description Presentational component for a single tile.
+   *
+   */
+  function TileItemCtrl($log, $element) {
+    
+    var vm = this;
 
-body {
-  color: $grey;
-  font-family: 'Ubuntu';
-  font-weight: 400;
-  @include rem(font-size, 1);
-  @include rem(line-height, 1.5);
-}
+    vm.$onInit = onInit;
+    vm.select = select;
 
-a {
-  color: inherit;
-}
+    function onInit() {
+      $element.addClass('TileItem');
 
-.truncate {
-  text-overflow: ellipsis;
-  white-space: nowrap;
-  overflow: hidden;
-  width: 100%;
-}
+      vm.tileListCtrl.addTile(vm);
+    }
+
+    function select() {
+      vm.tileListCtrl.selectTile(vm.id);
+    }
+
+  }
+
+}());

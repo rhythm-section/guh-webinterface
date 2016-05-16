@@ -21,8 +21,4 @@
 -->
 
 
-<guh-tile-list initial-visible-id="{{ things.currentDevice.id }}" on-select-tile="things.showDetails(tileId)">
-  <guh-tile-item id="{{ device.id }}" icon-url="./assets/svg/device-class/device-class.symbol.svg#default" title="{{ device.name }}" description="{{ device.getDescription('&nbsp;&middot;&nbsp;') }}" ng-repeat="device in things.configuredDevices | orderBy:'name' track by $index"></guh-tile-item>
-</guh-tile-list>
-
-<div class="ThingDetails" ui-view></div>
+<div class="TileList" ng-transclude></div>

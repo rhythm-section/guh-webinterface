@@ -21,16 +21,18 @@
 -->
 
 
-<!-- <div class="wrapper" ng-class="app.$state.current.controllerAs"> -->
-<div class="wrapper" ng-class="{ 'intro': app.$state.includes('guh.intro'), 'devices': app.$state.includes('guh.devices.master'), 'device': app.$state.includes('guh.devices.detail') }">
-  <header class="app">
-    <nav>
-      <ul>
-        <li ng-class="{ active: app.$state.includes('guh.dashboard') }"><a ui-sref="guh.dashboard">Dashboard</a></li>
-        <li ng-class="{ active: app.$state.includes('guh.things') }"><a ui-sref="guh.things">Things</a></li>
-        <li ng-class="{ active: app.$state.includes('guh.rules') }"><a ui-sref="guh.rules">Rules</a></li>
-      </ul>
-    </nav>
+<div>
+  <header class="Header" ng-class="{ 'js-intro': app.$state.includes('guh.intro'), 'js-app': !app.$state.includes('guh.intro') }">
+    <div class="Header__wrapper">
+      <nav>
+        <ul>
+          <li ui-sref-active="active"><a ui-sref="guh.dashboard">Dashboard</a></li>
+          <li ui-sref-active="active"><a ui-sref="guh.things">Things</a></li>
+          <li ui-sref-active="active"><a ui-sref="guh.rules">Rules</a></li>
+          <li ui-sref-active="active"><a ui-sref="guh.settings">Settings</a></li>
+        </ul>
+      </nav>
+    </div>
   </header>
 
   <div ui-view class="content"></div>

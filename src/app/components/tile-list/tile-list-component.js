@@ -23,32 +23,20 @@
  * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 
 
-*,
-*:before,
-*:after {
-  box-sizing: inherit;
-}
+(function() {
+  'use strict';
 
-html {
-  box-sizing: border-box;
-  @include rootsize();
-}
+  angular
+    .module('guh.components')
+    .component('guhTileList', {
+      transclude: true,
+      bindings: {
+        initialVisibleId: '@',
+        onSelectTile: '&'
+      },
+      controller: 'TileListCtrl',
+      controllerAs: 'tileList',
+      templateUrl: 'app/components/tile-list/tile-list.html'
+    });
 
-body {
-  color: $grey;
-  font-family: 'Ubuntu';
-  font-weight: 400;
-  @include rem(font-size, 1);
-  @include rem(line-height, 1.5);
-}
-
-a {
-  color: inherit;
-}
-
-.truncate {
-  text-overflow: ellipsis;
-  white-space: nowrap;
-  overflow: hidden;
-  width: 100%;
-}
+}());

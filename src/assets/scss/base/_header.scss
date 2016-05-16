@@ -23,32 +23,104 @@
  * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 
 
-*,
-*:before,
-*:after {
-  box-sizing: inherit;
+.Header {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  z-index: 1;
+  @include linear-gradient(to bottom, rgba($white, 0) 0%, rgba($white, 1) 50%, $fallback: transparent);
+
+  nav {
+    @include display(flex);
+    @include justify-content(center);
+  }
+
+  ul {
+    @include display(flex);
+    
+    li {
+      position: relative;
+      @include flex(1 1 100%);
+    }
+
+    li:hover,
+    li.active {
+      position: relative;
+
+      &::after {
+        border-radius: 20%;
+        content: "";
+        display: block;
+        position: absolute;
+        left: 50%;
+        @include rem(bottom, 1);
+        @include rem(height, 0.2);
+        @include rem(width, 0.6);
+        @include transform(translateX(-50%));
+      }
+    }
+
+    li:hover::after {
+      background-color: rgba($grey, 0.15);
+    }
+
+    li.active::after {
+      box-shadow: 0px 0px 3px 0px rgba($turquoise, 0.6);
+      @include linear-gradient(to right, $green, $turquoise);
+    }
+
+    a {
+      display: block;
+      @include rem(padding, 3, 1.5, 1.5);
+      text-decoration: none;
+    }
+  }
 }
 
-html {
-  box-sizing: border-box;
-  @include rootsize();
+.Header.js-intro {
+  opacity: 0;
 }
 
-body {
-  color: $grey;
-  font-family: 'Ubuntu';
-  font-weight: 400;
-  @include rem(font-size, 1);
-  @include rem(line-height, 1.5);
+.Header.js-app {
+  opacity: 1;
 }
 
-a {
-  color: inherit;
+@include media($min-width-l) {
+  .Header {
+    bottom: auto;
+    left: 0;
+    right: auto;
+    top: 0;
+    width: 100%;
+    @include linear-gradient(to bottom, rgba($white, 1) 0%, rgba($white, 1) 40%, rgba($white, 0) 100%, $fallback: transparent);
+
+    nav {
+      @include justify-content(flex-start);
+    }
+
+    ul {
+      li:hover::after,
+      li.active::after {
+        @include rem(bottom, 2.5);
+      }
+
+      a {
+        @include rem(padding, 3, 1.5);
+      }
+    }
+  }
 }
 
-.truncate {
-  text-overflow: ellipsis;
-  white-space: nowrap;
-  overflow: hidden;
-  width: 100%;
+@include media($min-width-xl) {
+  .Header {
+    nav {
+      @include rem(padding, 0, 0.25);
+    }
+  }
+
+  .Header__wrapper {
+    margin: 0 auto;
+    width: $max-width-l;
+  }
 }

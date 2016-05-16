@@ -29,7 +29,7 @@
     .module('guh.containers')
     .controller('ThingsCtrl', ThingsCtrl);
 
-  ThingsCtrl.$inject = ['app', '$log', '$state', 'DSDevice'];
+  ThingsCtrl.$inject = ['app', 'libs', '$log', '$state', '$stateParams', 'DSDevice'];
 
   /**
    * @ngdoc controller
@@ -37,23 +37,35 @@
    * @description Container component for things.
    *
    */
-  function ThingsCtrl(app, $log, $state, DSDevice) {
+  function ThingsCtrl(app, libs, $log, $state, $stateParams, DSDevice) {
     
     var vm = this;
 
     vm.$onInit = onInit;
+    vm.showDetails = showDetails;
+    
 
     function onInit() {
+      var deviceId = (libs._.has($stateParams, 'deviceId') && $stateParams.deviceId) ? $stateParams.deviceId : null;
+      
       if(!app.dataLoaded) {
         $state.go('guh.intro', {
           previousState: {
             name: $state.current.name,
-            params: {}
+            params: {
+              deviceId: deviceId
+            }
           }
         });
       }
 
       vm.configuredDevices = DSDevice.getAll();
+    }
+
+    function showDetails(tileId) {
+      $state.go('guh.things.current', {
+        deviceId: tileId
+      });
     }
 
   }

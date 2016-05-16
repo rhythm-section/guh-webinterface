@@ -21,34 +21,62 @@
  * SOFTWARE.                                                                           *
  *                                                                                     *
  * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
+ 
+(function() {
+  'use strict';
+
+  angular
+    .module('guh.components')
+    .controller('TileListCtrl', TileListCtrl);
+
+  TileListCtrl.$inject = ['$log', '$element'];
+
+  /**
+   * @ngdoc controller
+   * @name guh.containers.controller:TileListCtrl
+   * @description Presentational component for tiles.
+   *
+   */
+  function TileListCtrl($log, $element) {
+    
+    var vm = this;
+
+    vm.tiles = {};
+    vm.visibleTile = null;
+
+    vm.$onInit = onInit;
+    vm.$postLink = postLink;
+    vm.addTile = addTile;
+    vm.selectTile = selectTile;
 
 
-*,
-*:before,
-*:after {
-  box-sizing: inherit;
-}
+    function onInit() {}
 
-html {
-  box-sizing: border-box;
-  @include rootsize();
-}
+    function postLink() {}
 
-body {
-  color: $grey;
-  font-family: 'Ubuntu';
-  font-weight: 400;
-  @include rem(font-size, 1);
-  @include rem(line-height, 1.5);
-}
+    function addTile(tile) {
+      vm.tiles[tile.id] = tile;
 
-a {
-  color: inherit;
-}
+      if(vm.initialVisibleId && vm.initialVisibleId === tile.id) {
+        selectTile(vm.initialVisibleId);
+      }
+    }
 
-.truncate {
-  text-overflow: ellipsis;
-  white-space: nowrap;
-  overflow: hidden;
-  width: 100%;
-}
+    function selectTile(tileId) {
+      angular.forEach(vm.tiles, function(tile) {
+        if(tile.id === tileId) {
+          tile.visible = true;
+        } else {
+          tile.visible = false;
+        }
+      });
+      vm.visibleTile = vm.tiles[tileId];
+
+      vm.onSelectTile({
+        tileId: tileId
+      });
+    }
+
+  }
+
+}());

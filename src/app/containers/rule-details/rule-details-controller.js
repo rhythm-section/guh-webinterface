@@ -21,34 +21,45 @@
  * SOFTWARE.                                                                           *
  *                                                                                     *
  * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
+ 
+(function() {
+  'use strict';
 
+  angular
+    .module('guh.containers')
+    .controller('RuleDetailsCtrl', RuleDetailsCtrl);
 
-*,
-*:before,
-*:after {
-  box-sizing: inherit;
-}
+  RuleDetailsCtrl.$inject = ['app', 'libs', '$log', '$state', '$stateParams', 'DSRule'];
 
-html {
-  box-sizing: border-box;
-  @include rootsize();
-}
+  /**
+   * @ngdoc controller
+   * @name guh.containers.controller:RuleDetailsCtrl
+   * @description Container component for a single rule.
+   *
+   */
+  function RuleDetailsCtrl(app, libs, $log, $state, $stateParams, DSRule) {
+    
+    var vm = this;
 
-body {
-  color: $grey;
-  font-family: 'Ubuntu';
-  font-weight: 400;
-  @include rem(font-size, 1);
-  @include rem(line-height, 1.5);
-}
+    vm.rule = {};
 
-a {
-  color: inherit;
-}
+    vm.$onInit = onInit;
 
-.truncate {
-  text-overflow: ellipsis;
-  white-space: nowrap;
-  overflow: hidden;
-  width: 100%;
-}
+    function onInit() {
+      if(!app.dataLoaded) {
+        $state.go('guh.intro', {
+          previousState: {
+            name: $state.current.name,
+            params: $stateParams
+          }
+        });
+      }
+
+      if(libs._.has($stateParams, 'ruleId') && $stateParams.ruleId) {
+        vm.rule = DSRule.get($stateParams.ruleId);
+      }
+    }
+
+  }
+
+}());

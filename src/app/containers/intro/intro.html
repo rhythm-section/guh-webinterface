@@ -21,19 +21,17 @@
 -->
 
 
-<h1>Intro</h1>
-
-<div class="content_border-page">
+<div class="Intro">
   <!-- Logo -->
-  <!-- <img class="logo" ng-class="{ 'small': intro.setup, 'not-valid': intro.submitted && !intro.valid }" src="./assets/svg/guh-logo.svg" alt="Logo of guh showing a green owl with following text: guh - gear up your home"> -->
+  <img class="Intro__logo" src="./assets/svg/guh-logo.svg" alt="Logo of guh showing a green owl.">
 
-  <div class="content" ng-class="{ 'not-valid': intro.submitted && !intro.valid }">
+  <div ng-class="{ 'not-valid': intro.submitted && !intro.valid }">
     <!-- Info texts -->
-    <p class="info loader" ng-show="intro.check && intro.valid">connecting to base</p>
-    <p class="info loader" ng-show="intro.load && intro.valid">loading things</p>
+    <p class="Intro__info" ng-show="intro.check && intro.valid">connecting to guh basestation</p>
+    <p class="Intro__info" ng-show="intro.load && intro.valid">loading things</p>
 
     <!-- Setup -->
-    <div ng-show="intro.setup" guh-wizard handle="setup">
+    <div class="Intro__setup" ng-show="intro.setup" guh-wizard handle="setup">
       <div guh-wizard-step title="Please enter the IP address or name of your guh system.">
         <form name="setHost" novalidate ng-submit="intro.setHost()">  
           <label>IP address/Host name</label>
