@@ -21,4 +21,12 @@
 -->
 
 
-
+<div class="Settings">
+  <h2 class="Settings__category">Server Information</h2>
+  <ul class="Settings__list">
+    <li class="Settings__item" ng-repeat="(name, value) in settings.serverInfo track by $index">
+      <span class="Settings__name">{{ name }}:&nbsp;</span>
+      <span class="Settings__value">{{ value }}</span>
+    </li>
+  </ul>
+</div>

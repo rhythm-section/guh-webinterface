@@ -21,53 +21,22 @@
  * SOFTWARE.                                                                           *
  *                                                                                     *
  * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
- 
-(function() {
-  'use strict';
 
-  angular
-    .module('guh.containers')
-    .controller('SettingsCtrl', SettingsCtrl);
 
-  SettingsCtrl.$inject = ['app', '$log', '$state', 'DSSettings', 'DSPlugin'];
+.State__list {
 
-  /**
-   * @ngdoc controller
-   * @name guh.containers.controller:SettingsCtrl
-   * @description Container component for things.
-   *
-   */
-  function SettingsCtrl(app, $log, $state, DSSettings, DSPlugin) {
-    
-    var vm = this;
+}
 
-    vm.serverInfo = {};
+.State__item {
+  @include rem(margin, 0, 0, 1.5);
+}
 
-    vm.$onInit = onInit;
+.State__name {
+  letter-spacing: 0.1em;
+  @include rem(font-size, 0.8);
+  text-transform: uppercase;
+}
 
-    function onInit() {
-      if(!app.dataLoaded) {
-        $state.go('guh.intro', {
-          previousState: {
-            name: $state.current.name,
-            params: {}
-          }
-        });
-      }
+.State__value {
 
-      vm.plugins = DSPlugin.getAll();
-
-      DSSettings
-        .find('serverInfo')
-        .then(function(serverInfo) {
-          delete serverInfo.userId;
-          vm.serverInfo = serverInfo;
-        })
-        .catch(function(error) {
-          $log.error(error);
-        });
-    }
-
-  }
-
-}());
+}
