@@ -23,19 +23,64 @@
  * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 
 
-.content {
-  @include rem(padding, 4.5, 0, 6);
+.ActionBar {
+  position: fixed;
+  left: 0;
+  right: 0;
+  top: 0;
+  @include linear-gradient(to top, rgba($white, 0) 0%, rgba($white, 1) 50%, $fallback: transparent);
+  @include rem(height, 4.5);
+  z-index: 1;
+
+  button {
+    display: block;
+    @include rem(height, 4.5);
+    @include rem(width, 3);
+    @include rem(padding, 1.5, 0.75);
+  }
 }
 
 @include media($min-width-l) {
-  .content {
-    @include rem(padding, 9, 0);
+  .ActionBar {
+    @include rem(height, 9);
+    left: 50%;
+    width: 50%;
+
+    button {
+      @include rem(height, 9);
+      @include rem(width, 4.5);
+      @include rem(padding, 3, 1.5, 4.5);
+    }
   }
 }
 
 @include media($min-width-xl) {
-  .content {
-    margin: 0 auto;
-    width: $max-width-l;
+  .ActionBar {
+    width: $max-width-l/2;
   }
+}
+
+
+.ActionBar__wrapper-outer {
+  @include rem(padding, 0, 0.5);
+}
+
+
+.ActionBar__wrapper-inner {
+  @include display(flex);
+  @include justify-content(space-between);
+}
+
+@include media($min-width-l) {
+  .ActionBar__wrapper-inner {
+    @include justify-content(flex-end);
+  }
+}
+
+
+.ActionBar__icon {
+  display: block;
+  fill: $grey;
+  @include rem(height, 1.5);
+  @include rem(width, 1.5);
 }

@@ -23,19 +23,25 @@
  * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 
 
-.content {
-  @include rem(padding, 4.5, 0, 6);
-}
+(function() {
+  'use strict';
 
-@include media($min-width-l) {
-  .content {
-    @include rem(padding, 9, 0);
-  }
-}
+  angular
+    .module('guh.components')
+    .component('guhActionBar', {
+      bindings: {
+        backButton: '<',
+        filterButton: '<',
+        addButton: '<',
+        editButton: '<',
+        onBack: '&',
+        onFilter: '&',
+        onAdd: '&',
+        onEdit: '&'
+      },
+      controller: 'ActionBarCtrl',
+      controllerAs: 'actionBar',
+      templateUrl: 'app/components/action-bar/action-bar.html'
+    });
 
-@include media($min-width-xl) {
-  .content {
-    margin: 0 auto;
-    width: $max-width-l;
-  }
-}
+}());

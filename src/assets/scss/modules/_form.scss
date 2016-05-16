@@ -23,19 +23,16 @@
  * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 
 
-.content {
-  @include rem(padding, 4.5, 0, 6);
+button {
+  background-color: transparent;
+  border: 0;
+  cursor: pointer;
+  margin: 0;
+  outline: 0;
+  padding: 0;
+  @include appearance(none);
 }
 
-@include media($min-width-l) {
-  .content {
-    @include rem(padding, 9, 0);
-  }
-}
-
-@include media($min-width-xl) {
-  .content {
-    margin: 0 auto;
-    width: $max-width-l;
-  }
+button::-moz-focus-inner {
+  border: 0;
 }

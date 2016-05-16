@@ -21,21 +21,58 @@
  * SOFTWARE.                                                                           *
  *                                                                                     *
  * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
+ 
+(function() {
+  'use strict';
+
+  angular
+    .module('guh.components')
+    .controller('ActionBarCtrl', ActionBarCtrl);
+
+  ActionBarCtrl.$inject = ['$log', '$element'];
+
+  /**
+   * @ngdoc controller
+   * @name guh.containers.controller:ActionBarCtrl
+   * @description Presentational component for the app header actions.
+   *
+   */
+  function ActionBarCtrl($log, $element) {
+    
+    var vm = this;
+
+    vm.$onInit = onInit;
+    vm.back = back;
+    vm.filter = filter;
+    vm.add = add;
+    vm.edit = edit;
 
 
-.content {
-  @include rem(padding, 4.5, 0, 6);
-}
+    function onInit() {
+      $element.addClass('ActionBar');
+      $log.log('ActionBar', vm);
+    }
 
-@include media($min-width-l) {
-  .content {
-    @include rem(padding, 9, 0);
+    function back() {
+      $log.log('back');
+      vm.onBack();
+    }
+
+    function filter() {
+      $log.log('filter');
+      vm.onFilter();
+    }
+
+    function add() {
+      $log.log('add');
+      vm.onAdd();
+    }
+
+    function edit() {
+      $log.log('edit');
+      vm.onEdit();
+    }
+
   }
-}
 
-@include media($min-width-xl) {
-  .content {
-    margin: 0 auto;
-    width: $max-width-l;
-  }
-}
+}());

@@ -29,6 +29,12 @@
   box-sizing: inherit;
 }
 
+html,
+body,
+.main {
+  height: 100%;
+}
+
 html {
   box-sizing: border-box;
   @include rootsize();
@@ -40,6 +46,11 @@ body {
   font-weight: 400;
   @include rem(font-size, 1);
   @include rem(line-height, 1.5);
+}
+
+.main {
+  overflow-y: scroll;
+  -webkit-overflow-scrolling: touch;
 }
 
 a {

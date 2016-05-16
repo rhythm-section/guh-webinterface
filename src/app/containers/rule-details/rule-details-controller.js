@@ -44,6 +44,7 @@
     vm.rule = {};
 
     vm.$onInit = onInit;
+    vm.back = back;
 
     function onInit() {
       if(!app.dataLoaded) {
@@ -58,6 +59,10 @@
       if(libs._.has($stateParams, 'ruleId') && $stateParams.ruleId) {
         vm.rule = DSRule.get($stateParams.ruleId);
       }
+    }
+
+    function back() {
+      $state.go('guh.rules');
     }
 
   }

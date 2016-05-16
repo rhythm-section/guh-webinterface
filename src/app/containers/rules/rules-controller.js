@@ -29,7 +29,7 @@
     .module('guh.containers')
     .controller('RulesCtrl', RulesCtrl);
 
-  RulesCtrl.$inject = ['app', 'libs', '$log', '$state', '$stateParams', 'DSRule'];
+  RulesCtrl.$inject = ['app', 'libs', '$log', '$scope', '$state', '$stateParams', 'DSRule'];
 
   /**
    * @ngdoc controller
@@ -37,11 +37,16 @@
    * @description Container component for rules.
    *
    */
-  function RulesCtrl(app, libs, $log, $state, $stateParams, DSRule) {
+  function RulesCtrl(app, libs, $log, $scope, $state, $stateParams, DSRule) {
     
     var vm = this;
 
+    vm.showActionBar = false;
+    vm.showList = false;
+
     vm.$onInit = onInit;
+    vm.showFilter = showFilter;
+    vm.addRule = addRule;
     vm.showDetails = showDetails;
 
 
@@ -60,13 +65,37 @@
       }
 
       vm.rules = DSRule.getAll();
+
+      // TODO: Animate fading in tile-list
+      vm.showActionBar = true;
+      vm.showList = true;
+    }
+
+    function showFilter() {
+      $log.log('showFilter');
+    }
+
+    function addRule() {
+      $log.log('addRule');
     }
 
     function showDetails(tileId) {
       $state.go('guh.rules.current', {
         ruleId: tileId
       });
+      // TODO: Animate morphing the tile-item to show thing details
+      vm.showActionBar = false;
+      vm.showList = false;
     }
+
+
+    $scope.$on('$stateChangeStart', function(event, toState, toParams, fromState, fromParams, options) {
+      if(toState.name === 'guh.rules') {
+        // TODO: Animate morphing the tile-item back to the tile-list
+        vm.showActionBar = true;
+        vm.showList = true;
+      }
+    });
 
   }
 

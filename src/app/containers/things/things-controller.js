@@ -29,7 +29,7 @@
     .module('guh.containers')
     .controller('ThingsCtrl', ThingsCtrl);
 
-  ThingsCtrl.$inject = ['app', 'libs', '$log', '$state', '$stateParams', 'DSDevice'];
+  ThingsCtrl.$inject = ['app', 'libs', '$scope', '$log', '$state', '$stateParams', 'DSDevice'];
 
   /**
    * @ngdoc controller
@@ -37,11 +37,16 @@
    * @description Container component for things.
    *
    */
-  function ThingsCtrl(app, libs, $log, $state, $stateParams, DSDevice) {
+  function ThingsCtrl(app, libs, $scope, $log, $state, $stateParams, DSDevice) {
     
     var vm = this;
 
+    vm.showActionBar = false;
+    vm.showList = false;
+
     vm.$onInit = onInit;
+    vm.showFilter = showFilter;
+    vm.addThing = addThing;
     vm.showDetails = showDetails;
     
 
@@ -60,13 +65,37 @@
       }
 
       vm.configuredDevices = DSDevice.getAll();
+
+      // TODO: Animate fading in tile-list
+      vm.showActionBar = true;
+      vm.showList = true;
+    }
+
+    function showFilter() {
+      $log.log('showFilter');
+    }
+
+    function addThing() {
+      $log.log('addThing');
     }
 
     function showDetails(tileId) {
       $state.go('guh.things.current', {
         deviceId: tileId
       });
+      // TODO: Animate morphing the tile-item to show thing details
+      vm.showActionBar = false;
+      vm.showList = false;
     }
+
+
+    $scope.$on('$stateChangeStart', function(event, toState, toParams, fromState, fromParams, options) {
+      if(toState.name === 'guh.things') {
+        // TODO: Animate morphing the tile-item back to the tile-list
+        vm.showActionBar = true;
+        vm.showList = true;
+      }
+    });
 
   }
 

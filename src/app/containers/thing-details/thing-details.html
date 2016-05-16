@@ -21,4 +21,20 @@
 -->
 
 
-<p>{{ thingDetails.device.name }}</p>
+<guh-action-bar back-button="true" edit-button="true" on-back="thingDetails.back()"></guh-action-bar>
+
+<div>
+  <a ui-sref="guh.things">Close / Go back to all things</a>
+
+  <h3>Actions</h3>
+  <p ng-if="thingDetails.actions.length === 0">This thing doesn't have any controls.</p>
+  <guh-action device-id="{{ thingDetails.id }}" action-type-id="{{ action.actionType.id }}" ng-repeat="action in thingDetails.actions | orderBy: 'name' track by $index"></guh-action>
+
+  <h3>States</h3>
+  <p ng-if="thingDetails.states.length === 0">This thing doesn't have a state to show you.</p>
+  <div class="State__item" ng-switch="state.stateType.unit" ng-repeat="state in thingDetails.states track by $index">
+    <div class="State__value" ng-switch-when="UnitUnixTime">{{ state.value * 1000 | date: 'dd.MM.yyyy' }}, {{ state.value * 1000 | date: 'HH:mm' }}</div>
+    <div class="State__value" ng-switch-default>{{ state.value }} {{ state.stateType.unit | unit }}</div>
+    <div class="State__name">{{ state.stateType.name }}</div>
+  </div>
+</div>

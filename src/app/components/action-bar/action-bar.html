@@ -20,19 +20,30 @@
   SOFTWARE.
 -->
 
+<div class="ActionBar__wrapper-outer">
+  <div class="ActionBar__wrapper-inner">
+    <button type="button" ng-click="actionBar.back()" ng-show="actionBar.backButton">
+      <svg class="ActionBar__icon">
+        <use xlink:href="./assets/svg/ui/ui.symbol.svg#chevron-left"></use>
+      </svg>
+    </button>
 
-<div class="action-bar" ng-class="{ 'action-bar_buttonCount_1' : !actionBar.showEdit }">
-  <button ng-show="actionBar.showAdd" ng-click="actionBar.openAddModal()">
-    <span>Add</span>
-    <svg class="icon">
-      <use xlink:href="./assets/svg/ui/ui.symbol.svg#plus"></use>
-    </svg>
-  </button>
-  
-  <button ng-show="actionBar.showEdit" ng-click="actionBar.openEditModal()">
-    <span>Edit</span>
-    <svg class="icon">
-      <use xlink:href="./assets/svg/ui/ui.symbol.svg#edit"></use>
-    </svg>
-  </button>
+    <button type="button" ng-click="actionBar.filter()" ng-show="actionBar.filterButton">
+      <svg class="ActionBar__icon">
+        <use xlink:href="./assets/svg/ui/ui.symbol.svg#search"></use>
+      </svg>
+    </button>
+
+    <button type="button" ng-click="actionBar.add()" ng-show="actionBar.addButton">
+      <svg class="ActionBar__icon">
+        <use xlink:href="./assets/svg/ui/ui.symbol.svg#plus"></use>
+      </svg>
+    </button>
+
+    <button type="button" ng-click="actionBar.edit()" ng-show="actionBar.editButton">
+      <svg class="ActionBar__icon">
+        <use xlink:href="./assets/svg/ui/ui.symbol.svg#gear-a"></use>
+      </svg>
+    </button>
+  </div>
 </div>
