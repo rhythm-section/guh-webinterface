@@ -22,6 +22,9 @@
 
 
 <div>
-  <label>{{ formField.label }}</label>
-  <button class="full" type="button" ng-click="formField.value = !formField.value; formField.setValue()"><span>Turn {{ formField.value ? 'off' : 'on' }}</span></button>
+  <label>{{ formField.name }}: {{ formField.value ? 'on' : 'off' }}</label>
+  <button class="full" type="button" ng-click="formField.value = !formField.value; formField.setValue()">
+    <span>{{ formField.label }}</span>
+    <!-- <span>Turn {{ formField.value ? 'off' : 'on' }}</span> -->
+  </button>
 </div>

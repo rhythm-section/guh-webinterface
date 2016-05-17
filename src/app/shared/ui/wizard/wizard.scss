@@ -25,6 +25,8 @@
 
 .Wizard__close,
 .Wizard__prev {
+  background-color: transparent;
+  margin: 0;
   position: absolute;
   @include rem(top, 1.5);
   @include rem(height, 4.5);
@@ -33,6 +35,14 @@
 
   .Wizard__icon {
     fill: $grey;
+  }
+}
+
+.js-no-touch .Wizard__close,
+.js-no-touch .Wizard__prev {
+  &:hover {
+    background-color: transparent;
+    fill: $turquoise;
   }
 }
 

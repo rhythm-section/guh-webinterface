@@ -34,6 +34,7 @@ $x-height: 1;
 $green: #7cc09a;
 $grey: #676767;
 $turquoise: #57baae;
+$white: #fff;
 
 $background-bar: $grey;
 $background-bar-active: $green;
@@ -54,13 +55,13 @@ $color: $grey;
 
 .range {
   background-color: transparent;
-  border-bottom: 1px solid rgba($c-white, 0.1);
+  border-bottom: 1px solid rgba($white, 0.1);
   // @include rem(height, $line-height + ($line-height - $x-height));
   @include rem(height, 3 * $line-height);
   // @include rem(margin-bottom, $line-height - ($line-height - $x-height));
   // @include rem(padding, ($line-height - $x-height), $line-height, 0);
-  @include rem(margin-bottom, 1.5);
-  @include rem(padding, 0, $line-height, $line-height);
+  // @include rem(margin-bottom, 1.5);
+  @include rem(padding, 0, $line-height, 0);
   position: relative;
   width: 100%;
   z-index: 0;
@@ -92,9 +93,10 @@ $color: $grey;
 }
 
 .handle {
-  background-color: get-color("foreground");
+  background-color: $white;
   box-shadow: 0px 1px 3px 0px rgba(0, 0, 0, 0.4);
   border-radius: 50%;
+  cursor: pointer;
   @include rem(height, $line-height);
   @include rem(margin-left, -($line-height / 2));
   position: absolute;
@@ -136,16 +138,16 @@ $color: $grey;
 
 .modal {
   .handle {
-    border-color: rgba($c-grey, 0.1);
+    border-color: rgba($grey, 0.1);
     border-style: solid;
     @include rem(border-width, 0.1);
   }
 
   .bar {
-    background-color: rgba($c-grey, 0.2);
+    background-color: rgba($grey, 0.2);
   }
 
   .bar-active {
-    background-color: $c-grey;
+    background-color: $grey;
   }
 }

@@ -21,7 +21,7 @@
 -->
 
 
-<span class="label" ng-show="!range.error">{{ range.label }} ({{ range.stateMin ? (range.stateMin | number: 0) + ' ' + range.unit + ' -' : '' }} {{ (range.stateMax | number: 0) + ' ' + range.unit }})</span>
+<span class="label" ng-show="!range.error">{{ range.label }}: {{ range.stateMin ? (range.stateMin | number: 0) + ' ' + range.unit + ' -' : '' }} {{ (range.stateMax | number: 0) + ' ' + range.unit }}</span>
 <div class="range" ng-show="!range.error">
   <svg class="icon left">
     <use xlink:href="./assets/svg/ui/ui.symbol.svg#minus"></use>

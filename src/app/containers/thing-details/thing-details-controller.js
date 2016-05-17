@@ -41,10 +41,14 @@
     
     var vm = this;
 
-    vm.device = {};
+    vm.showActions = true;
+    vm.showStates = false;
+    vm.showSettings = false;
 
     vm.$onInit = onInit;
     vm.back = back;
+    vm.show = show;
+
 
     function onInit() {
       $log.log('ThingDetailsCtrl');
@@ -63,8 +67,6 @@
       if(libs._.has($stateParams, 'deviceId') && $stateParams.deviceId) {
         device = DSDevice.get($stateParams.deviceId);
         _initThing(device);
-      } else {
-        $log.error('Missing deviceId.');
       }
     }
 
@@ -81,6 +83,8 @@
       vm.enhancedParams = [];
       vm.states = device.states;
       vm.statesObject = {};
+
+      vm.getDescription = device.getDescription;
 
       // Filter values of type "Double" to show only two digits after decimal point
       angular.forEach(vm.params, function(param) {
@@ -159,6 +163,43 @@
 
     function back() {
       $state.go('guh.things');
+    }
+
+    function show(type) {
+      switch(type) {
+        case 'actions':
+          if(vm.actions.length === 0) {
+            return;
+          }
+          vm.showActions = true;
+          vm.showStates = false;
+          vm.showSettings = false;
+          break;
+        case 'states':
+          if(vm.states.length === 0) {
+            return;
+          }
+          vm.showActions = false;
+          vm.showStates = true;
+          vm.showSettings = false;
+          break;
+        case 'settings':
+          if(vm.params.length === 0) {
+            return;
+          }
+          vm.showActions = false;
+          vm.showStates = false;
+          vm.showSettings = true;
+          break;
+        default:
+          if(vm.actions.length === 0) {
+            return;
+          }
+          vm.showActions = true;
+          vm.showStates = false;
+          vm.showSettings = false;
+          break;
+      }
     }
 
 

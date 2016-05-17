@@ -27,7 +27,7 @@
   @include rem(padding, 4.5, 0, 6);
 }
 
-@include media($min-width-l) {
+@include media($min-width-m) {
   .content {
     @include rem(padding, 9, 0);
   }

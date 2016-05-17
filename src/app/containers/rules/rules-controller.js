@@ -68,7 +68,9 @@
 
       // TODO: Animate fading in tile-list
       vm.showActionBar = true;
-      vm.showList = true;
+      if(!ruleId) {
+        vm.showList = true;
+      }
     }
 
     function showFilter() {
@@ -76,7 +78,6 @@
     }
 
     function addRule() {
-      $log.log('addRule');
       ModalContainer
         .add({
           controller: 'NewMoodCtrl',

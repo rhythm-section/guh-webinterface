@@ -72,8 +72,10 @@
 
 
 .TileItem__wrapper-outer {
-  background-color: rgba($grey, 0.05);
+  background-color: rgba($grey, 0.1);
+  // @include linear-gradient(to top, $turquoise, $green);
   border-radius: 2%;
+  // color: $white;
 //   overflow: hidden;
   position: absolute;
   @include rem(padding, 1.5, 0);
@@ -90,7 +92,7 @@
   left: 50%;
   top: 50%;
   width: 100%;
-  @include rem(margin-top, -1.5);
+  @include rem(margin-top, -0.5);
   @include rem(padding, 0, 3);
   @include transform(translateX(-50%) translateY(-50%));
 }
@@ -103,10 +105,11 @@
   display: block;
   margin: 0 auto;
   fill: $grey;
-  stroke: $grey;
+  // fill: $white;
+  // stroke: $grey;
   // @include rem(border-width, 0.2);
   @include rem(height, 4);
-  @include rem(padding, 0.8);
+  @include rem(padding, 0.6);
   @include rem(width, 4);
 }
 

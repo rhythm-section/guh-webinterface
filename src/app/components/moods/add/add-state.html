@@ -60,7 +60,13 @@
                       template="{{ addState.currentStateType.inputTemplateUrl }}"
                       value-operator="true"></guh-form-field> -->
 
-      <select ng-model="addState.selectedValueOperator" ng-change="addState.selectValueOperator()" ng-options="operator as operator.label for (key, operator) in addState.availableValueOperators track by operator.id" name="operator"></select>
+      <label class="label-container">
+        <span class="label">State</span>
+        <select ng-model="addState.selectedValueOperator" ng-change="addState.selectValueOperator()" ng-options="operator as operator.label for (key, operator) in addState.availableValueOperators track by operator.id" name="operator"></select>
+        <svg class="icon">
+          <use xlink:href="./assets/svg/ui/ui.symbol.svg#chevron-down"></use>
+        </svg>
+      </label>
 
       <!-- Is, is not, greater than, less than -->
       <guh-form-field label="{{ addState.currentStateType.name }}"

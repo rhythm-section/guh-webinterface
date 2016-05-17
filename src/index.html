@@ -65,7 +65,7 @@
   <!-- endinject -->
 </head>
 
-<body guh-toggle-grid="hide">
+<body ng-class="{ 'js-no-touch': (app.deviceType !== 'mobile' && app.deviceType !== 'tablet') }" guh-toggle-grid="hide">
   <!-- <div ui-view id="main" ng-class="app.$state.is('guh.intro') ? 'intro' : 'default'"></div> -->
   <div ui-view class="main"></div>
   <guh-modal-container></guh-modal-container>

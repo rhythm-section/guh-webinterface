@@ -29,15 +29,16 @@
     .module('guh')
     .controller('AppCtrl', AppCtrl);
 
-  AppCtrl.$inject = ['$log', '$rootScope', '$scope', '$state', '$stateParams', '$animate', '$timeout', 'app', 'libs', 'errors', 'websocketService', 'DSSettings', 'ModalContainer'];
+  AppCtrl.$inject = ['$log', '$rootScope', '$scope', '$state', '$stateParams', '$animate', '$timeout', 'app', 'libs', 'errors', 'websocketService', 'DSSettings', 'ModalContainer', 'UAParser'];
 
-  function AppCtrl($log, $rootScope, $scope, $state, $stateParams, $animate, $timeout, app, libs, errors, websocketService, DSSettings, ModalContainer) {
+  function AppCtrl($log, $rootScope, $scope, $state, $stateParams, $animate, $timeout, app, libs, errors, websocketService, DSSettings, ModalContainer, UAParser) {
 
     var vm = this;
     var notificationModal = null;
     var connectionErrorModal = null;
 
     vm.$state = $state;
+    vm.deviceType = new UAParser().getDevice().type;
 
 
     // Websocket Connection Error

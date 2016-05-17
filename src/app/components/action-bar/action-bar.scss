@@ -33,18 +33,37 @@
   z-index: 1;
 
   button {
+    background-color: transparent;
+    border: 0;
     display: block;
+    margin: 0;
     @include rem(height, 4.5);
-    @include rem(width, 3);
-    @include rem(padding, 1.5, 0.75);
+    // @include rem(width, 3);
+    @include rem(width, 4.5);
+    // @include rem(padding, 1.5, 0.75);
+    @include rem(padding, 1.5);
+
+    // &:hover .ActionBar__icon {
+    //   fill: $turquoise;
+    // }
   }
 }
 
-@include media($min-width-l) {
+.js-no-touch {
+  .ActionBar button:hover {
+    background-color: transparent;
+
+    .ActionBar__icon {
+      fill: $turquoise;
+    }
+  }
+}
+
+@include media($min-width-m) {
   .ActionBar {
-    @include rem(height, 9);
     left: 50%;
     width: 50%;
+    @include rem(height, 9);
 
     button {
       @include rem(height, 9);
@@ -62,8 +81,15 @@
 
 
 .ActionBar__wrapper-outer {
-  @include rem(padding, 0, 0.5);
+  // @include rem(padding, 0, 0.5);
+  @include rem(padding, 0, 0);
 }
+
+// @include media($min-width-s) {
+//   .ActionBar__wrapper-outer {
+//      @include rem(padding, 0, 1.5);
+//   }
+// }
 
 
 .ActionBar__wrapper-inner {
@@ -71,7 +97,7 @@
   @include justify-content(space-between);
 }
 
-@include media($min-width-l) {
+@include media($min-width-m) {
   .ActionBar__wrapper-inner {
     @include justify-content(flex-end);
   }

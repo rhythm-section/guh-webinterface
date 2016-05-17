@@ -48,7 +48,7 @@
       return directive;
 
 
-      function actionCtrl() {
+      function actionCtrl($scope) {
         /* jshint validthis: true */
         var vm = this;
 
@@ -110,6 +110,10 @@
             })
             .catch(function(error) {
               $log.error('guh.ui.guhAction:directive', error);
+
+              vm.actionType = _getActionType(vm.actionTypeId);
+              vm.state.value = 0;
+              // vm.state = getState(vm.deviceId, vm.actionTypeId);
             });
         }
 

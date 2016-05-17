@@ -150,7 +150,7 @@
             if(angular.isObject($stateParams.previousState) && !libs._.isEmpty($stateParams.previousState)) {
               $state.go($stateParams.previousState.name, $stateParams.previousState.params);
             } else {
-              $state.go('guh.dashboard');
+              $state.go('guh.things');
             }
           }, 2000);
         })

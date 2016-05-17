@@ -39,4 +39,10 @@
 
 .State__value {
   @include rem(font-size, 1.2);
+
+  input {
+    border: 0;
+    font-size: inherit;
+    padding: 0;
+  }
 }

@@ -46,6 +46,8 @@
       'ui.router',
       'cfp.hotkeys',
       'chart.js',
+      'angular-useragent-parser',
+      'ng-fastclick',
 
       // Configuration
       'guh.config',

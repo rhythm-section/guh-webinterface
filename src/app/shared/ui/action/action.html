@@ -20,38 +20,39 @@
   SOFTWARE.
 -->
 
-
-<!-- ActionType without paramTypes -->
-<guh-form-field label="{{ action.actionType.name }}"
-                name="{{ action.actionType.name }}"
-                template="{{ action.actionType.templateUrl }}"
-                on-value-change="action.execute(params)"
-                ng-if="action.actionType.paramTypes.length === 0"></guh-form-field>
-
-
-<!-- ActionType with one paramType -->
-<guh-form-field label="{{ action.actionType.name }}"
-                name="{{ paramType.name }}"
-                param-type="paramType"
-                state="action.state"
-                template="{{ paramType.inputTemplateUrl }}"
-                on-value-change="action.execute(params)"
-                ng-repeat="paramType in action.actionType.paramTypes | orderBy: 'name' track by $index"
-                ng-if="action.actionType.paramTypes.length === 1"></guh-form-field>
+<div class="Action">
+  <!-- ActionType without paramTypes -->
+  <guh-form-field label="{{ action.actionType.name }}"
+                  name="{{ action.actionType.name }}"
+                  template="{{ action.actionType.templateUrl }}"
+                  on-value-change="action.execute(params)"
+                  ng-if="action.actionType.paramTypes.length === 0"></guh-form-field>
 
 
-<!-- ActionType with more than one paramTypes -->
-<guh-form name="test"
-          on-form-submit="action.execute(params)"
-          ng-if="action.actionType.paramTypes.length > 1">
-  
-  <guh-form-field  label="{{ paramType.name }}"
-                   name="{{ paramType.name }}"
-                   param-type="paramType"
-                   state="action.state"
-                   template="{{ paramType.inputTemplateUrl }}"
-                   ng-repeat="paramType in action.actionType.paramTypes | orderBy: 'name' track by $index"></guh-form-field>
+  <!-- ActionType with one paramType -->
+  <guh-form-field label="{{ action.actionType.name }}"
+                  name="{{ paramType.name }}"
+                  param-type="paramType"
+                  state="action.state"
+                  template="{{ paramType.inputTemplateUrl }}"
+                  on-value-change="action.execute(params)"
+                  ng-repeat="paramType in action.actionType.paramTypes | orderBy: 'name' track by $index"
+                  ng-if="action.actionType.paramTypes.length === 1"></guh-form-field>
 
-  <button class="full" type="submit"><span>Execute {{ action.actionType.name }}</span></button>
 
-</guh-form>
+  <!-- ActionType with more than one paramTypes -->
+  <guh-form name="test"
+            on-form-submit="action.execute(params)"
+            ng-if="action.actionType.paramTypes.length > 1">
+    
+    <guh-form-field  label="{{ paramType.name }}"
+                     name="{{ paramType.name }}"
+                     param-type="paramType"
+                     state="action.state"
+                     template="{{ paramType.inputTemplateUrl }}"
+                     ng-repeat="paramType in action.actionType.paramTypes | orderBy: 'name' track by $index"></guh-form-field>
+
+    <button class="full" type="submit"><span>Execute {{ action.actionType.name }}</span></button>
+
+  </guh-form>
+</div>

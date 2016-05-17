@@ -68,7 +68,9 @@
 
       // TODO: Animate fading in tile-list
       vm.showActionBar = true;
-      vm.showList = true;
+      if(!deviceId) {
+        vm.showList = true;
+      }
     }
 
     function showFilter() {

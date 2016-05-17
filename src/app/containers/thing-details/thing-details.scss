@@ -1,0 +1,197 @@
+/* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
+ *                                                                                     *
+ * Copyright (C) 2015 Lukas Mayerhofer <lukas.mayerhofer@guh.guru>                     *
+ *                                                                                     *
+ * Permission is hereby granted, free of charge, to any person obtaining a copy        *
+ * of this software and associated documentation files (the "Software"), to deal       *
+ * in the Software without restriction, including without limitation the rights        *
+ * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell           *
+ * copies of the Software, and to permit persons to whom the Software is               *
+ * furnished to do so, subject to the following conditions:                            *
+ *                                                                                     *
+ * The above copyright notice and this permission notice shall be included in all      *
+ * copies or substantial portions of the Software.                                     *
+ *                                                                                     *
+ * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR          *
+ * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,            *
+ * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE         *
+ * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER              *
+ * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,       *
+ * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE       *
+ * SOFTWARE.                                                                           *
+ *                                                                                     *
+ * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
+
+
+.ThingDetails {
+
+}
+
+.ThingDetails__wrapper {
+  @include rem(padding, 1.5);
+  width: 100%;
+}
+
+@include media($min-width-s) {
+  .ThingDetails__wrapper {
+    // margin: 0 auto;
+    padding: 0;
+    // @include rem(padding, 1.5, 0, 0);
+    // width: 600px;
+  }
+}
+
+.ThingDetails__sidebar {
+  @include rem(margin, 0, 0, 3);
+  // @include rem(padding, 1.5);
+}
+
+@include media($min-width-s) {
+  .ThingDetails__sidebar {
+    @include rem(min-height, 36);
+    margin: 0;
+    position: fixed;
+      @include rem(bottom, 3);
+      @include rem(top, 5.5);
+    width: 40%;
+    z-index: 0;
+    @include rem(padding, 0, 1.5);
+  }
+}
+
+@include media($min-width-m) {
+  .ThingDetails__sidebar {
+    @include rem(top, 9);
+  }
+}
+
+@include media($min-width-l) {
+  .ThingDetails__sidebar {
+    // width: 30%;
+    width: 315px;
+  }
+}
+
+.ThingDetails__sidebar-wrapper {
+  background-color: rgba($grey, 0.1);
+  height: 100%;
+  @include rem(border-radius, 0.2);
+  @include rem(padding, 3, 0, 0);
+}
+
+@include media($min-width-s) {
+  .ThingDetails__sidebar-wrapper {
+    @include rem(padding, 3, 1.5);
+  }
+}
+
+.ThingDetails__sidebar-navigation {
+  @include display(flex);
+  @include rem(margin, 4.5, 0, 0);
+  width: 100%;
+
+  li {
+    cursor: pointer;
+    text-align: center;
+    @include flex(1 1 100%);
+    @include rem(padding, 0.75);
+
+    &.active {
+      background-color: rgba($grey, 0.1);
+      color: $grey;
+    }
+
+    &.disabled {
+      cursor: default;
+      text-decoration: line-through;
+    }
+
+    .List__icon {
+      display: none;
+    }
+  }
+}
+
+@include media($min-width-s) {
+  .ThingDetails__sidebar-navigation {
+    display: block;
+    @include rem(margin, 1.5, 0, 0);
+
+    li {
+      @include rem(margin, 0.75, 0);
+    }
+  }
+}
+
+.ThingDetails__name,
+.ThingDetails__description {
+  overflow: hidden;
+  text-align: center;
+  text-overflow: ellipsis;
+  width: 100%;
+  white-space: nowrap;
+}
+
+.ThingDetails__name {
+  @include rem(font-size, 1.5);
+  @include rem(line-height, 2);
+  @include rem(margin, 1.5, 0, 0.5);
+}
+
+.ThingDetails__description {
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+}
+
+@include media($min-width-s) {
+  .ThingDetails__description {
+    @include rem(font-size, 0.8);
+  }
+}
+
+.ThingDetails__content {
+
+}
+
+@include media($min-width-s) {
+  .ThingDetails__content {
+    margin-left: 40%;
+    width: 60%;
+    @include rem(padding, 0, 1.5);
+  }
+}
+
+@include media($min-width-l) {
+  .ThingDetails__content {
+    margin-left: 384px;
+    width: 710px;
+    // margin-left: 40%;
+    // width: 60%;
+  }
+}
+
+.ThingDetails__icon {
+  background-color: $white;
+  border-radius: 100%;
+  display: block;
+  fill: $grey;
+  margin: 0 auto;
+  padding: 0;
+  @include rem(height, 4);
+  @include rem(padding, 0.8);
+  @include rem(width, 4);
+}
+
+.ThingDetails__icon.ThingDetails__icon_inline {
+  display: inline-block;
+  fill: $grey;
+  @include rem(height, 1.5);
+  @include rem(margin, 0, 0, -0.4, 0);
+  padding: 0;
+  @include rem(width, 1.5);
+}
+
+.ThingDetails__icon.ThingDetails__icon-left {
+  float: left;
+}
+
