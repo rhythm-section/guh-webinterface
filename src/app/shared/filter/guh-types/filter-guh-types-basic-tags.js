@@ -1,5 +1,4 @@
 /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
-/* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
  *                                                                                     *
  * Copyright (C) 2015 Lukas Mayerhofer <lukas.mayerhofer@guh.guru>                     *
  *                                                                                     *
@@ -24,78 +23,45 @@
  * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 
 
-/*
- * Libraries
- *
- */
+(function() {
+  'use strict';
 
-@import "bourbon";
+  angular
+    .module('guh.filter')
+    .filter('basicTags', filter);
 
+  filter.$inject = ['$log', '$filter', 'app'];
 
-/*
- * App SASS
- *
- */
+  function filter($log, $filter, app) {
+    return function(devices, basicTags) {
+      // Variant 1: A device must has all checked basicTypes to show up
+      angular.forEach(basicTags, function(basicTag) {
+        if(basicTag.isChecked) {
+          devices = devices.filter(function(device) {
+            return device.deviceClass.basicTags.indexOf(basicTag.type) > -1;
+          });
+        }
+      });
 
-@import "../assets/scss/functions";
-@import "../assets/scss/mixins";
-@import "../assets/scss/variables";
+      // Variant 2: A device must has only one of the checked basicTypes to show up
+      // var devicesForAllBasicTags = [];
+      // angular.forEach(basicTags, function(basicTag) {
+      //   if(basicTag.isChecked) {
+      //     var devicesForBasicTags = devices.filter(function(device) {
+      //       return device.deviceClass.basicTags.indexOf(basicTag.type) > -1;
+      //     });
+      //     devicesForAllBasicTags.push(devicesForBasicTags);
+      //   }
+      // });
+      // var devicesFlattened = [].concat.apply([], devicesForAllBasicTags);
+      // var devicesUnique = devicesFlattened.filter(function(device, index, devicesForAllBasicTags) {
+      //   return devicesForAllBasicTags.indexOf(device) === index;
+      // });
 
+      // $log.log('devices', devicesForAllBasicTags, devicesFlattened, devicesUnique);
 
-/*
- * Grid
- *
- */
+      return devices;
+    };
+  }
 
-@import "../assets/scss/grid/grid";
-
-
-/*
- * Base & Layout
- *
- */
-
-@import "../assets/scss/base/reset";
-@import "../assets/scss/base/base";
-@import "../assets/scss/base/header";
-@import "../assets/scss/base/content";
-
-
-/*
- * Modules
- *
- */
-
-@import "../assets/scss/modules/action";
-@import "../assets/scss/modules/event";
-@import "../assets/scss/modules/form";
-@import "../assets/scss/modules/list";
-@import "../assets/scss/modules/param";
-@import "../assets/scss/modules/state";
-
-
-/*
- * Components
- */
-
-@import "containers/intro/intro";
-@import "containers/settings/settings";
-@import "containers/rule-details/rule-details";
-@import "containers/thing-details/thing-details";
-
-@import "components/action-bar/action-bar";
-@import "components/filter/filter";
-@import "components/modal-container/modal-container";
-@import "components/tile-list/tile-list";
-@import "components/tile-item/tile-item";
-
-
-/*
- * Shared directives (old => get replaces by components)
- */
-
-@import "shared/ui/action/action";
-@import "shared/ui/color/color";
-@import "shared/ui/form/form";
-@import "shared/ui/range/range";
-@import "shared/ui/wizard/wizard";
+}());

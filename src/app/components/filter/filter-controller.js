@@ -1,5 +1,4 @@
 /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
-/* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
  *                                                                                     *
  * Copyright (C) 2015 Lukas Mayerhofer <lukas.mayerhofer@guh.guru>                     *
  *                                                                                     *
@@ -22,80 +21,49 @@
  * SOFTWARE.                                                                           *
  *                                                                                     *
  * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
+ 
+(function() {
+  'use strict';
+
+  angular
+    .module('guh.ui')
+    .controller('FilterCtrl', FilterCtrl);
+
+  FilterCtrl.$inject = ['$log'];
+
+  /**
+   * @ngdoc controller
+   * @name guh.ui.controller:FilterCtrl
+   * @description Filter by tags and search field.
+   *
+   */
+  function FilterCtrl($log) {
+    var vm = this;
 
 
-/*
- * Libraries
- *
- */
-
-@import "bourbon";
+    vm.filter = [];
 
 
-/*
- * App SASS
- *
- */
-
-@import "../assets/scss/functions";
-@import "../assets/scss/mixins";
-@import "../assets/scss/variables";
+    vm.$onInit = onInit;
+    vm.onChange = onChange;
 
 
-/*
- * Grid
- *
- */
-
-@import "../assets/scss/grid/grid";
-
-
-/*
- * Base & Layout
- *
- */
-
-@import "../assets/scss/base/reset";
-@import "../assets/scss/base/base";
-@import "../assets/scss/base/header";
-@import "../assets/scss/base/content";
+    /**
+     * @ngdoc method
+     * @methodOf guh.ui.controller:FilterCtrl
+     * @name onInit
+     * @description Initialize the controller...
+     *
+     */
+    function onInit() {
+      $log.log('FilterCtrl:onInit()', vm);
+    }
 
 
-/*
- * Modules
- *
- */
+    function onChange() {
+      $log.log('onChange', vm.items);
+      vm.onItemChanged({ filterItems: vm.items });
+    }
+  }
 
-@import "../assets/scss/modules/action";
-@import "../assets/scss/modules/event";
-@import "../assets/scss/modules/form";
-@import "../assets/scss/modules/list";
-@import "../assets/scss/modules/param";
-@import "../assets/scss/modules/state";
-
-
-/*
- * Components
- */
-
-@import "containers/intro/intro";
-@import "containers/settings/settings";
-@import "containers/rule-details/rule-details";
-@import "containers/thing-details/thing-details";
-
-@import "components/action-bar/action-bar";
-@import "components/filter/filter";
-@import "components/modal-container/modal-container";
-@import "components/tile-list/tile-list";
-@import "components/tile-item/tile-item";
-
-
-/*
- * Shared directives (old => get replaces by components)
- */
-
-@import "shared/ui/action/action";
-@import "shared/ui/color/color";
-@import "shared/ui/form/form";
-@import "shared/ui/range/range";
-@import "shared/ui/wizard/wizard";
+}());

@@ -1,5 +1,4 @@
 /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
-/* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
  *                                                                                     *
  * Copyright (C) 2015 Lukas Mayerhofer <lukas.mayerhofer@guh.guru>                     *
  *                                                                                     *
@@ -24,78 +23,38 @@
  * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 
 
-/*
- * Libraries
- *
- */
+.Filter {
+  overflow: auto;
+  width: 100%;
+  @include rem(margin, 0, 0, 1.5);
+  @include rem(padding, 0, 0.5);
 
-@import "bourbon";
+  li {
+    float: left;
+  }
+}
 
+.Tag {
+  width: auto;
+  @include user-select(none);
 
-/*
- * App SASS
- *
- */
+  label {
+    background-color: rgba($grey, 0.1);
+    cursor: pointer;
+    display: inline-block;
+    margin: 0;
+    // @include rem(border-radius, 1.5);
+    @include rem(border-radius, 0.2);
+    @include rem(margin-right, 0.5);
+    @include rem(padding, 0.15, 0.75);
+  }
 
-@import "../assets/scss/functions";
-@import "../assets/scss/mixins";
-@import "../assets/scss/variables";
+  input {
+    display: none;
+  }
+}
 
-
-/*
- * Grid
- *
- */
-
-@import "../assets/scss/grid/grid";
-
-
-/*
- * Base & Layout
- *
- */
-
-@import "../assets/scss/base/reset";
-@import "../assets/scss/base/base";
-@import "../assets/scss/base/header";
-@import "../assets/scss/base/content";
-
-
-/*
- * Modules
- *
- */
-
-@import "../assets/scss/modules/action";
-@import "../assets/scss/modules/event";
-@import "../assets/scss/modules/form";
-@import "../assets/scss/modules/list";
-@import "../assets/scss/modules/param";
-@import "../assets/scss/modules/state";
-
-
-/*
- * Components
- */
-
-@import "containers/intro/intro";
-@import "containers/settings/settings";
-@import "containers/rule-details/rule-details";
-@import "containers/thing-details/thing-details";
-
-@import "components/action-bar/action-bar";
-@import "components/filter/filter";
-@import "components/modal-container/modal-container";
-@import "components/tile-list/tile-list";
-@import "components/tile-item/tile-item";
-
-
-/*
- * Shared directives (old => get replaces by components)
- */
-
-@import "shared/ui/action/action";
-@import "shared/ui/color/color";
-@import "shared/ui/form/form";
-@import "shared/ui/range/range";
-@import "shared/ui/wizard/wizard";
+.Tag.Tag_isChecked label {
+  background-color: $grey;
+  color: $white;
+}

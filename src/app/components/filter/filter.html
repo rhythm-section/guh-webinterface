@@ -21,12 +21,24 @@
 -->
 
 
-<guh-action-bar add-button="true" on-add="things.addThing()" ng-show="things.showActionBar"></guh-action-bar>
+<!-- <ul class="tags"> -->
+  <!-- <li class="tags__item" ng-class="{ 'is-selected': master.showAll }">
+    <label>all</label>
+    <input type="checkbox" ng-change="master.showFiltered != master.showFiltered" ng-model="master.showAll" ng-checked="master.showAll">
+  </li> -->
+  <!-- <li class="tags__item" ng-class="{ 'is-selected': item.isChecked }" ng-repeat="item in filter.items">
+    <label>
+      <input type="checkbox" ng-change="filter.onChange()" ng-model="item.isChecked" ng-checked="item.isChecked">
+      {{ item.name }}
+    </label>
+  </li>
+</ul> -->
 
-<guh-filter class="filter" items="things.filterItems" on-item-changed="things.filter(filterItems)"></guh-filter>
-
-<guh-tile-list initial-visible-id="{{ things.currentDevice.id }}" on-select-tile="things.showDetails(tileId)" ng-show="things.showList">
-  <guh-tile-item id="{{ device.id }}" icon-url="./assets/svg/device-class/device-class.symbol.svg#{{ things.currentDevice.deviceClass.deviceIcon ? things.currentDevice.deviceClass.deviceIcon : 'DeviceIconDevice' }}" title="{{ device.name }}" description="{{ device.getDescription('&nbsp;&middot;&nbsp;') }}" ng-repeat="device in things.configuredDevices | basicTags:things.filterItems | orderBy:'name' track by $index"></guh-tile-item>
-</guh-tile-list>
-
-<div class="ThingDetails" ui-view></div>
+<ul class="Filter">
+  <li class="Tag" ng-class="{ 'Tag_isChecked': item.isChecked }" ng-repeat="item in filter.items">
+    <label>
+      <input type="checkbox" ng-change="filter.onChange()" ng-model="item.isChecked" ng-checked="item.isChecked">
+      {{ item.name }}
+    </label>
+  </li>
+</ul>

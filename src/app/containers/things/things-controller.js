@@ -46,12 +46,14 @@
 
     vm.$onInit = onInit;
     vm.showFilter = showFilter;
+    vm.filter = filter;
     vm.addThing = addThing;
     vm.showDetails = showDetails;
     
 
     function onInit() {
       var deviceId = (libs._.has($stateParams, 'deviceId') && $stateParams.deviceId) ? $stateParams.deviceId : null;
+      var tags = [];
       
       if(!app.dataLoaded) {
         $state.go('guh.intro', {
@@ -71,10 +73,34 @@
       if(!deviceId) {
         vm.showList = true;
       }
+
+      tags = libs._.uniq([].concat.apply([], vm.configuredDevices.map(_getTags)));
+      vm.filterItems = tags.map(_getFilterItem);
+    }
+
+    function _getTags(device) {
+      if(angular.isUndefined(device.deviceClass) && angular.isUndefined(device.deviceClass.basicTags)) {
+        return [];
+      }
+
+      return device.deviceClass.basicTags;
+    }
+
+    function _getFilterItem(tag) {
+      return {
+        name: tag.replace('BasicTag', ''),
+        type: tag,
+        isChecked: false
+      };
     }
 
     function showFilter() {
       $log.log('showFilter');
+    }
+
+    function filter(filterItems) {
+      $log.log('filter', filterItems);
+      vm.filterItems = filterItems;
     }
 
     function addThing() {
