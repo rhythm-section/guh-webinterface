@@ -23,77 +23,16 @@
  * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 
 
-/**
- * @ngdoc interface
- * @name guh.moods.controller:AddEventCtrl
- *
- * @description
- * Add a new event to a rule.
- *
- */
-
-(function(){
+(function() {
   'use strict';
 
   angular
     .module('guh.components')
-    .controller('AddEventCtrl', AddEventCtrl);
-
-  AddEventCtrl.$inject = ['$log', '$rootScope', 'DSDevice', 'modalInstance'];
-
-  function AddEventCtrl($log, $rootScope, DSDevice, modalInstance) {
-
-    var vm = this;
-
-    vm.modalInstance = modalInstance;
-    vm.things = [];
-    vm.currentThing = null;
-    vm.currentEventType = null;
-
-    vm.selectThing = selectThing;
-    vm.hasCurrentThing = hasCurrentThing;
-    vm.selectEventType = selectEventType;
-
-
-    function _init() {
-      _setThings();
-    }
-
-    function _hasEvents(device) {
-      return angular.isDefined(device.deviceClass) &&
-             angular.isDefined(device.deviceClass.eventTypes) &&
-             device.deviceClass.eventTypes.length > 0;
-    }
-
-    function _setThings() {
-      var things = DSDevice.getAll();
-      vm.things = things.filter(_hasEvents);
-    }
-
-
-    function selectThing(thing) {
-      vm.currentThing = thing;
-      $rootScope.$broadcast('wizard.next', 'addEvent');
-    }
-
-    function hasCurrentThing() {
-      return vm.currentThing !== null;
-    }
-
-    function selectEventType(eventType) {
-      var eventDescriptor = vm.currentThing.getEventDescriptor(eventType);
-      vm.currentEventType = eventType;
-
-      modalInstance.close({
-        thing: vm.currentThing,
-        eventType: vm.currentEventType,
-        eventDescriptor: eventDescriptor
-      });
-    }
-
-
-    _init();
-
-  }
+    .component('guhModalContainer', {
+      bindings: {},
+      controller: 'ModalContainerCtrl',
+      controllerAs: 'modalContainer',
+      templateUrl: 'app/components/modal-container/modal-container.html'
+    });
 
 }());

@@ -36,12 +36,12 @@
   'use strict';
 
   angular
-    .module('guh.moods')
+    .module('guh.components')
     .controller('NewMoodCtrl', NewMoodCtrl);
 
-  NewMoodCtrl.$inject = ['app', 'libs', '$log', '$rootScope', '$state', '$stateParams', 'MorphModal', 'DSRule', 'modalInstance'];
+  NewMoodCtrl.$inject = ['app', 'libs', '$log', '$rootScope', '$state', '$stateParams', 'ModalContainer', 'DSRule', 'modalInstance'];
 
-  function NewMoodCtrl(app, libs, $log, $rootScope, $state, $stateParams, MorphModal, DSRule, modalInstance) {
+  function NewMoodCtrl(app, libs, $log, $rootScope, $state, $stateParams, ModalContainer, DSRule, modalInstance) {
 
     var vm = this;
     var actionModal = null;
@@ -73,7 +73,7 @@
     vm.setDetails = setDetails;
 
     vm.addModal = function() {
-      MorphModal
+      ModalContainer
         .add({
           controller: 'NewMoodCtrl',
           controllerAs: 'newMood',
@@ -99,7 +99,7 @@
     }
 
     function _addModal(modalData) {
-      MorphModal
+      ModalContainer
         .add(modalData)
         .then(function(modal) {
           modal.open();
@@ -166,7 +166,7 @@
         templateUrl: app.basePaths.moods + 'add/add-action.html'
       };
 
-      MorphModal
+      ModalContainer
         .add(modalData)
         .then(function(modal) {
           modal.open();
@@ -193,7 +193,7 @@
         templateUrl: app.basePaths.moods + 'add/add-event.html'
       };
 
-      MorphModal
+      ModalContainer
         .add(modalData)
         .then(function(modal) {
           modal.open();
@@ -224,7 +224,7 @@
         templateUrl: app.basePaths.moods + 'add/add-state.html'
       };
 
-      MorphModal
+      ModalContainer
         .add(modalData)
         .then(function(modal) {
           modal.open();
@@ -255,7 +255,7 @@
         templateUrl: app.basePaths.moods + 'add/add-action.html'
       };
 
-      MorphModal
+      ModalContainer
         .add(modalData)
         .then(function(modal) {
           modal.open();

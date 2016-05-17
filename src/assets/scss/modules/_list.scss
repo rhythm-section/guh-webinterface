@@ -23,77 +23,98 @@
  * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 
 
-/**
- * @ngdoc interface
- * @name guh.moods.controller:AddEventCtrl
- *
- * @description
- * Add a new event to a rule.
- *
- */
+.List {
 
-(function(){
-  'use strict';
+}
 
-  angular
-    .module('guh.components')
-    .controller('AddEventCtrl', AddEventCtrl);
+.List__item-divider {
+  color: $turquoise;
+  letter-spacing: 0.1em;
+  position: relative;
+  // text-align: center;
+  text-transform: uppercase;
+  @include rem(margin, 3, 0, 0);
+  @include rem(padding, 1.5, 1.5, 0);
 
-  AddEventCtrl.$inject = ['$log', '$rootScope', 'DSDevice', 'modalInstance'];
+  .List__icon {
+    fill: $turquoise;
+    padding-bottom: 0;
+  }
+}
 
-  function AddEventCtrl($log, $rootScope, DSDevice, modalInstance) {
+.List__item {
+  border-bottom: 1px solid rgba($grey, 0.1);
+  cursor: pointer;
+  position: relative;
+  @include rem(padding, 1.5);
 
-    var vm = this;
-
-    vm.modalInstance = modalInstance;
-    vm.things = [];
-    vm.currentThing = null;
-    vm.currentEventType = null;
-
-    vm.selectThing = selectThing;
-    vm.hasCurrentThing = hasCurrentThing;
-    vm.selectEventType = selectEventType;
-
-
-    function _init() {
-      _setThings();
-    }
-
-    function _hasEvents(device) {
-      return angular.isDefined(device.deviceClass) &&
-             angular.isDefined(device.deviceClass.eventTypes) &&
-             device.deviceClass.eventTypes.length > 0;
-    }
-
-    function _setThings() {
-      var things = DSDevice.getAll();
-      vm.things = things.filter(_hasEvents);
-    }
-
-
-    function selectThing(thing) {
-      vm.currentThing = thing;
-      $rootScope.$broadcast('wizard.next', 'addEvent');
-    }
-
-    function hasCurrentThing() {
-      return vm.currentThing !== null;
-    }
-
-    function selectEventType(eventType) {
-      var eventDescriptor = vm.currentThing.getEventDescriptor(eventType);
-      vm.currentEventType = eventType;
-
-      modalInstance.close({
-        thing: vm.currentThing,
-        eventType: vm.currentEventType,
-        eventDescriptor: eventDescriptor
-      });
-    }
-
-
-    _init();
-
+  &:hover .List__icon {
+    fill: $grey;
   }
 
-}());
+  &:last-child {
+    border-bottom: 0;
+  }
+}
+
+.List__item-title {
+
+}
+
+.List__item-description {
+  color: rgba($grey, 0.4);
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  @include rem(font-size, 0.8);
+}
+
+.List__item-divider_has-icon-left,
+.List__item_has-icon-left {
+  @include rem(padding-left, 4.5);
+}
+
+.List__item-divider_has-icon-right,
+.List__item_has-icon-right {
+  @include rem(padding-right, 4.5);
+}
+
+.List__item_isDisabled {
+  color: rgba($grey, 0.2);
+  cursor: default;
+
+  .List__item-description{
+    color: inherit;
+  }
+}
+
+.List__icon {
+  display: block;
+  fill: rgba($grey, 0.2);
+  position: absolute;
+  // right: 0;
+  top: 50%;
+  @include rem(height, 4.5);
+  @include rem(padding, 1.5);
+  @include rem(width, 4.5);
+  @include transform(translateY(-50%));
+}
+
+.List__icon.List__icon_left {
+  left: 0;
+  // float: left;
+  // @include rem(margin-right, 1.5);
+}
+
+.List__icon.List__icon_right {
+  right: 0;
+  // float: right;
+  // @include rem(margin-left, 1.5);
+}
+
+.List__icon_before-text {
+  @include rem(margin, 0, 0.5, -0.35, 0);
+}
+
+.List__icon_after-text {
+  @include rem(margin, 0, 0, -0.35, 0.5);
+}

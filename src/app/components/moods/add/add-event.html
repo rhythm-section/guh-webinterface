@@ -21,28 +21,28 @@
 -->
 
 
-<button class="close" ng-click="addEvent.modalInstance.close()">
-  <svg class="icon">
+<button class="Wizard__close" ng-click="addEvent.modalInstance.close()">
+  <svg class="Wizard__icon">
     <use xlink:href="./assets/svg/ui/ui.symbol.svg#close"></use>
   </svg>
 </button>
 
 <div guh-wizard handle="addEvent">
   <!-- Select device -->
-  <div class="list" guh-wizard-step title="Choose a device" is-valid="addEvent.hasCurrentThing()">
-    <div class="list__item list__item_isClickable" ng-click="addEvent.selectThing(thing)" ng-repeat="thing in addEvent.things | orderBy: 'name' track by $index">
-      <span>{{ thing.name }}</span>
-      <svg class="icon">
+  <div class="List" guh-wizard-step title="Choose a device" is-valid="addEvent.hasCurrentThing()">
+    <div class="List__item List__item_isClickable" ng-click="addEvent.selectThing(thing)" ng-repeat="thing in addEvent.things | orderBy: 'name' track by $index">
+      {{ thing.name }}
+      <svg class="List__icon List__icon_right">
         <use xlink:href="./assets/svg/ui/ui.symbol.svg#chevron-right"></use>
       </svg>
     </div>
   </div>
 
   <!-- Select eventType -->
-  <div class="list" guh-wizard-step title="Choose a trigger and save it">
-    <div class="list__item list__item_isClickable" ng-click="addEvent.selectEventType(eventType)" ng-repeat="eventType in addEvent.currentThing.deviceClass.eventTypes track by $index">
-      <span>{{ eventType.name }}</span>
-      <svg class="icon">
+  <div class="List" guh-wizard-step title="Choose a trigger and save it">
+    <div class="List__item List__item_isClickable" ng-click="addEvent.selectEventType(eventType)" ng-repeat="eventType in addEvent.currentThing.deviceClass.eventTypes track by $index">
+      {{ eventType.name }}
+      <svg class="List__icon List__icon_right">
         <use xlink:href="./assets/svg/ui/ui.symbol.svg#plus"></use>
       </svg>
     </div>

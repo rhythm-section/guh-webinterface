@@ -29,7 +29,7 @@
     .module('guh.containers')
     .controller('RulesCtrl', RulesCtrl);
 
-  RulesCtrl.$inject = ['app', 'libs', '$log', '$scope', '$state', '$stateParams', 'DSRule'];
+  RulesCtrl.$inject = ['app', 'libs', '$log', '$scope', '$state', '$stateParams', 'DSRule', 'ModalContainer'];
 
   /**
    * @ngdoc controller
@@ -37,7 +37,7 @@
    * @description Container component for rules.
    *
    */
-  function RulesCtrl(app, libs, $log, $scope, $state, $stateParams, DSRule) {
+  function RulesCtrl(app, libs, $log, $scope, $state, $stateParams, DSRule, ModalContainer) {
     
     var vm = this;
 
@@ -77,6 +77,19 @@
 
     function addRule() {
       $log.log('addRule');
+      ModalContainer
+        .add({
+          controller: 'NewMoodCtrl',
+          controllerAs: 'newMood',
+          data: null,
+          templateUrl: 'app/components/moods/add/new-mood-modal.html'
+        })
+        .then(function(modal) {
+          modal.open();
+        })
+        .catch(function(error) {
+          $log.log('error', error);
+        });
     }
 
     function showDetails(tileId) {

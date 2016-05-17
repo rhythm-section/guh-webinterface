@@ -29,7 +29,7 @@
     .module('guh.containers')
     .controller('ThingsCtrl', ThingsCtrl);
 
-  ThingsCtrl.$inject = ['app', 'libs', '$scope', '$log', '$state', '$stateParams', 'DSDevice'];
+  ThingsCtrl.$inject = ['app', 'libs', '$scope', '$log', '$state', '$stateParams', 'DSDevice', 'ModalContainer'];
 
   /**
    * @ngdoc controller
@@ -37,7 +37,7 @@
    * @description Container component for things.
    *
    */
-  function ThingsCtrl(app, libs, $scope, $log, $state, $stateParams, DSDevice) {
+  function ThingsCtrl(app, libs, $scope, $log, $state, $stateParams, DSDevice, ModalContainer) {
     
     var vm = this;
 
@@ -76,7 +76,19 @@
     }
 
     function addThing() {
-      $log.log('addThing');
+      ModalContainer
+        .add({
+          controller: 'NewDeviceCtrl',
+          controllerAs: 'newDevice',
+          data: null,
+          templateUrl: 'app/components/devices/add/new-device-modal.html'
+        })
+        .then(function(modal) {
+          modal.open();
+        })
+        .catch(function(error) {
+          $log.log('error', error);
+        });
     }
 
     function showDetails(tileId) {

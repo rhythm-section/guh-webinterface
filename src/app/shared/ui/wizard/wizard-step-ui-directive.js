@@ -66,7 +66,7 @@
       }
 
       // Add proper styles
-      element.addClass('wizard__step');
+      element.addClass('Wizard__step');
 
       // Add step to wizard
       wizardCtrl.addStep({

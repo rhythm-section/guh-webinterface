@@ -21,28 +21,28 @@
 -->
 
 
-<button class="close" ng-click="addAction.modalInstance.close()">
-  <svg class="icon">
+<button class="Wizard__close" ng-click="addAction.modalInstance.close()">
+  <svg class="Wizard__icon">
     <use xlink:href="./assets/svg/ui/ui.symbol.svg#close"></use>
   </svg>
 </button>
 
 <div guh-wizard handle="addAction">
   <!-- Select device -->
-  <div class="list" guh-wizard-step title="Choose a device" is-valid="addAction.hasCurrentThingSet()">
-    <div class="list__item list__item_isClickable" ng-click="addAction.selectThing(thing)" ng-repeat="thing in addAction.things | orderBy: 'name' track by $index">
-      <span>{{ thing.name }}</span>
-      <svg class="icon">
+  <div class="List" guh-wizard-step title="Choose a device" is-valid="addAction.hasCurrentThingSet()">
+    <div class="List__item List__item_isClickable" ng-click="addAction.selectThing(thing)" ng-repeat="thing in addAction.things | orderBy: 'name' track by $index">
+      {{ thing.name }}
+      <svg class="List__icon List__icon_right">
         <use xlink:href="./assets/svg/ui/ui.symbol.svg#chevron-right"></use>
       </svg>
     </div>
   </div>
 
   <!-- Select actionType -->
-  <div class="list" guh-wizard-step title="Choose a control" is-valid="addAction.hasCurrentActionType()">
-    <div class="list__item list__item_isClickable" ng-click="addAction.selectActionType(actionType)" ng-repeat="actionType in addAction.currentThing.deviceClass.actionTypesLinked track by $index">
+  <div class="List" guh-wizard-step title="Choose a control" is-valid="addAction.hasCurrentActionType()">
+    <div class="List__item List__item_isClickable" ng-click="addAction.selectActionType(actionType)" ng-repeat="actionType in addAction.currentThing.deviceClass.actionTypesLinked track by $index">
       <span>{{ actionType.name }}</span>
-      <svg class="icon">
+      <svg class="List__icon List__icon_right">
         <use xlink:href="./assets/svg/ui/ui.symbol.svg#chevron-right"></use>
       </svg>
     </div>

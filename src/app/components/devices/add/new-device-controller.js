@@ -36,7 +36,7 @@
   'use strict';
 
   angular
-    .module('guh.devices')
+    .module('guh.components')
     .controller('NewDeviceCtrl', NewDeviceCtrl);
 
   NewDeviceCtrl.$inject = ['$log', '$rootScope', '$scope', '$state', '$stateParams', 'app', 'libs', 'DSHttpAdapter', 'DSVendor', 'DSDevice', 'modalInstance'];

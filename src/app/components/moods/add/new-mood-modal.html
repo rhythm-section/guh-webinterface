@@ -21,110 +21,110 @@
 -->
 
 
-<button class="close" ng-click="newMood.modalInstance.close()">
-  <svg class="icon">
+<button class="Wizard__close" ng-click="newMood.modalInstance.close()">
+  <svg class="Wizard__icon">
     <use xlink:href="./assets/svg/ui/ui.symbol.svg#close"></use>
   </svg>
 </button>
 
 <div guh-wizard handle="addRule" show-navigation="false">
   <!-- Add rule types -->
-  <div guh-wizard-step title="Add a new Mood" is-valid="newMood.isValid()">
-    <div class="wizard__step-description">
-      <p>A mood controls one or more of your devices and services. You can add trigger and conditions to turn the mood on or off automatically.</p>
+  <div guh-wizard-step title="Add a new Rule" is-valid="newMood.isValid()">
+    <div class="Wizard__step-description">
+      <p>A rule controls one or more of your things. You can add trigger and conditions to turn the rule on or off automatically.</p>
     </div>
-    <div class="list">
+    <div class="List">
       <!-- Actions -->
-      <div class="list__item-divider">When turned ON control...</div>
+      <div class="List__item-divider List__item-divider_has-icon-left">
+        <svg class="List__icon List__icon_left">
+          <use xlink:href="./assets/svg/ui/ui.symbol.svg#log-in"></use>
+        </svg>
+        When rule is turned ON, control these things
+      </div>
       <!-- Actions: List -->
-      <div class="list__item list__item_hasDescription" ng-repeat="action in newMood.actions track by $index">
-        <div class="title">{{ action.actionType.name }} (<span ng-repeat="param in action.enhancedParams track by $index">{{ param.name }}={{ param.value }}{{ param.unit | unit }}{{ ($index === action.params.length - 1) ? '' : ', ' }}</span>)</div>
-        <div class="description">{{ action.thing.name }}</div>
-        <button class="button" type="button" ng-click="newMood.deleteAction(action)">
-          <svg class="icon icon_delete">
-            <use xlink:href="./assets/svg/ui/ui.symbol.svg#minus"></use>
-          </svg>
-        </button>
+      <div class="List__item List__item_hasDescription" ng-click="newMood.deleteAction(action)" ng-repeat="action in newMood.actions track by $index">
+        <div class="List__item-title">{{ action.actionType.name }} (<span ng-repeat="param in action.enhancedParams track by $index">{{ param.name }}={{ param.value }}{{ param.unit | unit }}{{ ($index === action.params.length - 1) ? '' : ', ' }}</span>)</div>
+        <div class="List__item-description">{{ action.thing.name }}</div>
+        <svg class="List__icon List__icon_right">
+          <use xlink:href="./assets/svg/ui/ui.symbol.svg#minus"></use>
+        </svg>
       </div>
       <!-- Actions: Add -->
-      <div class="list__item">
-        <span ng-show="newMood.actions.length === 0">Add a control</span>
-        <span ng-show="newMood.actions.length > 0">Add another control</span>
-        <button class="button" type="button" ng-click="newMood.addAction()">
-          <svg class="icon icon_add">
-            <use xlink:href="./assets/svg/ui/ui.symbol.svg#plus"></use>
-          </svg>
-        </button>
+      <div class="List__item" ng-click="newMood.addAction()">
+        {{ newMood.actions.length > 0 ? 'Add another control' : 'Add a control' }}
+        <svg class="List__icon List__icon_right">
+          <use xlink:href="./assets/svg/ui/ui.symbol.svg#plus"></use>
+        </svg>
       </div>
 
       <!-- ExitActions -->
-      <div class="list__item-divider">When turned OFF control...</div>
+      <div class="List__item-divider List__item-divider_has-icon-left">
+        <svg class="List__icon List__icon_left">
+          <use xlink:href="./assets/svg/ui/ui.symbol.svg#log-out"></use>
+        </svg>
+        When rule is turned OFF, control these things
+      </div>
       <!-- ExitActions: List -->
-      <div class="list__item list__item_warning" ng-show="newMood.exitActionsDisabled">When trigger were added the mood can only be turned on.</div>
-      <div class="list__item list__item_hasDescription" ng-class="{ 'list__item_isDisabled': newMood.exitActionsDisabled }" ng-repeat="action in newMood.exitActions track by $index">
-        <div class="title">{{ action.actionType.name }} (<span ng-repeat="param in action.enhancedParams track by $index">{{ param.name }}={{ param.value }}{{ param.unit | unit }}{{ ($index === action.params.length - 1) ? '' : ', ' }}</span>)</div>
-        <div class="description">{{ action.thing.name }}</div>
-        <button class="button" type="button" ng-click="newMood.deleteExitAction(action)">
-          <svg class="icon icon_delete">
-            <use xlink:href="./assets/svg/ui/ui.symbol.svg#minus"></use>
-          </svg>
-        </button>
+      <div class="List__item List__item_warning" ng-show="newMood.exitActionsDisabled">When trigger were added the mood can only be turned on.</div>
+      <div class="List__item List__item_hasDescription" ng-click="newMood.deleteExitAction(action)" ng-class="{ 'List__item_isDisabled': newMood.exitActionsDisabled }" ng-repeat="action in newMood.exitActions track by $index">
+        <div class="List__item-title">{{ action.actionType.name }} (<span ng-repeat="param in action.enhancedParams track by $index">{{ param.name }}={{ param.value }}{{ param.unit | unit }}{{ ($index === action.params.length - 1) ? '' : ', ' }}</span>)</div>
+        <div class="List__item-description">{{ action.thing.name }}</div>
+        <svg class="List__icon List__icon_right">
+          <use xlink:href="./assets/svg/ui/ui.symbol.svg#minus"></use>
+        </svg>
       </div>
       <!-- ExitActions: Add -->
-      <div class="list__item" ng-class="{ 'list__item_isDisabled': newMood.exitActionsDisabled }">
-        <span ng-show="newMood.exitActions.length === 0">Add a control <b>(optional)</b></span>
-        <span ng-show="newMood.exitActions.length > 0">Add another control <b>(optional)</b></span>
-        <button class="button" type="button" ng-click="newMood.addExitAction()">
-          <svg class="icon icon_add">
-            <use xlink:href="./assets/svg/ui/ui.symbol.svg#plus"></use>
-          </svg>
-        </button>
+      <div class="List__item" ng-click="newMood.addExitAction()" ng-class="{ 'List__item_isDisabled': newMood.exitActionsDisabled }">
+        {{ newMood.exitActions.length > 0 ? 'Add another control (optional)' : 'Add a control (optional)' }}
+        <svg class="List__icon List__icon_right">
+          <use xlink:href="./assets/svg/ui/ui.symbol.svg#plus"></use>
+        </svg>
       </div>
 
       <!-- Events -->
-      <div class="list__item-divider">Control the devices/services only when...</div>
+      <div class="List__item-divider List__item-divider_has-icon-left">
+        <svg class="List__icon List__icon_left">
+          <use xlink:href="./assets/svg/ui/ui.symbol.svg#ios-bolt"></use>
+        </svg>
+        Control the things only when something happens
+      </div>
       <!-- Events: List -->
-      <div class="list__item list__item_hasDescription" ng-repeat="event in newMood.events track by $index">
-        <div class="title">{{ event.eventType.name }}</div>
-        <div class="description">{{ event.thing.name }}</div>
-        <button class="button" type="button" ng-click="newMood.deleteEvent(event)">
-          <svg class="icon icon_delete">
-            <use xlink:href="./assets/svg/ui/ui.symbol.svg#minus"></use>
-          </svg>
-        </button>
+      <div class="List__item List__item_hasDescription" ng-click="newMood.deleteEvent(event)" ng-repeat="event in newMood.events track by $index">
+        <div class="List__item-title">{{ event.eventType.name }}</div>
+        <div class="List__item-description">{{ event.thing.name }}</div>
+        <svg class="List__icon List__icon_right">
+          <use xlink:href="./assets/svg/ui/ui.symbol.svg#minus"></use>
+        </svg>
       </div>
       <!-- Events: Add -->
-      <div class="list__item">
-        <span ng-show="newMood.events.length === 0">Add a trigger <b>(optional)</b></span>
-        <span ng-show="newMood.events.length > 0">Add another trigger <b>(optional)</b></span>
-        <button class="button" type="button" ng-click="newMood.addEvent()">
-          <svg class="icon icon_add">
-            <use xlink:href="./assets/svg/ui/ui.symbol.svg#plus"></use>
-          </svg>
-        </button>
+      <div class="List__item" ng-click="newMood.addEvent()">
+        {{ newMood.events.lenfth > 0 ? 'Add another trigger (optional)' : 'Add a trigger (optional)' }}
+        <svg class="List__icon List__icon_right">
+          <use xlink:href="./assets/svg/ui/ui.symbol.svg#plus"></use>
+        </svg>
       </div>
 
       <!-- States -->
-      <div class="list__item-divider">Control the devices/services as long as...</div>
+      <div class="List__item-divider List__item-divider_has-icon-left">
+        <svg class="List__icon List__icon_left">
+          <use xlink:href="./assets/svg/ui/ui.symbol.svg#ios-loop-strong"></use>
+        </svg>
+        Control the things as long as conditions are met
+      </div>
       <!-- States: List -->
-      <div class="list__item list__item_hasDescription" ng-repeat="state in newMood.states track by $index">
-        <div class="title">{{ state.title  }}</div>
-        <div class="description">{{ state.thing.name }}</div>
-        <button class="button" type="button" ng-click="newMood.deleteState(state)">
-          <svg class="icon icon_delete">
-            <use xlink:href="./assets/svg/ui/ui.symbol.svg#minus"></use>
-          </svg>
-        </button>
+      <div class="List__item List__item_hasDescription" ng-click="newMood.deleteState(state)" ng-repeat="state in newMood.states track by $index">
+        <div class="List__item-title">{{ state.title  }}</div>
+        <div class="List__item-description">{{ state.thing.name }}</div>
+        <svg class="List__icon List__icon_right">
+          <use xlink:href="./assets/svg/ui/ui.symbol.svg#minus"></use>
+        </svg>
       </div>
       <!-- States: Add -->
-      <div class="list__item">
-        <span ng-show="newMood.states.length === 0">Add a condition <b>(optional)</b></span>
-        <span ng-show="newMood.states.length > 0">Add another condition <b>(optional)</b></span>
-        <button class="button" type="button" ng-click="newMood.addState()">
-          <svg class="icon icon_add">
-            <use xlink:href="./assets/svg/ui/ui.symbol.svg#plus"></use>
-          </svg>
-        </button>
+      <div class="List__item" ng-click="newMood.addState()">
+        {{ newMood.states.length > 0 ? 'Add another condition (optional)' : 'Add a condition (optional)' }}
+        <svg class="List__icon List__icon_right">
+          <use xlink:href="./assets/svg/ui/ui.symbol.svg#plus"></use>
+        </svg>
       </div>
     </div>
 
@@ -133,20 +133,19 @@
 
   <!-- Enter rule details -->
   <div guh-wizard-step title="Enter mood name">
-    <div class="wizard__step-description">
+    <div class="Wizard__step-description">
       <p>Please enter a name for this mood before you save it.</p>
     </div>
 
     <guh-form name="enterRuleDetails"
               on-form-submit="newMood.enterRuleDetails(params)"
-              class="list">
+              class="List">
 
       <guh-form-field label="Name"
                       name="Name"
                       param-type="newMood.rule.name"
                       template="app/shared/ui/form/form-field-templates/form-field-text.html"></guh-form-field>
 
-      <!-- <button class="button" type="button" ng-disabled="!newMood.isValid()" ng-click="newMood.enterRuleDetails()">Save mood</button> -->
       <button class="button" type="submit">Save</button>
     </guh-form>
   </div>

@@ -21,28 +21,28 @@
 -->
 
 
-<button class="close" ng-click="addState.modalInstance.close()">
-  <svg class="icon">
+<button class="Wizard__close" ng-click="addState.modalInstance.close()">
+  <svg class="Wizard__icon">
     <use xlink:href="./assets/svg/ui/ui.symbol.svg#close"></use>
   </svg>
 </button>
 
 <div guh-wizard handle="addStateWizard">
   <!-- Select device -->
-  <div class="list" guh-wizard-step title="Choose a device" is-valid="addState.hasCurrentThing()">
-    <div class="list__item list__item_isClickable" ng-click="addState.selectThing(thing)" ng-repeat="thing in addState.things | orderBy: 'name' track by $index">
-      <span>{{ thing.name }}</span>
-      <svg class="icon">
+  <div class="List" guh-wizard-step title="Choose a device" is-valid="addState.hasCurrentThing()">
+    <div class="List__item List__item_isClickable" ng-click="addState.selectThing(thing)" ng-repeat="thing in addState.things | orderBy: 'name' track by $index">
+      {{ thing.name }}
+      <svg class="List__icon List__icon_right">
         <use xlink:href="./assets/svg/ui/ui.symbol.svg#chevron-right"></use>
       </svg>
     </div>
   </div>
 
   <!-- Select stateType -->
-  <div class="list" guh-wizard-step title="Choose a condition" is-valid="addState.hasCurrentStateType()">
-    <div class="list__item list__item_isClickable" ng-click="addState.selectStateType(stateType)" ng-repeat="stateType in addState.stateTypes track by $index">
-      <span>{{ stateType.name }}</span>
-      <svg class="icon">
+  <div class="List" guh-wizard-step title="Choose a condition" is-valid="addState.hasCurrentStateType()">
+    <div class="List__item List__item_isClickable" ng-click="addState.selectStateType(stateType)" ng-repeat="stateType in addState.stateTypes track by $index">
+      {{ stateType.name }}
+      <svg class="List__icon List__icon_right">
         <use xlink:href="./assets/svg/ui/ui.symbol.svg#chevron-right"></use>
       </svg>
     </div>

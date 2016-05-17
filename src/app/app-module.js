@@ -66,8 +66,8 @@
       'guh.ui',
 
       // App
-      'guh.containers',
-      'guh.components'
+      'guh.components',
+      'guh.containers'
     ]);
 
 }());

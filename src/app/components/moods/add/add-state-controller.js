@@ -36,7 +36,7 @@
   'use strict';
 
   angular
-    .module('guh.moods')
+    .module('guh.components')
     .controller('AddStateCtrl', AddStateCtrl);
 
   AddStateCtrl.$inject = ['app', '$filter', '$log', '$rootScope', 'DSDevice', 'modalInstance'];

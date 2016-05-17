@@ -36,7 +36,7 @@
   'use strict';
 
   angular
-    .module('guh.moods')
+    .module('guh.components')
     .controller('AddActionCtrl', AddActionCtrl);
 
   AddActionCtrl.$inject = ['libs', '$q', '$timeout', '$log', '$rootScope', 'DSDevice', 'modalInstance'];

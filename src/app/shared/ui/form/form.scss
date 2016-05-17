@@ -142,13 +142,13 @@ select {
     &:hover .icon {
       display: block;
       // fill: lighten($c-grey, 50%);
-      fill: rgba($c-white, 0.2);
+      fill: rgba($white, 0.2);
     }
 
     &.active .icon {
       display: block;
       // fill: $c-grey;
-      fill: $c-white;
+      fill: $white;
     }
   }
 
@@ -170,7 +170,7 @@ input[type="checkbox"] {
   input[type="text"],
   input[type="password"] {
     border-bottom: 1px solid rgba($grey-dark, 0.2);
-    color: $c-grey;
+    color: $grey;
 
     &:hover,
     &:focus {

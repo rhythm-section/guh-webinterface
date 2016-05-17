@@ -22,29 +22,29 @@
 
 
 <!-- <div> -->
-  <h3 class="wizard__title heading">{{ wizard.title }}</h3>
+  <div class="WizardStep__title">{{ wizard.title }}</div>
 
-  <button class="wizard__prev" ng-click="wizard.prev()" ng-show="wizard.hasPrev()">
-    <svg class="icon">
+  <button class="Wizard__prev" ng-click="wizard.prev()" ng-show="wizard.hasPrev()">
+    <svg class="Wizard__icon">
       <use xlink:href="./assets/svg/ui/ui.symbol.svg#chevron-left"></use>
     </svg>
   </button>
 
-  <div class="wizard__content" ng-transclude></div>
+  <div class="Wizard__content" ng-transclude></div>
 
-  <div class="wizard__navigation">
+  <div class="Wizard__navigation">
     <ul ng-if="wizard.showNavigation">
       <li ng-class="{ active: wizard.isActive(step) }" ng-repeat="step in wizard.steps track by $index"></li>
     </ul>
 
-    <button class="wizard__prev" ng-click="wizard.prev()" ng-show="wizard.showPrev && wizard.hasPrev()">
-      <svg class="icon">
+    <button class="Wizard__prev" ng-click="wizard.prev()" ng-show="wizard.showPrev && wizard.hasPrev()">
+      <svg class="Wizard__icon">
         <use xlink:href="./assets/svg/ui/ui.symbol.svg#chevron-left"></use>
       </svg>
     </button>
 
-    <button class="wizard__next" ng-click="wizard.next()" ng-show="wizard.showNext && wizard.hasNext()">
-      <svg class="icon">
+    <button class="Wizard__next" ng-click="wizard.next()" ng-show="wizard.showNext && wizard.hasNext()">
+      <svg class="Wizard__icon">
         <use xlink:href="./assets/svg/ui/ui.symbol.svg#chevron-right"></use>
       </svg>
     </button>

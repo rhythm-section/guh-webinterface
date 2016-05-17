@@ -80,7 +80,7 @@
         currentStep = 0;
 
         if(vm.steps.length > 0) {
-          vm.steps[currentStep].element.addClass('wizard__step_current');
+          vm.steps[currentStep].element.addClass('Wizard__step_current');
           vm.title = vm.steps[currentStep].scope.wizardStep.title;
         }
       }
@@ -103,8 +103,8 @@
 
       function prev() {
         if(hasPrev()) {
-          vm.steps[currentStep].element.removeClass('wizard__step_current');
-          vm.steps[currentStep - 1].element.addClass('wizard__step_current');
+          vm.steps[currentStep].element.removeClass('Wizard__step_current');
+          vm.steps[currentStep - 1].element.addClass('Wizard__step_current');
           // $animate
           //   .removeClass(vm.steps[currentStep].element, 'current');
 
@@ -119,8 +119,8 @@
 
       function next() {
         if(hasNext() && isValid(currentStep + 1)) {
-          vm.steps[currentStep].element.removeClass('wizard__step_current');
-          vm.steps[currentStep + 1].element.addClass('wizard__step_current');
+          vm.steps[currentStep].element.removeClass('Wizard__step_current');
+          vm.steps[currentStep + 1].element.addClass('Wizard__step_current');
           // $animate
           //   .addClass(vm.steps[currentStep].element, 'slide-out-left')
           //   .then(function() {
@@ -145,11 +145,11 @@
         if(step === currentStep) {
           return;
         } else if(currentStep >= 0 && step <= vm.steps.length && isValid(step)) {
-          vm.steps[currentStep].element.removeClass('wizard__step_current');
+          vm.steps[currentStep].element.removeClass('Wizard__step_current');
           currentStep = step;
         }
 
-        vm.steps[currentStep].element.addClass('wizard__step_current');
+        vm.steps[currentStep].element.addClass('Wizard__step_current');
         vm.title = vm.steps[currentStep].scope.wizardStep.title;
       }
 
@@ -181,10 +181,10 @@
 
       function _init() {
         // Add proper styles
-        element.addClass('wizard');
+        element.addClass('Wizard');
 
         if(wizardCtrl.showNavigation) {
-          element.addClass('wizard_show_navigation');
+          element.addClass('Wizard_show_navigation');
         }
 
         // Save handle for later retrieval
