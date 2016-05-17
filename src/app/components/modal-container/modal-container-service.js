@@ -73,11 +73,12 @@
       return deferred.promise;
     }
 
-    function initialize(scope, animation, data) {
+    function initialize(scope, animation, classes, data) {
       return {
         id: ++id,
         scope: scope || $rootScope.$new(),
         animation: animation || 'fade-in',
+        classes: classes,
         data: data || null,
         open: open,
         close: close,
@@ -88,6 +89,7 @@
     function open() {
       var modal = {
         animation: this.animation,
+        classes: this.classes,
         controller: this.controller,
         controllerAs: this.controllerAs,
         data: this.data,
@@ -98,6 +100,7 @@
         closeAll: this.closeAll
       };
       $rootScope.$emit('modals.open', modal);
+      return modal;
     }
 
     function close(data) {
@@ -118,7 +121,7 @@
 
       getTemplate(options.template, options.templateUrl)
         .then(function(template) {
-          var modal = initialize(options.scope, options.animation, options.data);
+          var modal = initialize(options.scope, options.animation, options.classes, options.data);
           
           if(options.controller && options.controllerAs) {
             modal.controller = options.controller;

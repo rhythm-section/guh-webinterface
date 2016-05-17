@@ -39,9 +39,9 @@
     .module('guh.moods')
     .controller('MoodsDetailCtrl', MoodsDetailCtrl);
 
-  MoodsDetailCtrl.$inject = ['$log', 'app', '$state', '$stateParams', 'ngDialog', 'DSRule', 'DSDevice', 'DSEventType', 'DSStateType', 'DSActionType'];
+  MoodsDetailCtrl.$inject = ['$log', 'app', '$state', '$stateParams', 'DSRule', 'DSDevice', 'DSEventType', 'DSStateType', 'DSActionType'];
 
-  function MoodsDetailCtrl($log, app, $state, $stateParams, ngDialog, DSRule, DSDevice, DSEventType, DSStateType, DSActionType) {
+  function MoodsDetailCtrl($log, app, $state, $stateParams, DSRule, DSDevice, DSEventType, DSStateType, DSActionType) {
 
     var vm = this;
     var mood = {};

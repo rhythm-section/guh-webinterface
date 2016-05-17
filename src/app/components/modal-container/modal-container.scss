@@ -132,6 +132,16 @@ $turquoise: #57baae;
   }
 }
 
+.Modal__title {
+  @include rem(font-size, 1.2);
+  @include rem(margin, 0, 0, 1.5)
+  @include rem(padding, 1.5);
+}
+
+.Modal__content {
+  margin: 0;
+}
+
 
 /*
  * Colors & Typography

@@ -29,12 +29,12 @@
     .module('guh')
     .controller('AppCtrl', AppCtrl);
 
-  AppCtrl.$inject = ['$log', '$rootScope', '$scope', '$state', '$animate', '$timeout', 'app', 'libs', 'errors', 'websocketService', 'ngDialog', 'DSSettings'];
+  AppCtrl.$inject = ['$log', '$rootScope', '$scope', '$state', '$stateParams', '$animate', '$timeout', 'app', 'libs', 'errors', 'websocketService', 'DSSettings', 'ModalContainer'];
 
-  function AppCtrl($log, $rootScope, $scope, $state, $animate, $timeout, app, libs, errors, websocketService, ngDialog, DSSettings) {
+  function AppCtrl($log, $rootScope, $scope, $state, $stateParams, $animate, $timeout, app, libs, errors, websocketService, DSSettings, ModalContainer) {
 
     var vm = this;
-    var notification = null;
+    var notificationModal = null;
     var connectionErrorModal = null;
 
     vm.$state = $state;
@@ -45,15 +45,22 @@
       // Only show error when data available (=> not first run)
       if(app.dataLoaded) {
         if(!connectionErrorModal) {
-          connectionErrorModal = ngDialog.open({
-            className: 'modal modal_error modal_full',
-            overlay: true,
-            plain: true,
-            showClose: false,
+          ModalContainer.add({
+            controller: 'ConnectionErrorModalCtrl',
+            controllerAs: 'connectionErrorModal',
+            classes: 'Modal_error',
+            data: null,
             template: '<div>' + 
-                        '<p>' + data + '</p>' + 
-                        '<a class="button" ui-sref="guh.intro()" ng-click="closeThisDialog()">Reload the interface</a>' +
+                        '<div class="Modal__title">Uuups...</div>' + 
+                        '<p class="Modal__content">' + data + '</p>' + 
+                        '<a class="button" ui-sref="guh.intro" ng-click="connectionErrorModal.modalInstance.close()">Try to reload the interface</a>' + 
                       '</div>'
+          })
+          .then(function(modal) {
+            connectionErrorModal = modal.open();
+          })
+          .catch(function(error) {
+            $log.log('error', error);
           });
         }
 
@@ -64,9 +71,16 @@
     });
 
     $scope.$on('WebsocketConnected', function(event, data) {
-      if(connectionErrorModal) {
-        connectionErrorModal.close();
-        connectionErrorModal = null;
+      if(app.dataLoaded) {
+        app.dataLoaded = false;
+
+        if(connectionErrorModal) {
+          connectionErrorModal.close();
+          connectionErrorModal = null;
+        }
+
+        // Reload data (could have changed since connection was lost)
+        $state.go('guh.intro');
       }
     });
 
@@ -90,21 +104,51 @@
       var notificationMessage = (errorMessage === '') ? '[' + error + ']' : '[' + error + '] ' + errorMessage;
 
       // Close previous notification
-      if(notification && angular.isDefined(notification.id)) {
-        if(ngDialog.isOpen(notification.id)) {
-          ngDialog.close(notification.id);
-        }
+      if(notificationModal) {
+        notificationModal.close();
+        notificationModal = null;
       }
 
       // Show notification
       if(error && notificationMessage) {
-        notification = ngDialog.open({
-          className: 'notification notification_error',
-          closeByDocument: false,
-          overlay: false,
-          plain: true,
-          showClose: false,
-          template: '<p>' + notificationMessage + '</p><button class="close" type="button" ng-click="closeThisDialog()"><svg class="icon"><use xlink:href="./assets/svg/ui/ui.symbol.svg#close"></use></svg></button>'
+        ModalContainer.add({
+          controller: 'NotificationModalCtrl',
+          controllerAs: 'notificationModal',
+          classes: 'Modal_notification',
+          data: null,
+          template: '<div>' + 
+                      '<div class="Modal__title">Uuups...</div>' + 
+                      '<button class="close" type="button" ng-click="notificationModal.modalInstance.close()"><svg class="icon"><use xlink:href="./assets/svg/ui/ui.symbol.svg#close"></use></svg></button>' + 
+                      '<p class="Modal__content">' + notificationMessage + '</p>' + 
+                    '</div>'
+        })
+        .then(function(modal) {
+          notificationModal = modal.open();
+        })
+        .catch(function(error) {
+          $log.log('error', error);
+        });
+      }
+    });
+
+    $scope.$on('ReloadView', function(event, data) {
+      if($state.current.name === 'guh.things.current') {
+        $state.go('guh.things', {}, {
+          reload: true,
+          inherit: false,
+          notify: true
+        });
+      } else if($state.current.name === 'guh.rules.current') {
+        $state.go('guh.rules', {}, {
+          reload: true,
+          inherit: false,
+          notify: true
+        });
+      } else {
+        $state.go($state.current, $stateParams, {
+          reload: true,
+          inherit: false,
+          notify: true
         });
       }
     });

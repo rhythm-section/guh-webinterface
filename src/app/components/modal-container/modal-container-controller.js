@@ -46,9 +46,7 @@
     vm.$onInit = onInit;
 
 
-    function onInit() {
-      $log.log('ModalContainerCtrl');
-    }
+    function onInit() {}
 
     function enter(modalElement, modalDialogElement) {
       $animate
@@ -113,8 +111,6 @@
      */
 
     $rootScope.$on('modals.open', function(event, modal) {
-      $log.log('modal', modal);
-
       // Currently only 2 Modals allowed to be open at the same time (because modal move animations have to be made dynamically)
       if(vm.modals && Object.keys(vm.modals).length === 2) {
         $log.error('guh.ui.directive:guhMorphModal', 'Maximum open modals reached. Only 2 modals are allowed to be open at the same time.');
@@ -127,10 +123,10 @@
 
       vm.modals[modal.id] = modal;
 
+      var additionalClasses = modal.classes ? ' ' + modal.classes : '';
       var children = $element.children();
-      $log.log('modalInstance', modal);
       var modalCtrl = $controller(modal.controller, { modalInstance: modal, $scope: modal.scope });
-      var modalElement = (children.length === 0) ? angular.element('<div class="Modal Modal_background"></div>') : angular.element('<div class="Modal"></div>');
+      var modalElement = (children.length === 0) ? angular.element('<div class="Modal Modal_background' + additionalClasses + '"></div>') : angular.element('<div class="Modal"></div>');
       var modalDialogContent = modal.template === '' ? '<div>The passed template is empty.</div>' : modal.template;
       var modalDialogElement = angular.element('<div class="Modal__wrapper"></div>').append('<div class="Modal__dialog Modal__dialog_' + modal.id + '">' +
                                                   modalDialogContent + 

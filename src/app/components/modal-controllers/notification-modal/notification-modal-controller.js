@@ -21,52 +21,27 @@
  * SOFTWARE.                                                                           *
  *                                                                                     *
  * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
-
-
-/**
- * @ngdoc overview
- * @name guh
- *
- * @description
- * Module container for whole app.
- *
- */
-
+ 
 (function() {
   'use strict';
 
   angular
-    .module('guh', [
-      // Angular
-      'ngSanitize',
-      'ngAnimate',
-      'ngMessages',
+    .module('guh.components')
+    .controller('NotificationModalCtrl', NotificationModalCtrl);
 
-      // Libraries
-      'ui.router',
-      'cfp.hotkeys',
-      'chart.js',
+  NotificationModalCtrl.$inject = ['$log', 'modalInstance'];
 
-      // Configuration
-      'guh.config',
+  /**
+   * @ngdoc controller
+   * @name guh.containers.controller:NotificationModalCtrl
+   * @description Presentational component for modal container.
+   *
+   */
+  function NotificationModalCtrl($log, modalInstance) {
+    
+    var vm = this;
+    vm.modalInstance = modalInstance;
 
-      // Filters
-      'guh.filter',
-      
-      // Utilities
-      'guh.utils',
-
-      // Services (guh-libjs)
-      'guh.logging',
-      'guh.api',
-      'guh.models',
-
-      // Directives
-      'guh.ui',
-
-      // App
-      'guh.components',
-      'guh.containers'
-    ]);
+  }
 
 }());
