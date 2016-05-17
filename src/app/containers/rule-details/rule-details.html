@@ -93,7 +93,7 @@
     <button type="button" ng-click="ruleDetails.executeExitActions()">Turn off</button>
   </div>
 
-  <div class="RuleDetails__content" ng-show="ruleDetails.showEvents">
+  <div class="RuleDetails__content" ng-show="ruleDetails.showTrigger">
     <p ng-if="ruleDetails.events.length === 0">No triggers defined.</p>
     <div ng-if="ruleDetails.events.length > 0">
       <div class="Event" ng-repeat="event in ruleDetails.events track by $index">
