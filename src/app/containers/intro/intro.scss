@@ -41,6 +41,33 @@
 
 .Intro {
   @include rem(margin-top, 6);
+
+  form {
+    width: 100%;
+
+    input {
+      @include rem(margin, 0, 0, 1.5);
+    }
+
+    &> div {
+      @include display(flex);
+      @include rem(margin, 3, 0, 0);
+    }
+
+    &> div button {
+      margin: 0;
+      @include flex(1 1 100%);
+    }
+  }
+}
+
+@include media($min-width-s) {
+  .Intro {
+    form {
+      margin: 0 auto;
+      width: 440px;
+    }
+  }
 }
 
 @include media($min-width-m) {
