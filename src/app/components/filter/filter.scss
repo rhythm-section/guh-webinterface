@@ -45,6 +45,7 @@
     margin: 0;
     // @include rem(border-radius, 1.5);
     @include rem(border-radius, 0.2);
+    @include rem(margin-bottom, 0.5);
     @include rem(margin-right, 0.5);
     @include rem(padding, 0.15, 0.75);
   }
