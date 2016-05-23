@@ -77,8 +77,8 @@
       angular.forEach(vendor.deviceClasses, function(deviceClass) {
         var createMethod = deviceClass.getCreateMethod();
 
-        // Only if vendor not already included
-        if(!libs._.includes(vm.supportedVendors, vendor) && (createMethod.title !== 'Auto' && (deviceClass.classType === 'device' || deviceClass.classType === 'gateway'))) {
+        // Remove devices that are auto discovered
+        if(!libs._.includes(vm.supportedVendors, vendor) && createMethod.title !== 'Auto') {
           vm.supportedVendors.push(vendor);
           return;
         }
@@ -97,7 +97,7 @@
       angular.forEach(vendor.deviceClasses, function(deviceClass) {
         var createMethod = deviceClass.getCreateMethod();
 
-        if(createMethod.title !== 'Auto' && (deviceClass.classType === 'device' || deviceClass.classType === 'gateway')) {
+        if(createMethod.title !== 'Auto') {
           vm.supportedDeviceClasses.push(deviceClass);
         }
       });
