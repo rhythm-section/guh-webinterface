@@ -94,6 +94,22 @@
   }
 }
 
+.TileItem__wrapper-outer.TileItem__wrapper-outer_isDisabled {
+  background-color: rgba($grey, 0.05);
+  color: rgba($grey, 0.5);
+  cursor: default;
+
+  &:hover {
+    background-color: rgba($grey, 0.05);
+    box-shadow: none;
+    @include transform(scale(1));
+  }
+
+  .TileItem__icon svg {
+    fill: rgba($grey, 0.5);
+  }
+}
+
 
 .TileItem__wrapper-inner {
   position: absolute;

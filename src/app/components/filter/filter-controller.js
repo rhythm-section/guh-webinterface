@@ -55,13 +55,10 @@
      * @description Initialize the controller...
      *
      */
-    function onInit() {
-      $log.log('FilterCtrl:onInit()', vm);
-    }
+    function onInit() {}
 
 
     function onChange() {
-      $log.log('onChange', vm.items);
       vm.onItemChanged({ filterItems: vm.items });
     }
   }

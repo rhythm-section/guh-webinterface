@@ -28,4 +28,5 @@
   </button>
 </div> -->
 
-<guh-button label="{{ formField.label }}" async="formField.async" on-press="formField.setValue()"></guh-button>
+<div class="label">{{ formField.name }}: {{ formField.value ? 'on': 'off' }}</div>
+<guh-button label="{{ formField.label }}" async="formField.async" on-press="formField.value = !formField.value; formField.setValue()"></guh-button>

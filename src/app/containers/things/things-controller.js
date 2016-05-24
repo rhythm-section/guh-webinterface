@@ -50,6 +50,7 @@
     vm.filter = filter;
     vm.addThing = addThing;
     vm.showDetails = showDetails;
+    vm.isDisabled = isDisabled;
     
 
     function onInit() {
@@ -68,6 +69,12 @@
       }
 
       vm.configuredDevices = DSDevice.getAll();
+
+      // Set disabled status (e.g. for when device is not reachable)
+      vm.configuredDevices = vm.configuredDevices.map(function(device) {
+        device.isDisabled = vm.isDisabled(device);
+        return device;
+      });
 
       // TODO: Animate fading in tile-list
       vm.showActionBar = true;
@@ -100,7 +107,6 @@
     }
 
     function filter(filterItems) {
-      $log.log('filter', filterItems);
       vm.filterItems = filterItems;
     }
 
@@ -127,6 +133,27 @@
       // TODO: Animate morphing the tile-item to show thing details
       vm.showActionBar = false;
       vm.showList = false;
+    }
+
+    function isDisabled(device) {
+      if(angular.isDefined(device.deviceClass.criticalStateTypeId)) {
+        var criticalStateTypes = device.deviceClass.stateTypes.filter(function(stateType) {
+          return stateType.id === device.deviceClass.criticalStateTypeId;
+        });
+
+        // Should be exactly one criticalStateType
+        if(angular.isDefined(criticalStateTypes[0])) {
+          var criticalStates = device.states.filter(function(state) {
+            return state.stateType.id === criticalStateTypes[0].id;
+          });
+
+          // Should be exactly one state
+          // The value is inverted because the values are something like: "reachable": false => means the the device is not reachable, so it should be disabled in the view
+          return !criticalStates[0].value;
+        }
+      }
+
+      return false;
     }
 
 

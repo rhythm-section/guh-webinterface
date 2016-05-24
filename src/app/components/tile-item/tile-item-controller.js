@@ -51,6 +51,10 @@
     }
 
     function select() {
+      if(vm.isDisabled) {
+        return;
+      }
+
       vm.tileListCtrl.selectTile(vm.id);
     }
 

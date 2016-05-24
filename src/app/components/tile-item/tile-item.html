@@ -21,7 +21,7 @@
 -->
 
 
-<div class="TileItem__wrapper-outer" ng-click="tileItem.select()">
+<div class="TileItem__wrapper-outer" ng-class="{ 'TileItem__wrapper-outer_isDisabled': tileItem.isDisabled }" ng-click="tileItem.select()">
   <div class="TileItem__wrapper-inner">
     <!-- <svg class="TileItem__icon">
       <use xlink:href="./assets/svg/device-class/device-class.symbol.svg#default"></use>

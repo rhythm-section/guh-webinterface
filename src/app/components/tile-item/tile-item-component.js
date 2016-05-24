@@ -33,7 +33,8 @@
         id: '@',
         iconUrl: '@',
         title: '@',
-        description: '@'
+        description: '@',
+        isDisabled: '<'
       },
       controller: 'TileItemCtrl',
       controllerAs: 'tileItem',
