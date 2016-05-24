@@ -54,7 +54,7 @@
             template: '<div>' + 
                         '<div class="Modal__title">Uuups...</div>' + 
                         '<p class="Modal__content">' + data + '</p>' + 
-                        '<a class="button" ui-sref="guh.intro" ng-click="connectionErrorModal.modalInstance.close()">Try to reload the interface</a>' + 
+                        '<a class="Button" ui-sref="guh.intro" ng-click="connectionErrorModal.modalInstance.close()">Try to reload the interface</a>' + 
                       '</div>'
           })
           .then(function(modal) {

@@ -119,6 +119,32 @@ $turquoise: #57baae;
   }
 }
 
+.Modal.Modal_full {
+  .Modal__wrapper {
+    margin: 0;
+    padding: 0;
+    position: fixed;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      top: 0;
+    width: 100%;
+
+    .close {
+      background-color: transparent;
+      margin: 0;
+      right: 0;
+      top: 0;
+    }
+
+    .close .icon {
+      fill: $grey;
+      @include rem(height, 1.5);
+      @include rem(width, 1.5);
+    }
+  }
+}
+
 .Modal__dialog {
   background-color: $white;
   box-shadow: 0px 6px 16px 0px rgba($black, 0.3);
@@ -130,6 +156,17 @@ $turquoise: #57baae;
   @include media($min-width-m) {
     @include rem(margin-top, 4.5);
     @include rem(padding, 1.5);
+  }
+}
+
+.Modal.Modal_full {
+  .Modal__dialog {
+    margin: 0;
+    position: fixed;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      top: 0; 
   }
 }
 
