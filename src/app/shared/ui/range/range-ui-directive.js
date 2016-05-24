@@ -327,7 +327,7 @@
           minHandlePosition = _getHandlePosition(minHandle, handleDimensions, $event);
           _placeHandle(minHandle, minHandlePosition);
 
-          scope.$apply(function() {
+          // scope.$apply(function() {
             var currentState = Math.round(ctrl.min + _percentToRange(minHandlePosition), 0);
 
             // Assign value only if stepSize (default: every 1 step)
@@ -336,7 +336,7 @@
             }
 
             ctrl.changeCallback();
-          });
+          // });
         };
 
         // Drag maxHandle
@@ -344,7 +344,7 @@
           maxHandlePosition = _getHandlePosition(maxHandle, handleDimensions, $event);
           _placeHandle(maxHandle, maxHandlePosition);
 
-          scope.$apply(function() {
+          // scope.$apply(function() {
             var currentState = Math.round(ctrl.min + _percentToRange(maxHandlePosition), 0);
 
             // Assign value only if stepSize (default: every 1 step)
@@ -353,7 +353,7 @@
             }
 
             ctrl.changeCallback();
-          });
+          // });
         };
 
         // Watch min state

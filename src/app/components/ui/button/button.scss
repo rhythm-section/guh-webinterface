@@ -23,4 +23,51 @@
  * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 
 
+.Button,
+button.Button {
+  // background-color: $white;
+  background-color: rgba($grey, 0.1);
+  // border: 1px solid lighten($grey, 40%);
+  color: $grey;
+  cursor: pointer;
+  font-weight: 400;
+  position: relative;
+  @include rem(font-size, 1);
+  @include rem(line-height, 1.5);
+  @include rem(padding, 0.75, 2.25);
+  @include user-select(none);
+  @include transition(background-color 0.4s);
 
+  .Icon {
+    position: absolute;
+    @include rem(right, 0.5);
+    @include rem(top, 0.75);
+  }
+}
+
+.js-no-touch {
+  .Button:hover,
+  button.Button:hover {
+    // background-color: lighten($grey, 50%);
+    background-color: rgba($grey, 0.2);
+  }
+
+  .Button:disabled,
+  button.Button:disabled,
+  .Button:disabled:hover,
+  button.Button:disabled:hover {
+    background-color: $white;
+    color: lighten($grey, 30%);
+    cursor: default;
+    font-weight: 300;
+  }
+}
+
+button.Button {
+  outline: 0;
+  @include appearance(none);
+
+  &::-moz-focus-inner {
+    border: 0;
+  }
+}

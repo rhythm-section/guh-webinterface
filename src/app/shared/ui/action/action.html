@@ -20,9 +20,11 @@
   SOFTWARE.
 -->
 
+
 <div class="Action">
   <!-- ActionType without paramTypes -->
-  <guh-form-field label="{{ action.actionType.name }}"
+  <guh-form-field async="action.async"
+                  label="{{ action.actionType.name }}"
                   name="{{ action.actionType.name }}"
                   template="{{ action.actionType.templateUrl }}"
                   on-value-change="action.execute(params)"
@@ -30,7 +32,8 @@
 
 
   <!-- ActionType with one paramType -->
-  <guh-form-field label="{{ action.actionType.name }}"
+  <guh-form-field async="action.async"
+                  label="{{ action.actionType.name }}"
                   name="{{ paramType.name }}"
                   param-type="paramType"
                   state="action.state"

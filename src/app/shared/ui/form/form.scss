@@ -23,221 +23,198 @@
  * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 
 
-$green: #7cc09a;
-$grey-dark: #676767;
-$grey-light: #f0f0f0;
-$grey-middle: #e3e3e3;
-$turquoise: #57baae;
-$white: #fff;
-
-$background: $white;
-$background-highlight: $green;
-$background-highlight-hover: $turquoise;
-$border: $grey-light;
-$border-hover: $grey-middle;
-$border-focus: $grey-dark;
-$border-highlight: $turquoise;
-$color-highlight: $white;
-
-
-label,
-.label {
+input,
+select,
+textarea,
+button {
+  background-color: transparent;
+  border: 0;
+  color: $grey;
   display: block;
-  @include rem(margin, 2, 0, 1);
-  @include rem(padding, 0, 1.5);
-  text-align: center;
-  @include user-select(none);
+  font-family: 'Ubuntu';
+  font-weight: 400;
+  outline: 0;
+  @include appearance(none);
+  @include rem(font-size, 1);
+  @include rem(line-height, 1.5);
+  @include rem(margin-bottom, 3);
+
+  &:disabled {
+    background-color: $white;
+    border: 1px solid rgba($grey, 0.2);
+    color: rgba($grey, 0.4);
+  }
+
+  &::-moz-focus-inner {
+    border: 0;
+  }
 }
 
-label,
-.label,
+select,
+textarea,
+button {
+  @include rem(border-radius, 0.2);
+}
+
 input,
+select,
 textarea {
   width: 100%;
+  @include rem(padding, 0.75);
 }
 
-input,
-textarea,
-select {
-  border-bottom: 1px solid rgba($grey-dark, 0.2);
-}
-
+select,
 textarea {
-  border: 1px solid rgba($grey-dark, 0.2);
-  @include rem(height, 6);
-  @include rem(padding, 0.7, 0.7, 0.8);
+  border: 1px solid rgba($grey, 0.1);
+
+  &:focus {
+    border-color: rgba($grey, 0.4);
+  }
+}
+
+.js-no-touch {
+  select,
+  textarea {
+    &:hover {
+      border-color: rgba($grey, 0.2);
+    }
+  }
+}
+
+input {
+  border-bottom: 1px solid rgba($grey, 0.1);
+
+  &:focus {
+    border-color: rgba($grey, 0.4);
+  }
+}
+
+.js-no-touch {
+  input {
+    &:hover {
+      border-color: rgba($grey, 0.2);
+    }
+  }
 }
 
 input[type="email"],
-input[type="text"],
-input[type="password"] {
-  background-color: $background;
-  border-bottom: 1px solid rgba($grey-dark, 0.2);
-  color: $grey-dark;
-  @include rem(margin, 0, 0, 1.5);
-  @include rem(padding, 0.7, 1.5, 0.8);
-  @include transition(border 0.2s ease-in-out);
-
-  &:hover,
-  &:focus {
-    border-bottom-color: rgba($grey-dark, 0.4);
-  }
+input[type="password"],
+input[type="search"],
+input[type="submit"],
+input[type="text"] {
+  @include appearance(none);
+  border-radius: 0;
 }
 
-input[type="password"].input_type_readonly {
-  border: none;
-  @include rem(font-size, 1.2);
-  margin: 0;
-  padding: 0;
+textarea {
+  @include rem(height, 6);
 }
 
-button[type="submit"],
-input[type="submit"] {
-  background-color: $background-highlight;
-  border-color: rgba($border-highlight, 0.4);
-  color: $color-highlight;
+.Button,
+button {
+  background-color: rgba($grey, 0.1);
+  cursor: pointer;
   display: block;
+  letter-spacing: 0.1em;
   margin: 0 auto;
-  @include rem(margin-top, 3);
-  @include rem(max-width, 19.5);
-  @include transition(background 0.2s ease-in-out);
+  overflow: hidden;
+  text-align: center;
+  text-decoration: none;
+  text-overflow: ellipsis;
+  text-transform: uppercase;
+  white-space: nowrap;
+  // @include rem(width, 24);
+  @include rem(height, 3);
+  @include rem(margin-bottom, 3);
+  @include rem(margin-top, 1.5);
+  @include rem(padding, 0.75, 1.5);
+  @include transition(background-color 0.4s, border-color 0.4s, color 0.4s);
+}
 
-  &:hover {
-    background-color: $background-highlight-hover;
-    border-color: $border-highlight;
+button[type="submit"] {
+  color: $white;
+  @include linear-gradient(to bottom, $green, $turquoise);
+
+  &:disabled {
+    opacity: 0.4;
   }
 }
 
-button:disabled {
-  cursor: auto;
-  opacity: 0.2;
-}
+.js-no-touch {
+  button:hover {
+    background-color: rgba($grey, 0.2);
+  }
 
-select {
-  border-radius: 0px;
-  @include rem(padding, 1.5);
-  position: relative;
-  width: 100%;
-
-  &::after {
-    background-color: $border;
-    content: "";
-    display: block;
-    @include rem(height, 4.5);
-    position: absolute;
-      right: 0;
-      top: 0;
-    @include rem(width, 4.5);
+  button:disabled:hover {
+    background-color: $white;
+    cursor: default;
   }
 }
 
 .checkbox {
-  border-bottom: 1px solid $border;
+  border-bottom: 1px solid rgba($grey, 0.2);
+  width: 100%;
+  @include rem(margin, 0, 0, 3);
 
   label {
     cursor: pointer;
+    fill: rgba($grey, 0.2);
+    letter-spacing: 0;
     margin: 0;
-    @include rem(padding, 1.5);
+    position: relative;
+    text-align: left;
+    text-transform: none;
+    @include rem(font-size, 1);
+    @include rem(padding, 0.75);
 
-    &:hover .icon {
-      display: block;
-      // fill: lighten($c-grey, 50%);
-      fill: rgba($white, 0.2);
+    &:hover .FormField__icon {
+      fill: $grey;
     }
 
-    &.active .icon {
-      display: block;
-      // fill: $c-grey;
-      fill: $white;
+    &.active .FormField__icon {
+      fill: $turquoise;
+    }
+
+    .FormField__icon {
+      position: absolute;
+        right: 0;
+        top: 0;
     }
   }
 
-  .icon {
+  input {
     display: none;
-    float: right;
+  }
+}
+
+label,
+.label {
+  display: block;
+  letter-spacing: 0.1em;
+  padding-left: 0.1em;
+  text-align: center;
+  text-transform: uppercase;
+  @include rem(font-size, 0.8);
+  @include rem(margin, 0.75, 1.5);
+}
+
+.label-container {
+  margin: 0;
+  position: relative;
+
+  .icon {
+    fill: $grey;
+    position: absolute;
+    @include rem(bottom, 0.75);
+    @include rem(right, 0.75);
     @include rem(height, 1.5);
     @include rem(width, 1.5);
   }
 }
 
-input[type="checkbox"] {
-  display: none;
+.FormField__icon {
+  display: block;
+  @include rem(height, 3);
+  @include rem(padding, 0.75);
+  @include rem(width, 3);
 }
-
-.modal,
-.intro {
-  input[type="email"],
-  input[type="text"],
-  input[type="password"] {
-    border-bottom: 1px solid rgba($grey-dark, 0.2);
-    color: $grey;
-
-    &:hover,
-    &:focus {
-      border-bottom-color: rgba($grey-dark, 0.4);
-    }
-  }
-
-  .checkbox {
-    border-bottom: 1px solid rgba($grey-dark, 0.2);
-
-    label {
-      &:hover .icon {
-        fill: rgba($grey-dark, 0.4);
-      }
-
-      &.active .icon {
-        fill: rgba($grey-dark, 0.2);
-      }
-    }
-  }
-}
-
-form {
-  @include rem(margin-bottom, 3);
-
-  label,
-  .label {
-    text-align: left;
-  }
-}
-
-select {
-  background-color: $background;
-  border-bottom: 1px solid rgba($grey-dark, 0.2);
-  @include rem(padding, 0.7, 1.5, 0.8);
-  position: relative;
-  width: 100%;
-}
-
-.label-container {
-  padding: 0;
-  position: relative;
-
-  span {
-    @include rem(padding, 0, 1.5);
-  }
-  
-  .icon {
-    position: absolute;
-      @include rem(bottom, 0.8);
-      @include rem(right, 1.5);
-  }
-}
-
-
-
-// form {
-//   @include rem(padding-top, 0.6);
-//   @include rem(margin-bottom, 2.1);
-// }
-
-// label,
-// input {
-//   display: block;
-// }
-
-// textarea {
-//   @include rem(height, 9.6);
-//   @include rem(width, 19.2);
-// }

@@ -32,10 +32,10 @@
  *
  */
 
-(function() {
-  'use strict';
+// (function() {
+//   'use strict';
 
-  angular
-    .module('guh.ui', []);
+//   angular
+//     .module('guh.ui', []);
 
-}());
+// }());

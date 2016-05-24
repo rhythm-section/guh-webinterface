@@ -29,9 +29,9 @@
     .module('guh.ui')
     .directive('guhAction', guhAction);
 
-    guhAction.$inject = ['$log', 'DSDevice', 'DSActionType', 'DSState'];
+    guhAction.$inject = ['$log', '$timeout', 'DSDevice', 'DSActionType', 'DSState'];
 
-    function guhAction($log, DSDevice, DSActionType, DSState) {
+    function guhAction($log, $timeout, DSDevice, DSActionType, DSState) {
       var directive = {
         bindToController: {
           actionTypeId: '@',
@@ -51,6 +51,7 @@
       function actionCtrl($scope) {
         /* jshint validthis: true */
         var vm = this;
+        var asyncTimeout = null;
 
         vm.getState = getState;
         vm.execute = execute;
@@ -70,6 +71,11 @@
         function _init() {
           vm.actionType = _getActionType(vm.actionTypeId);
           vm.state = getState(vm.deviceId, vm.actionTypeId);
+          vm.async = {
+            pending: false,
+            success: false,
+            failure: false
+          };
         }
 
         function _getActionType(actionTypeId) {
@@ -103,17 +109,44 @@
 
         function execute(params) {
           var device = DSDevice.get(vm.deviceId);
+          vm.async = {
+            pending: true,
+            success: false,
+            failure: false
+          };
+
+          if(asyncTimeout) {
+            $timeout.cancel(asyncTimeout);
+          }
 
           device.executeAction(vm.actionType, params)
             .then(function(response) {
-              $log.log('Action executed', response);
+              vm.async.pending = false;
+              vm.async.success = true;
+              vm.async.failure = false;
+
+              asyncTimeout = $timeout(function() {
+                vm.async.success = false;
+                asyncTimeout = null;
+              }, 800);
             })
             .catch(function(error) {
-              $log.error('guh.ui.guhAction:directive', error);
-
               vm.actionType = _getActionType(vm.actionTypeId);
-              vm.state.value = 0;
+              if(angular.isDefined(vm.state) && angular.isObject(vm.state) && angular.isDefined(vm.state.value)) {
+                vm.state.value = 0;
+              }
               // vm.state = getState(vm.deviceId, vm.actionTypeId);
+
+              vm.async.pending = false;
+              vm.async.success = false;
+              vm.async.failure = true;
+
+              asyncTimeout = $timeout(function() {
+                vm.async.failure = false;
+                asyncTimeout = null;
+              }, 800);
+
+              $log.error('guh.ui.guhAction:directive', error, vm);
             });
         }
 

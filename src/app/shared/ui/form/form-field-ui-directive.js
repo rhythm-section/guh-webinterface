@@ -34,6 +34,7 @@
     function guhFormField(libs, app, $log, $templateRequest, $compile, DSState) {
       var directive = {
         bindToController: {
+          async: '<',
           changeCallback: '&onValueChange',
           label: '@',
           name: '@',

@@ -21,10 +21,11 @@
 -->
 
 
-<div>
+<!-- <div>
   <label>{{ formField.name }}: {{ formField.value ? 'on' : 'off' }}</label>
   <button class="full" type="button" ng-click="formField.value = !formField.value; formField.setValue()">
     <span>{{ formField.label }}</span>
-    <!-- <span>Turn {{ formField.value ? 'off' : 'on' }}</span> -->
   </button>
-</div>
+</div> -->
+
+<guh-button label="{{ formField.label }}" async="formField.async" on-press="formField.setValue()"></guh-button>

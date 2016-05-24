@@ -21,6 +21,9 @@
 -->
 
 
-<div class="modal" ng-if="morphModal.modals">
-  <guh-morph-modal-dialog class="modal__dialog" modal="modal" ng-repeat="modal in morphModal.modals | orderBy: 'id' track by $index"></guh-morph-modal-dialog>
-</div>
+<button class="Button" type="button" ng-disabled="button.disabled" ng-click="button.press()">
+  <span class="text text_center text_uppercase">{{ button.label }}</span>
+  <guh-icon url="./assets/svg/ui/ui.symbol.svg#refresh" ng-show="button.async && button.async.pending"></guh-icon>
+  <guh-icon url="./assets/svg/ui/ui.symbol.svg#checkmark" ng-show="button.async && button.async.success"></guh-icon>
+  <guh-icon url="./assets/svg/ui/ui.symbol.svg#close" ng-show="button.async && button.async.failure"></guh-icon>
+</button>
