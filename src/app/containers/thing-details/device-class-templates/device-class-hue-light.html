@@ -1,0 +1,110 @@
+<!-- 
+  Copyright (C) 2015 Lukas Mayerhofer <lukas.mayerhofer@guh.guru>
+  
+  Permission is hereby granted, free of charge, to any person obtaining a copy
+  of this software and associated documentation files (the "Software"), to deal
+  in the Software without restriction, including without limitation the rights
+  to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+  copies of the Software, and to permit persons to whom the Software is
+  furnished to do so, subject to the following conditions:
+  
+  The above copyright notice and this permission notice shall be included in all
+  copies or substantial portions of the Software.
+  
+  THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+  IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+  FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+  AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+  LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+  OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+  SOFTWARE.
+-->
+
+
+<div class="ThingDetails__content" ng-show="thingDetails.showActions">
+  <!-- ON/OFF -->
+  <guh-action device-id="{{ thingDetails.id }}" action-type-id="{{ thingDetails.actionsObject.setPower.actionType.id }}"></guh-action>
+
+  <!-- Brightness -->
+  <guh-action device-id="{{ thingDetails.id }}" action-type-id="{{ thingDetails.actionsObject.setBrightness.actionType.id }}"></guh-action>
+
+  <!-- Color temperature -->
+  <guh-action device-id="{{ thingDetails.id }}" action-type-id="{{ thingDetails.actionsObject.setColorTemperature.actionType.id }}"></guh-action>
+
+  <!-- Color -->
+  <!-- <guh-action device-id="{{ thingDetails.id }}" action-type-id="{{ thingDetails.actionsObject.setColor.actionType.id }}"></guh-action> -->
+
+  <!-- Set effect -->
+  <guh-button-group device-id="{{ thingDetails.id }}" action="thingDetails.actionsObject.setEffect" buttons="[ 'none', 'color loop' ]"></guh-button-group>
+
+  <!-- Flash -->
+  <guh-button-group device-id="{{ thingDetails.id }}" action="thingDetails.actionsObject.flash" buttons="[ 'flash once', 'flash 30 seconds' ]"></guh-button-group>
+</div>
+
+<div class="ThingDetails__content" ng-show="thingDetails.showStates">
+  <p ng-if="thingDetails.states.length === 0">This thing doesn't have a state to show you.</p>
+  <div class="State__item" ng-switch="state.stateType.unit" ng-repeat="state in thingDetails.states track by $index">
+    <div class="State__value" ng-switch-when="UnitUnixTime">{{ state.value * 1000 | date: 'dd.MM.yyyy' }}, {{ state.value * 1000 | date: 'HH:mm' }}</div>
+    <div class="State__value" ng-switch-default>{{ state.value }} {{ state.stateType.unit | unit }}</div>
+    <div class="State__name">{{ state.stateType.name }}</div>
+  </div>
+</div>
+
+<div class="ThingDetails__content" ng-show="thingDetails.showSettings">
+  <p ng-if="thingDetails.enhancedParam.length === 0">This thing doesn't have any settings to show you.</p>
+  <div class="Param__item" ng-switch="enhancedParam.paramType.inputType" ng-repeat="enhancedParam in thingDetails.enhancedParams track by $index">
+    <div class="Param__value" ng-switch-when="InputTypePassword">
+      <input class="input_type_readonly" ng-model="enhancedParam.param.value" type="password" disabled />
+    </div>
+    <div class="Param__value" ng-switch-default>{{ enhancedParam.param.value }}</div>
+    <div class="Param__name">{{ enhancedParam.param.name }}</div>
+  </div>
+</div>
+
+
+
+<!-- <guh-tabset disabled="!device.statesObject.reachable.value"> -->
+  <!-- Actions -->
+  <!-- <guh-tab heading="Control">
+    <p ng-if="device.actions.length === 0">This device doesn't have any controls.</p> -->
+
+    <!-- ON/OFF -->
+    <!-- <guh-action device-id="{{ device.id }}" action-type-id="{{ device.actionsObject.setPower.actionType.id }}"></guh-action> -->
+
+    <!-- Brightness -->
+    <!-- <guh-action device-id="{{ device.id }}" action-type-id="{{ device.actionsObject.setBrightness.actionType.id }}"></guh-action> -->
+
+    <!-- Color temperature -->
+    <!-- <guh-action device-id="{{ device.id }}" action-type-id="{{ device.actionsObject.setColorTemperature.actionType.id }}"></guh-action> -->
+
+    <!-- Color -->
+    <!-- <guh-action device-id="{{ device.id }}" action-type-id="{{ device.actionsObject.setColor.actionType.id }}"></guh-action> -->
+
+    <!-- Set effect -->
+    <!-- <guh-button-group device-id="{{ device.id }}" action="device.actionsObject.setEffect" buttons="[ 'none', 'color loop' ]"></guh-button-group> -->
+
+    <!-- Flash -->
+    <!-- <guh-button-group device-id="{{ device.id }}" action="device.actionsObject.flash" buttons="[ 'flash once', 'flash 30 seconds' ]"></guh-button-group>
+  </guh-tab> -->
+
+  <!-- States -->
+  <!-- <guh-tab heading="State">
+    <p ng-if="device.states.length === 0">This device doesn't have a state to show you.</p>
+    <div ng-switch="state.stateType.unit" ng-repeat="state in device.states track by $index" class="state">
+      <p class="name">{{ state.stateType.name }}</p>
+      <p class="value" ng-switch-when="UnitUnixTime">{{ state.value * 1000 | date: 'dd.MM.yyyy' }}, {{ state.value * 1000 | date: 'HH:mm' }}</p>
+      <p class="value" ng-switch-default>{{ state.value }} {{ state.stateType.unit | unit }}</p>
+    </div>
+  </guh-tab> -->
+
+  <!-- Settings -->
+  <!-- <guh-tab heading="Settings">
+    <p ng-if="device.params.length === 0">This device doesn't have any settings to show you.</p>
+    <div ng-repeat="param in device.params track by $index" class="param">
+      <p class="name">{{ param.name }}</p>
+      <p class="value">{{ param.value }}</p>
+    </div>
+  </guh-tab>
+</guh-tabset>
+
+<p ng-show="!device.statesObject.reachable.value">The connection to the hue light or hue bridge was lost. Please check if the light is connected to the bridge with the following IP address: {{ device.paramsObject.hostAddress.value }}. Please also check if the hue bridge is connected to your local network.</p> -->
