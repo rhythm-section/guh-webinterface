@@ -23,59 +23,27 @@
  * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 
 
-$grey-dark: #676767;
-$grey-light: #f0f0f0;
-$grey-middle: #e3e3e3;
-
-$border: $grey-middle;
-
-
-.button-group {
-  overflow: auto;
+.ButtonGroup {
   width: 100%;
-
-  button {
-    border-left: none;
-    border-radius: 0px;
-    float: left;
-    width: 50%;
-
-    &:first-child {
-      border-left: 1px solid $border;
-      @include rem(border-bottom-left-radius, 1.5);
-      @include rem(border-top-left-radius, 1.5);
-    }
-
-    &:last-child {
-      @include rem(border-bottom-right-radius, 1.5);
-      @include rem(border-top-right-radius, 1.5);
-    }
-
-    span {
-      display: block;
-      padding: 0;
-      width: 100%;
-    }
-  }
+  @include rem(margin, 1.5, 0, 3); 
 }
 
-// .button-count-1 button {
-//   width: 100%;
-// }
+.ButtonGroup__wrapper {
+  @include display(flex);
 
-// .button-count-2 button {
-//   width: 50%;
-// }
+  button {
+    border-radius: 0;
+    margin: 0;
+    @include flex(1 1 100%);
+  }
 
-// .button-count-3 button {
-//   width: 34%;
+  button:first-child {
+    @include rem(border-radius-bottom-left, 0.2);
+    @include rem(border-radius-top-left, 0.2);
+  }
 
-//   &:first-child,
-//   &:last-child {
-//     width: 33%;
-//   }
-// }
-
-// .button-count-4 button {
-//   width: 25%;
-// }
+  button:last-child {
+    @include rem(border-radius-bottom-right, 0.2);
+    @include rem(border-radius-top-right, 0.2);
+  }
+}

@@ -21,8 +21,15 @@
 -->
 
 
-<div class="button-group" ng-class="{ 'button-count-{{ buttonGroup.buttons.length }}': buttonGroup.buttons.length < 4, 'button-count-4': buttonGroup.buttons.length >= 4 }">
+<div class="ButtonGroup">
+  <div class="label">{{ buttonGroup.action.actionType.name }}</div>
+  <div class="ButtonGroup__wrapper">
+    <button ng-click="buttonGroup.pressButton(button)" ng-repeat="button in buttonGroup.buttons">{{ button }}</button>
+  </div>
+</div>
+
+<!-- <div class="button-group" ng-class="{ 'button-count-{{ buttonGroup.buttons.length }}': buttonGroup.buttons.length < 4, 'button-count-4': buttonGroup.buttons.length >= 4 }">
   <button ng-click="buttonGroup.pressButton(button)" ng-repeat="button in buttonGroup.buttons">
     <span>{{ button }}</span>
   </button>
-</div>
+</div> -->
