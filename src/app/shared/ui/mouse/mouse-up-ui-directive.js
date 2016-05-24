@@ -29,53 +29,31 @@
 
   angular
     .module('guh.ui')
-    .directive('guhMouseDrag', mouseDrag);
+    .directive('guhMouseUp', mouseUp);
 
-    mouseDrag.$inject = ['$log', '$document'];
+    mouseUp.$inject = ['$log', '$document'];
 
-    function mouseDrag($log, $document) {
+    function mouseUp($log, $document) {
       var directive = {
-        link: mouseDragLink,
+        link: mouseUpLink,
         restrict: 'A'
       };
 
       return directive;
 
 
-      function mouseDragLink(scope, element, attrs) {
-        var endTypes = 'touchend mouseup';
-        var moveTypes = 'touchmove mousemove';
-        var startTypes = 'touchstart mousedown';
-        var startX;
-        var startY;
-
-
-        element.bind(startTypes, _startDrag);
+      function mouseUpLink(scope, element, attrs) {
+        element.bind('touchend mouseup', _mouseUp);
 
 
         /*
          * Private methods
          */
 
-        function _startDrag(event) {
+        function _mouseUp(event) {
           event.preventDefault();
-          startX = event.pageX;
-          startY = event.pageY;
-
-          $document.bind(moveTypes, _drag);
-          $document.bind(endTypes, _stopDrag);
-        }
-
-        function _drag(event) {
-          event.dragX = event.pageX - startX;
-          event.dragY = event.pageY - startY;
-
           scope.$event = event;
-          scope.$apply(attrs.guhMouseDrag);
-        }
-
-        function _stopDrag() {
-          $document.unbind(moveTypes);
+          scope.$apply(attrs.guhMouseUp);
         }
       }
     }
