@@ -131,7 +131,9 @@
           action.state = state;
 
           // Remove state from sates array
-          vm.states = libs._.without(vm.states, state);
+          vm.states = vm.states.filter(function(state) {
+            return state.stateType.id !== actionType.id;
+          });
         }
 
         vm.actions.push(action);
