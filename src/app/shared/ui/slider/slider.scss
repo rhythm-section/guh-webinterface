@@ -60,7 +60,9 @@ $color-current: $grey;
 
   .content_content-center {
     @include transform(translateY(-50%));
-    @include transition(top 0.4s ease-in-out, transform 0.4s ease-in-out);
+    // Bug inside bourbon: https://github.com/sass/node-sass/issues/1227
+    // @include transition(top 0.4s ease-in-out, transform 0.4s ease-in-out);
+    transition: top 0.4s ease-in-out, transform 0.4s ease-in-out;
     top: 50%;
   }
 }
