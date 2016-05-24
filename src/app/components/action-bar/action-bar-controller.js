@@ -50,26 +50,21 @@
 
     function onInit() {
       $element.addClass('ActionBar');
-      $log.log('ActionBar', vm);
     }
 
     function back() {
-      $log.log('back');
       vm.onBack();
     }
 
     function filter() {
-      $log.log('filter');
       vm.onFilter();
     }
 
     function add() {
-      $log.log('add');
       vm.onAdd();
     }
 
     function edit() {
-      $log.log('edit');
       vm.onEdit();
     }
 
