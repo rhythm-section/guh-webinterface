@@ -26,9 +26,11 @@
 <div class="ThingDetails__wrapper">
   <div class="ThingDetails__sidebar">
     <div class="ThingDetails__sidebar-wrapper">
-      <svg class="ThingDetails__icon">
-        <use xlink:href="./assets/svg/device-class/device-class.symbol.svg#DeviceIconDevice"></use>
-      </svg>
+      <div class="ThingDetails__icon-wrapper">
+        <svg class="ThingDetails__icon">
+          <use xlink:href="" ng-attr-xlink:href="{{ thingDetails.deviceClass.deviceIcon ? './assets/svg/device-class/device-class.symbol.svg#' + thingDetails.deviceClass.deviceIcon : './assets/svg/device-class/device-class.symbol.svg#DeviceIconDevice' }}"></use>
+        </svg>
+      </div>
       <div class="ThingDetails__name">{{ thingDetails.name }}</div>
       <div class="ThingDetails__description">{{ thingDetails.getDescription('&nbsp;&middot;&nbsp;') }}</div>
 
@@ -40,28 +42,5 @@
     </div>
   </div>
 
-  <div class="ThingDetails__content" ng-show="thingDetails.showActions">
-    <p ng-if="thingDetails.actions.length === 0">This thing doesn't have any controls.</p>
-    <guh-action device-id="{{ thingDetails.id }}" action-type-id="{{ action.actionType.id }}" ng-repeat="action in thingDetails.actions | orderBy: 'name' track by $index"></guh-action>
-  </div>
-
-  <div class="ThingDetails__content" ng-show="thingDetails.showStates">
-    <p ng-if="thingDetails.states.length === 0">This thing doesn't have a state to show you.</p>
-    <div class="State__item" ng-switch="state.stateType.unit" ng-repeat="state in thingDetails.states track by $index">
-      <div class="State__value" ng-switch-when="UnitUnixTime">{{ state.value * 1000 | date: 'dd.MM.yyyy' }}, {{ state.value * 1000 | date: 'HH:mm' }}</div>
-      <div class="State__value" ng-switch-default>{{ state.value }} {{ state.stateType.unit | unit }}</div>
-      <div class="State__name">{{ state.stateType.name }}</div>
-    </div>
-  </div>
-
-  <div class="ThingDetails__content" ng-show="thingDetails.showSettings">
-    <p ng-if="thingDetails.enhancedParam.length === 0">This thing doesn't have any settings to show you.</p>
-    <div class="Param__item" ng-switch="enhancedParam.paramType.inputType" ng-repeat="enhancedParam in thingDetails.enhancedParams track by $index">
-      <div class="Param__value" ng-switch-when="InputTypePassword">
-        <input class="input_type_readonly" ng-model="enhancedParam.param.value" type="password" disabled />
-      </div>
-      <div class="Param__value" ng-switch-default>{{ enhancedParam.param.value }}</div>
-      <div class="Param__name">{{ enhancedParam.param.name }}</div>
-    </div>
-  </div>
+  <ng-include src="thingDetails.templateUrl" ng-if="thingDetails.templateReady"></ng-include>
 </div>

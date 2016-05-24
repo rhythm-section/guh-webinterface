@@ -51,8 +51,6 @@
 
 
     function onInit() {
-      $log.log('ThingDetailsCtrl');
-
       if(!app.dataLoaded) {
         $state.go('guh.intro', {
           previousState: {
@@ -110,7 +108,7 @@
           vm.templateUrl = fileExists;
         })
         .catch(function(error) {
-          $log.error('guh.controller.DevicesDetailCtrl', error);
+          $log.error('guh.controller.ThingDetailsCtrl', error);
         })
         .finally(function() {
           vm.templateReady = true;

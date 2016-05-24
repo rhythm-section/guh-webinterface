@@ -170,15 +170,20 @@
   }
 }
 
+// .ThingDetails__icon-wrapper {
+//   border-radius: 100%;
+// }
+
 .ThingDetails__icon {
   background-color: $white;
-  border-radius: 100%;
+  // border-radius: 100%;
+  @include rem(border-radius, 0.2);
   display: block;
   fill: $grey;
   margin: 0 auto;
   padding: 0;
   @include rem(height, 4);
-  @include rem(padding, 0.8);
+  @include rem(padding, 0.6);
   @include rem(width, 4);
 }
 
