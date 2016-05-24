@@ -32,6 +32,7 @@
       bindings: {
         backButton: '<',
         filterButton: '<',
+        filterButtonActive: '<',
         addButton: '<',
         editButton: '<',
         onBack: '&',

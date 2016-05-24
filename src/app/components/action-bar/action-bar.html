@@ -28,7 +28,7 @@
       </svg>
     </button>
 
-    <button type="button" ng-click="actionBar.filter()" ng-show="actionBar.filterButton">
+    <button type="button" ng-class="{ 'active': actionBar.filterButtonActive }" ng-click="actionBar.filter()" ng-show="actionBar.filterButton">
       <svg class="ActionBar__icon">
         <use xlink:href="./assets/svg/ui/ui.symbol.svg#search"></use>
       </svg>

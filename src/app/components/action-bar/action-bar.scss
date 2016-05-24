@@ -43,9 +43,9 @@
     // @include rem(padding, 1.5, 0.75);
     @include rem(padding, 1.5);
 
-    // &:hover .ActionBar__icon {
-    //   fill: $turquoise;
-    // }
+    &.active .ActionBar__icon {
+      fill: $turquoise;
+    }
   }
 }
 
