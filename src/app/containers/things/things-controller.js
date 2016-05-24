@@ -43,9 +43,10 @@
 
     vm.showActionBar = false;
     vm.showList = false;
+    vm.showFilter = false;
 
     vm.$onInit = onInit;
-    vm.showFilter = showFilter;
+    vm.toggleFilter = toggleFilter;
     vm.filter = filter;
     vm.addThing = addThing;
     vm.showDetails = showDetails;
@@ -94,8 +95,8 @@
       };
     }
 
-    function showFilter() {
-      $log.log('showFilter');
+    function toggleFilter() {
+      vm.showFilter = !vm.showFilter;
     }
 
     function filter(filterItems) {
