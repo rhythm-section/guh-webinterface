@@ -29,9 +29,9 @@
     .module('guh.ui')
     .directive('guhTab', guhTab);
 
-    guhTab.$inject = ['$log'];
+    guhTab.$inject = [];
 
-    function guhTab($log) {
+    function guhTab() {
       var directive = {
         link: tabLink,
         require: '^guhTabset',

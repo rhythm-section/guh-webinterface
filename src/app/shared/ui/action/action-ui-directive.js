@@ -48,7 +48,7 @@
       return directive;
 
 
-      function actionCtrl($scope) {
+      function actionCtrl() {
         /* jshint validthis: true */
         var vm = this;
         var asyncTimeout = null;

@@ -140,7 +140,7 @@
       }
 
       function goToStep(step) {
-        var step = step - 1;
+        step = step - 1;
 
         if(step === currentStep) {
           return;
@@ -158,7 +158,7 @@
       }
 
       function isValid(nextStep) {
-        var isValid = false;
+        // var isValid = false;
         var validCallback = vm.steps[currentStep].ctrl.validCallback;
 
         // If no isValid-Callback defined user can go

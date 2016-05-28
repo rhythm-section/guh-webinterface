@@ -145,9 +145,9 @@
       function sliderLink(scope, element, attrs, sliderCtrl) {
         // DOM Elements
         var contentContainer = angular.element(element[0].getElementsByClassName('slider__content-container'));
-        var sliderItems = element[0].getElementsByClassName('slider__item');
+        // var sliderItems = element[0].getElementsByClassName('slider__item');
 
-        var viewportWidth = $window.innerWidth;
+        // var viewportWidth = $window.innerWidth;
         var slideTimer;
         var executeTimer;
 
@@ -232,7 +232,7 @@
           sliderCtrl.init();
         }
 
-        function _initSliderDom() {
+        function _initSliderDom() {
           viewportWidth = $window.innerWidth;
 
           _setBreakpoint();
@@ -251,7 +251,7 @@
           _setWidthCss(contentContainer, Math.floor(containerWidth));
 
           // Set container offset
-          if(sliderCtrl.currentSliderItemIndex === -1 || sliderCtrl.currentSliderItemIndex === 0) {
+          if(sliderCtrl.currentSliderItemIndex === -1 || sliderCtrl.currentSliderItemIndex === 0) {
             offset = -(sliderItemWidth / 2);
           } else {
             offset = -(sliderItemWidth / 2) - (sliderCtrl.currentSliderItemIndex * sliderItemWidth);
@@ -362,7 +362,7 @@
             var oldCurrentContent;
             var newCurrent = sliderCtrl.sliderItems[sliderCtrl.currentSliderItemIndex].element;
             var newCurrentContent;
-            var halfSliderItemWidth = Math.floor(sliderItemWidth / 2);
+            // var halfSliderItemWidth = Math.floor(sliderItemWidth / 2);
 
 
             // Cancel timer to set new widths and positions
@@ -378,7 +378,7 @@
             }
 
             // Slide
-            if(sliderCtrl.currentSliderItemIndex > sliderCtrl.previousSliderItemIndex) {
+            if(sliderCtrl.currentSliderItemIndex > sliderCtrl.previousSliderItemIndex) {
               // Slide to right
               offset = offset - (sliderCtrl.currentSliderItemIndex - sliderCtrl.previousSliderItemIndex) * sliderItemWidth;
             } else {

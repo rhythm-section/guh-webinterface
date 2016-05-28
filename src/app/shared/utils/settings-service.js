@@ -30,17 +30,17 @@
     .factory('DSSettings', DSSettingsFactory)
     .run(function(DSSettings) {});
 
-  DSSettingsFactory.$inject = ['$log'];
+  DSSettingsFactory.$inject = ['$log', 'libs'];
 
-  function DSSettingsFactory($log) {
+  function DSSettingsFactory($log, libs) {
 
     /* jshint unused:false */
 
     /*
      * DataStore configuration
      */
-    var localStorageAdapter = new DSLocalStorageAdapter();
-    var localStorageStore = new JSData.DS();
+    var localStorageAdapter = new libs.DSLocalStorageAdapter();
+    var localStorageStore = new libs.JSData.DS();
 
     localStorageStore.registerAdapter('localstorage', localStorageAdapter, { default: true });
 

@@ -29,9 +29,9 @@
     .module('guh.ui')
     .controller('GuhButton', GuhButton);
 
-  GuhButton.$inject = ['$log'];
+  GuhButton.$inject = [];
 
-  function GuhButton($log) {
+  function GuhButton() {
     
     var vm = this;
 
@@ -54,8 +54,8 @@
       _checkProps();
     }
 
-    function onChanges(changesObj) {
-      // changesObj => for each binding: { currentValue, previousValue, isFirstChange() }
+    function onChanges() {
+      // Argument: changesObj => for each binding: { currentValue, previousValue, isFirstChange() }
     }
 
     function onDestroy() {}

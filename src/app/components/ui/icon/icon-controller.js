@@ -29,9 +29,9 @@
     .module('guh.ui')
     .controller('GuhIcon', GuhIcon);
 
-  GuhIcon.$inject = ['$log'];
+  GuhIcon.$inject = [];
 
-  function GuhIcon($log) {
+  function GuhIcon() {
     
     var vm = this;
 
@@ -47,8 +47,8 @@
       }
     }
 
-    function onChanges(changesObj) {
-      // changesObj => for each binding: { currentValue, previousValue, isFirstChange() }
+    function onChanges() {
+      // Argument: changesObj => for each binding: { currentValue, previousValue, isFirstChange() }
     }
 
     function onDestroy() {}

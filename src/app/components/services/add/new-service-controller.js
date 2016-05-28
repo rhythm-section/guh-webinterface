@@ -205,7 +205,7 @@
 
       DSDevice
         .confirmPairing(vm.pairingTransactionId, secretValue)
-        .then(function(data) {
+        .then(function() {
           /* jshint unused:true */
           modalInstance.close();
         })
@@ -221,7 +221,7 @@
       } else {
         DSDevice
           .add(vm.deviceClassId, vm.deviceDescriptorId, vm.deviceParams, vm.name)
-          .then(function(data) {
+          .then(function() {
             /* jshint unused:true */
             modalInstance.close();
           })

@@ -29,9 +29,9 @@
     .module('guh.ui')
     .directive('guhSliderItem', guhSliderItem);
 
-    guhSliderItem.$inject = ['$log'];
+    guhSliderItem.$inject = [];
 
-    function guhSliderItem($log) {
+    function guhSliderItem() {
       var directive = {
         bindToController: {
           index: '='
@@ -52,7 +52,7 @@
       function sliderItemCtrl() {
 
         /* jshint validthis: true */
-        var vm = this;
+        // var vm = this;
 
       }
 

@@ -193,7 +193,6 @@
       DSDevice
         .confirmPairing(vm.pairingTransactionId, secretValue)
         .then(function(data) {
-          /* jshint unused:true */
           modalInstance.close();
         })
         .catch(function(error) {
@@ -209,7 +208,6 @@
         DSDevice
           .add(vm.deviceClassId, vm.deviceDescriptorId, vm.deviceParams, vm.name)
           .then(function(data) {
-            /* jshint unused:true */
             modalInstance.close();
           })
           .catch(function(error) {

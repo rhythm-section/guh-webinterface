@@ -113,7 +113,7 @@
         name: name,
         operator: operator,
         value: value
-      }
+      };
     }
 
 

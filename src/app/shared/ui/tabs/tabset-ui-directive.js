@@ -80,7 +80,7 @@
             });
 
             // If some of the hotkeys are the same check characters on the next index
-            if(hotkeyArray.length !== libs._.uniq(hotkeyArray).length) {
+            if(hotkeyArray.length !== libs._.uniq(hotkeyArray).length) {
               hotkeyIndex++;
             } else {
               // Index found
@@ -94,7 +94,7 @@
             hotkey = tab.heading.charAt(hotkeyIndex).toLowerCase();
 
             // Bind hotkey only if combo is letter (a-z)
-            if(hotkey.match(/[a-z]/)) {
+            if(hotkey.match(/[a-z]/)) {
               tab.hotkey = true;
 
               hotkeys

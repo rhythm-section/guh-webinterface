@@ -108,14 +108,17 @@
       };
 
       if(DSDevice.is(deviceToDelete)) {
+        var parentDevice;
+        var childDevices;
+
         while(angular.isDefined(deviceToDelete.parentId)) {
           // Parent
-          var parentDevice = DSDevice.get(deviceToDelete.parentId);
-          var childDevices = [];
+          parentDevice = DSDevice.get(deviceToDelete.parentId);
+          childDevices = [];
           
           // Children
           if(DSDevice.is(parentDevice)) {
-            var currentChildDevices = DSDevice.getAll().filter(function(device) {
+            var currentChildDevices = DSDevice.getAll().filter(function(device, parentDevice) {
               return device.parentId === parentDevice.id;
             });
 
@@ -146,7 +149,6 @@
       currentDevice
         .remove()
         .then(function(data) {
-          /* jshint unused:true */
           modalInstance.close();
         })
         .catch(function(error) {

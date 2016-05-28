@@ -77,16 +77,17 @@
       return {
         id: ++id,
         scope: scope || $rootScope.$new(),
-        animation: animation || 'fade-in',
+        animation: animation || 'fade-in',
         classes: classes,
-        data: data || null,
+        data: data || null,
         open: open,
         close: close,
         closeAll: closeAll
-      }
+      };
     }
 
     function open() {
+      /* jshint validthis: true */
       var modal = {
         animation: this.animation,
         classes: this.classes,
@@ -104,10 +105,12 @@
     }
 
     function close(data) {
+      /* jshint validthis: true */
       $rootScope.$emit('modals.close', this, data);
     }
 
     function closeAll(data) {
+      /* jshint validthis: true */
       $rootScope.$emit('modals.closeAll', this, data);
     }
 

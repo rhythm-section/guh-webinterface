@@ -85,7 +85,7 @@
       vm.getDescription = device.getDescription;
 
       // Filter values of type "Double" to show only two digits after decimal point
-      angular.forEach(vm.params, function(param) {
+      angular.forEach(vm.params, function(param, index) {
         // Find paramType to param
         var paramType = libs._.find(device.deviceClass.paramTypes, function(paramType) {
           return paramType.name === param.name;

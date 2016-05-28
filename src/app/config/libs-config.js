@@ -30,7 +30,10 @@
     .constant('libs', {
       '_': window._,
       'moment': window.moment,
-      'Chart': window.Chart
+      'Chart': window.Chart,
+      'tinycolor': window.tinycolor,
+      'DSLocalStorageAdapter': window.DSLocalStorageAdapter,
+      'JSData': window.JSData
     });
 
 }());

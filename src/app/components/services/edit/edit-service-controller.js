@@ -108,10 +108,14 @@
       };
 
       if(DSDevice.is(serviceToDelete)) {
+        var parentService;
+        var childServices;
+
+
         while(angular.isDefined(serviceToDelete.parentId)) {
           // Parent
-          var parentService = DSDevice.get(serviceToDelete.parentId);
-          var childServices = [];
+          parentService = DSDevice.get(serviceToDelete.parentId);
+          childServices = [];
           
           // Children
           if(DSDevice.is(parentService)) {
@@ -144,7 +148,7 @@
     function remove() {
       currentService
         .remove()
-        .then(function(data) {
+        .then(function() {
           /* jshint unused:true */
           modalInstance.close();
         })

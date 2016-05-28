@@ -114,7 +114,7 @@
     }    
 
     function _initPolicies() {
-      angular.forEach(vm.rules, function(rule, index) {
+      angular.forEach(vm.rules, function(rule) {
         setPolicy(vm.policyAllowedValues.update.label, rule.id);
       });
     }

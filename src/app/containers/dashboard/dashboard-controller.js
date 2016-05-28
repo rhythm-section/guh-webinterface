@@ -29,7 +29,7 @@
     .module('guh.containers')
     .controller('DashboardCtrl', DashboardCtrl);
 
-  DashboardCtrl.$inject = ['app', '$log', '$state', 'DSDevice', 'DSRule'];
+  DashboardCtrl.$inject = ['app', '$log', '$state'];
 
   /**
    * @ngdoc controller
@@ -37,7 +37,7 @@
    * @description Container component for the dashboard.
    *
    */
-  function DashboardCtrl(app, $log, $state, DSDevice, DSRule) {
+  function DashboardCtrl(app, $log, $state) {
     
     var vm = this;
 

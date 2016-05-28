@@ -98,7 +98,7 @@
 
     // Common Notification Handler
     $scope.$on('notification', function(event, data) {
-      var type = data.type ? data.type : null;
+      // var type = data.type ? data.type : null;
       var args = data.args ? data.args : null;
       var error = args.data && args.data.error ? args.data.error : null;
       var errorMessage = angular.isDefined(libs._.findKey(errors, error)) ? errors[libs._.findKey(errors, error)][error] : '';

@@ -30,9 +30,9 @@
     .module('guh.filter')
     .filter('basicTags', filter);
 
-  filter.$inject = ['$log', '$filter', 'app'];
+  filter.$inject = [];
 
-  function filter($log, $filter, app) {
+  function filter() {
     return function(devices, basicTags) {
       // Variant 1: A device must has all checked basicTypes to show up
       angular.forEach(basicTags, function(basicTag) {

@@ -31,9 +31,9 @@
     .module('guh.ui')
     .directive('guhMouseUp', mouseUp);
 
-    mouseUp.$inject = ['$log', '$document'];
+    mouseUp.$inject = [];
 
-    function mouseUp($log, $document) {
+    function mouseUp() {
       var directive = {
         link: mouseUpLink,
         restrict: 'A'

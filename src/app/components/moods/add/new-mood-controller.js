@@ -72,7 +72,7 @@
     vm.isValid = isValid;
     vm.setDetails = setDetails;
 
-    vm.addModal = function() {
+    vm.addModal = function() {
       ModalContainer
         .add({
           controller: 'NewMoodCtrl',
@@ -112,7 +112,7 @@
     function _getStateEvaluator() {
       var stateEvaluator = {
         operator: app.stateOperator.StateOperatorAnd
-      }
+      };
 
       $log.log('vm.states', vm.states);
 
@@ -330,7 +330,7 @@
       // Save
       DSRule
         .add(vm.rule)
-        .then(function(data) {
+        .then(function() {
           /* jshint unused:true */
           modalInstance.close();
         });
@@ -338,9 +338,11 @@
 
 
     $rootScope.$on('modals.close', function(event, modal, data) {
+      var enhancedParams;
+
       if(data) {
         if(actionModal && modal.id === actionModal.id) {
-          var enhancedParams = angular.copy(data.params);
+          enhancedParams = angular.copy(data.params);
 
           angular.forEach(data.params, function(param, index) {
             var paramType = libs._.find(data.actionType.paramTypes, function(paramType) {
@@ -378,7 +380,7 @@
             title: data.title
           });
         } else if(exitActionModal && modal.id === exitActionModal.id) {
-          var enhancedParams = angular.copy(data.params);
+          enhancedParams = angular.copy(data.params);
 
           angular.forEach(data.params, function(param, index) {
             var paramType = libs._.find(data.actionType.paramTypes, function(paramType) {

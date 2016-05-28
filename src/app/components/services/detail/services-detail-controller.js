@@ -96,7 +96,7 @@
         vm.statesObject = {};
 
         // Filter values of type "Double" to show only two digits after decimal point
-        angular.forEach(vm.params, function(param) {
+        angular.forEach(vm.params, function(param, index) {
           // Find paramType to param
           var paramType = libs._.find(service.deviceClass.paramTypes, function(paramType) {
             return paramType.name === param.name;
@@ -127,7 +127,7 @@
 
         // Actions
         var actionTypes = DSDeviceClass.getAllActionTypes(service.deviceClassId);
-        var stateTypes = DSDeviceClass.getAllStateTypes(service.deviceClassId);
+        // var stateTypes = DSDeviceClass.getAllStateTypes(service.deviceClassId);
 
         angular.forEach(actionTypes, function(actionType) {
           var action = {};

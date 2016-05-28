@@ -29,7 +29,7 @@
     .module('guh.ui')
     .controller('FilterCtrl', FilterCtrl);
 
-  FilterCtrl.$inject = ['$log'];
+  FilterCtrl.$inject = [];
 
   /**
    * @ngdoc controller
@@ -37,7 +37,7 @@
    * @description Filter by tags and search field.
    *
    */
-  function FilterCtrl($log) {
+  function FilterCtrl() {
     var vm = this;
 
 

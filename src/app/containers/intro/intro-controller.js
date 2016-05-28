@@ -40,6 +40,7 @@
   function IntroCtrl($log, $rootScope, $scope, $q, $location, $timeout, $state, $stateParams, websocketService, libs, app, modelsHelper, DS, DSPlugin, DSVendor, DSDeviceClass, DSDevice, DSState, DSRule, DSSettings) {
     
     var vm = this;
+    var savedHost;
     var protocol = $location.protocol();
     var port = $location.port();
     var ssl = protocol.charAt(protocol.length - 1) === 's' ? true : false;
@@ -58,6 +59,8 @@
     vm.resetHost = resetHost;
 
     function onInit() {
+      savedHost = vm.host;
+
       // Set config with new host
       _overrideConfig();
 
@@ -195,7 +198,7 @@
     }
 
     function resetHost() {
-      vm.host = host;
+      vm.host = savedHost;
       checkHost();
     }
 

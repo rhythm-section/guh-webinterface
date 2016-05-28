@@ -29,7 +29,7 @@
     .module('guh.components')
     .controller('TileListCtrl', TileListCtrl);
 
-  TileListCtrl.$inject = ['$log', '$element'];
+  TileListCtrl.$inject = [];
 
   /**
    * @ngdoc controller
@@ -37,7 +37,7 @@
    * @description Presentational component for tiles.
    *
    */
-  function TileListCtrl($log, $element) {
+  function TileListCtrl() {
     
     var vm = this;
 
@@ -52,7 +52,7 @@
 
     function onInit() {}
 
-    function postLink() {}
+    function postLink() {}
 
     function addTile(tile) {
       vm.tiles[tile.id] = tile;

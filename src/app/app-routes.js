@@ -74,7 +74,7 @@
       });
 
         $stateProvider.state('guh.intro', {
-          template: '<guh-intro host="{{ host }}"></guh-intro>',
+          template: '<guh-intro host="{{ host }}"></guh-intro>',
           url: '/intro',
           resolve: {
             host: ['host', function(host) {

@@ -46,7 +46,7 @@
 
 
     vm.$onInit = onInit;
-    vm.filter = filter;;
+    vm.filter = filter;
 
 
     /**
