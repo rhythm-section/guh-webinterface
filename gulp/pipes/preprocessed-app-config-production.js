@@ -28,6 +28,7 @@
  */
 
 var gulp = require('gulp');
+var argsParser = require('../utils/args-parser');
 var plumber = require('gulp-plumber');
 var preprocess = require('gulp-preprocess');
 
@@ -47,8 +48,13 @@ module.exports = {
   getPipe: function() {
     return gulp.src(pathConfig.appConfigSrc)
       .pipe(plumber())
+      // .pipe(preprocess({
+      //   NODE_ENV: process.env.NODE_ENV
+      // }))
       .pipe(preprocess({
-        NODE_ENV: process.env.NODE_ENV
+        context: {
+          HOSTING: argsParser.getHosting()
+        }
       }))
       .pipe(gulp.dest(pathConfig.appConfigDest.production));
   }
