@@ -15,20 +15,25 @@
   IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
   FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
   AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
-  LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+  LIABILITY, WHETHER IN AN ActionType OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
   OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
   SOFTWARE.
 -->
 
-
-<guh-action-bar ng-class="{
-  'ActionBar--type--details': (app.$state.current.name === 'guh.thingDetails' || app.$state.current.name === 'guh.ruleDetails'),
-  'ActionBar--isDisabled': (app.$state.current.name === 'guh.intro')
-}"></guh-action-bar>
-
-<guh-navigation-bar ng-class="{
-  'NavigationBar--type--details': (app.$state.current.name === 'guh.thingDetails' || app.$state.current.name === 'guh.ruleDetails'),
-  'NavigationBar--isDisabled': (app.$state.current.name === 'guh.intro')
-}"></guh-navigation-bar>
-
-<div ui-view class="content"></div>
+<!-- <header class="NavigationBar" ng-class="{ 'js-intro': app.$state.includes('guh.intro'), 'js-app': !app.$state.includes('guh.intro') }"> -->
+<header ng-class="{ 'js-intro': app.$state.includes('guh.intro'), 'js-app': !app.$state.includes('guh.intro') }">
+  <div class="NavigationBar__wrapper">
+    <nav>
+      <ul>
+        <li ui-sref-active="active" ng-repeat="item in navigationBar.items | orderBy: item.position track by $index">
+          <a ui-sref="{{ item.state }}">
+            <svg class="NavigationBar__icon" ng-if="item.iconUrl">
+              <use xlink:href="" ng-attr-xlink:href="{{ item.iconUrl }}"></use>
+            </svg>
+            <span ng-if="item.label">{{ item.label }}</span>
+          </a>
+        </li>
+      </ul>
+    </nav>
+  </div>
+</header>

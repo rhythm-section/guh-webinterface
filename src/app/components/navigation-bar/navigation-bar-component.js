@@ -21,64 +21,18 @@
  * SOFTWARE.                                                                           *
  *                                                                                     *
  * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
- 
+
+
 (function() {
   'use strict';
 
   angular
     .module('guh.components')
-    .controller('TileListCtrl', TileListCtrl);
-
-  TileListCtrl.$inject = ['$element'];
-
-  /**
-   * @ngdoc controller
-   * @name guh.containers.controller:TileListCtrl
-   * @description Presentational component for tiles.
-   *
-   */
-  function TileListCtrl($element) {
-    
-    var vm = this;
-
-    vm.tiles = {};
-    vm.visibleTile = null;
-
-    vm.$onInit = $onInit;
-    vm.$postLink = postLink;
-    vm.addTile = addTile;
-    vm.selectTile = selectTile;
-
-
-    function $onInit() {
-      $element.addClass('TileList');
-    }
-
-    function postLink() {}
-
-    function addTile(tile) {
-      vm.tiles[tile.id] = tile;
-
-      if(vm.initialVisibleId && vm.initialVisibleId === tile.id) {
-        selectTile(vm.initialVisibleId);
-      }
-    }
-
-    function selectTile(tileId) {
-      angular.forEach(vm.tiles, function(tile) {
-        if(tile.id === tileId) {
-          tile.visible = true;
-        } else {
-          tile.visible = false;
-        }
-      });
-      vm.visibleTile = vm.tiles[tileId];
-
-      vm.onSelectTile({
-        tileId: tileId
-      });
-    }
-
-  }
+    .component('guhNavigationBar', {
+      bindings: {},
+      controller: 'NavigationBarCtrl',
+      controllerAs: 'navigationBar',
+      templateUrl: 'app/components/navigation-bar/navigation-bar.html'
+    });
 
 }());

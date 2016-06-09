@@ -21,10 +21,6 @@
 -->
 
 
-<guh-action-bar add-button="true" on-add="rules.addRule()" ng-show="rules.showActionBar"></guh-action-bar>
-
-<guh-tile-list initial-visible-id="{{ rules.currentRule.id }}" on-select-tile="rules.showDetails(tileId)" ng-show="rules.showList">
+<guh-tile-list initial-visible-id="{{ rules.currentRule.id }}" on-select-tile="rules.showDetails(tileId)">
   <guh-tile-item id="{{ rule.id }}" icon-url="./assets/svg/device-class/device-class.symbol.svg#RuleIconRoutine" title="{{rule.name }}" description="{{ rule.getDescription('&nbsp;&middot;&nbsp;') }}" ng-repeat="rule in rules.rules | orderBy:'name' track by $index"></guh-tile-item>
 </guh-tile-list>
-
-<div class="RuleDetails" ui-view></div>

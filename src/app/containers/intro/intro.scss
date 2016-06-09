@@ -40,7 +40,7 @@
 
 
 .Intro {
-  @include rem(margin-top, 6);
+  @include rem(margin-top, 10.5);
 
   form {
     width: 100%;
@@ -72,13 +72,13 @@
 
 @include media($min-width-m) {
   .Intro {
-    @include rem(margin-top, 12);
+    @include rem(margin-top, 16.5);
   }
 }
 
 @include media($min-width-l) {
   .Intro {
-    @include rem(margin-top, 6);
+    @include rem(margin-top, 10.5);
   }
 }
 

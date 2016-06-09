@@ -23,12 +23,9 @@
 
 <div class="TileItem__wrapper-outer" ng-class="{ 'TileItem__wrapper-outer_isDisabled': tileItem.isDisabled }" ng-click="tileItem.select()">
   <div class="TileItem__wrapper-inner">
-    <!-- <svg class="TileItem__icon">
-      <use xlink:href="./assets/svg/device-class/device-class.symbol.svg#default"></use>
-    </svg> -->
-    <div class="TileItem__icon" ng-transclude="icon">
+    <div class="TileItem__icon">
       <svg>
-        <use xlink:href="" ng-attr-xlink:href="{{ tileItem.iconUrl }}"></use>
+        <use ng-attr-xlink:href="{{ tileItem.iconUrl }}" xlink:href="" ng-if="tileItem.iconUrl"></use>
       </svg>
     </div>
     <div class="TileItem__title truncate">{{ tileItem.title }}</div>

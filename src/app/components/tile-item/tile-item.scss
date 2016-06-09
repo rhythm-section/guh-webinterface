@@ -28,6 +28,7 @@
   position: relative;
   width: 50%;
   @include rem(padding, 0, 0.25, 0.5);
+  padding: 1px;
 
   &:hover {
     cursor: pointer;
@@ -52,31 +53,10 @@
   }
 }
 
-// @include media($min-width-m) {
-//   .TileItem {
-//     width: 33.333333%;
-
-//     &::after {
-//       content: "";
-//       display: block;
-//       padding-top: 100%;
-//     }
-//   }
-// }
-
-// @include media($min-width-l) {
-//   .TileItem {
-//     width: 25%;
-//   }
-// }
-
 
 .TileItem__wrapper-outer {
-  background-color: rgba($grey, 0.1);
-  // @include linear-gradient(to top, $turquoise, $green);
-  border-radius: 2%;
-  // color: $white;
-//   overflow: hidden;
+  background-color: $white;
+  border: 1px solid #eaeaea;
   position: absolute;
   @include rem(padding, 1.5, 0);
   @include rem(bottom, 0.5);
@@ -87,20 +67,17 @@
   @include transition(background-color 0.2s, box-shadow 0.2s, transform 0.1s);
 
   &:hover {
-    background-color: rgba($grey, 0.08);
-    box-shadow: 0px 0px 6px 0px rgba(0, 0, 0, 0.15);
-    // border: 1px solid rgba($grey, 1);
-    @include transform(scale(1.01));
+    box-shadow: 0px 3px 7px 0px rgba(0, 0, 0, 0.1);
+    z-index: 1;
+    @include transform(scale(1.1));
   }
 }
 
 .TileItem__wrapper-outer.TileItem__wrapper-outer_isDisabled {
-  background-color: rgba($grey, 0.05);
   color: rgba($grey, 0.5);
   cursor: default;
 
   &:hover {
-    background-color: rgba($grey, 0.05);
     box-shadow: none;
     @include transform(scale(1));
   }
@@ -123,31 +100,16 @@
 
 
 .TileItem__icon svg {
-  // border-style: solid;
-  // border-color: $grey;
-  // border-radius: 100%;
   display: block;
   margin: 0 auto;
   fill: $grey;
-  // fill: $white;
-  // stroke: $grey;
-  // @include rem(border-width, 0.2);
   @include rem(height, 4);
   @include rem(padding, 0.6);
   @include rem(width, 4);
 }
 
-// @include media($min-width-m) {
-//   .TileItem__icon {
-//     @include rem(height, 4.5);
-//     @include rem(width, 4.5);
-//   }
-// }
-
 
 .TileItem__title {
-  // font-weight: 700;
-//   @include rem(line-height, 1.5);
   @include rem(margin, 1, 0, 0);
 }
 
@@ -156,18 +118,6 @@
     @include rem(font-size, 1.2);
   }
 }
-
-// @include media($min-width-m) {
-//   .TileItem__title {
-//     @include rem(font-size, 1.5);
-//   }
-// }
-
-// @include media($min-width-m) {
-//   .TileItem__title {
-//     @include rem(margin, 1.5, 0, 0);
-//   }
-// }
 
 
 .TileItem__description {

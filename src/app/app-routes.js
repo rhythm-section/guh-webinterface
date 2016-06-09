@@ -99,26 +99,26 @@
           url: '/things'
         });
 
-          $stateProvider.state('guh.things.current', {
-            template: '<guh-thing-details></guh-thing-details>',
-            url: '/:deviceId',
-            params: {
-              deviceId: null
-            }
-          });
+        $stateProvider.state('guh.thingDetails', {
+          template: '<guh-thing-details></guh-thing-details>',
+          url: '/things/:deviceId',
+          params: {
+            deviceId: null
+          }
+        });
 
         $stateProvider.state('guh.rules', {
           template: '<guh-rules></guh-rules>',
           url: '/rules'
         });
 
-          $stateProvider.state('guh.rules.current', {
-            template: '<guh-rule-details></guh-rule-details>',
-            url: '/:ruleId',
-            params: {
-              ruleId: null
-            }
-          });
+        $stateProvider.state('guh.ruleDetails', {
+          template: '<guh-rule-details></guh-rule-details>',
+          url: '/rules/:ruleId',
+          params: {
+            ruleId: null
+          }
+        });
 
         $stateProvider.state('guh.settings', {
           template: '<guh-settings></guh-settings>',

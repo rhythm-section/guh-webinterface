@@ -24,23 +24,34 @@
 
 
 .Settings {
-  @include rem(padding, 0.5, 1.75, 0.25);
+  display: block;
+  @include rem(padding, 4.5, 2, 6);
 }
+
+@include media($min-width-m) {
+  .Settings {
+    @include rem(padding, 9, 2);
+  }
+}
+
 
 .Settings__category {
   @include rem(font-size, 1.5);
   @include rem(margin, 0, 0, 1.5);
 }
 
+
 .Settings__item {
   @include rem(margin, 0, 0, 1.5);
 }
+
 
 .Settings__name {
   letter-spacing: 0.1em;
   text-transform: uppercase;
   @include rem(font-size, 0.8);
 }
+
 
 .Settings__value {
   @include rem(font-size, 1.2);

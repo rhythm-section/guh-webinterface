@@ -29,7 +29,7 @@
     .module('guh.containers')
     .controller('RuleDetailsCtrl', RuleDetailsCtrl);
 
-  RuleDetailsCtrl.$inject = ['app', 'libs', '$log', '$state', '$stateParams', 'DSRule', 'DSDevice', 'DSStateType', 'DSEventType', 'DSActionType'];
+  RuleDetailsCtrl.$inject = ['app', 'libs', '$log', '$element', '$state', '$stateParams', 'DSRule', 'DSDevice', 'DSStateType', 'DSEventType', 'DSActionType', 'NavigationBar', 'ActionBar'];
 
   /**
    * @ngdoc controller
@@ -37,7 +37,7 @@
    * @description Container component for a single rule.
    *
    */
-  function RuleDetailsCtrl(app, libs, $log, $state, $stateParams, DSRule, DSDevice, DSStateType, DSEventType, DSActionType) {
+  function RuleDetailsCtrl(app, libs, $log, $element, $state, $stateParams, DSRule, DSDevice, DSStateType, DSEventType, DSActionType, NavigationBar, ActionBar) {
     
     var vm = this;
     var rule = {};
@@ -55,19 +55,38 @@
     vm.executeExitActions = executeExitActions;
 
     function onInit() {
+      $element.addClass('RuleDetails');
+
       if(!app.dataLoaded) {
         $state.go('guh.intro', {
           previousState: {
-            name: $state.current.name,
-            params: $stateParams
+            name: 'guh.rules'
           }
         });
-      }
+      } else {
+        _initNavigation();
+        _initActions();
 
-      if(libs._.has($stateParams, 'ruleId') && $stateParams.ruleId) {
-        rule = DSRule.get($stateParams.ruleId);
-        _initRule(rule);
+        if(libs._.has($stateParams, 'ruleId') && $stateParams.ruleId) {
+          rule = DSRule.get($stateParams.ruleId);
+          _initRule(rule);
+        }
       }
+    }
+
+    function _initNavigation() {
+      NavigationBar.changeItems([]);
+    }
+
+    function _initActions() {
+      ActionBar.changeItems([
+        {
+          position: 1,
+          iconUrl: './assets/svg/ui/ui.symbol.svg#chevron-left',
+          label: 'Back to rules',
+          callback: back
+        }
+      ]);
     }
 
     function _initRule(rule) {
@@ -175,36 +194,24 @@
     function show(type) {
       switch(type) {
         case 'enterActions':
-          if(vm.actions.length === 0) {
-            return;
-          }
           vm.showEnterActions = true;
           vm.showExitActions = false;
           vm.showTrigger = false;
           vm.showConditions = false;
           break;
         case 'exitActions':
-          if(vm.exitActions.length === 0) {
-            return;
-          }
           vm.showEnterActions = false;
           vm.showExitActions = true;
           vm.showTrigger = false;
           vm.showConditions = false;
           break;
         case 'trigger':
-          if(vm.events.length === 0) {
-            return;
-          }
           vm.showEnterActions = false;
           vm.showExitActions = false;
           vm.showTrigger = true;
           vm.showConditions = false;
           break;
         case 'conditions':
-          if(vm.states.length === 0) {
-            return;
-          }
           vm.showEnterActions = false;
           vm.showExitActions = false;
           vm.showTrigger = false;

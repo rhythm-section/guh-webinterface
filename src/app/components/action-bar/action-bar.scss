@@ -28,9 +28,9 @@
   left: 0;
   right: 0;
   top: 0;
-  @include linear-gradient(to top, rgba($white, 0) 0%, rgba($white, 1) 50%, $fallback: transparent);
+  @include linear-gradient(to top, rgba(#fcfcfc, 0) 0%, rgba(#fcfcfc, 1) 50%, $fallback: transparent);
   @include rem(height, 4.5);
-  z-index: 1;
+  z-index: 2;
 
   button {
     background-color: transparent;
@@ -38,9 +38,7 @@
     display: block;
     margin: 0;
     @include rem(height, 4.5);
-    // @include rem(width, 3);
     @include rem(width, 4.5);
-    // @include rem(padding, 1.5, 0.75);
     @include rem(padding, 1.5);
 
     &.active .ActionBar__icon {
@@ -80,16 +78,49 @@
 }
 
 
-.ActionBar__wrapper-outer {
-  // @include rem(padding, 0, 0.5);
-  @include rem(padding, 0, 0);
+.ActionBar.ActionBar--isDisabled {
+  display: none;
 }
 
-// @include media($min-width-s) {
-//   .ActionBar__wrapper-outer {
-//      @include rem(padding, 0, 1.5);
-//   }
-// }
+.ActionBar.ActionBar--type--details {
+  border-left: 1px solid #eaeaea;
+  border-right: 1px solid #eaeaea;
+  width: 100%;
+  @include linear-gradient(to top, rgba($white, 0) 0%, rgba($white, 1) 50%, $fallback: transparent);
+
+  ul {
+    justify-content: flex-start;
+  }
+
+  button {
+    width: auto;
+  }
+
+  button svg,
+  button span {
+    display: inline-block;
+  }
+
+  button span {
+    letter-spacing: 0;
+    position: relative;
+    text-transform: none;
+    @include rem(top, -0.35);
+  }
+}
+
+@include media($min-width-s) {
+  .ActionBar.ActionBar--type--details {
+    left: 50%;
+    margin-left: -320px;
+    width: 640px;
+  }
+}
+
+
+.ActionBar__wrapper-outer {
+  @include rem(padding, 0, 0);
+}
 
 
 .ActionBar__wrapper-inner {
@@ -109,4 +140,8 @@
   fill: $grey;
   @include rem(height, 1.5);
   @include rem(width, 1.5);
+}
+
+.ActionBar__icon.ActionBar__icon--isActive {
+  fill: $green;
 }

@@ -21,12 +21,8 @@
 -->
 
 
-<guh-action-bar add-button="true" filter-button="true" filter-button-active="things.showFilter" on-add="things.addThing()" on-filter="things.toggleFilter()" ng-show="things.showActionBar"></guh-action-bar>
+<guh-filter class="filter" items="things.filterItems" on-item-changed="things.filter(filterItems)" ng-show="things.showFilter"></guh-filter>
 
-<guh-filter class="filter" items="things.filterItems" on-item-changed="things.filter(filterItems)" ng-show="things.showList && things.showFilter"></guh-filter>
-
-<guh-tile-list initial-visible-id="{{ things.currentDevice.id }}" on-select-tile="things.showDetails(tileId)" ng-show="things.showList">
-  <guh-tile-item id="{{ device.id }}" icon-url="{{ device.deviceClass.deviceIcon ? './assets/svg/device-class/device-class.symbol.svg#' + device.deviceClass.deviceIcon : './assets/svg/device-class/device-class.symbol.svg#DeviceIconDevice' }}" title="{{ device.name }}" description="{{ device.getDescription('&nbsp;&middot;&nbsp;') }}" is-disabled="device.isDisabled" ng-repeat="device in things.configuredDevices | basicTags:things.filterItems | orderBy:'name' track by $index"></guh-tile-item>
+<guh-tile-list initial-visible-id="{{ things.currentDevice.id }}" on-select-tile="things.showDetails(tileId)">
+  <guh-tile-item ng-repeat="device in things.configuredDevices | basicTags:things.filterItems | orderBy: 'name'" id="{{ device.id }}" icon-url="{{ device.deviceClass.deviceIcon ? './assets/svg/device-class/device-class.symbol.svg#' + device.deviceClass.deviceIcon : './assets/svg/device-class/device-class.symbol.svg#DeviceIconDevice' }}" title="{{ device.name }}" description="{{ device.getDescription('&nbsp;&middot;&nbsp;') }}" is-disabled="device.isDisabled" ng-if="things.filterItems.length > 0"></guh-tile-item>
 </guh-tile-list>
-
-<div class="ThingDetails" ui-view></div>

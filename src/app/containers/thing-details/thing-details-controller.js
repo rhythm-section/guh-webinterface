@@ -29,7 +29,7 @@
     .module('guh.containers')
     .controller('ThingDetailsCtrl', ThingDetailsCtrl);
 
-  ThingDetailsCtrl.$inject = ['app', 'libs', '$log', '$filter', '$state', '$stateParams', 'DSDevice', 'DSDeviceClass', 'DSState'];
+  ThingDetailsCtrl.$inject = ['app', 'libs', '$log', '$scope', '$filter', '$state', '$stateParams', 'DSDevice', 'DSDeviceClass', 'DSState', 'DSRule', 'NavigationBar', 'ActionBar', 'ModalContainer'];
 
   /**
    * @ngdoc controller
@@ -37,35 +37,52 @@
    * @description Container component for a single thing.
    *
    */
-  function ThingDetailsCtrl(app, libs, $log, $filter, $state, $stateParams, DSDevice, DSDeviceClass, DSState) {
+  function ThingDetailsCtrl(app, libs, $log, $scope, $filter, $state, $stateParams, DSDevice, DSDeviceClass, DSState, DSRule, NavigationBar, ActionBar, ModalContainer) {
     
     var vm = this;
+    var device;
 
     vm.showActions = true;
     vm.showStates = false;
     vm.showSettings = false;
 
-    vm.$onInit = onInit;
+    vm.$onInit = $onInit;
     vm.back = back;
     vm.show = show;
+    vm.remove = remove;
 
 
-    function onInit() {
+    function $onInit() {
       if(!app.dataLoaded) {
         $state.go('guh.intro', {
           previousState: {
-            name: $state.current.name,
-            params: $stateParams
+            name: 'guh.things'
           }
         });
-      }
+      } else {
+        _initNavigation();
+        _initActions();
 
-      var device;
-
-      if(libs._.has($stateParams, 'deviceId') && $stateParams.deviceId) {
-        device = DSDevice.get($stateParams.deviceId);
-        _initThing(device);
+        if(libs._.has($stateParams, 'deviceId') && $stateParams.deviceId) {
+          device = DSDevice.get($stateParams.deviceId);
+          _initThing(device);
+        }
       }
+    }
+
+    function _initNavigation() {
+      NavigationBar.changeItems([]);
+    }
+
+    function _initActions() {
+      ActionBar.changeItems([
+        {
+          position: 1,
+          iconUrl: './assets/svg/ui/ui.symbol.svg#chevron-left',
+          label: 'Back to things',
+          callback: back
+        }
+      ]);
     }
 
     function _initThing(device) {
@@ -161,6 +178,77 @@
       });
     }
 
+    function _getErrorData(error) {
+      // var errorCode = error.data ? (error.data.error ? error.data.error : (error.data.deviceError) ? error.data.deviceError : null) : null;
+      var errorCode = error.deviceError ? error.deviceError : null;
+      var errorData = {};
+
+      if(errorCode) {
+        switch(errorCode) {
+          case 'DeviceErrorDeviceIsChild':
+            devices = _getDevices();
+            errorData.devices = devices;
+            break;
+          case 'DeviceErrorDeviceInRule':
+            // var ruleIds = error.data.ruleIds ? error.data.ruleIds : [];
+            var ruleIds = error.ruleIds ? error.ruleIds : [];
+            errorData.moods = _getMoods(ruleIds);
+            break;
+          default:
+            $log.error(error);
+        }
+      } else {
+        $log.error(error);
+      }
+
+      return errorData;
+    }
+
+    function _getDevices() {
+      var deviceToDelete = device;
+      var devices = {
+        parentDevice: {},
+        childDevices: []
+      };
+
+      if(DSDevice.is(deviceToDelete)) {
+        var parentDevice;
+        var childDevices;
+
+        while(angular.isDefined(deviceToDelete.parentId)) {
+          // Parent
+          parentDevice = DSDevice.get(deviceToDelete.parentId);
+          childDevices = [];
+          
+          // Children
+          if(DSDevice.is(parentDevice)) {
+            var currentChildDevices = DSDevice.getAll().filter(function(device, parentDevice) {
+              return device.parentId === parentDevice.id;
+            });
+
+            childDevices = childDevices.concat(currentChildDevices);
+          }
+
+          // Override deviceToDelete with it's parent to traverse up
+          deviceToDelete = parentDevice;
+        }
+
+        devices.parentDevice = parentDevice;
+
+        // Filter deviceToDelete from childDevices
+        devices.childDevices = childDevices.filter(function(childDevice) {
+          return childDevice.id === deviceToDelete.id;
+        });
+      }
+
+      return devices;
+    }
+
+    function _getMoods(ruleIds) {
+      return DSRule.getAll(ruleIds);
+    }
+
+
     function back() {
       $state.go('guh.things');
     }
@@ -168,38 +256,54 @@
     function show(type) {
       switch(type) {
         case 'actions':
-          if(vm.actions.length === 0) {
-            return;
-          }
           vm.showActions = true;
           vm.showStates = false;
           vm.showSettings = false;
           break;
         case 'states':
-          if(vm.states.length === 0) {
-            return;
-          }
           vm.showActions = false;
           vm.showStates = true;
           vm.showSettings = false;
           break;
         case 'settings':
-          if(vm.params.length === 0) {
-            return;
-          }
           vm.showActions = false;
           vm.showStates = false;
           vm.showSettings = true;
           break;
         default:
-          if(vm.actions.length === 0) {
-            return;
-          }
           vm.showActions = true;
           vm.showStates = false;
           vm.showSettings = false;
           break;
       }
+    }
+
+    function remove() {
+      device
+        .remove()
+        .then(function() {
+          // $state.go('guh.things');
+        })
+        .catch(function(error) {
+          $log.error('error', error);
+
+          ModalContainer
+            .add({
+              controller: 'RemoveDeviceCtrl',
+              controllerAs: 'removeDevice',
+              data: {
+                currentDevice: device,
+                errorData: _getErrorData(error)
+              },
+              templateUrl: 'app/components/devices/remove/remove-device-modal.html'
+            })
+            .then(function(modal) {
+              modal.open();
+            })
+            .catch(function(error) {
+              $log.error('error', error);
+            });
+        });
     }
 
 

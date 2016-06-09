@@ -23,74 +23,40 @@
  * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 
 
-.ThingDetails {
-
+.ThingDetails,
+.ThingDetails__wrapper {
+  min-height: 100%;
 }
 
+
 .ThingDetails__wrapper {
-  @include rem(padding, 1.5);
+  background-color: $white;
+  border-left: 1px solid #eaeaea;
+  border-right: 1px solid #eaeaea;
   width: 100%;
+  @include rem(padding, 4.5, 1.5, 3);
 }
 
 @include media($min-width-s) {
   .ThingDetails__wrapper {
-    // margin: 0 auto;
-    padding: 0;
-    // @include rem(padding, 1.5, 0, 0);
-    // width: 600px;
+    margin: 0 auto;
+    width: 640px;
+    @include rem(padding, 7.5, 3, 3);
   }
 }
+
 
 .ThingDetails__sidebar {
-  @include rem(margin, 0, 0, 3);
-  // @include rem(padding, 1.5);
+  @include rem(margin, 0, 0, 6);
 }
 
-@include media($min-width-s) {
-  .ThingDetails__sidebar {
-    @include rem(min-height, 36);
-    margin: 0;
-    position: fixed;
-      @include rem(bottom, 3);
-      @include rem(top, 5.5);
-    width: 40%;
-    z-index: 0;
-    @include rem(padding, 0, 1.5);
-  }
-}
-
-@include media($min-width-m) {
-  .ThingDetails__sidebar {
-    @include rem(top, 9);
-  }
-}
-
-@include media($min-width-l) {
-  .ThingDetails__sidebar {
-    // width: 30%;
-    width: 315px;
-  }
-}
-
-.ThingDetails__sidebar-wrapper {
-  background-color: rgba($grey, 0.1);
-  height: 100%;
-  @include rem(border-radius, 0.2);
-  @include rem(padding, 3, 0, 0);
-}
-
-@include media($min-width-s) {
-  .ThingDetails__sidebar-wrapper {
-    @include rem(padding, 3, 1.5);
-  }
-}
 
 .ThingDetails__sidebar-navigation {
   @include display(flex);
-  @include rem(margin, 4.5, 0, 0);
   width: 100%;
 
   li {
+    background-color: rgba($grey, 0.05);
     cursor: pointer;
     text-align: center;
     @include flex(1 1 100%);
@@ -101,27 +67,12 @@
       color: $grey;
     }
 
-    &.disabled {
-      cursor: default;
-      text-decoration: line-through;
-    }
-
     .List__icon {
       display: none;
     }
   }
 }
 
-@include media($min-width-s) {
-  .ThingDetails__sidebar-navigation {
-    display: block;
-    @include rem(margin, 1.5, 0, 0);
-
-    li {
-      @include rem(margin, 0.75, 0);
-    }
-  }
-}
 
 .ThingDetails__name,
 .ThingDetails__description {
@@ -132,71 +83,25 @@
   white-space: nowrap;
 }
 
-.ThingDetails__name {
-  @include rem(font-size, 1.5);
-  @include rem(line-height, 2);
-  @include rem(margin, 1.5, 0, 0.5);
-}
 
-.ThingDetails__description {
+.ThingDetails__name {
   letter-spacing: 0.1em;
   text-transform: uppercase;
+  @include rem(margin, 0, 0, 4.5);
 }
 
-@include media($min-width-s) {
-  .ThingDetails__description {
-    @include rem(font-size, 0.8);
-  }
+
+.ThingDetails__description {
+  display: none;
 }
 
-.ThingDetails__content {
-
-}
-
-@include media($min-width-s) {
-  .ThingDetails__content {
-    margin-left: 40%;
-    width: 60%;
-    @include rem(padding, 0, 1.5);
-  }
-}
-
-@include media($min-width-l) {
-  .ThingDetails__content {
-    margin-left: 384px;
-    width: 710px;
-    // margin-left: 40%;
-    // width: 60%;
-  }
-}
-
-// .ThingDetails__icon-wrapper {
-//   border-radius: 100%;
-// }
 
 .ThingDetails__icon {
-  background-color: $white;
-  // border-radius: 100%;
-  @include rem(border-radius, 0.2);
   display: block;
   fill: $grey;
   margin: 0 auto;
-  padding: 0;
   @include rem(height, 4);
+  @include rem(margin-bottom, 1.5);
   @include rem(padding, 0.6);
   @include rem(width, 4);
 }
-
-.ThingDetails__icon.ThingDetails__icon_inline {
-  display: inline-block;
-  fill: $grey;
-  @include rem(height, 1.5);
-  @include rem(margin, 0, 0, -0.4, 0);
-  padding: 0;
-  @include rem(width, 1.5);
-}
-
-.ThingDetails__icon.ThingDetails__icon-left {
-  float: left;
-}
-

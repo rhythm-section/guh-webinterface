@@ -20,30 +20,17 @@
   SOFTWARE.
 -->
 
+
 <div class="ActionBar__wrapper-outer">
-  <div class="ActionBar__wrapper-inner">
-    <button type="button" ng-click="actionBar.back()" ng-show="actionBar.backButton">
-      <svg class="ActionBar__icon">
-        <use xlink:href="./assets/svg/ui/ui.symbol.svg#chevron-left"></use>
-      </svg>
-    </button>
-
-    <button type="button" ng-class="{ 'active': actionBar.filterButtonActive }" ng-click="actionBar.filter()" ng-show="actionBar.filterButton">
-      <svg class="ActionBar__icon">
-        <use xlink:href="./assets/svg/ui/ui.symbol.svg#search"></use>
-      </svg>
-    </button>
-
-    <button type="button" ng-click="actionBar.add()" ng-show="actionBar.addButton">
-      <svg class="ActionBar__icon">
-        <use xlink:href="./assets/svg/ui/ui.symbol.svg#plus"></use>
-      </svg>
-    </button>
-
-    <button type="button" ng-click="actionBar.edit()" ng-show="actionBar.editButton">
-      <svg class="ActionBar__icon">
-        <use xlink:href="./assets/svg/ui/ui.symbol.svg#gear-a"></use>
-      </svg>
-    </button>
-  </div>
+  <ul class="ActionBar__wrapper-inner">
+    <!-- <li ui-sref-active="active" ng-repeat="item in actionBar.items | orderBy: 'position' track by $index"> -->
+    <li ui-sref-active="active" ng-repeat="item in actionBar.items | orderBy: 'position'">
+      <button type="button" ng-click="item.callback()">
+        <svg class="ActionBar__icon" ng-class="{ 'ActionBar__icon--isActive': item.isToggle && item.toggleValue }" ng-if="item.iconUrl" ng-cloak>
+          <use ng-attr-xlink:href="{{ item.iconUrl }}" xlink:href=""></use>
+        </svg>
+        <span ng-if="item.label">{{ item.label }}</span>
+      </button>
+    </li>
+  </ul>
 </div>

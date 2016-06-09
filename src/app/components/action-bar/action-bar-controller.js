@@ -29,7 +29,7 @@
     .module('guh.components')
     .controller('ActionBarCtrl', ActionBarCtrl);
 
-  ActionBarCtrl.$inject = ['$log', '$element'];
+  ActionBarCtrl.$inject = ['$log', '$element', '$rootScope', '$scope'];
 
   /**
    * @ngdoc controller
@@ -37,36 +37,23 @@
    * @description Presentational component for the app header actions.
    *
    */
-  function ActionBarCtrl($log, $element) {
+  function ActionBarCtrl($log, $element, $rootScope, $scope) {
     
     var vm = this;
 
-    vm.$onInit = onInit;
-    vm.back = back;
-    vm.filter = filter;
-    vm.add = add;
-    vm.edit = edit;
+    vm.$onInit = $onInit;
 
 
-    function onInit() {
+    function $onInit() {
       $element.addClass('ActionBar');
     }
 
-    function back() {
-      vm.onBack();
-    }
 
-    function filter() {
-      vm.onFilter();
-    }
+    var itemsChangedListener = $rootScope.$on('actionBar.itemsChanged', function(event, oldItems, newItems) {
+      vm.items = newItems;
+    });
 
-    function add() {
-      vm.onAdd();
-    }
-
-    function edit() {
-      vm.onEdit();
-    }
+    $scope.$on('$destroy', itemsChangedListener);
 
   }
 

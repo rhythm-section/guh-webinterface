@@ -133,13 +133,13 @@
     });
 
     $scope.$on('ReloadView', function(event, data) {
-      if($state.current.name === 'guh.things.current') {
+      if($state.current.name === 'guh.thingDetails') {
         $state.go('guh.things', {}, {
           reload: true,
           inherit: false,
           notify: true
         });
-      } else if($state.current.name === 'guh.rules.current') {
+      } else if($state.current.name === 'guh.ruleDetails') {
         $state.go('guh.rules', {}, {
           reload: true,
           inherit: false,

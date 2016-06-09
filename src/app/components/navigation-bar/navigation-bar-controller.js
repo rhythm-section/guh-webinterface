@@ -27,57 +27,31 @@
 
   angular
     .module('guh.components')
-    .controller('TileListCtrl', TileListCtrl);
+    .controller('NavigationBarCtrl', NavigationBarCtrl);
 
-  TileListCtrl.$inject = ['$element'];
+  NavigationBarCtrl.$inject = ['$log', '$element', '$rootScope'];
 
   /**
    * @ngdoc controller
-   * @name guh.containers.controller:TileListCtrl
-   * @description Presentational component for tiles.
+   * @name guh.containers.controller:NavigationBarCtrl
+   * @description Presentational component for modal container.
    *
    */
-  function TileListCtrl($element) {
+  function NavigationBarCtrl($log, $element, $rootScope) {
     
     var vm = this;
 
-    vm.tiles = {};
-    vm.visibleTile = null;
-
     vm.$onInit = $onInit;
-    vm.$postLink = postLink;
-    vm.addTile = addTile;
-    vm.selectTile = selectTile;
 
 
     function $onInit() {
-      $element.addClass('TileList');
+      $element.addClass('NavigationBar');
     }
 
-    function postLink() {}
 
-    function addTile(tile) {
-      vm.tiles[tile.id] = tile;
-
-      if(vm.initialVisibleId && vm.initialVisibleId === tile.id) {
-        selectTile(vm.initialVisibleId);
-      }
-    }
-
-    function selectTile(tileId) {
-      angular.forEach(vm.tiles, function(tile) {
-        if(tile.id === tileId) {
-          tile.visible = true;
-        } else {
-          tile.visible = false;
-        }
-      });
-      vm.visibleTile = vm.tiles[tileId];
-
-      vm.onSelectTile({
-        tileId: tileId
-      });
-    }
+    $rootScope.$on('navigationBar.itemsChanged', function(event, items) {
+      vm.items = items;
+    });
 
   }
 

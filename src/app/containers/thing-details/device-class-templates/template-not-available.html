@@ -39,9 +39,11 @@
   <p ng-if="thingDetails.enhancedParam.length === 0">This thing doesn't have any settings to show you.</p>
   <div class="Param__item" ng-switch="enhancedParam.paramType.inputType" ng-repeat="enhancedParam in thingDetails.enhancedParams track by $index">
     <div class="Param__value" ng-switch-when="InputTypePassword">
-      <input class="input_type_readonly" ng-model="enhancedParam.param.value" type="password" disabled />
+      <input class="input--type--readonly" ng-model="enhancedParam.param.value" type="password" disabled />
     </div>
     <div class="Param__value" ng-switch-default>{{ enhancedParam.param.value }}</div>
     <div class="Param__name">{{ enhancedParam.param.name }}</div>
   </div>
+
+  <button type="button" ng-click="thingDetails.remove()">Remove {{ thingDetails.name }}</button>
 </div>

@@ -29,17 +29,7 @@
   angular
     .module('guh.components')
     .component('guhActionBar', {
-      bindings: {
-        backButton: '<',
-        filterButton: '<',
-        filterButtonActive: '<',
-        addButton: '<',
-        editButton: '<',
-        onBack: '&',
-        onFilter: '&',
-        onAdd: '&',
-        onEdit: '&'
-      },
+      bindings: {},
       controller: 'ActionBarCtrl',
       controllerAs: 'actionBar',
       templateUrl: 'app/components/action-bar/action-bar.html'

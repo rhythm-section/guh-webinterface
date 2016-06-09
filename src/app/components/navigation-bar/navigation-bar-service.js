@@ -21,62 +21,58 @@
  * SOFTWARE.                                                                           *
  *                                                                                     *
  * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
- 
+
 (function() {
   'use strict';
 
   angular
     .module('guh.components')
-    .controller('TileListCtrl', TileListCtrl);
+    .service('NavigationBar', NavigationBar);
 
-  TileListCtrl.$inject = ['$element'];
+  NavigationBar.$inject = ['libs', '$log', '$rootScope'];
 
-  /**
-   * @ngdoc controller
-   * @name guh.containers.controller:TileListCtrl
-   * @description Presentational component for tiles.
-   *
-   */
-  function TileListCtrl($element) {
+  function NavigationBar(libs, $log, $rootScope) {
+
+    /*
+     * Service globals
+     */
+
+    var items = [];
+
+
+    /*
+     * Service API
+     */
+    var service = {
+      changeItems: changeItems,
+      getItems: getItems
+    };
+
+    return service;
+
+
+    /*
+     * Private functions
+     */
     
-    var vm = this;
-
-    vm.tiles = {};
-    vm.visibleTile = null;
-
-    vm.$onInit = $onInit;
-    vm.$postLink = postLink;
-    vm.addTile = addTile;
-    vm.selectTile = selectTile;
+    
 
 
-    function $onInit() {
-      $element.addClass('TileList');
-    }
+    /*
+     * Public methods
+     */
 
-    function postLink() {}
-
-    function addTile(tile) {
-      vm.tiles[tile.id] = tile;
-
-      if(vm.initialVisibleId && vm.initialVisibleId === tile.id) {
-        selectTile(vm.initialVisibleId);
+    function changeItems(newItems) {
+      if(libs._.isEqual(items, newItems)) {
+        return;
       }
+
+      items = newItems;
+      $rootScope.$emit('navigationBar.itemsChanged', items);
     }
 
-    function selectTile(tileId) {
-      angular.forEach(vm.tiles, function(tile) {
-        if(tile.id === tileId) {
-          tile.visible = true;
-        } else {
-          tile.visible = false;
-        }
-      });
-      vm.visibleTile = vm.tiles[tileId];
-
-      vm.onSelectTile({
-        tileId: tileId
-      });
+    function getItems() {
+      return items;
     }
 
   }

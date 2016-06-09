@@ -22,6 +22,7 @@
  *                                                                                     *
  * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
  
+
 (function() {
   'use strict';
 
@@ -29,7 +30,7 @@
     .module('guh.containers')
     .controller('ThingsCtrl', ThingsCtrl);
 
-  ThingsCtrl.$inject = ['app', 'libs', '$scope', '$log', '$state', '$stateParams', 'DSDevice', 'ModalContainer'];
+  ThingsCtrl.$inject = ['app', 'libs', '$element', '$scope', '$log', '$state', '$stateParams', 'DSDevice', 'NavigationBar', 'ActionBar', 'ModalContainer'];
 
   /**
    * @ngdoc controller
@@ -37,7 +38,7 @@
    * @description Container component for things.
    *
    */
-  function ThingsCtrl(app, libs, $scope, $log, $state, $stateParams, DSDevice, ModalContainer) {
+  function ThingsCtrl(app, libs, $element, $scope, $log, $state, $stateParams, DSDevice, NavigationBar, ActionBar, ModalContainer) {
     
     var vm = this;
 
@@ -45,7 +46,7 @@
     vm.showList = false;
     vm.showFilter = false;
 
-    vm.$onInit = onInit;
+    vm.$onInit = $onInit;
     vm.toggleFilter = toggleFilter;
     vm.filter = filter;
     vm.addThing = addThing;
@@ -53,7 +54,9 @@
     vm.isDisabled = isDisabled;
     
 
-    function onInit() {
+    function $onInit() {
+      $element.addClass('Things');
+
       var deviceId = (libs._.has($stateParams, 'deviceId') && $stateParams.deviceId) ? $stateParams.deviceId : null;
       var tags = [];
       
@@ -67,6 +70,9 @@
           }
         });
       }
+
+      _initNavigation();
+      _initActions();
 
       vm.configuredDevices = DSDevice.getAll();
 
@@ -86,6 +92,43 @@
       vm.filterItems = tags.map(_getFilterItem);
     }
 
+    function _initNavigation() {
+      NavigationBar.changeItems([
+        {
+          position: 1,
+          label: 'Things',
+          state: 'guh.things'
+        },
+        {
+          position: 2,
+          label: 'Rules',
+          state: 'guh.rules'
+        },
+        {
+          position: 3,
+          label: 'Settings',
+          state: 'guh.settings'
+        }
+      ]);
+    }
+
+    function _initActions() {
+      ActionBar.changeItems([
+        {
+          position: 1,
+          iconUrl: './assets/svg/ui/ui.symbol.svg#search',
+          callback: toggleFilter,
+          isToggle: true,
+          toggleValue: false
+        },
+        {
+          position: 2,
+          iconUrl: './assets/svg/ui/ui.symbol.svg#plus',
+          callback: addThing
+        }
+      ]);
+    }
+
     function _getTags(device) {
       if(angular.isUndefined(device.deviceClass) && angular.isUndefined(device.deviceClass.basicTags)) {
         return [];
@@ -103,6 +146,20 @@
     }
 
     function toggleFilter() {
+      ActionBar.changeItems([
+        {
+          position: 1,
+          iconUrl: './assets/svg/ui/ui.symbol.svg#search',
+          callback: toggleFilter,
+          isToggle: true,
+          toggleValue: !vm.showFilter
+        },
+        {
+          position: 2,
+          iconUrl: './assets/svg/ui/ui.symbol.svg#plus',
+          callback: addThing
+        }
+      ]);
       vm.showFilter = !vm.showFilter;
     }
 
@@ -127,7 +184,7 @@
     }
 
     function showDetails(tileId) {
-      $state.go('guh.things.current', {
+      $state.go('guh.thingDetails', {
         deviceId: tileId
       });
       // TODO: Animate morphing the tile-item to show thing details

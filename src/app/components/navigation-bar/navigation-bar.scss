@@ -23,13 +23,20 @@
  * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 
 
-.Header {
+// .NavigationBar {
+//   position: fixed;
+//   z-index: 1;
+// }
+
+
+.NavigationBar {
   position: fixed;
   bottom: 0;
   left: 0;
   right: 0;
-  z-index: 1;
-  @include linear-gradient(to bottom, rgba($white, 0) 0%, rgba($white, 1) 50%, $fallback: transparent);
+  z-index: 2;
+  // @include linear-gradient(to bottom, rgba($white, 0) 0%, rgba($white, 1) 50%, $fallback: transparent);
+  @include linear-gradient(to bottom, rgba(#fcfcfc, 0) 0%, rgba(#fcfcfc, 1) 50%, $fallback: transparent);
 
   nav {
     @include display(flex);
@@ -70,6 +77,15 @@
       @include linear-gradient(to right, $green, $turquoise);
     }
 
+    li span,
+    li svg {
+      display: inline-block;
+    }
+
+    li svg {
+      @include rem(margin-bottom, -0.35);
+    }
+
     a {
       display: block;
       @include rem(padding, 3, 1.5, 1.5);
@@ -78,17 +94,18 @@
   }
 }
 
-.Header.js-intro {
+.NavigationBar.js-intro {
   opacity: 0;
 }
 
-.Header.js-app {
+.NavigationBar.js-app {
   opacity: 1;
 }
 
 @include media($min-width-m) {
-  .Header {
-    @include linear-gradient(to top, rgba($white, 0) 0%, rgba($white, 1) 50%, $fallback: transparent);
+  .NavigationBar {
+    // @include linear-gradient(to top, rgba($white, 0) 0%, rgba($white, 1) 50%, $fallback: transparent);
+    @include linear-gradient(to top, rgba(#fcfcfc, 0) 0%, rgba(#fcfcfc, 1) 50%, $fallback: transparent);
     bottom: auto;
     width: 50%;
 
@@ -111,9 +128,45 @@
 }
 
 @include media($min-width-xl) {
-  .Header {
+  .NavigationBar {
     left: 50%;
     width: $max-width-l/2;
     @include transform(translateX(-100%));
   }
+}
+
+
+.NavigationBar.NavigationBar--isDisabled {
+  display: none;
+}
+
+.NavigationBar.NavigationBar--type--details {
+  background: transparent;
+  width: 100%;
+
+  ul li:hover::after,
+  ul li.active::after {
+    display: none;
+  }
+
+  ul li:hover svg {
+    fill: $green;
+  }
+}
+
+@include media($min-width-s) {
+  .NavigationBar.NavigationBar--type--details {
+    left: 50%;
+    margin-left: -320px;
+    width: 640px;
+    @include transform(translateX(0%));
+  }
+}
+
+
+.NavigationBar__icon {
+  display: block;
+  fill: $grey;
+  @include rem(height, 1.5);
+  @include rem(width, 1.5);
 }

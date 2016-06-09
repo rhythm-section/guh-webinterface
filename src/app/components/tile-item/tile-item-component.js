@@ -43,7 +43,7 @@
       },
       templateUrl: 'app/components/tile-item/tile-item.html',
       transclude: {
-        'icon': '?svg'
+        'iconSlot': '?icon'
       }
     });
 

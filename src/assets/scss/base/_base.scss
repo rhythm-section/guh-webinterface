@@ -36,7 +36,8 @@ body {
 
 html,
 body,
-.main {
+.main,
+.content {
   height: 100%;
 }
 
@@ -47,6 +48,7 @@ html {
 }
 
 body {
+  background-color: #fcfcfc;
   color: $grey;
   font-family: 'Ubuntu';
   font-weight: 400;

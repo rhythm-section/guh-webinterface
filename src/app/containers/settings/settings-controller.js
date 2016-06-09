@@ -29,7 +29,7 @@
     .module('guh.containers')
     .controller('SettingsCtrl', SettingsCtrl);
 
-  SettingsCtrl.$inject = ['app', '$log', '$state', 'DSSettings', 'DSPlugin'];
+  SettingsCtrl.$inject = ['app', '$log', '$element', '$state', 'DSSettings', 'DSPlugin', 'NavigationBar', 'ActionBar'];
 
   /**
    * @ngdoc controller
@@ -37,15 +37,17 @@
    * @description Container component for things.
    *
    */
-  function SettingsCtrl(app, $log, $state, DSSettings, DSPlugin) {
+  function SettingsCtrl(app, $log, $element, $state, DSSettings, DSPlugin, NavigationBar, ActionBar) {
     
     var vm = this;
 
     vm.serverInfo = {};
 
-    vm.$onInit = onInit;
+    vm.$onInit = $onInit;
 
-    function onInit() {
+    function $onInit() {
+      $element.addClass('Settings');
+
       if(!app.dataLoaded) {
         $state.go('guh.intro', {
           previousState: {
@@ -54,6 +56,9 @@
           }
         });
       }
+
+      _initNavigation();
+      _initActions();
 
       vm.plugins = DSPlugin.getAll();
 
@@ -66,6 +71,30 @@
         .catch(function(error) {
           $log.error(error);
         });
+    }
+
+    function _initNavigation() {
+      NavigationBar.changeItems([
+        {
+          position: 1,
+          label: 'Things',
+          state: 'guh.things'
+        },
+        {
+          position: 2,
+          label: 'Rules',
+          state: 'guh.rules'
+        },
+        {
+          position: 3,
+          label: 'Settings',
+          state: 'guh.settings'
+        }
+      ]);
+    }
+
+    function _initActions() {
+      ActionBar.changeItems([]);
     }
 
   }

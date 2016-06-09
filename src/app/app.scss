@@ -80,12 +80,15 @@
 
 @import "containers/intro/intro";
 @import "containers/settings/settings";
+@import "containers/rules/rules";
 @import "containers/rule-details/rule-details";
+@import "containers/things/things";
 @import "containers/thing-details/thing-details";
 
 @import "components/action-bar/action-bar";
 @import "components/filter/filter";
 @import "components/modal-container/modal-container";
+@import "components/navigation-bar/navigation-bar";
 @import "components/tile-list/tile-list";
 @import "components/tile-item/tile-item";
 

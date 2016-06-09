@@ -29,7 +29,7 @@
     .module('guh.containers')
     .controller('RulesCtrl', RulesCtrl);
 
-  RulesCtrl.$inject = ['app', 'libs', '$log', '$scope', '$state', '$stateParams', 'DSRule', 'ModalContainer'];
+  RulesCtrl.$inject = ['app', 'libs', '$log', '$element', '$scope', '$state', '$stateParams', 'DSRule', 'NavigationBar', 'ActionBar', 'ModalContainer'];
 
   /**
    * @ngdoc controller
@@ -37,20 +37,21 @@
    * @description Container component for rules.
    *
    */
-  function RulesCtrl(app, libs, $log, $scope, $state, $stateParams, DSRule, ModalContainer) {
+  function RulesCtrl(app, libs, $log, $element, $scope, $state, $stateParams, DSRule, NavigationBar, ActionBar, ModalContainer) {
     
     var vm = this;
 
     vm.showActionBar = false;
     vm.showList = false;
 
-    vm.$onInit = onInit;
-    vm.showFilter = showFilter;
+    vm.$onInit = $onInit;
     vm.addRule = addRule;
     vm.showDetails = showDetails;
 
 
-    function onInit() {
+    function $onInit() {
+      $element.addClass('Rules');
+
       var ruleId = (libs._.has($stateParams, 'ruleId') && $stateParams.ruleId) ? $stateParams.ruleId : null;
 
       if(!app.dataLoaded) {
@@ -64,6 +65,9 @@
         });
       }
 
+      _initNavigation();
+      _initActions();
+
       vm.rules = DSRule.getAll();
 
       // TODO: Animate fading in tile-list
@@ -73,8 +77,34 @@
       }
     }
 
-    function showFilter() {
-      $log.log('showFilter');
+    function _initNavigation() {
+      NavigationBar.changeItems([
+        {
+          position: 1,
+          label: 'Things',
+          state: 'guh.things'
+        },
+        {
+          position: 2,
+          label: 'Rules',
+          state: 'guh.rules'
+        },
+        {
+          position: 3,
+          label: 'Settings',
+          state: 'guh.settings'
+        }
+      ]);
+    }
+
+    function _initActions() {
+      ActionBar.changeItems([
+        {
+          position: 1,
+          iconUrl: './assets/svg/ui/ui.symbol.svg#plus',
+          callback: addRule
+        }
+      ]);
     }
 
     function addRule() {
@@ -94,7 +124,7 @@
     }
 
     function showDetails(tileId) {
-      $state.go('guh.rules.current', {
+      $state.go('guh.ruleDetails', {
         ruleId: tileId
       });
       // TODO: Animate morphing the tile-item to show thing details
