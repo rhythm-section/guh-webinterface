@@ -89,8 +89,7 @@ module.exports = {
   // Utils
   argsParser: {
     defaultEnvironment: 'development',
-    defaultProxyServer: 'localhost:3333',
-    defaultHosting: 'local'
+    defaultProxyServer: 'localhost:3333'
   },
 
   // Plugins

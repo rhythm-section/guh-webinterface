@@ -38,13 +38,11 @@
         websocket: '4444'
       };
       var environment = '/* @echo NODE_ENV */';   // Set inside gulp task: "preprocess-app-config"
-      var hosting = '/* @echo HOSTING */';
       var dataLoaded = false;
 
       return {
         // Environment
         environment: environment,
-        hosting: hosting,
 
         // Network
         protocol: protocol,

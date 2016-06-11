@@ -46,7 +46,6 @@ var args = yargs
   .alias('w', 'watch')
   .alias('t', 'test')
   .alias('p', 'proxy')
-  .alias('h', 'hosting')  // local or cloud
   .argv;
 
 
@@ -76,15 +75,6 @@ var getProxyServer = function() {
   }
 };
 
-var getHosting = function() {
-  if(args.hosting === undefined) {
-    logger.info('Hosting environment not defined. Using default: "' + argsParserConfig.defaultHosting + '"');
-    return argsParserConfig.defaultHosting;
-  } else {
-    return args.hosting;
-  }
-};
-
 var isDocumentationServer = function() {
   return !!args.documentation;
 };
@@ -106,7 +96,6 @@ module.exports = {
   getArgs: getArgs,
   getEnvironment: getEnvironment,
   getProxyServer: getProxyServer,
-  getHosting: getHosting,
   isDocumentationServer: isDocumentationServer,
   isServer: isServer,
   isWatch: isWatch

@@ -28,7 +28,6 @@
  */
 
 var gulp = require('gulp');
-var argsParser = require('../utils/args-parser');
 var plumber = require('gulp-plumber');
 var preprocess = require('gulp-preprocess');
 
@@ -49,11 +48,7 @@ module.exports = {
     return gulp.src(pathConfig.appConfigSrc)
       .pipe(plumber())
       // Default context (https://www.npmjs.com/package/gulp-preprocess) is all what is needed => no specific config
-      .pipe(preprocess({
-        context: {
-          HOSTING: argsParser.getHosting()
-        }
-      }))
+      .pipe(preprocess())
       .pipe(gulp.dest(pathConfig.appConfigDest.development));
   }
 };
