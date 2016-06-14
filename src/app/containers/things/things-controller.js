@@ -170,10 +170,12 @@
     function addThing() {
       ModalContainer
         .add({
-          controller: 'NewDeviceCtrl',
-          controllerAs: 'newDevice',
+          controller: ['modalInstance', function(modalInstance) {
+            this.modalInstance = modalInstance;
+          }],
+          controllerAs: 'modal',
           data: null,
-          templateUrl: 'app/components/devices/add/new-device-modal.html'
+          template: '<guh-add-thing modal-instance="modal.modalInstance"></guh-add-thing>'
         })
         .then(function(modal) {
           modal.open();
