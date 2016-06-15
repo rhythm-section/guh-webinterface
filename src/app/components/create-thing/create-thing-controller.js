@@ -49,11 +49,23 @@
     vm.deviceDescriptorId = '';
 
     vm.$onInit = $onInit;
+    vm.$onChanges = $onChanges;
     vm.discoverDevices = discoverDevices;
     vm.create = create;
 
 
     function $onInit() {}
+
+    function $onChanges(changesObject) {
+      // If deviceClass has changed, reset view data
+      if(angular.isDefined(changesObject.deviceClass)) {
+        vm.discover = false;
+        vm.loading = false;
+        vm.params = [];
+        vm.discoveredDevices = [];
+        vm.deviceDescriptorId = '';
+      }
+    }
 
 
     function discoverDevices(params) {
