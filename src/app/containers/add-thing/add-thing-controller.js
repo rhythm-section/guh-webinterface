@@ -44,6 +44,7 @@
 
     vm.supportedVendors = [];
     vm.supportedDeviceClasses = [];
+    vm.name = '';
 
     vm.$onInit = $onInit;
     vm.selectVendor = selectVendor;
@@ -158,7 +159,7 @@
             vm.modalInstance.close();
           })
           .catch(function(error) {
-            $log.log(error);
+            $log.error(error);
           });
       }
     }
