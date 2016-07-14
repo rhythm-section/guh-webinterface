@@ -23,6 +23,12 @@
 
 <guh-filter class="filter" items="things.filterItems" on-item-changed="things.filter(filterItems)" ng-show="things.showFilter"></guh-filter>
 
-<guh-tile-list initial-visible-id="{{ things.currentDevice.id }}" on-select-tile="things.showDetails(tileId)">
-  <guh-tile-item ng-repeat="device in things.configuredDevices | basicTags:things.filterItems | orderBy: 'name'" id="{{ device.id }}" icon-url="{{ device.deviceClass.deviceIcon ? './assets/svg/device-class/device-class.symbol.svg#' + device.deviceClass.deviceIcon : './assets/svg/device-class/device-class.symbol.svg#DeviceIconDevice' }}" title="{{ device.name }}" description="{{ device.getDescription('&nbsp;&middot;&nbsp;') }}" is-disabled="device.isDisabled" ng-if="things.filterItems.length > 0"></guh-tile-item>
+<guh-tile-list initial-visible-id="{{ things.currentDevice.id }}"
+               on-select-tile="things.showDetails(tileId)">
+  <guh-tile-item icon-url="{{ thing.deviceClass.deviceIcon ? './assets/svg/device-class/device-class.symbol.svg#' + thing.deviceClass.deviceIcon : './assets/svg/device-class/device-class.symbol.svg#DeviceIconDevice' }}"
+                 description="{{ thing.getDescription('&nbsp;&middot;&nbsp;') }}"
+                 title="{{ thing.name }}"
+                 is-disabled="thing.isDisabled"
+                 ng-repeat="thing in things.configuredDevices | basicTags:things.filterItems | orderBy: 'name'" id="{{ thing.id }}"
+                 ng-if="things.filterItems.length > 0"></guh-tile-item>
 </guh-tile-list>

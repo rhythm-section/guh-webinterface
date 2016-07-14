@@ -30,7 +30,7 @@
     .module('guh.containers')
     .controller('ThingsCtrl', ThingsCtrl);
 
-  ThingsCtrl.$inject = ['app', 'libs', '$element', '$scope', '$log', '$state', '$stateParams', 'DSDevice', 'NavigationBar', 'ActionBar', 'ModalContainer'];
+  ThingsCtrl.$inject = ['app', 'libs', '$element', '$scope', '$log', '$state', '$stateParams', 'DSDeviceClass', 'DSDevice', 'NavigationBar', 'ActionBar', 'ModalContainer'];
 
   /**
    * @ngdoc controller
@@ -38,12 +38,11 @@
    * @description Container component for things.
    *
    */
-  function ThingsCtrl(app, libs, $element, $scope, $log, $state, $stateParams, DSDevice, NavigationBar, ActionBar, ModalContainer) {
+  function ThingsCtrl(app, libs, $element, $scope, $log, $state, $stateParams, DSDeviceClass, DSDevice, NavigationBar, ActionBar, ModalContainer) {
     
     var vm = this;
 
     vm.showActionBar = false;
-    vm.showList = false;
     vm.showFilter = false;
 
     vm.$onInit = $onInit;
@@ -57,16 +56,12 @@
     function $onInit() {
       $element.addClass('Things');
 
-      var deviceId = (libs._.has($stateParams, 'deviceId') && $stateParams.deviceId) ? $stateParams.deviceId : null;
       var tags = [];
       
       if(!app.dataLoaded) {
         $state.go('guh.intro', {
           previousState: {
-            name: $state.current.name,
-            params: {
-              deviceId: deviceId
-            }
+            name: $state.current.name
           }
         });
       }
@@ -84,9 +79,6 @@
 
       // TODO: Animate fading in tile-list
       vm.showActionBar = true;
-      if(!deviceId) {
-        vm.showList = true;
-      }
 
       tags = libs._.uniq([].concat.apply([], vm.configuredDevices.map(_getTags)));
       vm.filterItems = tags.map(_getFilterItem);
@@ -181,7 +173,7 @@
           modal.open();
         })
         .catch(function(error) {
-          $log.log('error', error);
+          $log.error('error', error);
         });
     }
 
@@ -191,7 +183,6 @@
       });
       // TODO: Animate morphing the tile-item to show thing details
       vm.showActionBar = false;
-      vm.showList = false;
     }
 
     function isDisabled(device) {
@@ -220,7 +211,6 @@
       if(toState.name === 'guh.things') {
         // TODO: Animate morphing the tile-item back to the tile-list
         vm.showActionBar = true;
-        vm.showList = true;
       }
     });
 
