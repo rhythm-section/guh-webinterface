@@ -25,7 +25,7 @@
 
 .ActionBar {
   position: fixed;
-  left: 0;
+  left: auto;
   right: 0;
   top: 0;
   @include linear-gradient(to top, rgba(#fcfcfc, 0) 0%, rgba(#fcfcfc, 1) 50%, $fallback: transparent);
@@ -54,6 +54,12 @@
     .ActionBar__icon {
       fill: $turquoise;
     }
+  }
+}
+
+@include media($max-width-xs) {
+  .ActionBar {
+    left: auto;
   }
 }
 
@@ -90,6 +96,16 @@
 
   ul {
     justify-content: flex-start;
+  }
+
+  li:last-of-type {
+    position: absolute;
+    right: 0;
+  }
+
+  li:first-of-type {
+    position: absolute;
+    left: 0;
   }
 
   button {

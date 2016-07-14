@@ -63,12 +63,9 @@
      */
 
     function changeItems(newItems) {
-      if(libs._.isEqual(items, newItems)) {
-        return;
-      }
-
+      var oldItems = items;
       items = newItems;
-      $rootScope.$emit('navigationBar.itemsChanged', items);
+      $rootScope.$emit('navigationBar.itemsChanged', oldItems, newItems);
     }
 
     function getItems() {

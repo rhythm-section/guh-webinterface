@@ -29,15 +29,15 @@
     .module('guh.components')
     .controller('NavigationBarCtrl', NavigationBarCtrl);
 
-  NavigationBarCtrl.$inject = ['$log', '$element', '$rootScope'];
+  NavigationBarCtrl.$inject = ['$log', '$element', '$rootScope', '$scope'];
 
   /**
    * @ngdoc controller
-   * @name guh.containers.controller:NavigationBarCtrl
+   * @name guh.components.controller:NavigationBarCtrl
    * @description Presentational component for modal container.
    *
    */
-  function NavigationBarCtrl($log, $element, $rootScope) {
+  function NavigationBarCtrl($log, $element, $rootScope, $scope) {
     
     var vm = this;
 
@@ -49,9 +49,11 @@
     }
 
 
-    $rootScope.$on('navigationBar.itemsChanged', function(event, items) {
-      vm.items = items;
+    var itemsChangedListener = $rootScope.$on('navigationBar.itemsChanged', function(event, oldItems, newItems) {
+      vm.items = newItems;
     });
+
+    $scope.$on('$destroy', itemsChangedListener);
 
   }
 

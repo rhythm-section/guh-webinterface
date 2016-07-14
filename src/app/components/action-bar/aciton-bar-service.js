@@ -64,11 +64,6 @@
 
     function changeItems(newItems) {
       var oldItems = items;
-
-      if(libs._.isEqual(items, newItems)) {
-        return;
-      }
-
       items = newItems;
       $rootScope.$emit('actionBar.itemsChanged', oldItems, newItems);
     }
