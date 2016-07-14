@@ -1,5 +1,4 @@
 /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
-/* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
  *                                                                                     *
  * Copyright (C) 2015 Lukas Mayerhofer <lukas.mayerhofer@guh.guru>                     *
  *                                                                                     *
@@ -24,92 +23,26 @@
  * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 
 
-/*
- * Libraries
- *
- */
+(function() {
+  'use strict';
 
-@import "bourbon";
+  angular
+    .module('guh.components')
+    .component('guhParamType', {
+      bindings: {
+        paramType: '<',
+        asyncStatus: '<',
+        correspondingValue: '<',
+        onChange: '&',
+        onRequired: '&'
+      },
+      controller: 'ParamTypeCtrl',
+      controllerAs: 'paramType',
+      require: {
+        paramTypeListCtrl: '?^^guhParamTypeList' ,
+        actionCtrl: '?^^guhAction'
+      },
+      templateUrl: 'app/components/param-type/param-type.html'
+    });
 
-
-/*
- * App SASS
- *
- */
-
-@import "../assets/scss/functions";
-@import "../assets/scss/mixins";
-@import "../assets/scss/variables";
-
-
-/*
- * Grid
- *
- */
-
-@import "../assets/scss/grid/grid";
-
-
-/*
- * Base & Layout
- *
- */
-
-@import "../assets/scss/base/reset";
-@import "../assets/scss/base/base";
-@import "../assets/scss/base/content";
-
-
-/*
- * Modules
- *
- */
-
-@import "../assets/scss/modules/action";
-@import "../assets/scss/modules/event";
-@import "../assets/scss/modules/list";
-@import "../assets/scss/modules/param";
-@import "../assets/scss/modules/state";
-@import "../assets/scss/modules/text";
-
-
-/*
- * Components
- */
-
-@import "containers/intro/intro";
-@import "containers/settings/settings";
-@import "containers/rules/rules";
-@import "containers/rule-details/rule-details";
-@import "containers/things/things";
-@import "containers/thing-details/thing-details";
-
-@import "components/action-bar/action-bar";
-@import "components/filter/filter";
-@import "components/modal-container/modal-container";
-@import "components/navigation-bar/navigation-bar";
-@import "components/param-type/param-type";
-@import "components/tile-list/tile-list";
-@import "components/tile-item/tile-item";
-
-@import "components/ui/button/button";
-@import "components/ui/button-group/button-group";
-@import "components/ui/checkbox/checkbox";
-@import "components/ui/icon/icon";
-@import "components/ui/select/select";
-@import "components/ui/slider/slider";
-@import "components/ui/text-area/text-area";
-@import "components/ui/text-input/text-input";
-@import "components/ui/toggle-button/toggle-button";
-
-
-/*
- * Shared directives (old => get replaces by components)
- */
-
-@import "shared/ui/action/action";
-@import "shared/ui/button-group/button-group";
-@import "shared/ui/color/color";
-@import "shared/ui/form/form";
-@import "shared/ui/range/range";
-@import "shared/ui/wizard/wizard";
+}());
