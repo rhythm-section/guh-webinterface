@@ -88,20 +88,22 @@
           bool: 'Bool',
           variant: 'Variant',
           color: 'Color',
+          time: 'Time',
           object: 'Object'
         },
 
         // Input types
         inputTypes: {
-          InputTypeIPv4Address: '-ipV4',
-          InputTypeIPv6Address: '-ipV6',
-          InputTypeMacAddress: '-mac',
-          InputTypeMail: '-mail',
-          InputTypePassword: '-password',
-          InputTypeSearch: '-search',
-          InputTypeTextLine: '-text',
-          InputTypeTextArea: '-textarea',
-          InputTypeUrl: '-url'
+          none: 'InputTypeNone',
+          textLine: 'InputTypeTextLine',
+          textArea: 'InputTypeTextArea',
+          password: 'InputTypePassword',
+          search: 'InputTypeSearch',
+          mail: 'InputTypeMail',
+          ipV4Address: 'InputTypeIPv4Address',
+          ipV6Address: 'InputTypeIPv6Address',
+          url: 'InputTypeUrl',
+          macAddress: 'InputTypeMacAddress'
         },
 
         // Notification types
