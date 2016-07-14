@@ -23,7 +23,7 @@
 
 <div class="ThingDetails__content" ng-show="thingDetails.showActions">
   <p ng-if="thingDetails.actions.length === 0">This thing doesn't have any controls.</p>
-  <guh-action device-id="{{ thingDetails.id }}" action-type-id="{{ action.actionType.id }}" ng-repeat="action in thingDetails.actions | orderBy: 'name' track by $index"></guh-action>
+  <guh-action action-type="action.actionType" corresponding-state="action.state" device="thingDetails.device" ng-repeat="action in thingDetails.actions | orderBy: 'name' track by $index"></guh-action>
 </div>
 
 <div class="ThingDetails__content" ng-show="thingDetails.showStates">
@@ -44,6 +44,4 @@
     <div class="Param__value" ng-switch-default>{{ enhancedParam.param.value }}</div>
     <div class="Param__name">{{ enhancedParam.param.name }}</div>
   </div>
-
-  <button type="button" ng-click="thingDetails.remove()">Remove {{ thingDetails.name }}</button>
 </div>

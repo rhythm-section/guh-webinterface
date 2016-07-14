@@ -56,7 +56,10 @@
       if(!app.dataLoaded) {
         $state.go('guh.intro', {
           previousState: {
-            name: 'guh.things'
+            name: $state.current.name,
+            params: {
+              deviceId: $stateParams.deviceId
+            }
           }
         });
       } else {
@@ -81,11 +84,18 @@
           iconUrl: './assets/svg/ui/ui.symbol.svg#chevron-left',
           label: 'Back to things',
           callback: back
+        },
+        {
+          position: 2,
+          iconUrl: './assets/svg/ui/ui.symbol.svg#trash-a',
+          label: 'Remove',
+          callback: remove
         }
       ]);
     }
 
     function _initThing(device) {
+      vm.device = device;
       vm.setupComplete = device.setupComplete;
       vm.actions = [];
       vm.actionsObject = {};
@@ -117,6 +127,8 @@
         if(state.stateType.type === app.basicTypes.double) {
           vm.states[index].value = $filter('number')(vm.states[index].value, '2');
         }
+
+        vm.statesObject[$filter('camelCase')(state.stateType.name)] = vm.states[index];
       });
 
       // Wait for templateUrl check
@@ -140,12 +152,14 @@
         action.actionType = actionType;
 
         if(actionType.hasState) {
-          var state = libs._.find(stateTypes, function(stateType) {
+          var stateType = libs._.find(stateTypes, function(stateType) {
             return stateType.id === actionType.id;
           });
+          var state = vm.statesObject[$filter('camelCase')(stateType.name)];
 
           // Add state to action
           action.state = state;
+          action.stateType = stateType;
 
           // Remove state from sates array
           vm.states = vm.states.filter(function(state) {
@@ -186,13 +200,12 @@
       if(errorCode) {
         switch(errorCode) {
           case 'DeviceErrorDeviceIsChild':
-            devices = _getDevices();
-            errorData.devices = devices;
+            errorData.devices = _getDevices();
             break;
           case 'DeviceErrorDeviceInRule':
             // var ruleIds = error.data.ruleIds ? error.data.ruleIds : [];
             var ruleIds = error.ruleIds ? error.ruleIds : [];
-            errorData.moods = _getMoods(ruleIds);
+            errorData.rules = _getRules(ruleIds);
             break;
           default:
             $log.error(error);
@@ -222,8 +235,8 @@
           
           // Children
           if(DSDevice.is(parentDevice)) {
-            var currentChildDevices = DSDevice.getAll().filter(function(device, parentDevice) {
-              return device.parentId === parentDevice.id;
+            var currentChildDevices = DSDevice.getAll().filter(function(deviceToDelete) {
+              return deviceToDelete.parentId === parentDevice.id;
             });
 
             childDevices = childDevices.concat(currentChildDevices);
@@ -237,14 +250,14 @@
 
         // Filter deviceToDelete from childDevices
         devices.childDevices = childDevices.filter(function(childDevice) {
-          return childDevice.id === deviceToDelete.id;
+          return childDevice.id !== deviceToDelete.id;
         });
       }
 
       return devices;
     }
 
-    function _getMoods(ruleIds) {
+    function _getRules(ruleIds) {
       return DSRule.getAll(ruleIds);
     }
 
@@ -286,16 +299,19 @@
         })
         .catch(function(error) {
           $log.error('error', error);
+          var errorData = _getErrorData(error);
+          $log.error('errorData', errorData);
 
           ModalContainer
             .add({
-              controller: 'RemoveDeviceCtrl',
-              controllerAs: 'removeDevice',
-              data: {
-                currentDevice: device,
-                errorData: _getErrorData(error)
-              },
-              templateUrl: 'app/components/devices/remove/remove-device-modal.html'
+              controller: ['modalInstance', function(modalInstance) {
+                this.modalInstance = modalInstance;
+                this.thing = device;
+                this.errorData = errorData;
+              }],
+              controllerAs: 'modal',
+              data: null,
+              template: '<guh-remove-thing thing="modal.thing" error-data="modal.errorData" modal-instance="modal.modalInstance"></guh-remove-thing>'
             })
             .then(function(modal) {
               modal.open();
@@ -308,6 +324,7 @@
 
 
     DSState.on('DS.change', function(DSState, newState) {
+      // States
       angular.forEach(vm.states, function(state, index) {
         if(state.stateType.type === app.basicTypes.double && state.stateType.id === newState.stateType.id) {
           vm.states[index].value = $filter('number')(newState.value, '2');
