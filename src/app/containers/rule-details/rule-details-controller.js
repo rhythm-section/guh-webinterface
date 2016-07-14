@@ -53,6 +53,7 @@
     vm.show = show;
     vm.executeActions = executeActions;
     vm.executeExitActions = executeExitActions;
+    vm.remove = remove;
 
     function onInit() {
       $element.addClass('RuleDetails');
@@ -60,7 +61,10 @@
       if(!app.dataLoaded) {
         $state.go('guh.intro', {
           previousState: {
-            name: 'guh.rules'
+            name: $state.current.name,
+            params: {
+              ruleId: $stateParams.ruleId
+            }
           }
         });
       } else {
@@ -85,6 +89,12 @@
           iconUrl: './assets/svg/ui/ui.symbol.svg#chevron-left',
           label: 'Back to rules',
           callback: back
+        },
+        {
+          position: 2,
+          iconUrl: './assets/svg/ui/ui.symbol.svg#trash-a',
+          label: 'Remove',
+          callback: remove
         }
       ]);
     }
@@ -237,7 +247,7 @@
           $log.log('Actions successfully executed.', response);
         })
         .catch(function(error) {
-          $log.log('Actions not executed', error);
+          $log.error('Actions not executed', error);
         });
     }
 
@@ -248,7 +258,16 @@
           $log.log('Actions successfully executed.', response);
         })
         .catch(function(error) {
-          $log.log('Actions not executed', error);
+          $log.error('Actions not executed', error);
+        });
+    }
+
+    function remove() {
+      rule
+        .remove()
+        .then(function() {})
+        .catch(function(error) {
+          $log.error('guh.moods.RuleDetailsCtrl:controller - ', error);
         });
     }
 
