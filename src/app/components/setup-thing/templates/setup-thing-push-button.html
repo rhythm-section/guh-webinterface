@@ -21,6 +21,6 @@
 -->
 
 <p class="padding">{{ setupThing.displayMessage }}.</p>
-<form name="pushButton" ng-submit="setupThing.confirmPairing()">
-  <button class="button" type="submit">OK</button>
-</form>
+
+<guh-button label="OK"
+            on-press="setupThing.confirmPairing()"></guh-button>

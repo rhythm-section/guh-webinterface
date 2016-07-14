@@ -23,13 +23,11 @@
 
 <p class="padding">{{ setupThing.displayMessage }}</p>
 
-<guh-form name="enterSecret"
-          on-form-submit="setupThing.confirmPairing(params)"
-          class="List">
+<guh-text-input label="Secret"
+                name="secret"
+                required="true"
+                type="InputTypeTextLine"
+                on-change="setupThing.setSecret(value)"></guh-text-input>
 
-  <guh-form-field label="Secret"
-                  name="Secret"
-                  template="app/shared/ui/form/form-field-templates/form-field-text.html"></guh-form-field>
-
-  <button class="button" type="submit">OK</button>
-</guh-form>
+<guh-button label="OK"
+            on-press="setupThing.confirmPairing()"></guh-button>

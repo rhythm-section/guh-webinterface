@@ -30,7 +30,7 @@
     .module('guh.components')
     .controller('SetupThingCtrl', SetupThingCtrl);
 
-  SetupThingCtrl.$inject = ['libs', 'DSDevice'];
+  SetupThingCtrl.$inject = ['$log', 'DSDevice'];
 
   /**
    * @ngdoc controller
@@ -38,27 +38,31 @@
    * @description Presentational component to setup a new thing.
    *
    */
-  function SetupThingCtrl(libs, DSDevice) {
+  function SetupThingCtrl($log, DSDevice) {
     
     var vm = this;
 
     vm.displayMessage = '';
+    vm.secretValue = '';
 
     vm.$onInit = $onInit;
+
+    vm.setSecret = setSecret;
     vm.confirmPairing = confirmPairing;
 
 
-    function $onInit() {}
+    function $onInit() {
+      vm.secretValue = '';
+    }
 
 
-    function confirmPairing(params) {
-      var secret = libs._.find(params, function(param) {
-        return param.name === 'Secret';
-      });
-      var secretValue = angular.isDefined(secret) ? secret.value : undefined;
+    function setSecret(secretValue) {
+      vm.secretValue = secretValue;
+    }
 
+    function confirmPairing() {
       DSDevice
-        .confirmPairing(vm.pairingTransactionId, secretValue)
+        .confirmPairing(vm.pairingTransactionId, vm.secretValue)
         .then(function(data) {
           vm.onSetupThing();
         })
