@@ -1,0 +1,59 @@
+<!-- 
+  Copyright (C) 2015 Lukas Mayerhofer <lukas.mayerhofer@guh.guru>
+  
+  Permission is hereby granted, free of charge, to any person obtaining a copy
+  of this software and associated documentation files (the "Software"), to deal
+  in the Software without restriction, including without limitation the rights
+  to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+  copies of the Software, and to permit persons to whom the Software is
+  furnished to do so, subject to the following conditions:
+  
+  The above copyright notice and this permission notice shall be included in all
+  copies or substantial portions of the Software.
+  
+  THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+  IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+  FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+  AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+  LIABILITY, WHETHER IN AN ActionType OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+  OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+  SOFTWARE.
+-->
+
+
+<form name="stateDescriptorForm" novalidate>
+  <!-- Operator -->
+  <label class="label-container">
+    <span class="label">State</span>
+    <select name="operator"
+            ng-model="stateDescriptor.selectedValueOperator"
+            ng-options="operator as operator.label for (key, operator) in stateDescriptor.availableValueOperators track by operator.id"
+            ng-change="stateDescriptor.selectValueOperator(stateDescriptor.selectedValueOperator)"></select>
+    <svg class="icon">
+      <use xlink:href="./assets/svg/ui/ui.symbol.svg#chevron-down"></use>
+    </svg>
+  </label>
+
+  <!-- Is, is not, greater than, less than -->
+  <guh-state-type ng-if="stateDescriptor.isStateType"
+                  state-type="stateDescriptor.isStateType.stateType"
+                  value="stateDescriptor.isStateType.value"
+                  on-change="stateDescriptor.updateDescriptors('is', stateDescriptor.isStateType.stateType.defaultValue, value)"></guh-state-type>
+
+  <!-- From -->
+  <guh-state-type ng-if="stateDescriptor.fromStateType"
+                  state-type="stateDescriptor.fromStateType.stateType"
+                  value="stateDescriptor.isStateType.value"
+                  on-change="stateDescriptor.updateDescriptors('from', stateDescriptor.fromStateType.stateType.defaultValue, value)"></guh-state-type>
+
+  <!-- To -->
+  <guh-state-type ng-if="stateDescriptor.toStateType"
+                  state-type="stateDescriptor.toStateType.stateType"
+                  value="stateDescriptor.isStateType.value"
+                  on-change="stateDescriptor.updateDescriptors('to', stateDescriptor.toStateType.stateType.defaultValue, value)"></guh-state-type>
+
+  <!-- Submit -->
+  <guh-button disabled="(stateDescriptorForm.isDisabled && stateDescriptorForm.$pristine) || stateDescriptorForm.$invalid"
+              label="Save condition"
+              on-press="stateDescriptor.submitStateDescriptors(stateDescriptorForm.$valid, stateDescriptor.descriptors)"></guh-button>
+</form>
