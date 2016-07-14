@@ -113,7 +113,7 @@ input[type="password"].input--type--readonly {
 }
 
 textarea {
-  @include rem(height, 6);
+  @include rem(height, 12);
 }
 
 .Button,
@@ -198,10 +198,24 @@ label,
   display: block;
   letter-spacing: 0.1em;
   padding-left: 0.1em;
+  position: relative;
   text-align: center;
   text-transform: uppercase;
   @include rem(font-size, 0.8);
-  @include rem(margin, 0.75, 1.5);
+  @include rem(margin, 0.75);
+
+  .Icon {
+    fill: rgba($grey, 0.4);
+    position: absolute;
+    @include rem(height, 1);
+    @include rem(width, 1);
+    @include rem(right, 0.3);
+    @include rem(top, 0.25);
+  }
+
+  .pending .Icon {
+    @include animation(rotate 1.5s linear infinite);
+  }
 }
 
 .label-container {
@@ -210,6 +224,7 @@ label,
 
   .icon {
     fill: $grey;
+    pointer-events: none;
     position: absolute;
     @include rem(bottom, 0.75);
     @include rem(right, 0.75);

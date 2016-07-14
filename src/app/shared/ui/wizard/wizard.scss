@@ -84,7 +84,23 @@
   text-overflow: ellipsis;
   @include rem(font-size, 1.2);
   @include rem(height, 4.5);
-  @include rem(padding, 1.5, 4.5);
+  @include rem(padding, 1.5, 0);
+
+  @include media($min-width-m) {
+    @include rem(padding, 1.5, 4.5);
+  }
+}
+
+.Wizard__step-description {
+  @include rem(font-size, 0.9);
+  // @include rem(margin, 0, 0, 3);
+  @include rem(max-width, 30);
+  margin: 0 auto;
+  text-align: center;
+
+  @include media($min-width-m) {
+    // @include rem(padding, 0, 6);
+  }
 }
 
 
