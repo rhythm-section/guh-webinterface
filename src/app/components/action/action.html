@@ -1,0 +1,42 @@
+<!-- 
+  Copyright (C) 2015 Lukas Mayerhofer <lukas.mayerhofer@guh.guru>
+  
+  Permission is hereby granted, free of charge, to any person obtaining a copy
+  of this software and associated documentation files (the "Software"), to deal
+  in the Software without restriction, including without limitation the rights
+  to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+  copies of the Software, and to permit persons to whom the Software is
+  furnished to do so, subject to the following conditions:
+  
+  The above copyright notice and this permission notice shall be included in all
+  copies or substantial portions of the Software.
+  
+  THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+  IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+  FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+  AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+  LIABILITY, WHETHER IN AN ActionType OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+  OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+  SOFTWARE.
+-->
+
+
+<!-- Without params -->
+<guh-button ng-if="action.actionType.paramTypes.length === 0"
+            async-status="action.executionStatus"
+            label="{{ action.actionType.name }}"
+            on-press="action.execute()"></guh-button>
+
+<!-- With one param  -->
+<guh-param-type ng-if="action.actionType.paramTypes.length === 1"
+                async-status="action.executionStatus"
+                param-type="action.actionType.paramTypes[0]"
+                on-change="action.execute([{ name: name, value: value }])"></guh-param-type>
+
+<!-- With multiple params -->
+<!-- Actions with multiple paramTypes cannot have a corresponding state value because such actions will be created from the corresponding stateType itself. This guarantees that the action has exactly one paramType which is from the same type as the stateType. -->
+<guh-param-type-list ng-if="action.actionType.paramTypes.length > 1"
+                     async-status="action.executionStatus"
+                     label="{{ action.actionType.name }}"
+                     param-types="action.actionType.paramTypes"
+                     on-submit="action.execute(params)"></guh-param-type-list>
