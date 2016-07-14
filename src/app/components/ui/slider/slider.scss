@@ -1,5 +1,4 @@
 /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
-/* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
  *                                                                                     *
  * Copyright (C) 2015 Lukas Mayerhofer <lukas.mayerhofer@guh.guru>                     *
  *                                                                                     *
@@ -24,88 +23,75 @@
  * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 
 
-/*
- * Libraries
- *
- */
-
-@import "bourbon";
+$line-height: 1.5;
+$x-height: 1;
 
 
-/*
- * App SASS
- *
- */
+.Slider {
+  position: relative;
+  z-index: 0;
+  @include rem(height, $line-height);
+  @include rem(margin, 0, 0, 2 * $line-height);
+  @include rem(padding, 0, 2 * $line-height);
+}
 
-@import "../assets/scss/functions";
-@import "../assets/scss/mixins";
-@import "../assets/scss/variables";
+.Slider__icon {
+  fill: $grey;
+  position: absolute;
+    top: 0;
+  @include rem(height, $line-height);
+  @include rem(width, $line-height);
+  @include transition(fill 0.2s);
+}
 
+.Slider__icon.Slider__icon_position_left {
+  @include rem(left, $line-height / 2);
+}
 
-/*
- * Grid
- *
- */
+.Slider__icon.Slider__icon_position_right {
+  @include rem(right, $line-height / 2);
+}
 
-@import "../assets/scss/grid/grid";
+.Slider__runner {
+  position: relative;
+  z-index: 1;
+  @include rem(height, $line-height);
+  @include rem(margin, 0, $line-height / 2);
+}
 
+.Slider__bar,
+.Slider__bar.Slider__bar_isActive {
+  position: absolute;
+  top: 50%;
+  @include rem(border-radius, 0.1);
+  @include rem(height, $line-height - $x-height);
+  @include rem(margin-top, -($line-height - $x-height) / 2);
+}
 
-/*
- * Base & Layout
- *
- */
+.Slider__bar {
+  background-color: rgba($grey, 0.1);
+  left: 0;
+  right: 0;
+  z-index: 2;
+}
 
-@import "../assets/scss/base/reset";
-@import "../assets/scss/base/base";
-@import "../assets/scss/base/content";
+.Slider__bar.Slider__bar_isActive {
+  @include linear-gradient(15deg, $green, $turquoise);
+  left: 0;
+  right: auto;
+  z-index: 3;
+}
 
-
-/*
- * Modules
- *
- */
-
-@import "../assets/scss/modules/action";
-@import "../assets/scss/modules/event";
-@import "../assets/scss/modules/list";
-@import "../assets/scss/modules/param";
-@import "../assets/scss/modules/state";
-@import "../assets/scss/modules/text";
-
-
-/*
- * Components
- */
-
-@import "containers/intro/intro";
-@import "containers/settings/settings";
-@import "containers/rules/rules";
-@import "containers/rule-details/rule-details";
-@import "containers/things/things";
-@import "containers/thing-details/thing-details";
-
-@import "components/action-bar/action-bar";
-@import "components/filter/filter";
-@import "components/modal-container/modal-container";
-@import "components/navigation-bar/navigation-bar";
-@import "components/tile-list/tile-list";
-@import "components/tile-item/tile-item";
-
-@import "components/ui/button/button";
-@import "components/ui/button-group/button-group";
-@import "components/ui/checkbox/checkbox";
-@import "components/ui/icon/icon";
-@import "components/ui/select/select";
-@import "components/ui/slider/slider";
-
-
-/*
- * Shared directives (old => get replaces by components)
- */
-
-@import "shared/ui/action/action";
-@import "shared/ui/button-group/button-group";
-@import "shared/ui/color/color";
-@import "shared/ui/form/form";
-@import "shared/ui/range/range";
-@import "shared/ui/wizard/wizard";
+.Slider__handle {
+  background-color: $white;
+  box-shadow: 0px 1px 3px 0px rgba($black, 0.4);
+  border-radius: 50%;
+  cursor: pointer;
+  position: absolute;
+    left: 10%;
+    top: 0;
+  z-index: 4;
+  @include rem(height, $line-height);
+  @include rem(margin-left, -($line-height / 2));
+  @include rem(width, $line-height);
+}
