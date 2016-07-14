@@ -32,148 +32,148 @@
  *
  */
 
-(function(){
-  'use strict';
+// (function(){
+//   'use strict';
 
-  angular
-    .module('guh.devices')
-    .controller('EditDeviceCtrl', EditDeviceCtrl);
+//   angular
+//     .module('guh.devices')
+//     .controller('EditDeviceCtrl', EditDeviceCtrl);
 
-  EditDeviceCtrl.$inject = ['$log', '$scope', '$state', '$stateParams', 'DSDevice', 'DSRule', 'modalInstance', 'MorphModal'];
+//   EditDeviceCtrl.$inject = ['$log', '$scope', '$state', '$stateParams', 'DSDevice', 'DSRule', 'modalInstance', 'MorphModal'];
 
-  function EditDeviceCtrl($log, $scope, $state, $stateParams, DSDevice, DSRule, modalInstance, MorphModal) {
+//   function EditDeviceCtrl($log, $scope, $state, $stateParams, DSDevice, DSRule, modalInstance, MorphModal) {
 
-    var vm = this;
-    var currentDevice = {};
-    var devices = [];
+//     var vm = this;
+//     var currentDevice = {};
+//     var devices = [];
 
-    // View variables
-    vm.modalInstance = modalInstance;
+//     // View variables
+//     vm.modalInstance = modalInstance;
 
-    // View methods
-    vm.remove = remove;
+//     // View methods
+//     vm.remove = remove;
 
 
-    function _init(bypassCache) {
-      var deviceId = $stateParams.deviceId;
+//     function _init(bypassCache) {
+//       var deviceId = $stateParams.deviceId;
 
-      _findDevice(bypassCache, deviceId)
-        .then(function(device) {
-          currentDevice = device;
+//       _findDevice(bypassCache, deviceId)
+//         .then(function(device) {
+//           currentDevice = device;
 
-          vm.name = device.name;
-        })
-        .catch(function(error) {
-          $log.error('guh.controller.DevicesEditCtrl', error);
-        });
-    }
+//           vm.name = device.name;
+//         })
+//         .catch(function(error) {
+//           $log.error('guh.controller.DevicesEditCtrl', error);
+//         });
+//     }
 
-    function _findDevice(bypassCache, deviceId) {
-      if(bypassCache) {
-        return DSDevice.find(deviceId, { bypassCache: true });
-      }
+//     function _findDevice(bypassCache, deviceId) {
+//       if(bypassCache) {
+//         return DSDevice.find(deviceId, { bypassCache: true });
+//       }
       
-      return DSDevice.find(deviceId);
-    }
+//       return DSDevice.find(deviceId);
+//     }
 
-    function _getErrorData(error) {
-      var errorCode = error.data ? (error.data.error ? error.data.error : (error.data.deviceError) ? error.data.deviceError : null) : null;
-      var errorData = {};
+//     function _getErrorData(error) {
+//       var errorCode = error.data ? (error.data.error ? error.data.error : (error.data.deviceError) ? error.data.deviceError : null) : null;
+//       var errorData = {};
 
-      if(errorCode) {
-        switch(errorCode) {
-          case 'DeviceErrorDeviceIsChild':
-            devices = _getDevices();
-            errorData.devices = devices;
-            break;
-          case 'DeviceErrorDeviceInRule':
-            var ruleIds = error.data.ruleIds ? error.data.ruleIds : [];
-            errorData.moods = _getMoods(ruleIds);
-            break;
-          default:
-            $log.error(error);
-        }
-      } else {
-        $log.error(error);
-      }
+//       if(errorCode) {
+//         switch(errorCode) {
+//           case 'DeviceErrorDeviceIsChild':
+//             devices = _getDevices();
+//             errorData.devices = devices;
+//             break;
+//           case 'DeviceErrorDeviceInRule':
+//             var ruleIds = error.data.ruleIds ? error.data.ruleIds : [];
+//             errorData.moods = _getMoods(ruleIds);
+//             break;
+//           default:
+//             $log.error(error);
+//         }
+//       } else {
+//         $log.error(error);
+//       }
 
-      return errorData;
-    }
+//       return errorData;
+//     }
 
-    function _getDevices() {
-      var deviceToDelete = currentDevice;
-      var devices = {
-        parentDevice: {},
-        childDevices: []
-      };
+//     function _getDevices() {
+//       var deviceToDelete = currentDevice;
+//       var devices = {
+//         parentDevice: {},
+//         childDevices: []
+//       };
 
-      if(DSDevice.is(deviceToDelete)) {
-        var parentDevice;
-        var childDevices;
+//       if(DSDevice.is(deviceToDelete)) {
+//         var parentDevice;
+//         var childDevices;
 
-        while(angular.isDefined(deviceToDelete.parentId)) {
-          // Parent
-          parentDevice = DSDevice.get(deviceToDelete.parentId);
-          childDevices = [];
+//         while(angular.isDefined(deviceToDelete.parentId)) {
+//           // Parent
+//           parentDevice = DSDevice.get(deviceToDelete.parentId);
+//           childDevices = [];
           
-          // Children
-          if(DSDevice.is(parentDevice)) {
-            var currentChildDevices = DSDevice.getAll().filter(function(device, parentDevice) {
-              return device.parentId === parentDevice.id;
-            });
+//           // Children
+//           if(DSDevice.is(parentDevice)) {
+//             var currentChildDevices = DSDevice.getAll().filter(function(device, parentDevice) {
+//               return device.parentId === parentDevice.id;
+//             });
 
-            childDevices = childDevices.concat(currentChildDevices);
-          }
+//             childDevices = childDevices.concat(currentChildDevices);
+//           }
 
-          // Override deviceToDelete with it's parent to traverse up
-          deviceToDelete = parentDevice;
-        }
+//           // Override deviceToDelete with it's parent to traverse up
+//           deviceToDelete = parentDevice;
+//         }
 
-        devices.parentDevice = parentDevice;
+//         devices.parentDevice = parentDevice;
 
-        // Filter deviceToDelete from childDevices
-        devices.childDevices = childDevices.filter(function(childDevice) {
-          return childDevice.id === deviceToDelete.id;
-        });
-      }
+//         // Filter deviceToDelete from childDevices
+//         devices.childDevices = childDevices.filter(function(childDevice) {
+//           return childDevice.id === deviceToDelete.id;
+//         });
+//       }
 
-      return devices;
-    }
+//       return devices;
+//     }
 
-    function _getMoods(ruleIds) {
-      return DSRule.getAll(ruleIds);
-    }
-
-
-    function remove() {
-      currentDevice
-        .remove()
-        .then(function(data) {
-          modalInstance.close();
-        })
-        .catch(function(error) {
-          MorphModal
-            .add({
-              controller: 'RemoveDeviceCtrl',
-              controllerAs: 'removeDevice',
-              data: {
-                currentDevice: currentDevice,
-                errorData: _getErrorData(error)
-              },
-              templateUrl: 'app/components/devices/remove/remove-device-modal.html'
-            })
-            .then(function(modal) {
-              modal.open();
-            })
-            .catch(function(error) {
-              $log.error('error', error);
-            });
-        });
-    }
+//     function _getMoods(ruleIds) {
+//       return DSRule.getAll(ruleIds);
+//     }
 
 
-    _init(true);
+//     function remove() {
+//       currentDevice
+//         .remove()
+//         .then(function(data) {
+//           modalInstance.close();
+//         })
+//         .catch(function(error) {
+//           MorphModal
+//             .add({
+//               controller: 'RemoveDeviceCtrl',
+//               controllerAs: 'removeDevice',
+//               data: {
+//                 currentDevice: currentDevice,
+//                 errorData: _getErrorData(error)
+//               },
+//               templateUrl: 'app/components/devices/remove/remove-device-modal.html'
+//             })
+//             .then(function(modal) {
+//               modal.open();
+//             })
+//             .catch(function(error) {
+//               $log.error('error', error);
+//             });
+//         });
+//     }
 
-  }
 
-}());
+//     _init(true);
+
+//   }
+
+// }());
