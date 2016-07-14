@@ -1,5 +1,4 @@
 /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
-/* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
  *                                                                                     *
  * Copyright (C) 2015 Lukas Mayerhofer <lukas.mayerhofer@guh.guru>                     *
  *                                                                                     *
@@ -22,89 +21,89 @@
  * SOFTWARE.                                                                           *
  *                                                                                     *
  * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
+ 
+(function() {
+  'use strict';
+
+  angular
+    .module('guh.ui')
+    .controller('SelectCtrl', SelectCtrl);
+
+  SelectCtrl.$inject = ['$log'];
+
+  function SelectCtrl($log) {
+    
+    var vm = this;
+
+    var valueBeforeError;
+
+    vm.$onInit = $onInit;
+    vm.$onChanges = $onChanges;
+
+    vm.setValue = setValue;
 
 
-/*
- * Libraries
- *
- */
+    function $onInit() {
+      var check = _checkProps();
+    }
 
-@import "bourbon";
+    function $onChanges(changesObj) {
+      if(angular.isDefined(changesObj.asyncStatus) && angular.isDefined(changesObj.asyncStatus.currentValue)) {
+        if(changesObj.asyncStatus.currentValue.success) {
+          valueBeforeError = vm.value;
+        } else if(changesObj.asyncStatus.currentValue.failure) {
+          if(valueBeforeError) {
+            vm.value = valueBeforeError;
+          }
+        }
+      }
 
-
-/*
- * App SASS
- *
- */
-
-@import "../assets/scss/functions";
-@import "../assets/scss/mixins";
-@import "../assets/scss/variables";
-
-
-/*
- * Grid
- *
- */
-
-@import "../assets/scss/grid/grid";
+      if(angular.isDefined(changesObj.value) && angular.isDefined(changesObj.value.currentValue)) {
+        vm.value = changesObj.value.currentValue;
+        vm.setValue(vm.value, true);
+      }
+    }
 
 
-/*
- * Base & Layout
- *
- */
+    function _checkProps() {
+      if(angular.isUndefined(vm.label)) {
+        $log.error('guh.components.controller:SelectCtrl', 'Missing property: label');
+        return false;
+      }
 
-@import "../assets/scss/base/reset";
-@import "../assets/scss/base/base";
-@import "../assets/scss/base/content";
+      if(angular.isUndefined(vm.name)) {
+        $log.error('guh.components.controller:SelectCtrl', 'Missing property: name');
+        return false;
+      }
 
+      if(angular.isUndefined(vm.options)) {
+        $log.error('guh.components.controller:SelectCtrl', 'Missing property: options');
+        return false;
+      }
 
-/*
- * Modules
- *
- */
+      if(angular.isUndefined(vm.required)) {
+        vm.required = false;
+      }
+      
+      if(angular.isUndefined(vm.value)) {
+        valueBeforeError = vm.options[0];
+        setValue(vm.value, true);
+      } else {
+        vm.value = valueBeforeError = vm.value;
+        setValue(vm.value, true);
+      }
 
-@import "../assets/scss/modules/action";
-@import "../assets/scss/modules/event";
-@import "../assets/scss/modules/list";
-@import "../assets/scss/modules/param";
-@import "../assets/scss/modules/state";
-@import "../assets/scss/modules/text";
-
-
-/*
- * Components
- */
-
-@import "containers/intro/intro";
-@import "containers/settings/settings";
-@import "containers/rules/rules";
-@import "containers/rule-details/rule-details";
-@import "containers/things/things";
-@import "containers/thing-details/thing-details";
-
-@import "components/action-bar/action-bar";
-@import "components/filter/filter";
-@import "components/modal-container/modal-container";
-@import "components/navigation-bar/navigation-bar";
-@import "components/tile-list/tile-list";
-@import "components/tile-item/tile-item";
-
-@import "components/ui/button/button";
-@import "components/ui/button-group/button-group";
-@import "components/ui/checkbox/checkbox";
-@import "components/ui/icon/icon";
-@import "components/ui/select/select";
+      return true;
+    }
 
 
-/*
- * Shared directives (old => get replaces by components)
- */
+    function setValue(value, initial) {
+      vm.onChange({
+        value: value,
+        initial: initial
+      });
+    }
 
-@import "shared/ui/action/action";
-@import "shared/ui/button-group/button-group";
-@import "shared/ui/color/color";
-@import "shared/ui/form/form";
-@import "shared/ui/range/range";
-@import "shared/ui/wizard/wizard";
+  }
+
+}());
