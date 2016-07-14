@@ -31,10 +31,8 @@
     .component('guhButton', {
       bindings: {
         label: '@',
-        disabled: '<',
-        async: '<',
-        // asyncSuccess: '<',
-        // asyncFailure: '<',
+        disabled: '<?',
+        asyncStatus: '<?',
         onPress: '&'
       },
       controller: 'GuhButton',

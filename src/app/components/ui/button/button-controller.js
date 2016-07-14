@@ -29,38 +29,40 @@
     .module('guh.ui')
     .controller('GuhButton', GuhButton);
 
-  GuhButton.$inject = [];
+  GuhButton.$inject = ['$log', '$timeout'];
 
-  function GuhButton() {
+  function GuhButton($log, $timeout) {
     
     var vm = this;
 
-    vm.$onInit = onInit;
-    vm.$onChanges = onChanges;
-    vm.$onDestroy = onDestroy;
-    vm.$postLink = postLink;
-
+    vm.$onInit = $onInit;
+    vm.$onChanges = $onChanges;
+    
     vm.press = press;
 
 
     function _checkProps() {
-      if(angular.isUndefined(vm.async)) {
-        vm.async = false;
+      if(angular.isUndefined(vm.asyncStatus)) {
+        vm.asyncStatus = false;
       }
     }
 
 
-    function onInit() {
+    function $onInit() {
       _checkProps();
     }
 
-    function onChanges() {
+    function $onChanges(changesObj) {
       // Argument: changesObj => for each binding: { currentValue, previousValue, isFirstChange() }
+      if(angular.isDefined(changesObj.asyncStatus) && angular.isDefined(changesObj.asyncStatus.currentValue)) {
+        if((angular.isDefined(changesObj.asyncStatus.currentValue.success) && changesObj.asyncStatus.currentValue.success) || (angular.isDefined(changesObj.asyncStatus.currentValue.failure) && changesObj.asyncStatus.currentValue.failure)) {
+          $timeout(function() {
+            vm.asyncStatus.success = false;
+            vm.asyncStatus.failure = false;
+          }, 500);
+        }
+      }
     }
-
-    function onDestroy() {}
-
-    function postLink() {}
 
 
     function press() {
