@@ -21,18 +21,7 @@
 -->
 
 
-<guh-form name="createThingUser"
-          on-form-submit="createThing.create(params)"
-          ng-show="createThing.deviceClass.paramTypes.length > 0">
-
-  <guh-form-field  label="{{ paramType.name }}"
-                   name="{{ paramType.name }}"
-                   param-type="paramType"
-                   template="{{ paramType.inputTemplateUrl }}"
-                   ng-repeat="paramType in createThing.deviceClass.paramTypes track by $index"></guh-form-field>
-
-  <footer>
-    <button type="submit" ng-disabled="createThing.loading" class="full">Save configuration</button>
-  </footer>
-
-</guh-form>
+<guh-param-type-list ng-show="createThing.deviceClass.paramTypes.length > 0"
+                     label="Save configuration"
+                     param-types="createThing.deviceClass.paramTypes"
+                     on-submit="createThing.create(params)"></guh-param-type-list>

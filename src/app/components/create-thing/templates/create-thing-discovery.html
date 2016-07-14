@@ -46,16 +46,15 @@
 <!-- Form -->
 <p ng-show="createThing.discoveredDevices.length > 0">Didn't find what your are looking for? Retry the search.</p>
 
-<guh-form name="disocverDevices"
-          on-form-submit="createThing.discoverDevices(params)">
+<guh-param-type-list ng-show="createThing.deviceClass.discoveryParamTypes.length > 0"
+                     async-status="createThing.discoverStatus"
+                     label="Start search"
+                     param-types="createThing.deviceClass.discoveryParamTypes"
+                     on-submit="createThing.discoverDevices(params)"
+                     ng-if="createThing.deviceClass.discoveryParamTypes.length > 0"></guh-param-type-list>
 
-  <guh-form-field  label="{{ paramType.name }}"
-                   name="{{ paramType.name }}"
-                   param-type="paramType"
-                   template="{{ paramType.inputTemplateUrl }}"
-                   ng-repeat="paramType in createThing.deviceClass.discoveryParamTypes track by $index"
-                   ng-show="createThing.deviceClass.discoveryParamTypes.length > 0"></guh-form-field>
-
-  <button type="submit" ng-disabled="createThing.loading" class="full">Start search</button>
-
-</guh-form>
+<guh-button async-status="createThing.discoverStatus"
+            disabled="createThing.loading"
+            label="Start search"
+            on-press="createThing.discoverDevices([])" 
+            ng-if="createThing.deviceClass.discoveryParamTypes.length === 0"></guh-button>

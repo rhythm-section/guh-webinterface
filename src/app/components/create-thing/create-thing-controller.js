@@ -30,7 +30,7 @@
     .module('guh.components')
     .controller('CreateThingCtrl', CreateThingCtrl);
 
-  CreateThingCtrl.$inject = ['$rootScope'];
+  CreateThingCtrl.$inject = ['$log', '$rootScope', '$timeout'];
 
   /**
    * @ngdoc controller
@@ -38,12 +38,20 @@
    * @description Presentational component to create a new thing.
    *
    */
-  function CreateThingCtrl($rootScope) {
+  function CreateThingCtrl($log, $rootScope, $timeout) {
     
     var vm = this;
 
+    var discoverTimer;
+    var discoverTimerDuration = 1000;
+
     vm.discover = false;
     vm.loading = false;
+    vm.discoverStatus = {
+      pending: false,
+      failure: false,
+      success: false
+    };
     vm.params = [];
     vm.discoveredDevices = [];
     vm.deviceDescriptorId = '';
@@ -56,11 +64,16 @@
 
     function $onInit() {}
 
-    function $onChanges(changesObject) {
+    function $onChanges(changesObj) {
       // If deviceClass has changed, reset view data
-      if(angular.isDefined(changesObject.deviceClass)) {
+      if(angular.isDefined(changesObj.deviceClass)) {
         vm.discover = false;
         vm.loading = false;
+        vm.discoverStatus = {
+          pending: false,
+          failure: false,
+          success: false
+        };
         vm.params = [];
         vm.discoveredDevices = [];
         vm.deviceDescriptorId = '';
@@ -74,18 +87,60 @@
       
       vm.discover = false;
       vm.loading = true;
+      vm.discoverStatus = {
+        pending: true,
+        failure: false,
+        success: false
+      };
       vm.params = angular.copy(params);
+
+      if(discoverTimer) {
+        $timeout.cancel(discoverTimer);
+        discoverTimer = null;
+      }
 
       vm.deviceClass
         .discover(params)
         .then(function(data) {
           vm.discover = true;
           vm.loading = false;
+
+          vm.discoverStatus = {
+            pending: false,
+            failure: false,
+            success: true
+          };
+
+          discoverTimer = $timeout(function() {
+            vm.discoverStatus = {
+              pending: false,
+              success: false,
+              failure: false
+            };
+            discoverTimer = null;
+          }, discoverTimerDuration);
+
           vm.discoveredDevices = data.deviceDescriptors;
         })
         .catch(function(error) {
           vm.discover = true;
           vm.loading = false;
+
+          vm.discoverStatus = {
+            pending: false,
+            failure: true,
+            success: false
+          };
+
+          discoverTimer = $timeout(function() {
+            vm.discoverStatus = {
+              pending: false,
+              success: false,
+              failure: false
+            };
+            discoverTimer = null;
+          }, discoverTimerDuration);
+
           $log.error(error);
         });
     }
