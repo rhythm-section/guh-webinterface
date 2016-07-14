@@ -1,5 +1,4 @@
 /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
-/* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
  *                                                                                     *
  * Copyright (C) 2015 Lukas Mayerhofer <lukas.mayerhofer@guh.guru>                     *
  *                                                                                     *
@@ -22,91 +21,68 @@
  * SOFTWARE.                                                                           *
  *                                                                                     *
  * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
+ 
+(function() {
+  'use strict';
+
+  angular
+    .module('guh.ui')
+    .controller('TextAreaCtrl', TextAreaCtrl);
+
+  TextAreaCtrl.$inject = ['libs', '$log'];
+
+  function TextAreaCtrl(libs, $log) {
+    
+    var vm = this;
+
+    var invokeWait = 600;
+    var invokeOptions = {
+      leading: false,
+      trailing: true
+    };
+    var debounce = libs._.throttle(vm.onChange, invokeWait, invokeOptions);
+
+    vm.$onInit = $onInit;
+
+    vm.setValue = setValue;
 
 
-/*
- * Libraries
- *
- */
-
-@import "bourbon";
+    function $onInit() {
+      var check = _checkProps();
+    }
 
 
-/*
- * App SASS
- *
- */
+    function _checkProps() {
+      if(angular.isUndefined(vm.label)) {
+        $log.error('guh.components.controller:TextAreaCtrl', 'Missing property: label');
+        return false;
+      }
 
-@import "../assets/scss/functions";
-@import "../assets/scss/mixins";
-@import "../assets/scss/variables";
+      if(angular.isUndefined(vm.name)) {
+        $log.error('guh.components.controller:TextAreaCtrl', 'Missing property: name');
+        return false;
+      }
 
+      if(angular.isUndefined(vm.required)) {
+        vm.required = false;
+      }
 
-/*
- * Grid
- *
- */
+      if(angular.isUndefined(vm.value)) {
+        vm.model = '';
+        setValue(vm.model);
+      }
 
-@import "../assets/scss/grid/grid";
-
-
-/*
- * Base & Layout
- *
- */
-
-@import "../assets/scss/base/reset";
-@import "../assets/scss/base/base";
-@import "../assets/scss/base/content";
+      return true;
+    }
 
 
-/*
- * Modules
- *
- */
+    function setValue(value, initial) {
+      debounce({
+        value: value,
+        initial: angular.isDefined(initial) ? initial : false
+      });
+    }
 
-@import "../assets/scss/modules/action";
-@import "../assets/scss/modules/event";
-@import "../assets/scss/modules/list";
-@import "../assets/scss/modules/param";
-@import "../assets/scss/modules/state";
-@import "../assets/scss/modules/text";
+  }
 
-
-/*
- * Components
- */
-
-@import "containers/intro/intro";
-@import "containers/settings/settings";
-@import "containers/rules/rules";
-@import "containers/rule-details/rule-details";
-@import "containers/things/things";
-@import "containers/thing-details/thing-details";
-
-@import "components/action-bar/action-bar";
-@import "components/filter/filter";
-@import "components/modal-container/modal-container";
-@import "components/navigation-bar/navigation-bar";
-@import "components/tile-list/tile-list";
-@import "components/tile-item/tile-item";
-
-@import "components/ui/button/button";
-@import "components/ui/button-group/button-group";
-@import "components/ui/checkbox/checkbox";
-@import "components/ui/icon/icon";
-@import "components/ui/select/select";
-@import "components/ui/slider/slider";
-@import "components/ui/text-area/text-area";
-
-
-/*
- * Shared directives (old => get replaces by components)
- */
-
-@import "shared/ui/action/action";
-@import "shared/ui/button-group/button-group";
-@import "shared/ui/color/color";
-@import "shared/ui/form/form";
-@import "shared/ui/range/range";
-@import "shared/ui/wizard/wizard";
+}());

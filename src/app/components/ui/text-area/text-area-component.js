@@ -1,5 +1,4 @@
 /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
-/* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
  *                                                                                     *
  * Copyright (C) 2015 Lukas Mayerhofer <lukas.mayerhofer@guh.guru>                     *
  *                                                                                     *
@@ -24,89 +23,23 @@
  * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 
 
-/*
- * Libraries
- *
- */
+(function() {
+  'use strict';
 
-@import "bourbon";
+  angular
+    .module('guh.ui')
+    .component('guhTextArea', {
+      bindings: {
+        asyncStatus: '<',
+        label: '@',
+        name: '@',
+        required: '<?',
+        value: '<?',
+        onChange: '&'
+      },
+      controller: 'TextAreaCtrl',
+      controllerAs: 'textArea',
+      templateUrl: 'app/components/ui/text-area/text-area.html'
+    });
 
-
-/*
- * App SASS
- *
- */
-
-@import "../assets/scss/functions";
-@import "../assets/scss/mixins";
-@import "../assets/scss/variables";
-
-
-/*
- * Grid
- *
- */
-
-@import "../assets/scss/grid/grid";
-
-
-/*
- * Base & Layout
- *
- */
-
-@import "../assets/scss/base/reset";
-@import "../assets/scss/base/base";
-@import "../assets/scss/base/content";
-
-
-/*
- * Modules
- *
- */
-
-@import "../assets/scss/modules/action";
-@import "../assets/scss/modules/event";
-@import "../assets/scss/modules/list";
-@import "../assets/scss/modules/param";
-@import "../assets/scss/modules/state";
-@import "../assets/scss/modules/text";
-
-
-/*
- * Components
- */
-
-@import "containers/intro/intro";
-@import "containers/settings/settings";
-@import "containers/rules/rules";
-@import "containers/rule-details/rule-details";
-@import "containers/things/things";
-@import "containers/thing-details/thing-details";
-
-@import "components/action-bar/action-bar";
-@import "components/filter/filter";
-@import "components/modal-container/modal-container";
-@import "components/navigation-bar/navigation-bar";
-@import "components/tile-list/tile-list";
-@import "components/tile-item/tile-item";
-
-@import "components/ui/button/button";
-@import "components/ui/button-group/button-group";
-@import "components/ui/checkbox/checkbox";
-@import "components/ui/icon/icon";
-@import "components/ui/select/select";
-@import "components/ui/slider/slider";
-@import "components/ui/text-area/text-area";
-
-
-/*
- * Shared directives (old => get replaces by components)
- */
-
-@import "shared/ui/action/action";
-@import "shared/ui/button-group/button-group";
-@import "shared/ui/color/color";
-@import "shared/ui/form/form";
-@import "shared/ui/range/range";
-@import "shared/ui/wizard/wizard";
+}());
