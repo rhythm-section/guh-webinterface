@@ -42,7 +42,6 @@
     var vm = this;
 
     vm.showActionBar = false;
-    vm.showList = false;
 
     vm.$onInit = $onInit;
     vm.addRule = addRule;
@@ -52,15 +51,10 @@
     function $onInit() {
       $element.addClass('Rules');
 
-      var ruleId = (libs._.has($stateParams, 'ruleId') && $stateParams.ruleId) ? $stateParams.ruleId : null;
-
       if(!app.dataLoaded) {
         $state.go('guh.intro', {
           previousState: {
-            name: $state.current.name,
-            params: {
-              ruleId: ruleId
-            }
+            name: $state.current.name
           }
         });
       }
@@ -72,9 +66,6 @@
 
       // TODO: Animate fading in tile-list
       vm.showActionBar = true;
-      if(!ruleId) {
-        vm.showList = true;
-      }
     }
 
     function _initNavigation() {
@@ -119,7 +110,7 @@
           modal.open();
         })
         .catch(function(error) {
-          $log.log('error', error);
+          $log.error('error', error);
         });
     }
 
@@ -129,7 +120,6 @@
       });
       // TODO: Animate morphing the tile-item to show thing details
       vm.showActionBar = false;
-      vm.showList = false;
     }
 
 
@@ -137,7 +127,6 @@
       if(toState.name === 'guh.rules') {
         // TODO: Animate morphing the tile-item back to the tile-list
         vm.showActionBar = true;
-        vm.showList = true;
       }
     });
 
