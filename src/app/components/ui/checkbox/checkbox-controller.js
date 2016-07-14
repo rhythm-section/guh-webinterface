@@ -1,5 +1,4 @@
 /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
-/* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
  *                                                                                     *
  * Copyright (C) 2015 Lukas Mayerhofer <lukas.mayerhofer@guh.guru>                     *
  *                                                                                     *
@@ -22,88 +21,73 @@
  * SOFTWARE.                                                                           *
  *                                                                                     *
  * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
+ 
+(function() {
+  'use strict';
+
+  angular
+    .module('guh.ui')
+    .controller('CheckboxCtrl', CheckboxCtrl);
+
+  CheckboxCtrl.$inject = ['$log'];
+
+  function CheckboxCtrl($log) {
+    
+    var vm = this;
+
+    vm.model;
+
+    vm.$onInit = $onInit;
+    vm.$onChanges = $onChanges;
+
+    vm.check = check;
+    vm.uncheck = uncheck;
 
 
-/*
- * Libraries
- *
- */
+    function $onInit() {
+      var check = _checkProps();
+    }
 
-@import "bourbon";
-
-
-/*
- * App SASS
- *
- */
-
-@import "../assets/scss/functions";
-@import "../assets/scss/mixins";
-@import "../assets/scss/variables";
+    function $onChanges(changesObj) {
+      if(angular.isDefined(changesObj.value)) {
+        vm.model = changesObj.value.currentValue;
+        _setValue(vm.model, true);
+      }
+    }
 
 
-/*
- * Grid
- *
- */
+    function _checkProps() {
+      if(angular.isUndefined(vm.label)) {
+        $log.error('guh.components.controller:CheckboxCtrl', 'Missing property: label');
+        return false;
+      }
+      
+      if(angular.isUndefined(vm.value)) {
+        vm.model = false;
+        _setValue(vm.model, true);
+      }
 
-@import "../assets/scss/grid/grid";
+      return true;
+    }
 
-
-/*
- * Base & Layout
- *
- */
-
-@import "../assets/scss/base/reset";
-@import "../assets/scss/base/base";
-@import "../assets/scss/base/content";
-
-
-/*
- * Modules
- *
- */
-
-@import "../assets/scss/modules/action";
-@import "../assets/scss/modules/event";
-@import "../assets/scss/modules/list";
-@import "../assets/scss/modules/param";
-@import "../assets/scss/modules/state";
-@import "../assets/scss/modules/text";
+    function _setValue(value, initial) {
+      vm.onChange({
+        value: value,
+        initial: angular.isDefined(initial) ? initial : false
+      });
+    }
 
 
-/*
- * Components
- */
+    function check() {
+      vm.model = true;
+      _setValue(vm.model);
+    }
 
-@import "containers/intro/intro";
-@import "containers/settings/settings";
-@import "containers/rules/rules";
-@import "containers/rule-details/rule-details";
-@import "containers/things/things";
-@import "containers/thing-details/thing-details";
+    function uncheck() {
+      vm.model = false;
+      _setValue(vm.model);
+    }
 
-@import "components/action-bar/action-bar";
-@import "components/filter/filter";
-@import "components/modal-container/modal-container";
-@import "components/navigation-bar/navigation-bar";
-@import "components/tile-list/tile-list";
-@import "components/tile-item/tile-item";
+  }
 
-@import "components/ui/button/button";
-@import "components/ui/button-group/button-group";
-@import "components/ui/checkbox/checkbox";
-@import "components/ui/icon/icon";
-
-
-/*
- * Shared directives (old => get replaces by components)
- */
-
-@import "shared/ui/action/action";
-@import "shared/ui/button-group/button-group";
-@import "shared/ui/color/color";
-@import "shared/ui/form/form";
-@import "shared/ui/range/range";
-@import "shared/ui/wizard/wizard";
+}());
