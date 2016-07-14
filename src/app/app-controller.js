@@ -61,7 +61,7 @@
             connectionErrorModal = modal.open();
           })
           .catch(function(error) {
-            $log.log('error', error);
+            $log.error('error', error);
           });
         }
 
@@ -127,7 +127,7 @@
           notificationModal = modal.open();
         })
         .catch(function(error) {
-          $log.log('error', error);
+          $log.error('error', error);
         });
       }
     });
