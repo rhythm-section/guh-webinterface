@@ -60,7 +60,6 @@
 
 
     function $onInit() {
-      $log.log('AddActionCtrl - $onInit');
       _setThings();
     }
 

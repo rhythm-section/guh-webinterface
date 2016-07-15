@@ -59,6 +59,7 @@
       'guh.utils',
 
       // Services (guh-libjs)
+      'guh.vendor',
       'guh.logging',
       'guh.api',
       'guh.models',

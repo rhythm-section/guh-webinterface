@@ -66,7 +66,7 @@
         }
 
         $timeout(function(){
-          websocketService.reconnect();
+          websocketService.reconnect(app.websocketUrl);
         }, 2000);
       }
     });

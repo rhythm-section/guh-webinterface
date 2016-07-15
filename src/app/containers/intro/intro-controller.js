@@ -89,7 +89,7 @@
       vm.check = true;
 
       $timeout(function() {
-        websocketService.reconnect();
+        websocketService.reconnect(app.websocketUrl);
       }, 2000);
     }
 
@@ -193,7 +193,7 @@
 
       // Try to reconnect to guh host with new host
       $timeout(function() {
-        websocketService.reconnect();
+        websocketService.reconnect(app.websocketUrl);
       }, 2000);
     }
 
