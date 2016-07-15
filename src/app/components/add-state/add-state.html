@@ -50,46 +50,9 @@
 
   <!-- Enter stateType details -->
   <div guh-wizard-step title="Enter details">
-    <guh-form name="enterStateParams"
-              on-form-submit="addState.addStateParams(params)"
-              ng-if="addState.currentStateType">
-
-      <!-- <guh-form-field label="{{ addState.currentStateType.name }}"
-                      name="{{ addState.currentStateType.name }}"
-                      state-type="addState.currentStateType"
-                      template="{{ addState.currentStateType.inputTemplateUrl }}"
-                      value-operator="true"></guh-form-field> -->
-
-      <label class="label-container">
-        <span class="label">State</span>
-        <select ng-model="addState.selectedValueOperator" ng-change="addState.selectValueOperator()" ng-options="operator as operator.label for (key, operator) in addState.availableValueOperators track by operator.id" name="operator"></select>
-        <svg class="icon">
-          <use xlink:href="./assets/svg/ui/ui.symbol.svg#chevron-down"></use>
-        </svg>
-      </label>
-
-      <!-- Is, is not, greater than, less than -->
-      <guh-form-field label="{{ addState.currentStateType.name }}"
-                      name="{{ addState.currentStateType.name }}"
-                      state-type="addState.isStateType.stateType"
-                      template="{{ addState.currentStateType.inputTemplateUrl }}"
-                      ng-if="addState.isStateType"></guh-form-field>
-
-      <!-- From -->
-      <guh-form-field label="{{ addState.currentStateType.name }}"
-                      name="{{ addState.currentStateType.name }}"
-                      state-type="addState.fromStateType.stateType"
-                      template="{{ addState.currentStateType.inputTemplateUrl }}"
-                      ng-if="addState.fromStateType"></guh-form-field>
-
-      <!-- To -->
-      <guh-form-field label="{{ addState.currentStateType.name }}"
-                      name="{{ addState.currentStateType.name }}"
-                      state-type="addState.toStateType.stateType"
-                      template="{{ addState.currentStateType.inputTemplateUrl }}"
-                      ng-if="addState.toStateType"></guh-form-field>
-
-      <button type="submit" class="full">Save action</button>
-    </guh-form>
+    <guh-state-descriptor thing="addState.currentThing"
+                          state-type="addState.currentStateType"
+                          on-submit="addState.addStateParams(paramDescriptors, stateDescriptors, selectedValueOperator)"
+                          ng-if="addState.currentStateType"></guh-state-descriptor>
   </div>
 </div>

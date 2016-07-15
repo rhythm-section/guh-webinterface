@@ -25,82 +25,72 @@
 
 /**
  * @ngdoc interface
- * @name guh.moods.controller:MoodsMasterCtrl
+ * @name guh.components.controller:AddEventCtrl
  *
  * @description
- * Load and list configured moods.
+ * Add a new action to a rule.
  *
  */
 
-(function(){
+(function() {
   'use strict';
 
   angular
-    .module('guh.moods')
-    .controller('MoodsMasterCtrl', MoodsMasterCtrl);
+    .module('guh.components')
+    .controller('AddEventCtrl', AddEventCtrl);
 
-  MoodsMasterCtrl.$inject = ['$log', '$scope', '$filter', '$state', '$stateParams', 'app', 'DSRule', 'DSDevice'];
+  AddEventCtrl.$inject = ['$log', '$rootScope', 'DSDevice'];
 
-  function MoodsMasterCtrl($log, $scope, $filter, $state, $stateParams, app, DSRule, DSDevice) {
-
-    // Don't show debugging information
-    DSRule.debug = false;
+  function AddEventCtrl($log, $rootScope, DSDevice) {
 
     var vm = this;
-    
-    // Public variables
-    vm.configured = [];
 
-    // Public methods
-    vm.setCurrent = setCurrent;
+    vm.things = [];
+    vm.currentThing = null;
+    vm.currentEventType = null;
+
+    vm.$onInit = $onInit;
+
+    vm.selectThing = selectThing;
+    vm.hasCurrentThing = hasCurrentThing;
+    vm.selectEventType = selectEventType;
 
 
-    function _init() {
-      var moods = DSRule.getAll();
+    function $onInit() {
+      _setThings();
+    }
 
-      if(!app.dataLoaded) {
-        $state.go('guh.intro', {
-          previousState: {
-            name: $state.current.name,
-            params: {}
-          }
-        });
-      } else {
-        // Sort by name
-        vm.configured = $filter('orderBy')(moods, 'name');
+    function _hasEvents(device) {
+      return angular.isDefined(device.deviceClass) &&
+             angular.isDefined(device.deviceClass.eventTypes) &&
+             device.deviceClass.eventTypes.length > 0;
+    }
 
-        angular.forEach(vm.configured, function(rule) {
-          rule.actionDeviceNames = [];
-          angular.forEach(rule.actions, function(action) {
-            var actionDevice = DSDevice.get(action.deviceId);
-            rule.actionDeviceNames.push(actionDevice.name);
-          });
-        });
-      }
+    function _setThings() {
+      var things = DSDevice.getAll();
+      vm.things = things.filter(_hasEvents);
     }
 
 
-    function setCurrent(index) {
-      vm.currentSlide = index;
-
-      if(index !== -1 && index <= vm.configured.length) {
-        $state.go('guh.moods.master.current', { moodId: vm.configured[index].id });
-      }
+    function selectThing(thing) {
+      vm.currentThing = thing;
+      $rootScope.$broadcast('wizard.next', 'addEvent');
     }
 
+    function hasCurrentThing() {
+      return vm.currentThing !== null;
+    }
 
-    $scope.$on('ReloadView', function(event, data) {
-      $log.log('Reload view!', event, data);
+    function selectEventType(eventType) {
+      var eventDescriptor = vm.currentThing.getEventDescriptor(eventType);
+      vm.currentEventType = eventType;
 
-      $state.go($state.current, $stateParams, {
-        reload: true,
-        inherit: false,
-        notify: true
+      vm.modalInstance.close({
+        thing: vm.currentThing,
+        eventType: vm.currentEventType,
+        eventDescriptor: eventDescriptor
       });
-    });
-
-
-    _init();
+    }
 
   }
 

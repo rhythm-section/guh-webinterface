@@ -23,63 +23,18 @@
  * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 
 
-/**
- * @ngdoc interface
- * @name guh.devices.controller:DevicesDetailCtrl
- *
- * @description
- * Load and show details of certain device.
- *
- */
+(function() {
+  'use strict';
 
-// (function(){
-//   'use strict';
+  angular
+    .module('guh.components')
+    .component('guhAddAction', {
+      bindings: {
+        modalInstance: '<'
+      },
+      controller: 'AddActionCtrl',
+      controllerAs: 'addAction',
+      templateUrl: 'app/components/add-action/add-action.html'
+    });
 
-//   angular
-//     .module('guh.moods')
-//     .controller('EditMoodCtrl', EditMoodCtrl);
-
-//   EditMoodCtrl.$inject = ['$log', '$rootScope', '$scope', '$state', '$stateParams', 'DSRule', 'modalInstance'];
-
-//   function EditMoodCtrl($log, $rootScope, $scope, $state, $stateParams, DSRule, modalInstance) {
-
-//     var vm = this;
-
-//     // Public variables
-//     vm.rule = {};
-//     vm.ruleId = '';
-//     vm.modalInstance = modalInstance;
-
-//     // Public methods
-//     vm.remove = remove;
-
-
-//     function _init() {
-//       vm.ruleId = $stateParams.moodId;
-
-//       if(angular.isString(vm.ruleId)) {
-//         DSRule
-//           .find(vm.ruleId)
-//           .then(function(rule) {
-//             vm.rule = rule;
-//           });
-//       }
-//     }
-
-//     function remove() {
-//       vm.rule
-//         .remove()
-//         .then(function() {
-//           /* jshint unused:true */
-//           modalInstance.close();
-//         })
-//         .catch(function(error) {
-//           $log.error('guh.moods.EditMoodCtrl:controller - ', error);
-//         });
-//     }
-
-//     _init();
-
-//   }
-
-// }());
+}());

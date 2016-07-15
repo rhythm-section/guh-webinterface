@@ -25,31 +25,32 @@
 
 /**
  * @ngdoc interface
- * @name guh.moods.controller:AddActionCtrl
+ * @name guh.components.controller:AddActionCtrl
  *
  * @description
  * Add a new action to a rule.
  *
  */
 
-(function(){
+(function() {
   'use strict';
 
   angular
     .module('guh.components')
     .controller('AddActionCtrl', AddActionCtrl);
 
-  AddActionCtrl.$inject = ['libs', '$q', '$timeout', '$log', '$rootScope', 'DSDevice', 'modalInstance'];
+  AddActionCtrl.$inject = ['libs', '$q', '$timeout', '$log', '$rootScope', 'DSDevice'];
 
-  function AddActionCtrl(libs, $q, $timeout, $log, $rootScope, DSDevice, modalInstance) {
+  function AddActionCtrl(libs, $q, $timeout, $log, $rootScope, DSDevice) {
 
     var vm = this;
 
-    vm.modalInstance = modalInstance;
     vm.things = [];
     vm.currentThing = null;
     vm.currentActionType = null;
     vm.currentState = null;
+
+    vm.$onInit = $onInit;
 
     vm.selectThing = selectThing;
     vm.hasCurrentThingSet = hasCurrentThingSet;
@@ -58,7 +59,8 @@
     vm.addActionParams = addActionParams;
 
 
-    function _init() {
+    function $onInit() {
+      $log.log('AddActionCtrl - $onInit');
       _setThings();
     }
 
@@ -103,16 +105,13 @@
 
     function addActionParams(params) {
       var ruleAction = vm.currentThing.getAction(vm.currentActionType, params);
-      modalInstance.close({
+      vm.modalInstance.close({
         thing: vm.currentThing,
         actionType: vm.currentActionType,
         params: params,
         ruleAction: ruleAction
       });
     }
-
-
-    _init();
 
   }
 

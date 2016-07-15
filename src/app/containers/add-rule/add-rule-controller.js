@@ -21,41 +21,39 @@
  * SOFTWARE.                                                                           *
  *                                                                                     *
  * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
+ 
 
-
-/**
- * @ngdoc interface
- * @name guh.moods.controller:NewMoodCtrl
- *
- * @description
- * Add a new mood.
- *
- */
-
-(function(){
+(function() {
   'use strict';
 
   angular
-    .module('guh.components')
-    .controller('NewMoodCtrl', NewMoodCtrl);
+    .module('guh.containers')
+    .controller('AddRuleCtrl', AddRuleCtrl);
 
-  NewMoodCtrl.$inject = ['app', 'libs', '$log', '$rootScope', '$state', '$stateParams', 'ModalContainer', 'DSRule', 'modalInstance'];
+  AddRuleCtrl.$inject = ['app', 'libs', '$log', '$rootScope', '$state', '$stateParams', 'ModalContainer', 'DSRule'];
 
-  function NewMoodCtrl(app, libs, $log, $rootScope, $state, $stateParams, ModalContainer, DSRule, modalInstance) {
-
+  /**
+   * @ngdoc controller
+   * @name guh.containers.controller:AddRuleCtrl
+   * @description Container component for adding a new thing.
+   *
+   */
+  function AddRuleCtrl(app, libs, $log, $rootScope, $state, $stateParams, ModalContainer, DSRule) {
+    
     var vm = this;
     var actionModal = null;
     var eventModal = null;
     var stateModal = null;
     var exitActionModal = null;
 
-    vm.modalInstance = modalInstance;
     vm.rule = null;
     vm.actions = [];
     vm.events = [];
     vm.states = [];
     vm.exitActions = [];
     vm.exitActionsDisabled = false;
+
+    vm.$onInit = $onInit;
 
     vm.addAction = addAction;
     vm.deleteAction = deleteAction;
@@ -68,28 +66,13 @@
     vm.deleteExitAction = deleteExitAction;
     vm.hasExitActions = hasExitActions;
     vm.isDisabled = isDisabled;
+    vm.setRuleName = setRuleName;
     vm.enterRuleDetails = enterRuleDetails;
     vm.isValid = isValid;
     vm.setDetails = setDetails;
 
-    vm.addModal = function() {
-      ModalContainer
-        .add({
-          controller: 'NewMoodCtrl',
-          controllerAs: 'newMood',
-          data: null,
-          templateUrl: 'app/components/moods/add/new-mood-modal.html'
-        })
-        .then(function(modal) {
-          $log.log('modal', modal);
-          modal.open();
-        })
-        .catch(function(error) {
-          $log.log('error', error);
-        });
-    };
 
-    function _init() {
+    function $onInit() {
       vm.rule = {
         actions: [],
         enabled: true,
@@ -97,6 +80,7 @@
         name: ''
       };
     }
+
 
     function _addModal(modalData) {
       ModalContainer
@@ -114,19 +98,12 @@
         operator: app.stateOperator.StateOperatorAnd
       };
 
-      $log.log('vm.states', vm.states);
-
       var stateDescriptors = [];
       angular.forEach(vm.states, function(state) {
         stateDescriptors = stateDescriptors.concat(state.stateDescriptors);
       });
-
-      $log.log('stateDescriptors', stateDescriptors);
-
       
       angular.forEach(stateDescriptors, function(stateDescriptor, index) {
-        $log.log('stateDescriptor', stateDescriptor, index);
-
         if(index === 0) {
           stateEvaluator.stateDescriptor = stateDescriptor;
         } else {
@@ -149,7 +126,6 @@
 
       angular.forEach(array, function(currentObject, currentIndex) {
         if(angular.equals(currentObject, objectToFind)) {
-          $log.log('Object found', objectToFind, array);
           index = currentIndex;
         }
       });
@@ -159,21 +135,21 @@
 
 
     function addAction() {
-      var modalData = {
-        controller: 'AddActionCtrl',
-        controllerAs: 'addAction',
-        data: null,
-        templateUrl: app.basePaths.moods + 'add/add-action.html'
-      };
-
       ModalContainer
-        .add(modalData)
+        .add({
+          controller: ['modalInstance', function(modalInstance) {
+            this.modalInstance = modalInstance;
+          }],
+          controllerAs: 'modal',
+          data: null,
+          template: '<guh-add-action modal-instance="modal.modalInstance"></guh-add-action>'
+        })
         .then(function(modal) {
           modal.open();
           actionModal = modal;
         })
         .catch(function(error) {
-          $log.error(error);
+          $log.error('error', error);
         });
     }
 
@@ -186,21 +162,21 @@
     }
 
     function addEvent() {
-      var modalData = {
-        controller: 'AddEventCtrl',
-        controllerAs: 'addEvent',
-        data: null,
-        templateUrl: app.basePaths.moods + 'add/add-event.html'
-      };
-
       ModalContainer
-        .add(modalData)
+        .add({
+          controller: ['modalInstance', function(modalInstance) {
+            this.modalInstance = modalInstance;
+          }],
+          controllerAs: 'modal',
+          data: null,
+          template: '<guh-add-event modal-instance="modal.modalInstance"></guh-add-event>'
+        })
         .then(function(modal) {
           modal.open();
           eventModal = modal;
         })
         .catch(function(error) {
-          $log.error(error);
+          $log.error('error', error);
         });
     }
 
@@ -217,21 +193,21 @@
     }
 
     function addState() {
-      var modalData = {
-        controller: 'AddStateCtrl',
-        controllerAs: 'addState',
-        data: null,
-        templateUrl: app.basePaths.moods + 'add/add-state.html'
-      };
-
       ModalContainer
-        .add(modalData)
+        .add({
+          controller: ['modalInstance', function(modalInstance) {
+            this.modalInstance = modalInstance;
+          }],
+          controllerAs: 'modal',
+          data: null,
+          template: '<guh-add-state modal-instance="modal.modalInstance"></guh-add-state>'
+        })
         .then(function(modal) {
           modal.open();
           stateModal = modal;
         })
         .catch(function(error) {
-          $log.error(error);
+          $log.error('error', error);
         });
     }
 
@@ -248,22 +224,22 @@
         return;
       }
 
-      var modalData = {
-        controller: 'AddActionCtrl',
-        controllerAs: 'addAction',
-        data: null,
-        templateUrl: app.basePaths.moods + 'add/add-action.html'
-      };
-
       ModalContainer
-        .add(modalData)
+        .add({
+          controller: ['modalInstance', function(modalInstance) {
+            this.modalInstance = modalInstance;
+          }],
+          controllerAs: 'modal',
+          data: null,
+          template: '<guh-add-action modal-instance="modal.modalInstance"></guh-add-action>'
+        })
         .then(function(modal) {
           modal.open();
           exitActionModal = modal;
         })
         .catch(function(error) {
-          $log.error(error);
-        });
+          $log.error('error', error);
+        }); 
     }
 
     function deleteExitAction(actionToDelete) {
@@ -293,14 +269,11 @@
       $rootScope.$broadcast('wizard.next', 'addRule');
     }
 
+    function setRuleName(name) {
+      vm.rule.name = name;
+    }
+
     function enterRuleDetails(params) {
-      // Details
-      var name = libs._.find(params, function(param) {
-        return param.name === 'Name';
-      });
-
-      vm.rule.name = angular.isDefined(name) ? name.value : 'Mood';
-
       // Actions
       if(hasActions()) {
         vm.rule.actions = vm.actions.map(function(action) {
@@ -332,7 +305,7 @@
         .add(vm.rule)
         .then(function() {
           /* jshint unused:true */
-          modalInstance.close();
+          vm.modalInstance.close();
         });
     }
 
@@ -401,9 +374,6 @@
         }
       }
     });
-
-
-    _init();
 
   }
 

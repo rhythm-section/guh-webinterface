@@ -101,10 +101,12 @@
     function addRule() {
       ModalContainer
         .add({
-          controller: 'NewMoodCtrl',
-          controllerAs: 'newMood',
+          controller: ['modalInstance', function(modalInstance) {
+            this.modalInstance = modalInstance;
+          }],
+          controllerAs: 'modal',
           data: null,
-          templateUrl: 'app/components/moods/add/new-mood-modal.html'
+          template: '<guh-add-rule modal-instance="modal.modalInstance"></guh-add-rule>'
         })
         .then(function(modal) {
           modal.open();

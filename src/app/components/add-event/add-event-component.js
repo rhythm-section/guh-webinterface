@@ -23,19 +23,18 @@
  * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 
 
-/**
- * @ngdoc overview
- * @name guh.moods
- *
- * @description
- * Module for mood component of the app.
- *
- */
-
 (function() {
   'use strict';
 
   angular
-    .module('guh.moods', []);
+    .module('guh.components')
+    .component('guhAddEvent', {
+      bindings: {
+        modalInstance: '<'
+      },
+      controller: 'AddEventCtrl',
+      controllerAs: 'addEvent',
+      templateUrl: 'app/components/add-event/add-event.html'
+    });
 
 }());

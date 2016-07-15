@@ -1,27 +1,4 @@
-<!-- 
-  Copyright (C) 2015 Lukas Mayerhofer <lukas.mayerhofer@guh.guru>
-  
-  Permission is hereby granted, free of charge, to any person obtaining a copy
-  of this software and associated documentation files (the "Software"), to deal
-  in the Software without restriction, including without limitation the rights
-  to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
-  copies of the Software, and to permit persons to whom the Software is
-  furnished to do so, subject to the following conditions:
-  
-  The above copyright notice and this permission notice shall be included in all
-  copies or substantial portions of the Software.
-  
-  THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
-  IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
-  FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
-  AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
-  LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
-  OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
-  SOFTWARE.
--->
-
-
-<button class="Wizard__close" ng-click="newMood.modalInstance.close()">
+<button class="Wizard__close" ng-click="addRule.modalInstance.close()">
   <svg class="Wizard__icon">
     <use xlink:href="./assets/svg/ui/ui.symbol.svg#close"></use>
   </svg>
@@ -29,7 +6,7 @@
 
 <div guh-wizard handle="addRule" show-navigation="false">
   <!-- Add rule types -->
-  <div guh-wizard-step title="Add a new Rule" is-valid="newMood.isValid()">
+  <div guh-wizard-step title="Add a new Rule" is-valid="addRule.isValid()">
     <div class="Wizard__step-description">
       <p>A rule controls one or more of your things. You can add trigger and conditions to turn the rule on or off automatically.</p>
     </div>
@@ -42,16 +19,16 @@
         When rule is turned ON, control these things
       </div>
       <!-- Actions: List -->
-      <div class="List__item List__item_hasDescription" ng-click="newMood.deleteAction(action)" ng-repeat="action in newMood.actions track by $index">
-        <div class="List__item-title">{{ action.actionType.name }} (<span ng-repeat="param in action.enhancedParams track by $index">{{ param.name }}={{ param.value }}{{ param.unit | unit }}{{ ($index === action.params.length - 1) ? '' : ', ' }}</span>)</div>
+      <div class="List__item List__item_hasDescription" ng-click="addRule.deleteAction(action)" ng-repeat="action in addRule.actions track by $index">
+        <div class="List__item-title">{{ action.actionType.name }} <span ng-repeat="param in action.enhancedParams track by $index">{{ $index === 0 ? '(' : '' }}{{ param.name }}={{ param.value }}{{ param.unit | unit }}{{ ($index === action.params.length - 1) ? '' : ', ' }}{{ $index === action.enhancedParams.length - 1 ? ')' : '' }}</span></div>
         <div class="List__item-description">{{ action.thing.name }}</div>
         <svg class="List__icon List__icon_right">
           <use xlink:href="./assets/svg/ui/ui.symbol.svg#minus"></use>
         </svg>
       </div>
       <!-- Actions: Add -->
-      <div class="List__item" ng-click="newMood.addAction()">
-        {{ newMood.actions.length > 0 ? 'Add another control' : 'Add a control' }}
+      <div class="List__item" ng-click="addRule.addAction()">
+        {{ addRule.actions.length > 0 ? 'Add another control' : 'Add a control' }}
         <svg class="List__icon List__icon_right">
           <use xlink:href="./assets/svg/ui/ui.symbol.svg#plus"></use>
         </svg>
@@ -65,8 +42,8 @@
         When rule is turned OFF, control these things
       </div>
       <!-- ExitActions: List -->
-      <div class="List__item List__item_warning" ng-show="newMood.exitActionsDisabled">When trigger were added the mood can only be turned on.</div>
-      <div class="List__item List__item_hasDescription" ng-click="newMood.deleteExitAction(action)" ng-class="{ 'List__item_isDisabled': newMood.exitActionsDisabled }" ng-repeat="action in newMood.exitActions track by $index">
+      <div class="List__item List__item_warning" ng-show="addRule.exitActionsDisabled">When trigger were added the mood can only be turned on.</div>
+      <div class="List__item List__item_hasDescription" ng-click="addRule.deleteExitAction(action)" ng-class="{ 'List__item_isDisabled': addRule.exitActionsDisabled }" ng-repeat="action in addRule.exitActions track by $index">
         <div class="List__item-title">{{ action.actionType.name }} (<span ng-repeat="param in action.enhancedParams track by $index">{{ param.name }}={{ param.value }}{{ param.unit | unit }}{{ ($index === action.params.length - 1) ? '' : ', ' }}</span>)</div>
         <div class="List__item-description">{{ action.thing.name }}</div>
         <svg class="List__icon List__icon_right">
@@ -74,8 +51,8 @@
         </svg>
       </div>
       <!-- ExitActions: Add -->
-      <div class="List__item" ng-click="newMood.addExitAction()" ng-class="{ 'List__item_isDisabled': newMood.exitActionsDisabled }">
-        {{ newMood.exitActions.length > 0 ? 'Add another control (optional)' : 'Add a control (optional)' }}
+      <div class="List__item" ng-click="addRule.addExitAction()" ng-class="{ 'List__item_isDisabled': addRule.exitActionsDisabled }">
+        {{ addRule.exitActions.length > 0 ? 'Add another control (optional)' : 'Add a control (optional)' }}
         <svg class="List__icon List__icon_right">
           <use xlink:href="./assets/svg/ui/ui.symbol.svg#plus"></use>
         </svg>
@@ -89,7 +66,7 @@
         Control the things only when something happens
       </div>
       <!-- Events: List -->
-      <div class="List__item List__item_hasDescription" ng-click="newMood.deleteEvent(event)" ng-repeat="event in newMood.events track by $index">
+      <div class="List__item List__item_hasDescription" ng-click="addRule.deleteEvent(event)" ng-repeat="event in addRule.events track by $index">
         <div class="List__item-title">{{ event.eventType.name }}</div>
         <div class="List__item-description">{{ event.thing.name }}</div>
         <svg class="List__icon List__icon_right">
@@ -97,8 +74,8 @@
         </svg>
       </div>
       <!-- Events: Add -->
-      <div class="List__item" ng-click="newMood.addEvent()">
-        {{ newMood.events.lenfth > 0 ? 'Add another trigger (optional)' : 'Add a trigger (optional)' }}
+      <div class="List__item" ng-click="addRule.addEvent()">
+        {{ addRule.events.lenfth > 0 ? 'Add another trigger (optional)' : 'Add a trigger (optional)' }}
         <svg class="List__icon List__icon_right">
           <use xlink:href="./assets/svg/ui/ui.symbol.svg#plus"></use>
         </svg>
@@ -112,7 +89,7 @@
         Control the things as long as conditions are met
       </div>
       <!-- States: List -->
-      <div class="List__item List__item_hasDescription" ng-click="newMood.deleteState(state)" ng-repeat="state in newMood.states track by $index">
+      <div class="List__item List__item_hasDescription" ng-click="addRule.deleteState(state)" ng-repeat="state in addRule.states track by $index">
         <div class="List__item-title">{{ state.title  }}</div>
         <div class="List__item-description">{{ state.thing.name }}</div>
         <svg class="List__icon List__icon_right">
@@ -120,15 +97,15 @@
         </svg>
       </div>
       <!-- States: Add -->
-      <div class="List__item" ng-click="newMood.addState()">
-        {{ newMood.states.length > 0 ? 'Add another condition (optional)' : 'Add a condition (optional)' }}
+      <div class="List__item" ng-click="addRule.addState()">
+        {{ addRule.states.length > 0 ? 'Add another condition (optional)' : 'Add a condition (optional)' }}
         <svg class="List__icon List__icon_right">
           <use xlink:href="./assets/svg/ui/ui.symbol.svg#plus"></use>
         </svg>
       </div>
     </div>
 
-    <button class="button" type="button" ng-disabled="!newMood.isValid()" ng-click="newMood.setDetails()">Save mood</button>
+    <button class="button" type="button" ng-disabled="!addRule.isValid()" ng-click="addRule.setDetails()">Save mood</button>
   </div>
 
   <!-- Enter rule details -->
@@ -137,16 +114,14 @@
       <p>Please enter a name for this mood before you save it.</p>
     </div>
 
-    <guh-form name="enterRuleDetails"
-              on-form-submit="newMood.enterRuleDetails(params)"
-              class="List">
+    <guh-text-input label="Name"
+                    name="name"
+                    required="true"
+                    type="InputTypeTextLine"
+                    on-change="addRule.setRuleName(value)"></guh-text-input>
 
-      <guh-form-field label="Name"
-                      name="Name"
-                      param-type="newMood.rule.name"
-                      template="app/shared/ui/form/form-field-templates/form-field-text.html"></guh-form-field>
-
-      <button class="button" type="submit">Save</button>
-    </guh-form>
+    <guh-button label="OK"
+                on-press="addRule.enterRuleDetails()"
+                disabled="addRule.rule.name === ''"></guh-button>
   </div>
 </div>
