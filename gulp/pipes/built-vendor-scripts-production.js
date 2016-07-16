@@ -30,6 +30,7 @@
 var gulp = require('gulp');
 var ignore = require('gulp-ignore');
 var mainBowerFiles = require('main-bower-files');
+var argsParser = require('../utils/args-parser');
 var concat = require('gulp-concat');
 var uglify = require('gulp-uglify');
 var rename = require('gulp-rename');
@@ -55,6 +56,12 @@ var sizeConfig = require('../config/gulp').size;
 
 module.exports = {
   getPipe: function() {
+    var environment = argsParser.getEnvironment();
+
+    if(environment === 'development') {
+      mainBowerFilesConfig.includeDev = true;
+    }
+
     return gulp.src(mainBowerFiles(mainBowerFilesConfig))
       .pipe(ignore.exclude('*.map'))
       .pipe(sourcemaps.init())
