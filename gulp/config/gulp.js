@@ -63,6 +63,7 @@ module.exports = {
       // Assets
       src + '/assets/fonts/**/*',
       src + '/assets/svg/*.svg',
+      src + '/assets/img/*.{gif,jpg,jpeg,png}',
       // Favicon
       src + '/*.png',
       src + '/*.ico',
