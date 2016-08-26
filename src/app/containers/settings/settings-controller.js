@@ -29,7 +29,7 @@
     .module('guh.containers')
     .controller('SettingsCtrl', SettingsCtrl);
 
-  SettingsCtrl.$inject = ['app', '$log', '$element', '$state', 'DSSettings', 'DSPlugin', 'NavigationBar', 'ActionBar'];
+  SettingsCtrl.$inject = ['app', '$log', '$element', '$state', 'DSServerInfo', 'DSPlugin', 'NavigationBar', 'ActionBar'];
 
   /**
    * @ngdoc controller
@@ -37,7 +37,7 @@
    * @description Container component for things.
    *
    */
-  function SettingsCtrl(app, $log, $element, $state, DSSettings, DSPlugin, NavigationBar, ActionBar) {
+  function SettingsCtrl(app, $log, $element, $state, DSServerInfo, DSPlugin, NavigationBar, ActionBar) {
     
     var vm = this;
 
@@ -62,11 +62,14 @@
 
       vm.plugins = DSPlugin.getAll();
 
-      DSSettings
-        .find('serverInfo')
+      DSServerInfo
+        .find(0)
         .then(function(serverInfo) {
-          delete serverInfo.userId;
-          vm.serverInfo = serverInfo;
+          vm.serverInfo = {
+            protocolVersion: serverInfo['protocol version'],
+            server: serverInfo['server'],
+            version: serverInfo['version']
+          };
         })
         .catch(function(error) {
           $log.error(error);
