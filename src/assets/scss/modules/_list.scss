@@ -55,6 +55,22 @@
   &:last-child {
     border-bottom: 0;
   }
+
+  .Icon {
+    position: absolute;
+    @include rem(height, 1.5);
+    @include rem(width, 1.5);
+    @include rem(right, 1.5);
+    @include rem(top, 1.5);
+  }
+
+  .pending .Icon {
+    @include animation(rotate 1.5s linear infinite);
+  }
+}
+
+.List__item.List__item--notClickable {
+  cursor: default;
 }
 
 .List__item-title {
