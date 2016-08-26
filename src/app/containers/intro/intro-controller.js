@@ -29,7 +29,7 @@
     .module('guh.containers')
     .controller('IntroCtrl', IntroCtrl);
 
-  IntroCtrl.$inject = ['$log', '$rootScope', '$scope', '$q', '$location', '$timeout', '$state', '$stateParams', 'websocketService', 'libs', 'app', 'modelsHelper', 'DS', 'DSPlugin', 'DSVendor', 'DSDeviceClass', 'DSDevice', 'DSState', 'DSRule', 'DSSettings'];
+  IntroCtrl.$inject = ['$log', '$element', '$scope', '$timeout', '$location', '$q', '$animate', '$state', 'libs', 'DSSettings', 'DSConnection', 'DSServerInfo', 'websocketService'];
 
   /**
    * @ngdoc controller
@@ -37,208 +37,243 @@
    * @description Container component for the intro.
    *
    */
-  function IntroCtrl($log, $rootScope, $scope, $q, $location, $timeout, $state, $stateParams, websocketService, libs, app, modelsHelper, DS, DSPlugin, DSVendor, DSDeviceClass, DSDevice, DSState, DSRule, DSSettings) {
+  function IntroCtrl($log, $element, $scope, $timeout, $location, $q, $animate, $state, libs, DSSettings, DSConnection, DSServerInfo, websocketService) {
     
     var vm = this;
-    var savedHost;
-    var protocol = $location.protocol();
-    var port = $location.port();
-    var ssl = protocol.charAt(protocol.length - 1) === 's' ? true : false;
+    var settings;
+    var logoElem;
+    var logoWrapperElem;
+    var logoImgElem;
+    var logoTextElem;
 
-    // State variables
-    vm.check = false;
-    vm.setup = false;
-    vm.load = false;
-    vm.valid = true;
-    vm.submitted = false;
+    vm.view = {
+      logoAnimation: false,
+      content: {
+        connectionList: false,
+        addConnection: false,
+        loadData: false
+      }
+    };
+    vm.connectionOpenStatus = {
+      pending: false,
+      success: false,
+      failure: false
+    };
+    vm.connections = [];
 
     // Methods
-    vm.$onInit = onInit;
-    vm.checkHost = checkHost;
-    vm.setHost = setHost;
-    vm.resetHost = resetHost;
+    vm.$postLink = $postLink;
 
-    function onInit() {
-      savedHost = vm.host;
+    vm.connect = connect;
+    vm.addConnection = addConnection;
+    vm.showThings = showThings;
 
-      // Set config with new host
-      _overrideConfig();
 
-      // Try to connect to host
-      _checkConnection();
+    function $postLink() {
+      $q.all({
+        'animate': _animateLogo('is-visible'),
+        'settings': _loadSettings()
+      })
+      .then(function(resolvedPromise) {
+        var connections = [];
+        var defaultConnections = [];
+        var ssl = $location.protocol().charAt($location.protocol().length - 1) === 's' ? true : false;
+        var protocol = ssl ? 'wss' : 'ws';
+        var host = $location.host();
+        var port = '4444';
+        var url = protocol + '://' + host + ':' + port;
+        var hostConnection = {
+          host: host,
+          name: host + ':' + port,
+          protocol: protocol,
+          port: '4444',
+          ssl: ssl,
+          url: url
+        };
+
+        if(resolvedPromise.settings) {
+          connections = _getConnections(resolvedPromise.settings);
+          defaultConnections = _filterDefaultConnections(connections);
+
+          settings = resolvedPromise.settings;
+          vm.connections = resolvedPromise.settings.connections;
+
+          if(defaultConnections.length === 0) {
+            // If there are no default connections saved, connect to host of webinterface
+            vm.connect(hostConnection);
+          } else {
+            // Connect to first saved default connection
+            vm.connect(defaultConnections[0]);
+          }
+        } else {
+          // If there are no default connections saved, connect to host of webinterface
+          vm.connect(hostConnection);
+        }
+      })
+      .catch(_handleError);
     }
 
-    function _overrideConfig() {
-      // Override host and url defaults
-      app.protocol.restApi = ssl ? 'https' : 'http';
-      app.protocol.websocket = ssl ? 'wss' : 'ws';
-      app.host = vm.host;
 
-      if(app.environment === 'development') {
-        app.apiUrl = app.protocol.restApi + '://' + app.host + ':' + app.port.restApi + '/api/v1';
+    function connect(connection) {
+      vm.connectionOpenStatus.pending = true;
+      vm.connectionOpenStatus.success = false;
+      vm.connectionOpenStatus.failure = false;
+
+      vm.currentConnection = connection;
+
+      websocketService.reconnect(connection.url);
+    }
+
+    function addConnection() {
+      vm.view.content.connectionList = false;
+      vm.view.content.addConnection = true;
+      vm.view.content.loadData = false;
+    }
+
+
+    function _handleError(error) {
+      $log.error(error);
+    }
+
+    function _animateLogo(animationClass, animationType) {
+      logoElem = $element[0].getElementsByClassName('Intro__logo')[0];
+      logoWrapperElem = $element[0].getElementsByClassName('Intro__logo-wrapper')[0];
+      logoImgElem = angular.element(logoWrapperElem).children()[0];
+      logoTextElem = angular.element(logoWrapperElem).children()[1];
+
+      if(animationType === 'remove') {
+        return $q.all({
+          logo: $animate.removeClass(logoElem, animationClass),
+          logoWrapper: $animate.removeClass(logoWrapperElem, animationClass),
+          logoImg: $animate.removeClass(logoImgElem, animationClass),
+          logoText: $animate.removeClass(logoTextElem, animationClass),
+        });
       } else {
-        app.apiUrl = app.protocol.restApi + '://' + app.host + ':' + port + '/api/v1';
+        return $q.all({
+          logo: $animate.addClass(logoElem, animationClass),
+          logoWrapper: $animate.addClass(logoWrapperElem, animationClass),
+          logoImg: $animate.addClass(logoImgElem, animationClass),
+          logoText: $animate.addClass(logoTextElem, animationClass),
+        });  
       }
-      app.websocketUrl = app.protocol.websocket + '://' + app.host + ':' + app.port.websocket;
-
-      // Override basepath for templates
-      modelsHelper.setBasePath();
     }
 
-    function _checkConnection() {
-      vm.check = true;
-
-      $timeout(function() {
-        websocketService.reconnect(app.websocketUrl);
-      }, 2000);
-    }
-
-    function _saveHost() {
-      DSSettings
-        .find('admin')
+    function _loadSettings() {
+      return DSSettings
+        .find('general', {
+          with: [ 'connection', 'serverInfo' ]
+        })
+        .then(function(settings) {
+          return settings;
+        })
         .catch(function(error) {
-          /* jshint unused:false */
-          
-          DSSettings
-            .create({
-              userId: 'admin',
-              host: app.host
-            });
+          _handleError(error);
+          return false;
         });
     }
 
-    function _loadPlugins() {
-      return DSPlugin.load();
+    function _getConnections(settings) {
+      if(angular.isDefined(settings) &&
+         angular.isDefined(settings.connections) && 
+         settings.connections.length > 0) {
+        return settings.connections;
+      }
+
+      return [];
     }
 
-    function _loadVendors() {
-      return DSVendor.load();
-    }
-
-    function _loadDeviceClasses() {
-      return DSDeviceClass.load();
-    }
-
-    function _linkRelations(deviceClasses) {
-      return angular.forEach(deviceClasses, function(deviceClass) {
-        deviceClass.actionTypesLinked = DSDeviceClass.getAllActionTypes(deviceClass.id);
-        deviceClass.eventTypesLinked = DSDeviceClass.getAllEventTypes(deviceClass.id);
-        deviceClass.stateTypesLinked = DSDeviceClass.getAllStateTypes(deviceClass.id);
+    function _filterDefaultConnections(connections) {
+      return connections.filter(function(connection) {
+        return connection.default;
       });
     }
 
-    function _loadDevices() {
-      return DSDevice.load();
-    }
-
-    function _loadRules() {
-      return DSRule.load();
+    function _saveSettings(serverInfo) {
+      return $q.all({
+        connection: DSConnection.create(vm.currentConnection),
+        serverInfo: DSServerInfo.create(serverInfo)
+      })
+      .then(function(resolvedPromise) {
+        if(angular.isDefined(resolvedPromise.connection)) {
+          vm.connections.push(resolvedPromise.connection);
+        }
+        
+        return resolvedPromise;
+      });
     }
 
     function _loadData() {
-      $q.all([
-          _loadPlugins(),
-          _loadVendors(),
-          _loadDeviceClasses()
-            .then(_linkRelations),
-          _loadDevices(),
-          _loadRules()
-        ])
-        .then(function(data) {
-          /* jshint unused:false */
-          app.dataLoaded = true;
+      vm.view.content.connectionList = false;
+      vm.view.content.addConnection = false;
 
-          // Wait some time to avoid flickering when visiting intro-page where data is already loaded
-          $timeout(function() {
-            if(angular.isObject($stateParams.previousState) && !libs._.isEmpty($stateParams.previousState)) {
-              $state.go($stateParams.previousState.name, $stateParams.previousState.params);
-            } else {
-              $state.go('guh.things');
-            }
-          }, 2000);
+      _animateLogo('is-small', 'remove')
+        .then(function() {
+          vm.view.content.loadData = true;
         })
-        .catch(function(error) {
-          $log.error(error);
-        });
+        .catch(_handleError);
     }
 
-    // TODO: Replace with directive (form-field-ipV4 and form-field-ipV6)
-    function checkHost() {
-      // Copyright: smink, http://stackoverflow.com/questions/106179/regular-expression-to-match-dns-hostname-or-ip-address
-      var validIpAddressRegex = new RegExp('^(([0-9]|[1-9][0-9]|1[0-9]{2}|2[0-4][0-9]|25[0-5])\.){3}([0-9]|[1-9][0-9]|1[0-9]{2}|2[0-4][0-9]|25[0-5])$');
-      // Valid as per RFC 1123: http://tools.ietf.org/html/rfc1123
-      var validHostnameRegex = new RegExp('^(([a-zA-Z0-9]|[a-zA-Z0-9][a-zA-Z0-9\-]*[a-zA-Z0-9])\.)*([A-Za-z0-9]|[A-Za-z0-9][A-Za-z0-9\-]*[A-Za-z0-9])$');
-      vm.valid = false;
 
-      if(angular.isDefined(vm.host)) {
-        vm.valid = validIpAddressRegex.test(vm.host) || validHostnameRegex.test(vm.host);
-      }
+    function showThings() {
+      $state.go('guh.things');
     }
 
-    function setHost() {
-      vm.submitted = true;
+
+    // $scope.$on('WebsocketConnected', function(event, data) {});
+
+    $scope.$on('WebsocketConnectionError', function(event, data) {
+      vm.connectionOpenStatus.pending = false;
+      vm.connectionOpenStatus.success = false;
+      vm.connectionOpenStatus.failure = true;
+
       $timeout(function() {
-        vm.submitted = false;
-      }, 1000);
+        vm.connectionOpenStatus.pending = false;
+        vm.connectionOpenStatus.success = false;
+        vm.connectionOpenStatus.failure = false;
 
-      if(!vm.valid) {
-        return;
-      }
 
-      _overrideConfig();
-
-      vm.check = true;
-      vm.setup = false;
-      vm.load = false;
-
-      // Try to reconnect to guh host with new host
-      $timeout(function() {
-        websocketService.reconnect(app.websocketUrl);
-      }, 2000);
-    }
-
-    function resetHost() {
-      vm.host = savedHost;
-      checkHost();
-    }
-
-    $scope.$on('WebsocketConnected', function(event, data) {
-      /* jshint unused:false */
-
-      _saveHost();
-
-      // Load data
-      vm.check = false;
-      vm.setup = false;
-      vm.load = true;
-
-      _loadData();
+        if(!vm.view.content.connectionList &&
+           !vm.view.content.addConnection &&
+           !vm.view.content.loadData) {
+          // Big logo is shown => animate to small logo AND show connectionList
+          _animateLogo('is-small')
+            .then(function(resolvedPromise) {
+              if(vm.view.content.addConnection) {
+                vm.view.content.connectionList = false;
+                vm.view.content.addConnection = true;
+                vm.view.content.loadData = false;
+              } else {
+                vm.view.content.connectionList = true;
+                vm.view.content.addConnection = false;
+                vm.view.content.loadData = false;
+              }
+            })
+            .catch(_handleError);
+        }
+      }, 500);
     });
 
-    angular.forEach(['WebsocketConnectionError', 'WebsocketConnectionLost'], function(websocketEvent) {
-      $scope.$on(websocketEvent, function(event, data) {
-        /* jshint unused:false */
+    // $scope.$on('WebsocketConnectionLost', function(event, data) {});
 
-        // Clear localstorage entry if already saved
-        return DSSettings
-          .find('admin')
-          .then(function(data) {
-            DSSettings
-              .destroy('admin')
-              .then(function() {
-                $log.log('localstorage successful deleted', DSSettings.get('admin'));
-              });
+    $scope.$on('InitialHandshake', function(event, data) {
+      data.settingsId = 'general';
+
+      if(angular.isDefined(settings)) {
+        _saveSettings(data)
+          .then(_loadData)
+          .catch(_handleError);
+      } else {
+        DSSettings
+          .create({
+            id: 'general'
           })
-          .finally(function() {
-            // Reset to default
-            // resetHost();
-
-            // Setup
-            vm.check = false;
-            vm.setup = true;
-            vm.load = false;
-          });
-      });
+          .then(function(settings) {
+            _saveSettings(data)
+              .then(_loadData)
+              .catch(_handleError);
+          })
+          .catch(_handleError);
+      }
     });
 
   }

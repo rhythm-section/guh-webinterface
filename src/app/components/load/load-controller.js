@@ -27,12 +27,73 @@
   'use strict';
 
   angular
-    .module('guh.containers')
-    .component('guhIntro', {
-      bindings: {},
-      controller: 'IntroCtrl',
-      controllerAs: 'intro',
-      templateUrl: 'app/containers/intro/intro.html'
-    });
+    .module('guh.components')
+    .controller('LoadCtrl', LoadCtrl);
+
+    LoadCtrl.$inject = ['$log', '$q', 'app', 'DSPlugin', 'DSVendor', 'DSDeviceClass', 'DSDevice', 'DSRule'];
+
+
+    function LoadCtrl($log, $q, app, DSPlugin, DSVendor, DSDeviceClass, DSDevice, DSRule) {
+
+      var vm = this;
+
+      vm.currentContent = {
+        loading: false
+      };
+
+      // Methods
+      vm.$onInit = $onInit;
+
+
+      function $onInit() {
+        $q.all([
+            _loadPlugins(),
+            _loadVendors(),
+            _loadDeviceClasses()
+              .then(_linkRelations),
+            _loadDevices(),
+            _loadRules()
+          ])
+          .then(function(data) {
+            /* jshint unused:false */
+            app.dataLoaded = true;
+
+            vm.onDataLoaded();
+          })
+          .catch(function(error) {
+            $log.error(error);
+          });
+      }
+
+
+      function _loadPlugins() {
+        return DSPlugin.load();
+      }
+
+      function _loadVendors() {
+        return DSVendor.load();
+      }
+
+      function _loadDeviceClasses() {
+        return DSDeviceClass.load();
+      }
+
+      function _linkRelations(deviceClasses) {
+        return angular.forEach(deviceClasses, function(deviceClass) {
+          deviceClass.actionTypesLinked = DSDeviceClass.getAllActionTypes(deviceClass.id);
+          deviceClass.eventTypesLinked = DSDeviceClass.getAllEventTypes(deviceClass.id);
+          deviceClass.stateTypesLinked = DSDeviceClass.getAllStateTypes(deviceClass.id);
+        });
+      }
+
+      function _loadDevices() {
+        return DSDevice.load();
+      }
+
+      function _loadRules() {
+        return DSRule.load();
+      }
+
+    };
 
 }());

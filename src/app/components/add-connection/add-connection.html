@@ -1,0 +1,75 @@
+<!-- 
+  Copyright (C) 2015 Lukas Mayerhofer <lukas.mayerhofer@guh.guru>
+  
+  Permission is hereby granted, free of charge, to any person obtaining a copy
+  of this software and associated documentation files (the "Software"), to deal
+  in the Software without restriction, including without limitation the rights
+  to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+  copies of the Software, and to permit persons to whom the Software is
+  furnished to do so, subject to the following conditions:
+  
+  The above copyright notice and this permission notice shall be included in all
+  copies or substantial portions of the Software.
+  
+  THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+  IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+  FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+  AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+  LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+  OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+  SOFTWARE.
+-->
+
+
+<div class="AddConnection__title">Add connection</div>
+
+<div class="AddConnection">
+  <div class="AddConnection__content">
+    <form name="addConnection.setHost" novalidate>
+      <!-- Host -->
+      <label>
+        <span class="input-label">IP address/Host name</span>
+        <input id="host"
+               name="host"
+               placeholder="127.0.0.1"
+               required
+               type="text"
+               ng-model="addConnection.host"
+               ng-model-options="{ debounce: 200 }"
+               guh-ip-host-validator />
+      </label>
+      <div class="padding" ng-messages="addConnection.setHost.host.$error" ng-if="addConnection.setHost.host.$dirty">
+        <p class="padding-horizontal" ng-message="required">IP address or host name is required.</p>
+        <p class="padding-horizontal" ng-message="ipOrHost">Entered IP address or host name not valid.</p>
+      </div>
+
+      <!-- Websocket: Port, SSL -->
+      <label>
+        <span class="input-label">Websocket Port</span>
+        <input id="port"
+               name="port"
+               placeholder="4444"
+               required
+               type="number"
+               ng-model="addConnection.port"
+               ng-model-options="{ debounce: 200 }"
+               ng-min="0"
+               ng-max="65535" />
+      </label>
+      <div class="padding" ng-messages="addConnection.setHost.port.$error" ng-if="addConnection.setHost.port.$dirty">
+        <p class="padding-horizontal" ng-message="required">Websocket port is required.</p>
+        <p class="padding-horizontal" ng-message="number">Websocket port has to be a number.</p>
+        <p class="padding-horizontal" ng-message="min">The port number has to be between 0 and 65535.</p>
+        <p class="padding-horizontal" ng-message="max">The port number has to be between 0 and 65535.</p>
+      </div>
+
+      <guh-checkbox label="SSL" value="addConnection.ssl" on-change="addConnection.setSsl(value)"></guh-checkbox>
+      <guh-checkbox label="Set as new default" value="addConnection.default" on-change="addConnection.setDefault(value)"></guh-checkbox>
+
+      <guh-button async-status="addConnection.connectionOpenStatus"
+                  disabled="!addConnection.setHost.$valid"
+                  label="Connect"
+                  on-press="addConnection.tryToConnect(addConnection.setHost.$valid)"></guh-button>
+    </form>
+  </div>
+</div>

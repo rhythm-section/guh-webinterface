@@ -57,36 +57,37 @@
         abstract: true,
         controller: 'AppCtrl',
         controllerAs: 'app',
-        resolve: {
-          host: ['$location', 'app', 'DSSettings', function($location, app, DSSettings) {
-            return DSSettings
-              .find('admin')
-              .then(function(data) {
-                return data.host;
-              })
-              .catch(function(error) {
-                /* jshint unused:false */
-                return $location.host();
-              });
-          }]
-        },
+        // resolve: {
+        //   host: ['$location', 'app', 'DSSettings', function($location, app, DSSettings) {
+        //     return DSSettings
+        //       .find('admin')
+        //       .then(function(data) {
+        //         return data.host;
+        //       })
+        //       .catch(function(error) {
+        //         /* jshint unused:false */
+        //         return $location.host();
+        //       });
+        //   }]
+        // },
         templateUrl: 'app/app.html'
       });
 
         $stateProvider.state('guh.intro', {
-          template: '<guh-intro host="{{ host }}"></guh-intro>',
+          // template: '<guh-intro host="{{ host }}"></guh-intro>',
+          template: '<guh-intro></guh-intro>',
           url: '/intro',
-          resolve: {
-            host: ['host', function(host) {
-              return host;
-            }]
-          },
-          params: {
-            previousState: {}
-          },
-          controller: ['$scope', 'host', function($scope, host) {
-            $scope.host = host;
-          }]
+          // resolve: {
+          //   host: ['host', function(host) {
+          //     return host;
+          //   }]
+          // },
+          // params: {
+          //   previousState: {}
+          // },
+          // controller: ['$scope', 'host', function($scope, host) {
+          //   $scope.host = host;
+          // }]
         });
 
         $stateProvider.state('guh.dashboard', {

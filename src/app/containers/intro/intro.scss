@@ -23,89 +23,156 @@
  * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 
 
-@include keyframes(loading) {
-  from {
-    // @include transform(translateY(0%));
-    @include transform(scale(0.95));
-  }
-  65% {
-    // @include transform(translateY(10%));
-    @include transform(scale(1.05));
-  }
-  to {
-    // @include transform(translateY(0%));
-    @include transform(scale(0.95));
+.Intro {
+  margin: 0 auto;
+  width: 100%;
+  @include rem(padding, 0, 1.5);
+}
+
+@include media($min-width-s) {
+  .Intro {
+    width: 640px;
+    @include rem(padding, 0, 3);
   }
 }
 
 
-.Intro {
-  @include rem(margin-top, 10.5);
+.Intro__logo {
+  position: fixed;
+    bottom: 50%;
+    left: 0%;
+  width: 100%;
+  @include rem(height, 14);
+  @include rem(margin, 0, 0, 3);
+  @include transform(translateY(50%));
+  @include transition(bottom 0.4s ease-out);
 
-  form {
-    width: 100%;
+  &.is-small,
+  &.is-small-add.is-small-add-active,
+  &.is-small-remove {
+    bottom: -3rem;
 
-    input {
-      @include rem(margin, 0, 0, 1.5);
+    img {
+      @include rem(height, 4.5);
     }
 
-    &> div {
-      @include display(flex);
-      @include rem(margin, 3, 0, 0);
+    p {
+      opacity: 0;
+    }
+  }
+
+  &.is-small-add,
+  &.is-small-remove.is-small-remove-active {
+    bottom: 50%;
+
+    img {
+      @include rem(height, 8);
     }
 
-    &> div button {
-      margin: 0;
-      @include flex(1 1 100%);
+    p {
+      @include transition(opacity 0.2s ease-out 0.0s);
+    }
+  }
+
+  &.is-visible,
+  &.is-visible-add.is-visible-add-active {
+    img {
+      opacity: 1;
+    }
+  }
+
+  &.is-visible-add {
+    img {
+      opacity: 0;
+    }
+  }
+
+  img {
+    display: block;
+    margin: 0 auto;
+    opacity: 0;
+    @include rem(height, 8);
+    @include transition(height 0.4s ease-out 0.0s, opacity 0.4s ease-in 0.0s);
+  }
+
+  p {
+    letter-spacing: 0.4em;
+    opacity: 0;
+    padding-left: 0.4em;
+    text-align: center;
+    @include rem(font-size, 3);
+    @include rem(line-height, 3);
+    @include rem(margin, 2, 0, 1);
+    @include transform(translateY(4rem));
+    @include transition(opacity 0.2s ease-in 0.0s);
+
+    &.is-visible,
+    &.is-visible-add.is-visible-add-active {
+      opacity: 1;
+      @include transform(translateY(0rem));
+    }
+
+    &.is-visible-add {
+      opacity: 0;
+      @include transform(translateY(4rem));
+      @include transition(transform 0.2s ease-out 0.4s, opacity 0.2s ease-out 0.4s);
     }
   }
 }
 
 @include media($min-width-s) {
-  .Intro {
-    form {
-      margin: 0 auto;
-      width: 440px;
+  .Intro__logo {
+    @include rem(height, 21);
+    @include rem(margin, 0, 0, 6);
+
+    &.is-small,
+    &.is-small-add.is-small-add-active,
+    &.is-small-remove {
+      bottom: -9rem;
+    }
+
+    img {
+      @include rem(height, 12);
+    }
+
+    p {
+      @include rem(font-size, 4.5);
+      @include rem(line-height, 4.5);
+      @include rem(margin, 3, 0, 1.5);
     }
   }
 }
 
-@include media($min-width-m) {
-  .Intro {
-    @include rem(margin-top, 16.5);
+
+.Intro__logo-wrapper {
+  @include transform(translateY(9rem));
+
+  &.is-visible,
+  &.is-visible-add.is-visible-add-active {
+    @include transform(translateY(0rem));
+  }
+
+  &.is-visible-add {
+    @include transform(translateY(9rem));
+    @include transition(transform 0.4s ease-out 0.2s);
   }
 }
 
-@include media($min-width-l) {
-  .Intro {
-    @include rem(margin-top, 10.5);
+
+.Intro__content {
+  @include rem(padding, 1.5);
+}
+
+@include media($min-width-s) {
+  .Intro__content {
+    @include rem(padding, 3);
   }
 }
 
-.Intro__logo {
-  display: block;
-  margin: 0 auto;
-  @include rem(height, 9);
-  // @include filter(drop-shadow(0px 15px 20px rgba($turquoise, 0.5)));
-  @include animation(loading 3.0s ease-in-out 0s infinite alternate);
-}
 
-@include media($min-width-m) {
-  .Intro__logo {
-    @include rem(height, 12);
-  }
-}
-
-.Intro__info {
-  letter-spacing: 0.1em;
+.Intro__title {
   text-align: center;
-  text-transform: uppercase;
-  padding-left: -0.1em;
-  @include rem(margin, 4.5, 0, 0);
-}
-
-.Intro__setup {
-  margin: 0 auto;
-  @include rem(margin-top, 1.5);
-  @include rem(padding, 1.5, 3);
+  @include rem(font-size, 1.5);
+  @include rem(margin, 0, 0, 1.5)
+  @include rem(padding, 1.5);
 }

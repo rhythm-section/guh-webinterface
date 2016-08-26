@@ -23,16 +23,22 @@
  * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 
 
-(function() {
-  'use strict';
+.AddConnection {
+  @include rem(margin-top, 1.5);
+  @include rem(padding, 1.5);
 
-  angular
-    .module('guh.containers')
-    .component('guhIntro', {
-      bindings: {},
-      controller: 'IntroCtrl',
-      controllerAs: 'intro',
-      templateUrl: 'app/containers/intro/intro.html'
-    });
+  label {
+    margin: 0;
+  }
 
-}());
+  .error {
+    text-align: center;
+  }
+}
+
+.AddConnection__title {
+  text-align: center;
+  @include rem(font-size, 1.5);
+  @include rem(margin, 0, 0, 1.5)
+  @include rem(padding, 1.5);
+}

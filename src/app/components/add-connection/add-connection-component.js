@@ -23,16 +23,19 @@
  * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 
 
-(function() {
-  'use strict';
+ (function() {
+   'use strict';
 
-  angular
-    .module('guh.containers')
-    .component('guhIntro', {
-      bindings: {},
-      controller: 'IntroCtrl',
-      controllerAs: 'intro',
-      templateUrl: 'app/containers/intro/intro.html'
+   angular
+     .module('guh.components')
+     .component('guhAddConnection', {
+        bindings: {
+          connectionOpenStatus: '<',
+          onOpenConnection: '&'
+        },
+        controller: 'AddConnectionCtrl',
+        controllerAs: 'addConnection',
+        templateUrl: 'app/components/add-connection/add-connection.html'
     });
 
 }());

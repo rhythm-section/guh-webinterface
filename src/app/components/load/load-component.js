@@ -27,12 +27,15 @@
   'use strict';
 
   angular
-    .module('guh.containers')
-    .component('guhIntro', {
-      bindings: {},
-      controller: 'IntroCtrl',
-      controllerAs: 'intro',
-      templateUrl: 'app/containers/intro/intro.html'
+    .module('guh.components')
+    .component('guhLoad', {
+      bindings: {
+        onDataLoaded: '&'
+      },
+      controller: 'LoadCtrl',
+      controllerAs: 'load',
+      templateUrl: 'app/components/load/load.html',
+      transclude: true
     });
 
 }());

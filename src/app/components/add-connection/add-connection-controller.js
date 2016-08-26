@@ -27,12 +27,62 @@
   'use strict';
 
   angular
-    .module('guh.containers')
-    .component('guhIntro', {
-      bindings: {},
-      controller: 'IntroCtrl',
-      controllerAs: 'intro',
-      templateUrl: 'app/containers/intro/intro.html'
-    });
+    .module('guh.components')
+    .controller('AddConnectionCtrl', AddConnectionCtrl);
+
+  AddConnectionCtrl.$inject = ['$log', '$scope', 'websocketService'];
+
+  /**
+   * @ngdoc controller
+   * @name guh.containers.controller:AddConnectionCtrl
+   * @description Container component for the intro.
+   *
+   */
+  function AddConnectionCtrl($log, $scope, websocketService) {
+
+    var vm = this;
+
+    vm.host;
+    vm.port,
+    vm.ssl;
+    vm.default;
+    vm.newConnection = {};
+
+    // Methods
+    vm.setSsl = setSsl;
+    vm.setDefault = setDefault;
+    vm.tryToConnect = tryToConnect;
+
+
+    function setSsl(value) {
+      vm.ssl = value;
+    }
+
+    function setDefault(value) {
+      vm.default = value;
+    }
+
+    function tryToConnect(isValid) {
+      var protocol = vm.ssl ? 'wss' : 'ws';
+
+      if(isValid) {
+        vm.newConnection = {
+          id: vm.host,
+          settingsId: 'general',
+          default: vm.default,
+          name: vm.host,
+          protocol: protocol,
+          host: vm.host,
+          port: vm.port,
+          url: protocol + '://' + vm.host + ':' + vm.port
+        };
+
+        vm.onOpenConnection({
+          connection: vm.newConnection
+        });
+      }
+    }
+
+  };
 
 }());
