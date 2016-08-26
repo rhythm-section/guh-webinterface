@@ -79,10 +79,11 @@
         scope: scope || $rootScope.$new(),
         animation: animation || 'fade-in',
         classes: classes,
-        data: data || null,
-        open: open,
         close: close,
-        closeAll: closeAll
+        closeAll: closeAll,
+        data: data || null,
+        isOpen: false,
+        open: open
       };
     }
 
@@ -91,14 +92,15 @@
       var modal = {
         animation: this.animation,
         classes: this.classes,
+        close: this.close,
+        closeAll: this.closeAll,
         controller: this.controller,
         controllerAs: this.controllerAs,
         data: this.data,
         id: this.id,
+        isOpen: this.isOpen,
         template: this.template,
-        scope: this.scope,
-        close: this.close,
-        closeAll: this.closeAll
+        scope: this.scope
       };
       $rootScope.$emit('modals.open', modal);
       return modal;

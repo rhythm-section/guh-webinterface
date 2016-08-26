@@ -48,10 +48,12 @@
 
     function onInit() {}
 
-    function enter(modalElement, modalDialogElement) {
+    function enter(modalElement, modalDialogElement, modal) {
       $animate
         .enter(modalDialogElement, modalElement)
-        .then(function() {});
+        .then(function() {
+          vm.modals[modal.id].isOpen = true;
+        });
     }
 
     function leave(modalElement, modalDialogElement, modal) {
@@ -144,13 +146,13 @@
 
               moveBackground(childModalElement, childModalDialogElement, children);
             }
-            enter(modalElement, modalDialogElement);
+            enter(modalElement, modalDialogElement, modal);
           });
       } else {
         $animate
           .enter(modalElement, $element)
           .then(function() {
-            enter(modalElement, modalDialogElement);
+            enter(modalElement, modalDialogElement, modal);
           });
       }
 

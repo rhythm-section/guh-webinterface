@@ -28,7 +28,6 @@
  */
 
 .Modal {
-  // filter: url("assets/svg/blur.svg#gaussian_blur");
   overflow-y: scroll;
   -webkit-overflow-scrolling: touch;
   opacity: 1;
@@ -45,13 +44,8 @@
   display: block;
   @include rem(padding, 0, 0.75);
   position: absolute;
-    // @include rem(left, 1.5);
-    // @include rem(right, 1.5);
     left: 0;
-    // left: 50%;
     top: 0%;
-  // @include transform(translateX(-50%));
-  // @include transform(translateY(40%));
   @include transform(translateY(0%));
   width: 100%;
 
@@ -59,9 +53,6 @@
     content: "";
     display: block;
     @include rem(height, 0.75);
-    // position: absolute;
-    //   @include rem(bottom, -4.5);
-    //   left: 0;
     width: 100%;
   }
 
@@ -72,13 +63,29 @@
   }
 
   .close {
+    background-color: transparent;
     border: none;
     @include rem(height, 4.5);
     @include rem(padding, 1.5);
     position: absolute;
       right: 0;
-      @include rem(top, 1.5);
+      top: 0;
     @include rem(width, 4.5);
+    z-index: 9998;
+
+    .icon {
+      fill: $grey;
+      @include rem(height, 1.5);
+      @include rem(width, 1.5);
+    }
+  }
+
+  .title {
+    @include rem(font-size, 1.5);
+    @include rem(height, 4.5);
+    @include rem(padding, 1.5, 4.5);
+    text-align: center;
+    width: 100%;
     z-index: 9998;
   }
 
@@ -211,19 +218,16 @@
 .Modal__wrapper.ng-enter,
 .Modal__wrapper.ng-leave.ng-leave-active {
   opacity: 0;
-  // @include transform(translateX(-50%) translateY(40%));
   @include transform(translateY(40%));
 }
 
 .Modal__wrapper.ng-leave,
 .Modal__wrapper.ng-enter.ng-enter-active {
   opacity: 1;
-  // @include transform(translateX(-50%) translateY(0%));
   @include transform(translateY(0%));
 }
 
 .Modal__wrapper_inactive {
   opacity: 0.4;
-  // @include transform(translateX(-60%));
   @include transform(translateX(-10%));
 }
