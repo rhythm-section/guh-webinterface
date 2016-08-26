@@ -32,7 +32,9 @@
     "angular-messages": "~1.5.0",
     "angular-sanitize": "~1.5.0",
     "angular-useragent-parser": "^0.1.0",
-    "ng-fastclick": "^1.0.2"
+    "ng-fastclick": "^1.0.2",
+    "localforage": "^1.4.2",
+    "js-data-localforage": "^2.1.1"
   },
   "devDependencies": {},
   "overrides": {
@@ -60,8 +62,8 @@
     "angular-ui-router": {
       "main": "./release/angular-ui-router.js"
     },
-    "guh-libjs": {
-      "main": "./dist/guh-libjs.js"
+    "localforage": {
+      "main": "./dist/localforage.js"
     },
     "js-data": {
       "main": {
@@ -71,6 +73,9 @@
     },
     "js-data-angular": {
       "main": "./dist/js-data-angular.js"
+    },
+    "js-data-localforage": {
+      "main": "./dist/js-data-localforage.js"
     },
     "lodash": {
       "main": "./lodash.js"
