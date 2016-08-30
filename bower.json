@@ -92,5 +92,8 @@
     "reconnectingWebsocket": {
       "main": "./reconnecting-websocket.js"
     }
+  },
+  "resolutions": {
+    "angular": "1.5.8"
   }
 }
