@@ -109,10 +109,10 @@
       var notificationMessage = (errorMessage === '') ? '[' + error + ']' : '[' + error + '] ' + errorMessage;
 
       // Close previous notification
-      if(notificationModal) {
-        notificationModal.close();
-        notificationModal = null;
-      }
+      // if(notificationModal) {
+      //   notificationModal.close();
+      //   notificationModal = null;
+      // }
 
       // Show notification
       if(error && notificationMessage) {
