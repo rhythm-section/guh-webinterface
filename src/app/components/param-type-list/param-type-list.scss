@@ -25,4 +25,5 @@
 
 .ParamTypeList {
   display: block;
+  @include rem(margin, 6, 0);
 }
