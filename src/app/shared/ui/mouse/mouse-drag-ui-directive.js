@@ -71,7 +71,7 @@
           event.dragY = event.pageY - startY;
 
           scope.$event = event;
-          scope.$eval(attrs.guhMouseDrag);
+          scope.$apply(attrs.guhMouseDrag);
         }
 
         function _stopDrag() {

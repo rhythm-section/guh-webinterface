@@ -46,6 +46,7 @@ gulp.task('production', function(done) {
     'copy-assets-production',
     'build-ui-svg-sprites',
     'build-vendor-svg-sprites',
+    'build-device-class-svg-sprites',
     [
       'build-templates-production',
       'build-vendor-styles-production',

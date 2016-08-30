@@ -32,59 +32,54 @@
  *
  */
 
-(function(){
-  'use strict';
+// (function(){
+//   'use strict';
 
-  angular
-    .module('guh.moods')
-    .controller('EditMoodCtrl', EditMoodCtrl);
+//   angular
+//     .module('guh.moods')
+//     .controller('EditMoodCtrl', EditMoodCtrl);
 
-  EditMoodCtrl.$inject = ['$log', '$rootScope', '$scope', '$state', '$stateParams', 'DSRule', 'modalInstance'];
+//   EditMoodCtrl.$inject = ['$log', '$rootScope', '$scope', '$state', '$stateParams', 'DSRule', 'modalInstance'];
 
-  function EditMoodCtrl($log, $rootScope, $scope, $state, $stateParams, DSRule, modalInstance) {
+//   function EditMoodCtrl($log, $rootScope, $scope, $state, $stateParams, DSRule, modalInstance) {
 
-    var vm = this;
+//     var vm = this;
 
-    // Public variables
-    vm.rule = {};
-    vm.ruleId = '';
-    vm.modalInstance = modalInstance;
+//     // Public variables
+//     vm.rule = {};
+//     vm.ruleId = '';
+//     vm.modalInstance = modalInstance;
 
-    // Public methods
-    vm.remove = remove;
+//     // Public methods
+//     vm.remove = remove;
 
 
-    function _init() {
-      vm.ruleId = $stateParams.moodId;
+//     function _init() {
+//       vm.ruleId = $stateParams.moodId;
 
-      if(angular.isString(vm.ruleId)) {
-        DSRule
-          .find(vm.ruleId)
-          .then(function(rule) {
-            vm.rule = rule;
-          });
-      }
-    }
+//       if(angular.isString(vm.ruleId)) {
+//         DSRule
+//           .find(vm.ruleId)
+//           .then(function(rule) {
+//             vm.rule = rule;
+//           });
+//       }
+//     }
 
-    function remove() {
-      vm.rule
-        .remove()
-        .then(function() {
-          modalInstance.close();
+//     function remove() {
+//       vm.rule
+//         .remove()
+//         .then(function() {
+//           /* jshint unused:true */
+//           modalInstance.close();
+//         })
+//         .catch(function(error) {
+//           $log.error('guh.moods.EditMoodCtrl:controller - ', error);
+//         });
+//     }
 
-          $state.go('guh.moods.master', { bypassCache: true }, {
-            reload: true,
-            inherit: false,
-            notify: true
-          });
-        })
-        .catch(function(error) {
-          $log.error('guh.moods.EditMoodCtrl:controller - ', error);
-        });
-    }
+//     _init();
 
-    _init();
+//   }
 
-  }
-
-}());
+// }());

@@ -1,0 +1,56 @@
+<!-- 
+  Copyright (C) 2015 Lukas Mayerhofer <lukas.mayerhofer@guh.guru>
+  
+  Permission is hereby granted, free of charge, to any person obtaining a copy
+  of this software and associated documentation files (the "Software"), to deal
+  in the Software without restriction, including without limitation the rights
+  to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+  copies of the Software, and to permit persons to whom the Software is
+  furnished to do so, subject to the following conditions:
+  
+  The above copyright notice and this permission notice shall be included in all
+  copies or substantial portions of the Software.
+  
+  THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+  IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+  FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+  AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+  LIABILITY, WHETHER IN AN ActionType OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+  OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+  SOFTWARE.
+-->
+
+
+<div class="Intro">
+  <!-- Logo -->
+  <div class="Intro__logo">
+    <div class="Intro__logo-wrapper">
+      <img src="./assets/svg/guh-logo.svg" alt="Logo of guh showing a green owl.">
+      <p>guh</p>
+    </div>
+  </div>
+
+  <!-- TODO: Replace with list component -->
+  <div class="Intro__content" ng-if="intro.view.content.connectionList">
+    <h2 class="Intro__title">Connect to local guhIO server</h2>
+    <ul class="List">
+      <li class="List__item List__item--notClickable" ng-show="intro.connections && intro.connections.length === 0">There are no saved server connections</li>
+      <li class="List__item" ng-click="intro.connect(connection)" ng-repeat="connection in intro.connections | orderBy: 'name' track by $index">
+        {{ connection.name }}
+        <guh-icon url="./assets/svg/ui/ui.symbol.svg#load-b" ng-class="{ 'pending': intro.connectionOpenStatus.pending }" ng-show="intro.connectionOpenStatus && intro.connectionOpenStatus.pending"></guh-icon>
+        <guh-icon url="./assets/svg/ui/ui.symbol.svg#checkmark" ng-show="intro.connectionOpenStatus && intro.connectionOpenStatus.success"></guh-icon>
+        <guh-icon url="./assets/svg/ui/ui.symbol.svg#close" ng-show="intro.connectionOpenStatus && intro.connectionOpenStatus.failure"></guh-icon>
+      </li>
+      <li class="List__item" ng-click="intro.addConnection()">{{ intro.connections && intro.connections.length === 0 ? 'Add a server connection...' : 'Add another server connection...' }}</li>
+    </ul>
+  </div>
+
+  <guh-add-connection class="Intro__content" connection-open-status="intro.connectionOpenStatus" on-open-connection="intro.connect(connection)" ng-if="intro.view.content.addConnection"></guh-add-connection>
+
+  <!-- TODO: Setup -->
+
+  <!-- TODO: Login -->
+
+  <!-- Load Data -->
+  <guh-load class="Intro__content" on-data-loaded="intro.showThings()" ng-if="intro.view.content.loadData"></guh-load>
+</div>

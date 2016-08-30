@@ -1,0 +1,47 @@
+<!-- 
+  Copyright (C) 2015 Lukas Mayerhofer <lukas.mayerhofer@guh.guru>
+  
+  Permission is hereby granted, free of charge, to any person obtaining a copy
+  of this software and associated documentation files (the "Software"), to deal
+  in the Software without restriction, including without limitation the rights
+  to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+  copies of the Software, and to permit persons to whom the Software is
+  furnished to do so, subject to the following conditions:
+  
+  The above copyright notice and this permission notice shall be included in all
+  copies or substantial portions of the Software.
+  
+  THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+  IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+  FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+  AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+  LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+  OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+  SOFTWARE.
+-->
+
+
+<div class="ThingDetails__content" ng-show="thingDetails.showActions">
+  <p ng-if="thingDetails.actions.length === 0">This thing doesn't have any controls.</p>
+  <guh-action action-type="action.actionType" corresponding-state="action.state" device="thingDetails.device" ng-repeat="action in thingDetails.actions | orderBy: 'name' track by $index"></guh-action>
+</div>
+
+<div class="ThingDetails__content" ng-show="thingDetails.showStates">
+  <p ng-if="thingDetails.states.length === 0">This thing doesn't have a state to show you.</p>
+  <div class="State__item" ng-switch="state.stateType.unit" ng-repeat="state in thingDetails.states track by $index">
+    <div class="State__value" ng-switch-when="UnitUnixTime">{{ state.value * 1000 | date: 'dd.MM.yyyy' }}, {{ state.value * 1000 | date: 'HH:mm' }}</div>
+    <div class="State__value" ng-switch-default>{{ state.value }} {{ state.stateType.unit | unit }}</div>
+    <div class="State__name">{{ state.stateType.name }}</div>
+  </div>
+</div>
+
+<div class="ThingDetails__content" ng-show="thingDetails.showSettings">
+  <p ng-if="thingDetails.enhancedParam.length === 0">This thing doesn't have any settings to show you.</p>
+  <div class="Param__item" ng-switch="enhancedParam.paramType.inputType" ng-repeat="enhancedParam in thingDetails.enhancedParams track by $index">
+    <div class="Param__value" ng-switch-when="InputTypePassword">
+      <input class="input--type--readonly" ng-model="enhancedParam.param.value" type="password" disabled />
+    </div>
+    <div class="Param__value" ng-switch-default>{{ enhancedParam.param.value }}</div>
+    <div class="Param__name">{{ enhancedParam.param.name }}</div>
+  </div>
+</div>

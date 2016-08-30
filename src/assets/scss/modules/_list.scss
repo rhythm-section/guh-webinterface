@@ -23,257 +23,114 @@
  * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 
 
-$grey: #676767;
-$white: #fff;
-$green: #7cc09a;
-$red: #f07363;
-$turquoise: #57baae;
+.List {
 
-
-.list {
-  @include rem(margin, 1.5, 0, 0);
 }
 
-.list__item,
-.list__item-divider {
+.List__item-divider {
+  color: $turquoise;
+  letter-spacing: 0.1em;
   position: relative;
+  // text-align: center;
+  text-transform: uppercase;
+  @include rem(margin, 3, 0, 0);
+  @include rem(padding, 1.5, 1.5, 0);
 
-  &> .button {
-    background-color: transparent;
-    border: none;
-    border-radius: 50%;
-    margin: 0;
-    max-width: none;
-    @include rem(padding, 0.5);
-    position: absolute;
-      @include rem(right, 1);
-
-    .icon {
-      border-radius: 100%;
-      cursor: pointer;
-      fill: rgba($grey, 0.2);
-      @include transition(background, 0.2s);
-
-      &:hover {
-        fill: $grey;
-      }
-
-      &.icon_add:hover {
-        fill: $green;
-      }
-
-      &.icon_delete:hover {
-        fill: $red;
-      }
-    }
-  }
-
-  &> .icon {
-    position: absolute;
+  .List__icon {
+    fill: $turquoise;
+    padding-bottom: 0;
   }
 }
 
-.list__item_warning {
-  color: $red;
-}
-
-.list__item {
-  background-color: $white;
+.List__item {
   border-bottom: 1px solid rgba($grey, 0.1);
-  display: block;
+  cursor: pointer;
+  position: relative;
   @include rem(padding, 1.5);
-  width: 100%;
 
-  &:nth-child(even) {
-    // background-color: rgba($grey, 0.1);
+  &:hover .List__icon {
+    fill: $grey;
   }
 
   &:last-child {
-    border-bottom-color: transparent;
+    border-bottom: 0;
   }
 
-  .title,
-  .description {
+  .Icon {
+    position: absolute;
     @include rem(height, 1.5);
-    overflow: hidden;
-    @include rem(padding-right, 3);
-    text-overflow: ellipsis;
-    white-space: nowrap;
-    width: 100%;
-  }
-
-  .description {
-    @include rem(font-size, 0.8);
-  }
-
-  &> .button {
-    @include rem(top, 1);
-  }
-
-  &> .icon {
-    fill: $grey;
+    @include rem(width, 1.5);
     @include rem(right, 1.5);
     @include rem(top, 1.5);
   }
-}
 
-.list__item.list__item_hasDescription {
-  @include rem(height, 6);
-}
-
-.list__item.list__item_isClickable {
-  background-color: $white;
-  color: $grey;
-  cursor: pointer;
-
-  .icon {
-    fill: rgba($grey, 0.2);
-    @include transition(fill 0.2s);
-  }
-
-  &:hover .icon {
-    fill: $grey;
-  }
-
-  &:hover .icon.icon_add {
-    fill: $green;
-  }
-
-  &:hover .icon.icon_delete {
-    fill: $red;
+  .pending .Icon {
+    @include animation(rotate 1.5s linear infinite);
   }
 }
 
-.list__item.list__item_isDisabled {
-  cursor: auto;
+.List__item.List__item--notClickable {
+  cursor: default;
+}
+
+.List__item-title {
+
+}
+
+.List__item-description {
+  color: rgba($grey, 0.4);
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  @include rem(font-size, 0.8);
+}
+
+.List__item-divider_has-icon-left,
+.List__item_has-icon-left {
+  @include rem(padding-left, 4.5);
+}
+
+.List__item-divider_has-icon-right,
+.List__item_has-icon-right {
+  @include rem(padding-right, 4.5);
+}
+
+.List__item_isDisabled {
   color: rgba($grey, 0.2);
+  cursor: default;
 
-  .icon {
-    fill: rgba($grey, 0.2);
-  }
-
-  &:hover {
-    background-color: $white;
+  .List__item-description{
+    color: inherit;
   }
 }
 
-.list__item-divider {
-  @include rem(font-size, 0.8);
-  letter-spacing: 0.1em;
-  @include rem(margin, 3, 0, 0);
-  @include rem(padding, 0.7, 1.5, 0.8);
-  text-transform: uppercase;
-
-  &:first-child {
-    margin-top: 0;
-  }
-
-  &> .button {
-    top: 0;
-  }
-
-  &> .icon {
-    @include rem(right, 1.5);
-    top: 0;
-  }
-}
-
-.list > .item-divider {
-  border-bottom: 1px solid rgba($grey, 0.2);
-  color: $turquoise;
-  @include rem(height, 6);
-  @include rem(margin, 1.5, 0);
-  overflow: hidden;
-  @include rem(padding, 1.5);
-  text-overflow: ellipsis;
-  white-space: nowrap;
-  width: 100%;
-}
-
-.item-divider__description {
+.List__icon {
   display: block;
-  @include rem(font-size, 0.8);
-  letter-spacing: 0.1em;
-  text-transform: uppercase;
-}
-
-.list > .item {
-  color: $grey;
-  cursor: pointer;
-  display: block;
+  fill: rgba($grey, 0.2);
+  position: absolute;
+  // right: 0;
+  top: 50%;
   @include rem(height, 4.5);
   @include rem(padding, 1.5);
-  position: relative;
-  text-align: left;
-
-  &:hover {
-    background-color: $white;
-    // border-color: $white;
-    box-shadow: 0px 0px 6px 0px rgba(0, 0, 0, 0.1);
-  }
-
-  &:hover + .item {
-    border-color: $white;
-  }
-
-  // &:first-child {
-  //   border-top: none;
-  // }
-
-  p {
-    padding: 0;
-  }
-
-  span {
-    display: inline-block;
-    height: inherit;
-    overflow: hidden;
-    @include rem(padding, 1.5, 4.5, 1.5, 1.5);
-    position: absolute;
-      left: 0;
-      top: 0;
-    text-overflow: ellipsis;
-    width: 100%;
-    white-space: nowrap;
-  }
-
-  .icon {
-    float: right;
-    @include rem(height, 1.5);
-    @include rem(margin, 1.5);
-    position: absolute;
-      right: 0;
-      top: 0;
-    @include rem(width, 1.5);
-  }
+  @include rem(width, 4.5);
+  @include transform(translateY(-50%));
 }
 
-.modal {
-  .list > .item {
-    &.selected .icon {
-      fill: $c-turquoise;
-    }
+.List__icon.List__icon_left {
+  left: 0;
+  // float: left;
+  // @include rem(margin-right, 1.5);
+}
 
-    .icon {
-      fill: rgba($c-grey, 0.2);
-    }
-  }
+.List__icon.List__icon_right {
+  right: 0;
+  // float: right;
+  // @include rem(margin-left, 1.5);
+}
 
-  .list > .item:hover {
-    &.selected .icon {
-      fill: $c-grey;
-    }
+.List__icon_before-text {
+  @include rem(margin, 0, 0.5, -0.35, 0);
+}
 
-    .icon {
-      display: block;
-      fill: $c-grey;
-    }
-  }
-
-  .list > .item:active {
-    .icon {
-      display: block;
-      fill: lighten($c-grey, 50%);
-    }
-  }
+.List__icon_after-text {
+  @include rem(margin, 0, 0, -0.35, 0.5);
 }

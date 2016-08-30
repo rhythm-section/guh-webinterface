@@ -1,0 +1,44 @@
+<!-- 
+  Copyright (C) 2015 Lukas Mayerhofer <lukas.mayerhofer@guh.guru>
+  
+  Permission is hereby granted, free of charge, to any person obtaining a copy
+  of this software and associated documentation files (the "Software"), to deal
+  in the Software without restriction, including without limitation the rights
+  to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+  copies of the Software, and to permit persons to whom the Software is
+  furnished to do so, subject to the following conditions:
+  
+  The above copyright notice and this permission notice shall be included in all
+  copies or substantial portions of the Software.
+  
+  THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+  IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+  FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+  AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+  LIABILITY, WHETHER IN AN ActionType OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+  OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+  SOFTWARE.
+-->
+
+
+<div class="label">
+  {{ slider.label }}: {{ slider.value + ' ' + (slider.unit | unit) }}
+  <guh-icon url="./assets/svg/ui/ui.symbol.svg#load-b" ng-class="{ 'pending': slider.asyncStatus.pending }" ng-show="slider.asyncStatus && slider.asyncStatus.pending"></guh-icon>
+  <guh-icon url="./assets/svg/ui/ui.symbol.svg#checkmark" ng-show="slider.asyncStatus && slider.asyncStatus.success"></guh-icon>
+  <guh-icon url="./assets/svg/ui/ui.symbol.svg#close" ng-show="slider.asyncStatus && slider.asyncStatus.failure"></guh-icon>
+</div>
+<div class="Slider">
+  <svg class="Slider__icon Slider__icon_position_left" ng-click="slider.stepDown(slider.model)">
+    <use xlink:href="./assets/svg/ui/ui.symbol.svg#minus"></use>
+  </svg>
+
+  <div class="Slider__runner">
+    <div class="Slider__handle" guh-mouse-drag="slider.dragHandle($event)"></div>
+    <div class="Slider__bar"></div>
+    <div class="Slider__bar Slider__bar_isActive"></div>
+  </div>
+
+  <svg class="Slider__icon Slider__icon_position_right" ng-click="slider.stepUp(slider.model)">
+    <use xlink:href="./assets/svg/ui/ui.symbol.svg#plus"></use>
+  </svg>
+</div>

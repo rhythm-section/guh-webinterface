@@ -1,0 +1,46 @@
+<!-- 
+  Copyright (C) 2015 Lukas Mayerhofer <lukas.mayerhofer@guh.guru>
+  
+  Permission is hereby granted, free of charge, to any person obtaining a copy
+  of this software and associated documentation files (the "Software"), to deal
+  in the Software without restriction, including without limitation the rights
+  to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+  copies of the Software, and to permit persons to whom the Software is
+  furnished to do so, subject to the following conditions:
+  
+  The above copyright notice and this permission notice shall be included in all
+  copies or substantial portions of the Software.
+  
+  THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+  IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+  FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+  AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+  LIABILITY, WHETHER IN AN ActionType OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+  OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+  SOFTWARE.
+-->
+
+
+<!-- <guh-action-bar back-button="true" on-back="thingDetails.back()"></guh-action-bar> -->
+
+<div class="ThingDetails__wrapper">
+  <div class="ThingDetails__sidebar">
+    <div class="ThingDetails__sidebar-wrapper">
+      <div class="ThingDetails__icon-wrapper">
+        <svg class="ThingDetails__icon">
+          <use ng-attr-xlink:href="{{ thingDetails.deviceClass.deviceIcon ? './assets/svg/device-class/device-class.symbol.svg#' + thingDetails.deviceClass.deviceIcon : './assets/svg/device-class/device-class.symbol.svg#DeviceIconDevice' }}" xlink:href=""></use>
+        </svg>
+      </div>
+      <div class="ThingDetails__name">{{ thingDetails.name }}</div>
+      <div class="ThingDetails__description">{{ thingDetails.getDescription('&nbsp;&middot;&nbsp;') }}</div>
+
+      <ul class="ThingDetails__sidebar-navigation">
+        <li ng-class="{ 'active': thingDetails.showActions }" ng-click="thingDetails.show('actions')">Actions</li>
+        <li ng-class="{ 'active': thingDetails.showStates }" ng-click="thingDetails.show('states')">States</li>
+        <li ng-class="{ 'active': thingDetails.showSettings }" ng-click="thingDetails.show('settings')">Settings</li>
+      </ul>
+    </div>
+  </div>
+
+  <ng-include src="thingDetails.templateUrl" ng-if="thingDetails.templateReady"></ng-include>
+</div>

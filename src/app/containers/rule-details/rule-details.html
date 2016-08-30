@@ -1,0 +1,116 @@
+<!-- 
+  Copyright (C) 2015 Lukas Mayerhofer <lukas.mayerhofer@guh.guru>
+  
+  Permission is hereby granted, free of charge, to any person obtaining a copy
+  of this software and associated documentation files (the "Software"), to deal
+  in the Software without restriction, including without limitation the rights
+  to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+  copies of the Software, and to permit persons to whom the Software is
+  furnished to do so, subject to the following conditions:
+  
+  The above copyright notice and this permission notice shall be included in all
+  copies or substantial portions of the Software.
+  
+  THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+  IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+  FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+  AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+  LIABILITY, WHETHER IN AN ActionType OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+  OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+  SOFTWARE.
+-->
+
+
+<div class="RuleDetails__wrapper">
+  <div class="RuleDetails__sidebar">
+    <div class="RuleDetails__sidebar-wrapper">
+      <svg class="RuleDetails__icon">
+        <use xlink:href="./assets/svg/device-class/device-class.symbol.svg#RuleIconRoutine"></use>
+      </svg>
+      <div class="RuleDetails__name">{{ ruleDetails.name }}</div>
+      <div class="RuleDetails__description">{{ ruleDetails.getDescription('&nbsp;&middot;&nbsp;') }}</div>
+
+      <ul class="List RuleDetails__sidebar-navigation">
+        <li ng-class="{ 'active': ruleDetails.showEnterActions }" ng-click="ruleDetails.show('enterActions')">
+          <svg class="List__icon List__icon_before-text">
+            <use xlink:href="./assets/svg/ui/ui.symbol.svg#log-in"></use>
+          </svg>
+          ON Actions
+        </li>
+        <li ng-class="{ 'active': ruleDetails.showExitActions }" ng-click="ruleDetails.show('exitActions')">
+          <svg class="List__icon List__icon_before-text">
+            <use xlink:href="./assets/svg/ui/ui.symbol.svg#log-out"></use>
+          </svg>
+          OFF Actions
+        </li>
+        <li ng-class="{ 'active': ruleDetails.showTrigger }" ng-click="ruleDetails.show('trigger')">
+          <svg class="List__icon List__icon_before-text">
+            <use xlink:href="./assets/svg/ui/ui.symbol.svg#ios-bolt"></use>
+          </svg>
+          Trigger
+        </li>
+        <li ng-class="{ 'active': ruleDetails.showConditions }" ng-click="ruleDetails.show('conditions')">
+          <svg class="List__icon List__icon_before-text">
+            <use xlink:href="./assets/svg/ui/ui.symbol.svg#ios-loop-strong"></use>
+          </svg>
+          Conditions
+        </li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="RuleDetails__content" ng-show="ruleDetails.showEnterActions">
+    <p ng-if="ruleDetails.actions.length === 0">Nothing to turn ON.</p>
+    <div ng-if="ruleDetails.actions.length > 0">
+      <div class="action" ng-repeat="action in ruleDetails.actions track by $index">
+        <div class="Action__action-type">{{ action.actionType.name }}</div>
+        <div class="Action__device-name">{{ action.device.name ? action.device.name : action.device.deviceClass.name }}</div>
+        <div ng-if="action.ruleActionParams.length > 0" ng-repeat="ruleActionParam in action.ruleActionParams track by $index">
+          <svg class="RuleDetails__icon RuleDetails__icon_inline">
+            <use xlink:href="./assets/svg/ui/ui.symbol.svg#arrow-right-c"></use>
+          </svg>
+          <span ng-if="ruleActionParam.value !== undefined">{{ ruleActionParam.name }}:&nbsp;{{ ruleActionParam.value }}{{ ruleActionParam.unit | unit }}</span>
+          <span ng-if="ruleActionParam.eventParamName !== undefined">Value of {{ ruleActionParam.name }} = Value of {{ ruleActionParam.eventParamName }} ({{ ruleActionParam.eventType.name }})</span>
+        </div>
+      </div>
+    </div>
+    <button type="button" ng-if="ruleDetails.actions.length > 0" ng-click="ruleDetails.executeActions()">Turn on</button>
+  </div>
+
+  <div class="RuleDetails__content" ng-show="ruleDetails.showExitActions">
+    <p ng-if="ruleDetails.exitActions.length === 0">Nothing to turn OFF.</p>
+    <div ng-if="ruleDetails.exitActions.length > 0">
+      <div class="action" ng-repeat="exitAction in ruleDetails.exitActions track by $index">
+        <div class="Action__action-type">{{ exitAction.actionType.name }}</div>
+        <div class="Action__device-name">{{ exitAction.device.name ? exitAction.device.name : exitAction.device.deviceClass.name }}</div>
+        <div ng-if="exitAction.ruleActionParams.length > 0" ng-repeat="ruleActionParam in exitAction.ruleActionParams">
+          <svg class="RuleDetails__icon RuleDetails__icon_inline">
+            <use xlink:href="./assets/svg/ui/ui.symbol.svg#arrow-right-c"></use>
+          </svg>
+          <span ng-if="ruleActionParam.value !== undefined">{{ ruleActionParam.name }}:&nbsp;{{ ruleActionParam.value }}{{ ruleActionParam.unit | unit }}</span>
+          <span ng-if="ruleActionParam.eventParamName !== undefined">Value of {{ ruleActionParam.name }} = Value of {{ ruleActionParam.eventParamName }} ({{ ruleActionParam.eventType.name }})</span>
+        </div>
+      </div>
+    </div>
+    <button type="button" ng-if="ruleDetails.exitActions.length > 0" ng-click="ruleDetails.executeExitActions()">Turn off</button>
+  </div>
+
+  <div class="RuleDetails__content" ng-show="ruleDetails.showTrigger">
+    <p ng-if="ruleDetails.events.length === 0">No triggers defined.</p>
+    <div ng-if="ruleDetails.events.length > 0">
+      <div class="Event" ng-repeat="event in ruleDetails.events track by $index">
+        <p class="Event__value">{{ event.eventType.name }}</p>
+        <p class="Event__name">{{ event.device.name }}</p>
+      </div>
+    </div>
+  </div>
+
+  <div class="RuleDetails__content" ng-show="ruleDetails.showConditions">
+    <p ng-if="ruleDetails.states.length === 0">No conditions defined.</p>
+    <div class="State" ng-switch="state.stateType.unit" ng-repeat="state in ruleDetails.states track by $index">
+      <p class="State__value" ng-switch-when="UnitUnixTime">{{ state.stateType.name }} {{ state.stateDescriptor.operator | operator }} {{ state.stateDescriptor.value * 1000 | date: 'dd.MM.yyyy' }}, {{ state.stateDescriptor.value * 1000 | date: 'HH:mm' }}</p>
+      <p class="State__value" ng-switch-default>{{ state.stateType.name }} {{ state.stateDescriptor.operator | operator }} {{ state.stateDescriptor.value }} {{ state.stateType.unit | unit }}</p>
+      <p class="State__name">{{ state.device.name }}</p>
+    </div>
+  </div>
+</div>

@@ -33,9 +33,7 @@
 
     function guhTabset($log, $sce, libs, hotkeys) {
       var directive = {
-        bindToController: {
-          disabled: '='
-        },
+        bindToController: {},
         controller: tabsetCtrl,
         controllerAs: 'tabset',
         link: tabsetLink,
@@ -59,7 +57,6 @@
          */
         vm.tabs = [];
         vm.tabHeadings = [];
-        vm.disabled = (vm.disabled === undefined) ? false : vm.disabled;
 
         /*
          * Methods
@@ -83,7 +80,7 @@
             });
 
             // If some of the hotkeys are the same check characters on the next index
-            if(hotkeyArray.length !== libs._.uniq(hotkeyArray).length) {
+            if(hotkeyArray.length !== libs._.uniq(hotkeyArray).length) {
               hotkeyIndex++;
             } else {
               // Index found
@@ -97,7 +94,7 @@
             hotkey = tab.heading.charAt(hotkeyIndex).toLowerCase();
 
             // Bind hotkey only if combo is letter (a-z)
-            if(hotkey.match(/[a-z]/)) {
+            if(hotkey.match(/[a-z]/)) {
               tab.hotkey = true;
 
               hotkeys
@@ -136,10 +133,6 @@
         }
 
         function selectTab(selectedTab) {
-          if(selectedTab.disabled) {
-            return;
-          }
-
           angular.forEach(vm.tabs, function(tab) {
             if(tab.active && tab !== selectedTab) {
               tab.active = false;

@@ -31,10 +31,11 @@
     .filter('camelCase', filter);
 
   function filter() {
-    return function(input, type) {
+    return function(input) {
       if(input) {
-        return input.replace(/(\s[a-z])/g, function($1) {
-          return $1.toUpperCase().replace(' ','')});
+        return input.toLowerCase().replace(/(\s[a-z0-9])/g, function($1) {
+          return $1.toUpperCase().replace(' ','');
+        });
       }
     };
   }

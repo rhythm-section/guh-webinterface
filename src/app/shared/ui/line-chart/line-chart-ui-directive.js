@@ -143,7 +143,7 @@
         }
 
         function _loadData(startDate, endDate) {
-          if(!vm.deviceId || !vm.typeId || !vm.startDate || !vm.endDate) {
+          if(!vm.deviceId || !vm.typeId || !vm.startDate || !vm.endDate) {
             $log.log('Parameter missing.');
             return;
           }

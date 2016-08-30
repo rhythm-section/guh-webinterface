@@ -21,28 +21,14 @@
 -->
 
 
-<!-- <div class="wrapper" ng-class="app.$state.current.controllerAs"> -->
-<div class="wrapper" ng-class="{ 'intro': app.$state.includes('guh.intro'), 'devices': app.$state.includes('guh.devices.master'), 'device': app.$state.includes('guh.devices.detail') }">
-  <header class="app">
-    <!-- <div class="content-wrapper"> -->
-      <nav>
-        <ul>
-          <li ng-class="{ active: app.$state.includes('guh.devices') }"><a ui-sref="guh.devices.master">Devices</a></li>
-          <li ng-class="{ active: app.$state.includes('guh.services') }"><a ui-sref="guh.services.master">Services</a></li>
-          <li ng-class="{ active: app.$state.includes('guh.moods') }"><a ui-sref="guh.moods.master">Moods</a></li>
-        </ul>
-      </nav>
+<guh-action-bar ng-class="{
+  'ActionBar--type--details': (app.$state.current.name === 'guh.thingDetails' || app.$state.current.name === 'guh.ruleDetails'),
+  'ActionBar--isDisabled': (app.$state.current.name === 'guh.intro')
+}"></guh-action-bar>
 
-      <div class="actions">
-        <guh-action-bar></guh-action-bar>
-      </div>
-    <!-- </div> -->
-  </header>
+<guh-navigation-bar ng-class="{
+  'NavigationBar--type--details': (app.$state.current.name === 'guh.thingDetails' || app.$state.current.name === 'guh.ruleDetails'),
+  'NavigationBar--isDisabled': (app.$state.current.name === 'guh.intro')
+}"></guh-navigation-bar>
 
-  <div ui-view class="content"></div>
-</div>
-
-
-<!-- <guh-morph template="<p>Morphing Content</p>"></guh-morph> -->
-
-<!-- <div class="detail"></div> -->
+<div ui-view class="content"></div>

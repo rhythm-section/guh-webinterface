@@ -1,0 +1,163 @@
+/* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
+ *                                                                                     *
+ * Copyright (C) 2015 Lukas Mayerhofer <lukas.mayerhofer@guh.guru>                     *
+ *                                                                                     *
+ * Permission is hereby granted, free of charge, to any person obtaining a copy        *
+ * of this software and associated documentation files (the "Software"), to deal       *
+ * in the Software without restriction, including without limitation the rights        *
+ * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell           *
+ * copies of the Software, and to permit persons to whom the Software is               *
+ * furnished to do so, subject to the following conditions:                            *
+ *                                                                                     *
+ * The above copyright notice and this permission notice shall be included in all      *
+ * copies or substantial portions of the Software.                                     *
+ *                                                                                     *
+ * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR          *
+ * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,            *
+ * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE         *
+ * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER              *
+ * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,       *
+ * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE       *
+ * SOFTWARE.                                                                           *
+ *                                                                                     *
+ * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
+
+
+.ActionBar {
+  position: fixed;
+  left: auto;
+  right: 0;
+  top: 0;
+  @include linear-gradient(to top, rgba(#fcfcfc, 0) 0%, rgba(#fcfcfc, 1) 50%, $fallback: transparent);
+  @include rem(height, 4.5);
+  z-index: 2;
+
+  button {
+    background-color: transparent;
+    border: 0;
+    display: block;
+    margin: 0;
+    @include rem(height, 4.5);
+    @include rem(width, 4.5);
+    @include rem(padding, 1.5);
+
+    &.active .ActionBar__icon {
+      fill: $turquoise;
+    }
+  }
+}
+
+.js-no-touch {
+  .ActionBar button:hover {
+    background-color: transparent;
+
+    .ActionBar__icon {
+      fill: $turquoise;
+    }
+  }
+}
+
+@include media($max-width-xs) {
+  .ActionBar {
+    left: auto;
+  }
+}
+
+@include media($min-width-m) {
+  .ActionBar {
+    left: 50%;
+    width: 50%;
+    @include rem(height, 9);
+
+    button {
+      @include rem(height, 9);
+      @include rem(width, 4.5);
+      @include rem(padding, 3, 1.5, 4.5);
+    }
+  }
+}
+
+@include media($min-width-xl) {
+  .ActionBar {
+    width: $max-width-l/2;
+  }
+}
+
+
+.ActionBar.ActionBar--isDisabled {
+  display: none;
+}
+
+.ActionBar.ActionBar--type--details {
+  border-left: 1px solid #eaeaea;
+  border-right: 1px solid #eaeaea;
+  width: 100%;
+  @include linear-gradient(to top, rgba($white, 0) 0%, rgba($white, 1) 50%, $fallback: transparent);
+
+  ul {
+    justify-content: flex-start;
+  }
+
+  li:last-of-type {
+    position: absolute;
+    right: 0;
+  }
+
+  li:first-of-type {
+    position: absolute;
+    left: 0;
+  }
+
+  button {
+    width: auto;
+  }
+
+  button svg,
+  button span {
+    display: inline-block;
+  }
+
+  button span {
+    letter-spacing: 0;
+    position: relative;
+    text-transform: none;
+    @include rem(top, -0.35);
+  }
+}
+
+@include media($min-width-s) {
+  .ActionBar.ActionBar--type--details {
+    left: 50%;
+    margin-left: -320px;
+    width: 640px;
+  }
+}
+
+
+.ActionBar__wrapper-outer {
+  @include rem(padding, 0, 0);
+}
+
+
+.ActionBar__wrapper-inner {
+  @include display(flex);
+  @include justify-content(space-between);
+}
+
+@include media($min-width-m) {
+  .ActionBar__wrapper-inner {
+    @include justify-content(flex-end);
+  }
+}
+
+
+.ActionBar__icon {
+  display: block;
+  fill: $grey;
+  @include rem(height, 1.5);
+  @include rem(width, 1.5);
+}
+
+.ActionBar__icon.ActionBar__icon--isActive {
+  fill: $green;
+}

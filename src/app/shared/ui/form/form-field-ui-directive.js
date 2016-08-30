@@ -34,6 +34,7 @@
     function guhFormField(libs, app, $log, $templateRequest, $compile, DSState) {
       var directive = {
         bindToController: {
+          async: '<',
           changeCallback: '&onValueChange',
           label: '@',
           name: '@',
@@ -57,7 +58,7 @@
       return directive;
 
 
-      function formFieldCtrl($scope, $element, $attrs) {
+      function formFieldCtrl() {
 
         /* jshint validthis: true */
         var vm = this;
@@ -256,7 +257,7 @@
               vm.selectValueOperator();
             }
           }
-        };
+        }
 
         function selectValueOperator() {
           // Reset
@@ -332,8 +333,8 @@
 
 
       function formFieldLink(scope, element, attrs, formCtrls) {
-        var formFieldCtrl = formCtrls[0] || null;
-        var formCtrl = formCtrls[1] || null;
+        var formFieldCtrl = formCtrls[0] || null;
+        var formCtrl = formCtrls[1] || null;
         var previousScope = null;
 
         // Get template via $http or $templateCache and append it to the guh-form-field element. After that link and compile the template to get updated data.

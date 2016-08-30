@@ -69,7 +69,6 @@
 
 
         function _init() {
-          $log.log('vm', vm);
           _checkParameters();
 
           if(!vm.error) {
@@ -136,8 +135,6 @@
               }
             });
           }
-
-          $log.log('params', params);
 
           // Execute action
           if(angular.isDefined(device) && DSDevice.is(device)) {

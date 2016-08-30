@@ -40,3 +40,34 @@
 @function get-color($key: 'primary') {
   @return map-get($colors, $key);
 }
+
+/*
+ * Helper functions to get the z-index for an element
+ *
+ */
+
+@function map-deep-get($map, $keys...) {
+  @each $key in $keys {
+    $map: map-get($map, $key);
+  }
+  @return $map;
+}
+
+@function map-deep-has-keys($map, $keys...) {
+  @each $key in $keys {
+    @if not map-has-key($map, $key) {
+      @warn $key;
+      @return false;
+    }
+    $map: map-get($map, $key);
+  }
+  @return true;
+}
+
+@function z($layers...) {
+  // @if not map-deep-has-key($z-layers, $layers...) {
+  //   @error "One or more layers not found for `#{$layers...}` in $z-layers map. Property omitted.";
+  // }
+
+  @return map-deep-get($z-layers, $layers...);
+}

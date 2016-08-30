@@ -1,0 +1,140 @@
+/* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
+ *                                                                                     *
+ * Copyright (C) 2015 Lukas Mayerhofer <lukas.mayerhofer@guh.guru>                     *
+ *                                                                                     *
+ * Permission is hereby granted, free of charge, to any person obtaining a copy        *
+ * of this software and associated documentation files (the "Software"), to deal       *
+ * in the Software without restriction, including without limitation the rights        *
+ * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell           *
+ * copies of the Software, and to permit persons to whom the Software is               *
+ * furnished to do so, subject to the following conditions:                            *
+ *                                                                                     *
+ * The above copyright notice and this permission notice shall be included in all      *
+ * copies or substantial portions of the Software.                                     *
+ *                                                                                     *
+ * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR          *
+ * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,            *
+ * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE         *
+ * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER              *
+ * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,       *
+ * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE       *
+ * SOFTWARE.                                                                           *
+ *                                                                                     *
+ * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
+
+
+.TileItem {
+  text-align: center;
+  position: relative;
+  width: 50%;
+  @include rem(padding, 0, 0.25, 0.5);
+  padding: 1px;
+
+  &::after {
+    content: "";
+    display: block;
+    padding-top: 100%;
+  }
+}
+
+.js-no-touch .TileItem:hover {
+  cursor: pointer;
+}
+
+@include media($min-width-m) {
+  .TileItem {
+    width: 33.333333%;
+  }
+}
+
+@include media($min-width-xl) {
+  .TileItem {
+    width: 25%;
+  }
+}
+
+
+.TileItem__wrapper-outer {
+  background-color: $white;
+  border: 1px solid #eaeaea;
+  position: absolute;
+  @include rem(padding, 1.5, 0);
+  @include rem(bottom, 0.5);
+  @include rem(left, 0.25);
+  @include rem(right, 0.25);
+  @include rem(top, 0);
+  @include transform-style(preserve-3d);
+  @include transition(background-color 0.2s, box-shadow 0.2s, transform 0.1s);
+
+  // &:hover {
+  //   box-shadow: 0px 3px 7px 0px rgba(0, 0, 0, 0.1);
+  //   z-index: 1;
+  //   @include transform(scale(1.1));
+  // }
+}
+
+.js-no-touch .TileItem__wrapper-outer:hover {
+  box-shadow: 0px 3px 7px 0px rgba(0, 0, 0, 0.1);
+  z-index: 1;
+  @include transform(scale(1.1));
+}
+
+.TileItem__wrapper-outer.TileItem__wrapper-outer_isDisabled {
+  color: rgba($grey, 0.5);
+  cursor: default;
+
+  &:hover {
+    box-shadow: none;
+    @include transform(scale(1));
+  }
+
+  .TileItem__icon svg {
+    fill: rgba($grey, 0.5);
+  }
+}
+
+
+.TileItem__wrapper-inner {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  width: 100%;
+  @include rem(margin-top, -0.5);
+  @include rem(padding, 0, 3);
+  @include transform(translateX(-50%) translateY(-50%));
+}
+
+
+.TileItem__icon svg {
+  display: block;
+  margin: 0 auto;
+  fill: $grey;
+  @include rem(height, 4);
+  @include rem(padding, 0.6);
+  @include rem(width, 4);
+}
+
+
+.TileItem__title {
+  @include rem(margin, 1, 0, 0);
+}
+
+@include media($min-width-s) {
+  .TileItem__title {
+    @include rem(font-size, 1.2);
+  }
+}
+
+
+.TileItem__description {
+  display: none;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+}
+
+@include media($min-width-s) {
+  .TileItem__description {
+    display: block;
+    @include rem(font-size, 0.8);
+  }
+}

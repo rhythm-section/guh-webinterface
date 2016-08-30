@@ -23,97 +23,183 @@
  * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */ 
 
 
-$white: #fff;
-$black: #000;
-$grey: #676767;
-$green: #7cc09a;
-$turquoise: #57baae;
-
-
-/*
- * Size & Layout
- */
-
-.wizard {
-  &> .wizard__prev {
-    @include rem(height, 4.5);
-    position: absolute;
-      @include rem(left, 1.5);
-      @include rem(top, 1.5);
-  }
-}
-
-.wizard__title {
-  @include rem(font-size, 1.5);
+.Wizard__close,
+.Wizard__prev {
+  background-color: transparent;
+  margin: 0;
+  position: absolute;
+  @include rem(top, 1.5);
   @include rem(height, 4.5);
-  @include rem(padding, 1.5, 4.5);
-  overflow: hidden;
-  white-space: nowrap;
-  width: 100%;
-}
-
-.wizard__content {
-
-}
-
-.wizard__navigation {
-  @include rem(height, 4.5);
-  @include rem(margin, 1.5, 0, 0);
-  position: relative;
-
-  &> .wizard__next,
-  &> .wizard__prev {
-    position: absolute;
-  }
-
-  &> .wizard__next {
-    right: 0;
-  }
-
-  &> .wizard__prev {
-    left: 0;
-  }
-}
-
-.wizard__next,
-.wizard__prev {
-  border: none;
+  @include rem(width, 4.5);
   @include rem(padding, 1.5);
+
+  .Wizard__icon {
+    fill: $grey;
+  }
 }
 
-.wizard__step {
+.js-no-touch .Wizard__close,
+.js-no-touch .Wizard__prev {
+  &:hover {
+    background-color: transparent;
+    fill: $turquoise;
+  }
+}
+
+.Wizard__close {
+  @include rem(right, 0.75);
+
+  @include media($min-width-m) {
+    @include rem(right, 1.5);
+  }
+}
+
+.Wizard__prev {
+  @include rem(left, 0.75);
+
+  @include media($min-width-m) {
+    @include rem(left, 1.5);
+  }
+}
+
+.Wizard__icon {
+  display: block;
+  @include rem(height, 1.5);
+  @include rem(width, 1.5);
+}
+
+.Wizard__step {
   display: none;
 }
 
-.wizard__step-description {
-  @include rem(font-size, 0.8);
-  @include rem(margin, 0, 0, 3);
-  @include rem(padding, 0, 0.5);
+.Wizard__step.Wizard__step_current {
+  display: block;
+}
+
+.WizardStep__title {
+  overflow: hidden;
+  white-space: nowrap;
+  width: 100%;
+  text-align: center;
+  text-overflow: ellipsis;
+  @include rem(font-size, 1.2);
+  @include rem(height, 4.5);
+  @include rem(padding, 1.5, 0);
+
+  @include media($min-width-m) {
+    @include rem(padding, 1.5, 4.5);
+  }
+}
+
+.Wizard__step-description {
+  @include rem(font-size, 0.9);
+  // @include rem(margin, 0, 0, 3);
+  @include rem(max-width, 30);
+  margin: 0 auto;
   text-align: center;
 
   @include media($min-width-m) {
-    @include rem(padding, 0, 6);
+    // @include rem(padding, 0, 6);
   }
 }
 
 
-/*
- * Colors & Typography
- */
-
-.wizard__title {
-  text-overflow: ellipsis;
-}
-
-.wizard__step.wizard__step_current {
-  display: block;
-}
+// $white: #fff;
+// $black: #000;
+// $grey: #676767;
+// $green: #7cc09a;
+// $turquoise: #57baae;
 
 
-/*
- * State
- */
+// /*
+//  * Size & Layout
+//  */
 
-.wizard.wizard_show_navigation {
+// .wizard {
+//   &> .wizard__prev {
+//     @include rem(height, 4.5);
+//     position: absolute;
+//       @include rem(left, 1.5);
+//       @include rem(top, 1.5);
+//   }
+// }
 
-}
+// .wizard__title {
+//   @include rem(font-size, 1.5);
+//   @include rem(height, 4.5);
+//   @include rem(padding, 1.5, 4.5);
+//   overflow: hidden;
+//   white-space: nowrap;
+//   width: 100%;
+// }
+
+// .intro .wizard__title {
+//   @include rem(font-size, 1);
+//   @include rem(padding, 1.5, 0);
+// }
+
+// .wizard__content {
+
+// }
+
+// .wizard__navigation {
+//   @include rem(height, 4.5);
+//   @include rem(margin, 1.5, 0, 0);
+//   position: relative;
+
+//   &> .wizard__next,
+//   &> .wizard__prev {
+//     position: absolute;
+//   }
+
+//   &> .wizard__next {
+//     right: 0;
+//   }
+
+//   &> .wizard__prev {
+//     left: 0;
+//   }
+// }
+
+// .wizard__next,
+// .wizard__prev {
+//   border: none;
+//   @include rem(padding, 1.5);
+// }
+
+// .wizard__step {
+//   display: none;
+// }
+
+// .wizard__step-description {
+//   @include rem(font-size, 0.8);
+//   @include rem(margin, 0, 0, 3);
+//   @include rem(padding, 0, 0.5);
+//   text-align: center;
+
+//   @include media($min-width-m) {
+//     @include rem(padding, 0, 6);
+//   }
+// }
+
+
+// /*
+//  * Colors & Typography
+//  */
+
+// .wizard__title {
+//   text-overflow: ellipsis;
+// }
+
+// .wizard__step.wizard__step_current {
+//   display: block;
+// }
+
+
+// /*
+//  * State
+//  */
+
+// .wizard.wizard_show_navigation {
+
+// }

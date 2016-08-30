@@ -23,26 +23,26 @@
  * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 
 
-$grey: #676767;
+.Param__list {
 
-$color: $grey;
+}
 
+.Param__item {
+  @include rem(margin, 0, 0, 1.5);
+}
 
-.param {
-  @include rem(margin-bottom, 1.5);
+.Param__name {
+  letter-spacing: 0.1em;
+  @include rem(font-size, 0.8);
+  text-transform: uppercase;
+}
 
-  .value {
-    color: $color;
-    @include rem(font-size, 1.2);
-    @include rem(line-height, 1.5);
-  }
+.Param__value {
+  @include rem(font-size, 1.2);
 
-  .name {
-    color: rgba($color, 0.6);
-    @include rem(font-size, 0.8);
-    // letter-spacing: 0.2em;
-    @include rem(line-height, 1.5);
-    // @include rem(margin, 0.2, 0, 1.3);
-    text-transform: uppercase;
+  input {
+    border: 0;
+    font-size: inherit;
+    padding: 0;
   }
 }

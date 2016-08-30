@@ -63,6 +63,7 @@ module.exports = {
       // Assets
       src + '/assets/fonts/**/*',
       src + '/assets/svg/*.svg',
+      src + '/assets/img/*.{gif,jpg,jpeg,png}',
       // Favicon
       src + '/*.png',
       src + '/*.ico',
@@ -76,10 +77,11 @@ module.exports = {
     images: src + '/assets/img/**/*.{gif,jpg,jpeg,png}',
     index: src + '/index.html',
     templates: [src + '/**/*.html', '!' + src + '/index.html'],
-    scripts: [src + '/app/**/*.js', developmentDest + '/config/app-config.js', '!' + src + '/app/config/app-config.js'],
+    scripts: [src + '/app/**/*.js', developmentDest + '/config/app-config.js', '!' + src + '/app/config/app-config.js', '!' + src + '/app/**/*_test.js'],
     styles: src + '/app/app.scss',
     sass: [src + '/assets/scss/**/*.scss', src + '/app/**/*.scss'],
     svg: {
+      deviceClass: src + '/assets/svg/device-class/*.svg',
       vendor: src + '/assets/svg/vendor/*.svg',
       ui: src + '/assets/svg/ui/*.svg'
     }
@@ -88,7 +90,7 @@ module.exports = {
   // Utils
   argsParser: {
     defaultEnvironment: 'development',
-    defaultProxyServer: 'localhost:3000'
+    defaultProxyServer: 'localhost:3333'
   },
 
   // Plugins
@@ -99,6 +101,7 @@ module.exports = {
         forms: true,
         scroll: true
       },
+      // https: true,
       logLevel: 'info',
       notify: true,
       open: false,
@@ -172,14 +175,16 @@ module.exports = {
     'lodash.js',
     'angular.js',
     'angular-animate.js',
-    'angular-hero.js',
     'angular-messages.js',
+    'angular-mocks.js',
     'angular-sanitize.js',
     'angular-ui-router.js',
     'reconnecting-websocket.js',
+    'localforage.js',
     'js-data.js',
     'js-data-debug.js',
     'js-data-angular.js',
+    'js-data-localforage.js',
     'guh-libjs.js',
     'ngDialog.js',
     'Chart.js',

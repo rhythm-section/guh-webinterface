@@ -45,8 +45,9 @@
       // Libraries
       'ui.router',
       'cfp.hotkeys',
-      'ngDialog',
       'chart.js',
+      'angular-useragent-parser',
+      'ng-fastclick',
 
       // Configuration
       'guh.config',
@@ -58,6 +59,7 @@
       'guh.utils',
 
       // Services (guh-libjs)
+      'guh.vendor',
       'guh.logging',
       'guh.api',
       'guh.models',
@@ -66,10 +68,8 @@
       'guh.ui',
 
       // App
-      'guh.intro',
-      'guh.moods',
-      'guh.devices',
-      'guh.services'
+      'guh.components',
+      'guh.containers'
     ]);
 
 }());

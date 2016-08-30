@@ -1,0 +1,94 @@
+<!-- 
+  Copyright (C) 2015 Lukas Mayerhofer <lukas.mayerhofer@guh.guru>
+  
+  Permission is hereby granted, free of charge, to any person obtaining a copy
+  of this software and associated documentation files (the "Software"), to deal
+  in the Software without restriction, including without limitation the rights
+  to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+  copies of the Software, and to permit persons to whom the Software is
+  furnished to do so, subject to the following conditions:
+  
+  The above copyright notice and this permission notice shall be included in all
+  copies or substantial portions of the Software.
+  
+  THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+  IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+  FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+  AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+  LIABILITY, WHETHER IN AN ActionType OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+  OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+  SOFTWARE.
+-->
+
+
+<!-- Button-Group -->
+<guh-button-group async-status="paramType.asyncStatus" label="{{ paramType.component.label }}" ng-if="paramType.component.selector === 'guh-button-group'">
+  <guh-button label="{{ button.label }}"
+              on-press="paramType.setParam(button.name, button.value)"
+              ng-repeat="button in paramType.component.buttons track by $index"></guh-button>
+</guh-button-group>
+
+<!-- Checkbox -->
+<guh-checkbox ng-if="paramType.component.selector === 'guh-checkbox'"
+              label="{{ paramType.component.bindings.label }}"
+              value="paramType.component.bindings.value"
+              on-change="paramType.setParam(paramType.component.bindings.name, value, initial)"></guh-checkbox>
+
+<!-- Color -->
+<guh-color ng-if="paramType.component.selector === 'guh-color'"></guh-color>
+
+<!-- Date-Time -->
+<guh-date-time ng-if="paramType.component.selector === 'guh-date-time'"></guh-date-time>
+
+<!-- Slider -->
+<guh-slider ng-if="paramType.component.selector === 'guh-slider'"
+            async-status="paramType.asyncStatus"
+            label="{{ paramType.component.bindings.label }}"
+            min-value="paramType.component.bindings.minValue"
+            max-value="paramType.component.bindings.maxValue"
+            name="{{ paramType.component.bindings.name }}"
+            unit="{{ paramType.component.bindings.unit }}"
+            value="paramType.component.bindings.value"
+            on-change="paramType.setParam(paramType.component.bindings.name, value, initial)"></guh-slider>
+
+<!-- Select -->
+<guh-select ng-if="paramType.component.selector === 'guh-select'"
+            async-status="paramType.asyncStatus"
+            label="{{ paramType.component.bindings.label }}"
+            name="{{ paramType.component.bindings.name }}"
+            options="paramType.component.bindings.options"
+            required="paramType.component.bindings.required"
+            value="paramType.component.bindings.value"
+            on-change="paramType.setParam(paramType.component.bindings.name, value, initial)"></guh-select>
+
+<!-- Text-Area -->
+<guh-text-area ng-if="paramType.component.selector === 'guh-text-area'"
+               async-status="paramType.asyncStatus"
+               label="{{ paramType.component.bindings.label }}"
+               name="{{ paramType.component.bindings.name }}"
+               required="paramType.component.bindings.required"
+               value="paramType.component.bindings.value"
+               on-change="paramType.setParam(paramType.component.bindings.name, value, initial)"></guh-text-area>
+
+<!-- Text-Input -->
+<guh-text-input ng-if="paramType.component.selector === 'guh-text-input'"
+                async-status="paramType.asyncStatus"
+                label="{{ paramType.component.bindings.label }}"
+                name="{{ paramType.component.bindings.name }}"
+                required="paramType.component.bindings.required"
+                type="{{ paramType.component.bindings.type }}"
+                unit="{{ paramType.component.bindings.unit }}"
+                value="paramType.component.bindings.value"
+                on-change="paramType.setParam(paramType.component.bindings.name, value, initial)"></guh-text-input>
+
+<!-- Time -->
+<guh-time ng-if="paramType.component.selector === 'guh-time'"></guh-time>
+
+<!-- Toggle-Button -->
+<guh-toggle-button  ng-if="paramType.component.selector === 'guh-toggle-button'"
+                    async-status="paramType.asyncStatus"
+                    button-label="{{ paramType.component.bindings.buttonLabel }}"
+                    label="{{ paramType.component.bindings.label }}"
+                    name="{{ paramType.component.bindings.name }}"
+                    value="paramType.component.bindings.value"
+                    on-change="paramType.setParam(paramType.component.bindings.name, value, initial)"></guh-toggle-button>

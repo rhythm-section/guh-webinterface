@@ -1,4 +1,5 @@
 /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
+/* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
  *                                                                                     *
  * Copyright (C) 2015 Lukas Mayerhofer <lukas.mayerhofer@guh.guru>                     *
  *                                                                                     *
@@ -56,9 +57,7 @@
 
 @import "../assets/scss/base/reset";
 @import "../assets/scss/base/base";
-
-@import "../assets/scss/layout/header";
-@import "../assets/scss/layout/content";
+@import "../assets/scss/base/content";
 
 
 /*
@@ -67,34 +66,51 @@
  */
 
 @import "../assets/scss/modules/action";
-@import "../assets/scss/modules/button";
-@import "../assets/scss/modules/container";
-@import "../assets/scss/modules/content";
 @import "../assets/scss/modules/event";
-@import "../assets/scss/modules/heading";
-@import "../assets/scss/modules/hotkeys";
-@import "../assets/scss/modules/icon";
 @import "../assets/scss/modules/list";
-@import "../assets/scss/modules/loading";
-@import "../assets/scss/modules/overlay";
 @import "../assets/scss/modules/param";
 @import "../assets/scss/modules/state";
+@import "../assets/scss/modules/text";
 
 
 /*
- * Components (Shared UI)
+ * Components
  */
 
-@import "../app/shared/ui/action-bar/action-bar";
-@import "../app/shared/ui/button-group/button-group";
-@import "../app/shared/ui/color/color";
-@import "../app/shared/ui/form/form";
-@import "../app/shared/ui/line-chart/line-chart";
-@import "../app/shared/ui/morph-modal/morph-modal";
-@import "../app/shared/ui/range/range";
-@import "../app/shared/ui/remote-navigation/remote-navigation";
-@import "../app/shared/ui/remote-fn/remote-fn";
-@import "../app/shared/ui/remote-player/remote-player";
-@import "../app/shared/ui/slider/slider";
-@import "../app/shared/ui/wizard/wizard";
-@import "../app/shared/ui/tabs/tabs";
+@import "containers/intro/intro";
+@import "containers/settings/settings";
+@import "containers/rules/rules";
+@import "containers/rule-details/rule-details";
+@import "containers/things/things";
+@import "containers/thing-details/thing-details";
+
+@import "components/action-bar/action-bar";
+@import "components/add-connection/add-connection";
+@import "components/filter/filter";
+@import "components/load/load";
+@import "components/modal-container/modal-container";
+@import "components/navigation-bar/navigation-bar";
+@import "components/param-type/param-type";
+@import "components/param-type-list/param-type-list";
+@import "components/state-descriptor/state-descriptor";
+@import "components/state-type/state-type";
+@import "components/tile-list/tile-list";
+@import "components/tile-item/tile-item";
+
+@import "components/ui/button/button";
+@import "components/ui/button-group/button-group";
+@import "components/ui/checkbox/checkbox";
+@import "components/ui/icon/icon";
+@import "components/ui/select/select";
+@import "components/ui/slider/slider";
+@import "components/ui/text-area/text-area";
+@import "components/ui/text-input/text-input";
+@import "components/ui/toggle-button/toggle-button";
+
+
+/*
+ * Shared directives (old => get replaces by components)
+ */
+
+@import "shared/ui/form/form";
+@import "shared/ui/wizard/wizard";

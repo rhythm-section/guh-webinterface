@@ -28,7 +28,6 @@
  */
 
 var gulp = require('gulp');
-var browserSync = require('browser-sync').create('app-server');
 var runSequence = require('run-sequence');
 var argsParser = require('../utils/args-parser');
 var logger = require('../utils/logger');
@@ -47,6 +46,7 @@ gulp.task('development', function(done) {
     'copy-assets-development',
     'build-ui-svg-sprites',
     'build-vendor-svg-sprites',
+    'build-device-class-svg-sprites',
     [
       'build-templates-development',
       'build-vendor-styles-development',

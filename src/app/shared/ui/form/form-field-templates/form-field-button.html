@@ -21,7 +21,8 @@
 -->
 
 
-<div>
-  <!-- <label>{{ formField.label }}</label> -->
+<!-- <div>
   <button class="full" type="button" ng-click="formField.setValue()"><span>Execute {{ formField.label }}</span></button>
-</div>
+</div> -->
+
+<guh-button label="{{ formField.label }}" async="formField.async" on-press="formField.setValue()"></guh-button>

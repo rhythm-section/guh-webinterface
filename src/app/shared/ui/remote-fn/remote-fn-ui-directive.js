@@ -69,7 +69,6 @@
 
 
         function _init() {
-          $log.log('vm', vm);
           _checkParameters();
 
           if(!vm.error) {
@@ -88,7 +87,7 @@
                     $log.error('guh.ui.remoteButtonGroupCtrl:controller | The value of parameter action has to be an object.');
                     vm.error = true;
 
-                    if(angular.isUndefined(vm.action.actionType) || !DSActionType.is(vm.action.actionType)) {
+                    if(angular.isUndefined(vm.action.actionType) || !DSActionType.is(vm.action.actionType)) {
                       $log.error('guh.ui.remoteButtonGroupCtrl:controller | The parameter action has to include an actionType.');
                       vm.error = true;
                     }
@@ -136,8 +135,6 @@
               }
             });
           }
-
-          $log.log('params', params);
 
           // Execute action
           if(angular.isDefined(device) && DSDevice.is(device)) {

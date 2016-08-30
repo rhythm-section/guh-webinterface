@@ -30,6 +30,7 @@
 var gulp = require('gulp');
 var ignore = require('gulp-ignore');
 var mainBowerFiles = require('main-bower-files');
+var argsParser = require('../utils/args-parser');
 
 
 /*
@@ -46,6 +47,12 @@ var mainBowerFilesConfig = require('../config/gulp').mainBowerFiles.scripts;
 
 module.exports = {
   getPipe: function() {
+    var environment = argsParser.getEnvironment();
+
+    if(environment === 'development') {
+      mainBowerFilesConfig.includeDev = true;
+    }
+
     return gulp.src(mainBowerFiles(mainBowerFilesConfig))
       .pipe(ignore.exclude('*.map'))
       .pipe(gulp.dest(pathConfig.libs.development));
