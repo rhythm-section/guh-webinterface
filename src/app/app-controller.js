@@ -29,20 +29,21 @@
     .module('guh')
     .controller('AppCtrl', AppCtrl);
 
-  AppCtrl.$inject = ['$log', '$rootScope', '$scope', '$state', '$stateParams', '$animate', '$timeout', 'app', 'libs', 'errors', 'websocketService', 'DSSettings', 'ModalContainer', 'UAParser'];
+  AppCtrl.$inject = ['$log', '$rootScope', '$scope', '$state', '$stateParams', '$animate', '$timeout', 'app', 'libs', 'errors', 'websocketService', 'ModalContainer', 'UAParser'];
+  // AppCtrl.$inject = ['$log', '$rootScope', '$scope', '$state', '$stateParams', '$animate', '$timeout', 'app', 'libs', 'errors', 'websocketService', 'DSSettings', 'ModalContainer', 'UAParser'];
 
-  function AppCtrl($log, $rootScope, $scope, $state, $stateParams, $animate, $timeout, app, libs, errors, websocketService, DSSettings, ModalContainer, UAParser) {
+  function AppCtrl($log, $rootScope, $scope, $state, $stateParams, $animate, $timeout, app, libs, errors, websocketService, ModalContainer, UAParser) {
+  // function AppCtrl($log, $rootScope, $scope, $state, $stateParams, $animate, $timeout, app, libs, errors, websocketService, DSSettings, ModalContainer, UAParser) {
 
     var vm = this;
-    var notificationModal = null;
+    // var notificationModal = null;
     var connectionErrorModal = null;
 
     vm.$state = $state;
     vm.deviceType = new UAParser().getDevice().type;
 
 
-    // Websocket Connection Error
-    $scope.$on('WebsocketConnectionLost', function(event, data) {
+    function _showConnectionLostModal(data) {
       // Only show error when data available (=> not first run)
       if(app.dataLoaded) {
         if(!connectionErrorModal) {
@@ -58,6 +59,7 @@
                       '</div>'
           })
           .then(function(modal) {
+            $log.log('modal', modal);
             connectionErrorModal = modal.open();
           })
           .catch(function(error) {
@@ -69,6 +71,19 @@
           websocketService.reconnect(app.websocketUrl);
         }, 2000);
       }
+    }
+
+
+    // Websocket Connection Error
+    $scope.$on('WebsocketConnectionError', function(event, data) {
+      $log.log('WebsocketConnectionError', app.dataLoaded);
+      _showConnectionLostModal(data);      
+    });
+
+    // Websocket Connection Error
+    $scope.$on('WebsocketConnectionLost', function(event, data) {
+      $log.log('WebsocketConnectionLost', app.dataLoaded);
+      _showConnectionLostModal(data);      
     });
 
     $scope.$on('WebsocketConnected', function(event, data) {
@@ -83,17 +98,6 @@
         // Reload data (could have changed since connection was lost)
         $state.go('guh.intro');
       }
-    });
-
-    $scope.$on('InitialHandshake', function(event, data) {
-      delete data.id;
-      data.userId = 'serverInfo';
-
-      DSSettings
-        .create(data)
-        .catch(function(error) {
-          $log.error('error', error);
-        });
     });
 
     // Common Notification Handler
@@ -112,23 +116,24 @@
 
       // Show notification
       if(error && notificationMessage) {
-        ModalContainer.add({
-          controller: 'NotificationModalCtrl',
-          controllerAs: 'notificationModal',
-          classes: 'Modal_notification',
-          data: null,
-          template: '<div>' + 
-                      '<div class="Modal__title">Uuups...</div>' + 
-                      '<button class="close" type="button" ng-click="notificationModal.modalInstance.close()"><svg class="icon"><use xlink:href="./assets/svg/ui/ui.symbol.svg#close"></use></svg></button>' + 
-                      '<p class="Modal__content">' + notificationMessage + '</p>' + 
-                    '</div>'
-        })
-        .then(function(modal) {
-          notificationModal = modal.open();
-        })
-        .catch(function(error) {
-          $log.error('error', error);
-        });
+        $log.log('Unhandled error:', notificationMessage);
+        // ModalContainer.add({
+        //   controller: 'NotificationModalCtrl',
+        //   controllerAs: 'notificationModal',
+        //   classes: 'Modal_notification',
+        //   data: null,
+        //   template: '<div>' + 
+        //               '<div class="Modal__title">Uuups...</div>' + 
+        //               '<button class="close" type="button" ng-click="notificationModal.modalInstance.close()"><svg class="icon"><use xlink:href="./assets/svg/ui/ui.symbol.svg#close"></use></svg></button>' + 
+        //               '<p class="Modal__content">' + notificationMessage + '</p>' + 
+        //             '</div>'
+        // })
+        // .then(function(modal) {
+        //   notificationModal = modal.open();
+        // })
+        // .catch(function(error) {
+        //   $log.error('error', error);
+        // });
       }
     });
 
