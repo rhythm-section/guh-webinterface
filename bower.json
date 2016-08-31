@@ -62,6 +62,9 @@
     "angular-ui-router": {
       "main": "./release/angular-ui-router.js"
     },
+    "guh-libjs": {
+      "main": "./dist/guh-libjs.js"
+    },
     "localforage": {
       "main": "./dist/localforage.js"
     },
