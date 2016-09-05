@@ -29,7 +29,7 @@
     .module('guh.containers')
     .controller('ThingDetailsCtrl', ThingDetailsCtrl);
 
-  ThingDetailsCtrl.$inject = ['app', 'libs', '$log', '$scope', '$filter', '$state', '$stateParams', 'DSDevice', 'DSDeviceClass', 'DSState', 'DSRule', 'NavigationBar', 'ActionBar', 'ModalContainer'];
+  ThingDetailsCtrl.$inject = ['app', 'libs', '$log', '$scope', '$filter', '$state', '$stateParams', 'DSDevice', 'DSDeviceClass', 'DSParamType', 'DSState', 'DSRule', 'NavigationBar', 'ActionBar', 'ModalContainer'];
 
   /**
    * @ngdoc controller
@@ -37,7 +37,7 @@
    * @description Container component for a single thing.
    *
    */
-  function ThingDetailsCtrl(app, libs, $log, $scope, $filter, $state, $stateParams, DSDevice, DSDeviceClass, DSState, DSRule, NavigationBar, ActionBar, ModalContainer) {
+  function ThingDetailsCtrl(app, libs, $log, $scope, $filter, $state, $stateParams, DSDevice, DSDeviceClass, DSParamType, DSState, DSRule, NavigationBar, ActionBar, ModalContainer) {
     
     var vm = this;
     var device;
@@ -114,9 +114,7 @@
       // Filter values of type "Double" to show only two digits after decimal point
       angular.forEach(vm.params, function(param, index) {
         // Find paramType to param
-        var paramType = libs._.find(device.deviceClass.paramTypes, function(paramType) {
-          return paramType.name === param.name;
-        });
+        var paramType = DSParamType.get(param.paramTypeId);
 
         if(angular.isDefined(paramType) && paramType.type === app.basicTypes.double) {
           vm.params[index].value = $filter('number')(vm.params[index].value, '2');
@@ -173,16 +171,14 @@
 
       // Params
       angular.forEach(vm.params, function(param) {
-        vm.paramsObject[$filter('camelCase')(param.name)] = param;
+        vm.paramsObject[param.paramTypeId] = param;
       });
 
       // Enhanced Params
       angular.forEach(vm.params, function(param) {
         vm.enhancedParams.push({
           param: param,
-          paramType: libs._.find(vm.deviceClass.paramTypes, function(paramType) {
-            return param.name === paramType.name;
-          })
+          paramType: DSParamType.get(param.paramTypeId)
         });
       });
 
@@ -203,7 +199,6 @@
             errorData.devices = _getDevices();
             break;
           case 'DeviceErrorDeviceInRule':
-            // var ruleIds = error.data.ruleIds ? error.data.ruleIds : [];
             var ruleIds = error.ruleIds ? error.ruleIds : [];
             errorData.rules = _getRules(ruleIds);
             break;
