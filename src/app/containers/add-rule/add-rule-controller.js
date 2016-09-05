@@ -30,7 +30,7 @@
     .module('guh.containers')
     .controller('AddRuleCtrl', AddRuleCtrl);
 
-  AddRuleCtrl.$inject = ['app', 'libs', '$log', '$rootScope', '$state', '$stateParams', 'ModalContainer', 'DSRule'];
+  AddRuleCtrl.$inject = ['app', 'libs', '$log', '$rootScope', '$state', '$stateParams', 'ModalContainer', 'DSRule', 'DSParamType'];
 
   /**
    * @ngdoc controller
@@ -38,7 +38,7 @@
    * @description Container component for adding a new thing.
    *
    */
-  function AddRuleCtrl(app, libs, $log, $rootScope, $state, $stateParams, ModalContainer, DSRule) {
+  function AddRuleCtrl(app, libs, $log, $rootScope, $state, $stateParams, ModalContainer, DSRule, DSParamType) {
     
     var vm = this;
     var actionModal = null;
@@ -311,18 +311,15 @@
 
 
     $rootScope.$on('modals.close', function(event, modal, data) {
-      var enhancedParams;
+      var enhancedParams = [];
 
       if(data) {
         if(actionModal && modal.id === actionModal.id) {
-          enhancedParams = angular.copy(data.params);
-
-          angular.forEach(data.params, function(param, index) {
-            var paramType = libs._.find(data.actionType.paramTypes, function(paramType) {
-              return paramType.name === param.name;
+          angular.forEach(data.params, function(param) {
+            enhancedParams.push({
+              param: param,
+              paramType: DSParamType.get(param.paramTypeId)
             });
-
-            enhancedParams[index].unit = paramType.unit;
           });
 
           // Add actions
@@ -353,14 +350,11 @@
             title: data.title
           });
         } else if(exitActionModal && modal.id === exitActionModal.id) {
-          enhancedParams = angular.copy(data.params);
-
-          angular.forEach(data.params, function(param, index) {
-            var paramType = libs._.find(data.actionType.paramTypes, function(paramType) {
-              return paramType.name === param.name;
+          angular.forEach(data.params, function(param) {
+            enhancedParams.push({
+              param: param,
+              paramType: DSParamType.get(param.paramTypeId)
             });
-
-            enhancedParams[index].unit = paramType.unit;
           });
 
           // Add exitActions
