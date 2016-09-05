@@ -31,7 +31,7 @@
 <guh-param-type ng-if="action.actionType.paramTypes.length === 1"
                 async-status="action.executionStatus"
                 param-type="action.actionType.paramTypes[0]"
-                on-change="action.execute([{ name: name, value: value }])"></guh-param-type>
+                on-change="action.execute([{ paramTypeId: id, value: value }])"></guh-param-type>
 
 <!-- With multiple params -->
 <!-- Actions with multiple paramTypes cannot have a corresponding state value because such actions will be created from the corresponding stateType itself. This guarantees that the action has exactly one paramType which is from the same type as the stateType. -->
