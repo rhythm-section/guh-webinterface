@@ -34,7 +34,8 @@
     "angular-useragent-parser": "^0.1.0",
     "ng-fastclick": "^1.0.2",
     "localforage": "^1.4.2",
-    "js-data-localforage": "^2.1.1"
+    "js-data-localforage": "^2.1.1",
+    "node-uuid": "^1.4.7"
   },
   "devDependencies": {},
   "overrides": {

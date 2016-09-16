@@ -22,67 +22,78 @@
  *                                                                                     *
  * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 
-
 (function() {
   'use strict';
 
   angular
     .module('guh.components')
-    .controller('AddConnectionCtrl', AddConnectionCtrl);
+    .service('Login', Login);
 
-  AddConnectionCtrl.$inject = ['$log', '$scope'];
+  Login.$inject = ['$log', '$http', 'DSAuthentication'];
 
-  /**
-   * @ngdoc controller
-   * @name guh.containers.controller:AddConnectionCtrl
-   * @description Container component for the intro.
-   *
-   */
-  function AddConnectionCtrl($log, $scope) {
+  function Login($log, $http, DSAuthentication) {
 
-    var vm = this;
+    /*
+     * Service globals
+     */
 
-    vm.host;
-    vm.port,
-    vm.ssl;
-    vm.default;
-    vm.newConnection = {};
-
-    // Methods
-    vm.setSsl = setSsl;
-    vm.setDefault = setDefault;
-    vm.tryToConnect = tryToConnect;
+    var urlPathBase = 'https://my.guh.io:8000/';
+    // var urlPartAuth = '/oauth2/authorize';
+    // var clientId = '94bfe2324ef341f5b8f9085ea936ce5e';
+    // var clientSecret = '3abd1aba46f94040b8e0796e91c449ef';
+    var responseType = 'token';
 
 
-    function setSsl(value) {
-      vm.ssl = value;
-    }
+    /*
+     * Service API
+     */
 
-    function setDefault(value) {
-      vm.default = value;
-    }
+    var service = {
+      login: login
+    };
 
-    function tryToConnect(isValid) {
-      var protocol = vm.ssl ? 'wss' : 'ws';
+    return service;
 
-      if(isValid) {
-        vm.newConnection = {
-          id: vm.host,
-          settingsId: 'general',
-          default: vm.default,
-          name: vm.host,
-          protocol: protocol,
-          host: vm.host,
-          port: vm.port,
-          url: protocol + '://' + vm.host + ':' + vm.port
-        };
 
-        vm.onOpenConnection({
-          connection: vm.newConnection
+    /*
+     * Private functions
+     */
+    
+    function _getConnections() {
+      return DSAuthentication
+        .find('general', {
+          with: [ 'connection', 'serverInfo' ]
+        })
+        .then(function(settings) {
+          $log.log('_getConnections');
+          $log.log('settings', settings);
+        })
+        .catch(function(error) {
+          _handleError(error);
+          return false;
         });
-      }
     }
 
-  };
+    
+    /*
+     * Public methods
+     */
+
+    function login(username, password) {
+      $http({
+        method: 'GET',
+        url: urlPathBase + urlPartAuth,
+        params: {
+          'response_type': responseType,
+          'client_id': clientId,
+        }
+      }).then(function success(response) {
+        $log.log('success', response);
+      }, function failure(response) {
+        $log.log('failure', response);
+      });
+    }
+
+  }
 
 }());

@@ -28,61 +28,22 @@
 
   angular
     .module('guh.components')
-    .controller('AddConnectionCtrl', AddConnectionCtrl);
-
-  AddConnectionCtrl.$inject = ['$log', '$scope'];
-
-  /**
-   * @ngdoc controller
-   * @name guh.containers.controller:AddConnectionCtrl
-   * @description Container component for the intro.
-   *
-   */
-  function AddConnectionCtrl($log, $scope) {
-
-    var vm = this;
-
-    vm.host;
-    vm.port,
-    vm.ssl;
-    vm.default;
-    vm.newConnection = {};
-
-    // Methods
-    vm.setSsl = setSsl;
-    vm.setDefault = setDefault;
-    vm.tryToConnect = tryToConnect;
+    .component('guhLogin', {
+      bindings: {
+        onAuthenticationSuccess: '&',
+        onAuthenticationError: '&'
+      },
+      controller: 'LoginCtrl',
+      controllerAs: 'login',
+      templateUrl: 'app/components/login/login.html'
+    })
+    .config(config);
 
 
-    function setSsl(value) {
-      vm.ssl = value;
-    }
+  config.$inject = ['$httpProvider'];
 
-    function setDefault(value) {
-      vm.default = value;
-    }
-
-    function tryToConnect(isValid) {
-      var protocol = vm.ssl ? 'wss' : 'ws';
-
-      if(isValid) {
-        vm.newConnection = {
-          id: vm.host,
-          settingsId: 'general',
-          default: vm.default,
-          name: vm.host,
-          protocol: protocol,
-          host: vm.host,
-          port: vm.port,
-          url: protocol + '://' + vm.host + ':' + vm.port
-        };
-
-        vm.onOpenConnection({
-          connection: vm.newConnection
-        });
-      }
-    }
-
-  };
+  function config($httpProvider) {
+    $httpProvider.defaults.headers.common['Authorization'] = 'Basic ' + btoa('94bfe2324ef341f5b8f9085ea936ce5e' + ':' + '3abd1aba46f94040b8e0796e91c449ef');
+  }
 
 }());

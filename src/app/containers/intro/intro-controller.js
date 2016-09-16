@@ -29,7 +29,7 @@
     .module('guh.containers')
     .controller('IntroCtrl', IntroCtrl);
 
-  IntroCtrl.$inject = ['$log', '$element', '$scope', '$timeout', '$location', '$q', '$animate', '$state', 'libs', 'DSSettings', 'DSConnection', 'DSServerInfo', 'websocketService'];
+  IntroCtrl.$inject = ['$log', '$window', '$element', '$scope', '$timeout', '$location', '$q', '$animate', '$state', 'libs', 'DSSettings', 'DSConnection', 'DSAuthentication', 'DSServerInfo', 'cloudService', 'websocketService'];
 
   /**
    * @ngdoc controller
@@ -37,7 +37,7 @@
    * @description Container component for the intro.
    *
    */
-  function IntroCtrl($log, $element, $scope, $timeout, $location, $q, $animate, $state, libs, DSSettings, DSConnection, DSServerInfo, websocketService) {
+  function IntroCtrl($log, $window, $element, $scope, $timeout, $location, $q, $animate, $state, libs, DSSettings, DSConnection, DSAuthentication, DSServerInfo, cloudService, websocketService) {
     
     var vm = this;
     var settings;
@@ -49,8 +49,8 @@
     vm.view = {
       logoAnimation: false,
       content: {
+        login: false,
         connectionList: false,
-        addConnection: false,
         loadData: false
       }
     };
@@ -64,55 +64,38 @@
     // Methods
     vm.$postLink = $postLink;
 
+    vm.authenticateConnection = authenticateConnection;
     vm.connect = connect;
-    vm.addConnection = addConnection;
+    vm.createTunnel = createTunnel;
     vm.showThings = showThings;
 
 
     function $postLink() {
-      $q.all({
-        'animate': _animateLogo('is-visible'),
-        'settings': _loadSettings()
-      })
-      .then(function(resolvedPromise) {
-        var connections = [];
-        var defaultConnections = [];
-        var ssl = $location.protocol().charAt($location.protocol().length - 1) === 's' ? true : false;
-        var protocol = ssl ? 'wss' : 'ws';
-        var host = $location.host();
-        var port = '4444';
-        var url = protocol + '://' + host + ':' + port;
-        var hostConnection = {
-          host: host,
-          name: host + ':' + port,
-          protocol: protocol,
-          port: '4444',
-          ssl: ssl,
-          url: url
-        };
-
-        if(resolvedPromise.settings) {
-          connections = _getConnections(resolvedPromise.settings);
-          defaultConnections = _filterDefaultConnections(connections);
-
-          settings = resolvedPromise.settings;
-          vm.connections = resolvedPromise.settings.connections;
-
-          if(defaultConnections.length === 0) {
-            // If there are no default connections saved, connect to host of webinterface
-            vm.connect(hostConnection);
-          } else {
-            // Connect to first saved default connection
-            vm.connect(defaultConnections[0]);
-          }
-        } else {
-          // If there are no default connections saved, connect to host of webinterface
-          vm.connect(hostConnection);
-        }
-      })
-      .catch(_handleError);
+      _animateLogo('is-visible')
+        .then(function() {
+          // Show login
+          $timeout(_authenticateUser, 400);
+        })
+        .catch(_handleError);
     }
 
+
+    function authenticateConnection() {
+      var host = 'proxy.guh.io';
+      var port = '1212';
+      var protocol = 'ws';
+      var url = protocol + '://' + host + ':' + port;
+      var cloudConnection = {
+        host: host,
+        name: host + ':' + port,
+        protocol: protocol,
+        port: port,
+        ssl: false,
+        url: url
+      };
+
+      vm.connect(cloudConnection);
+    }
 
     function connect(connection) {
       vm.connectionOpenStatus.pending = true;
@@ -124,10 +107,21 @@
       websocketService.reconnect(connection.url);
     }
 
+    function createTunnel(connection) {
+      DSConnection
+        .createTunnel(connection.id)
+        .then(function(tunnel) {
+          cloudService.setTunnelId(tunnel.id);
+          _loadData();
+        })
+        .catch(_handleError);
+    }
+
     function addConnection() {
       vm.view.content.connectionList = false;
       vm.view.content.addConnection = true;
       vm.view.content.loadData = false;
+      vm.view.content.login = false;
     }
 
 
@@ -202,9 +196,22 @@
       });
     }
 
+    function _authenticateUser() {
+      vm.view.content.connectionList = false;
+      vm.view.content.loadData = false;
+
+      _animateLogo('is-small')
+        .then(function() {
+          vm.view.content.login = true;
+        })
+        .catch(_handleError);
+    }
+
     function _loadData() {
       vm.view.content.connectionList = false;
+      vm.view.content.cloudConnectionList = false;
       vm.view.content.addConnection = false;
+      vm.view.content.login = false;
 
       _animateLogo('is-small', 'remove')
         .then(function() {
@@ -240,12 +247,16 @@
             .then(function(resolvedPromise) {
               if(vm.view.content.addConnection) {
                 vm.view.content.connectionList = false;
+                vm.view.content.cloudConnectionList = false;
                 vm.view.content.addConnection = true;
                 vm.view.content.loadData = false;
+                vm.view.content.login = false;
               } else {
                 vm.view.content.connectionList = true;
+                vm.view.content.cloudConnectionList = false;
                 vm.view.content.addConnection = false;
                 vm.view.content.loadData = false;
+                vm.view.content.login = false;
               }
             })
             .catch(_handleError);
@@ -255,24 +266,62 @@
 
     // $scope.$on('WebsocketConnectionLost', function(event, data) {});
 
+    $scope.$on('websocket:onmessage', function(event, response) {
+      $log.log('websocket:onmessage', response);
+    });
+
     $scope.$on('InitialHandshake', function(event, data) {
       data.settingsId = 'general';
 
-      if(angular.isDefined(settings)) {
-        _saveSettings(data)
-          .then(_loadData)
-          .catch(_handleError);
+      if(angular.isDefined(data.server) &&
+         data.server === 'guh-cloudproxy') {
+        var cloudUser = DSAuthentication.get('cloudUser');
+
+        if(cloudUser) {
+          var id = $window.uuid.v4();
+          var name = 'guh-webinterface:' + $window.navigator.userAgent;
+          var token = cloudUser.accessToken;
+          var type = 'ConnectionTypeClient';
+
+          DSAuthentication
+            .authenticateConnection(id, name, token, type)
+            .then(function(connectionData) {
+              if(angular.isDefined(connectionData.connectionId)) {
+                DSConnection
+                  .getConnections()
+                  .then(function(connections) {
+                    vm.connections = connections.serverConnections;
+
+                    vm.view.content.login = false;
+                    vm.view.content.loadData = false;
+                    vm.view.content.connectionList = true;
+                  })
+                  .catch(_handleError);
+              } else {
+                _handleError('No connectionId present.');
+              }
+            })
+            .catch(_handleError);
+        } else {
+          _handleError('User is not authenticated.');
+        }
       } else {
-        DSSettings
-          .create({
-            id: 'general'
-          })
-          .then(function(settings) {
-            _saveSettings(data)
-              .then(_loadData)
-              .catch(_handleError);
-          })
-          .catch(_handleError);
+        if(angular.isDefined(settings)) {
+          _saveSettings(data)
+            .then(_loadData)
+            .catch(_handleError);
+        } else {
+          DSSettings
+            .create({
+              id: 'general'
+            })
+            .then(function(settings) {
+              _saveSettings(data)
+                .then(_loadData)
+                .catch(_handleError);
+            })
+            .catch(_handleError);
+        }
       }
     });
 

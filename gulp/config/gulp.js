@@ -173,6 +173,7 @@ module.exports = {
 
   order: [
     'lodash.js',
+    'uuid.js',
     'angular.js',
     'angular-animate.js',
     'angular-messages.js',

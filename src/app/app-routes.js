@@ -29,9 +29,10 @@
     .module('guh')
     .config(config);
 
-    config.$inject = ['$provide', '$urlRouterProvider', '$stateProvider', 'guhLoggingProvider'];
+    config.$inject = ['$provide', '$httpProvider', '$urlRouterProvider', '$stateProvider', 'guhLoggingProvider', 'cloudServiceProvider', 'apiServiceProvider'];
 
-    function config($provide, $urlRouterProvider, $stateProvider, guhLoggingProvider) {
+    function config($provide, $httpProvider, $urlRouterProvider, $stateProvider, guhLoggingProvider, cloudServiceProvider, apiServiceProvider) {
+
 
       /*
        * Logging
@@ -39,6 +40,25 @@
 
       guhLoggingProvider.enhance('error');
       guhLoggingProvider.after('error', 'broadcast');
+
+
+      /*
+       * Cloud
+       */
+
+      var clientId = '6ac82de6a2ba454394f9022b6a733885';
+      var clientSecret = 'd63eece1b725419f80961a9b1c49f8d4';
+
+      $httpProvider.defaults.headers.common['Authorization'] = 'Basic ' + btoa(clientId + ':' + clientSecret);
+      cloudServiceProvider.baseUrl = 'cloud.guh.io';
+      cloudServiceProvider.loginUrl = '/oauth2/token';
+
+
+      /*
+       * API
+       */
+
+      apiServiceProvider.connectionType = 'cloudWebsocket';
 
 
       /*

@@ -1,0 +1,70 @@
+<!-- 
+  Copyright (C) 2015 Lukas Mayerhofer <lukas.mayerhofer@guh.guru>
+  
+  Permission is hereby granted, free of charge, to any person obtaining a copy
+  of this software and associated documentation files (the "Software"), to deal
+  in the Software without restriction, including without limitation the rights
+  to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+  copies of the Software, and to permit persons to whom the Software is
+  furnished to do so, subject to the following conditions:
+  
+  The above copyright notice and this permission notice shall be included in all
+  copies or substantial portions of the Software.
+  
+  THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+  IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+  FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+  AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+  LIABILITY, WHETHER IN AN ActionType OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+  OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+  SOFTWARE.
+-->
+
+
+<div class="Login__title">Login</div>
+
+<div class="Login">
+  <div class="Login__content">
+    <!-- <form name="login.loginForm" novalidate ng-submit="login.login(login.loginForm.$valid)"> -->
+    <form name="login.loginForm" novalidate>
+      <!-- <div> -->
+        <!-- <label for="loginEmail">E-Mail</label>
+        <input id="loginEmail" name="loginEmail" type="email" ng-model="login.email" ng-required="true" /> -->
+
+        <label>
+          <span>E-Mail</span>
+          <input id="loginEmail"
+                 name="loginEmail"
+                 placeholder="guru@guh.io"
+                 type="email"
+                 ng-model="login.email"
+                 ng-required="true" />
+        </label>
+        <div class="padding" ng-messages="login.loginForm.loginEmail.$error" ng-if="login.loginForm.loginEmail.$dirty">
+          <p class="padding-horizontal" ng-message="required">E-Mail is required.</p>
+          <p class="padding-horizontal" ng-message="email">E-Mail is not valid.</p>
+        </div>
+      <!-- </div> -->
+
+      <!-- <div> -->
+        <!-- <label for="loginPassword">Password</label>
+        <input id="loginPassword" name="loginPassword" type="password" ng-model="login.password" ng-required="true" /> -->
+
+        <label>
+          <span>Password</span>
+          <input id="loginPassword"
+                 name="loginPassword"
+                 type="password"
+                 ng-model="login.password"
+                 ng-required="true" />
+        </label>
+      <!-- </div> -->
+
+      <!-- <button type="submit">Login</button> -->
+      <guh-button async-status="login.loginStatus"
+                  disabled="!login.loginForm.$valid"
+                  label="Login"
+                  on-press="login.login(login.loginForm.$valid)"></guh-button>
+    </form>
+  </div>
+</div>

@@ -61,7 +61,9 @@
       // Services (guh-libjs)
       'guh.vendor',
       'guh.logging',
+      'guh.connection',
       'guh.api',
+      'guh.cloud',
       'guh.models',
 
       // Directives
