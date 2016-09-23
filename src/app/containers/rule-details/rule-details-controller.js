@@ -29,7 +29,7 @@
     .module('guh.containers')
     .controller('RuleDetailsCtrl', RuleDetailsCtrl);
 
-  RuleDetailsCtrl.$inject = ['app', 'libs', '$log', '$element', '$state', '$stateParams', 'DSRule', 'DSDevice', 'DSStateType', 'DSEventType', 'DSActionType', 'NavigationBar', 'ActionBar'];
+  RuleDetailsCtrl.$inject = ['app', 'libs', '$log', '$element', '$state', '$stateParams', 'DSRule', 'DSDevice', 'DSStateType', 'DSEventType', 'DSActionType', 'DSParamType', 'NavigationBar', 'ActionBar'];
 
   /**
    * @ngdoc controller
@@ -37,7 +37,7 @@
    * @description Container component for a single rule.
    *
    */
-  function RuleDetailsCtrl(app, libs, $log, $element, $state, $stateParams, DSRule, DSDevice, DSStateType, DSEventType, DSActionType, NavigationBar, ActionBar) {
+  function RuleDetailsCtrl(app, libs, $log, $element, $state, $stateParams, DSRule, DSDevice, DSStateType, DSEventType, DSActionType, DSParamType, NavigationBar, ActionBar) {
     
     var vm = this;
     var rule = {};
@@ -127,6 +127,7 @@
       // Enter actions
       angular.forEach(vm.actions, function(action, index) {
         var actionType = DSActionType.get(action.actionTypeId);
+        var paramType;
         
         vm.actions[index].device = DSDevice.get(action.deviceId);
         vm.actions[index].actionType = actionType;
@@ -134,9 +135,10 @@
 
         // RuleActionParams
         angular.forEach(action.ruleActionParams, function(ruleActionParam, index) {
-          if(angular.isDefined(actionType.paramTypes[index])) {
-            ruleActionParam.unit = actionType.paramTypes[index].unit;
-          }
+          paramType = DSParamType.get(ruleActionParam.paramTypeId);
+
+          ruleActionParam.name = paramType.name;
+          ruleActionParam.unit = paramType.unit;
 
           if(angular.isUndefined(ruleActionParam.value)) {
             ruleActionParam.value = null;
@@ -152,6 +154,7 @@
       // Exit actions
       angular.forEach(vm.exitActions, function(exitAction, index) {
         var actionType = DSActionType.get(exitAction.actionTypeId);
+        var paramType;
 
         vm.exitActions[index].phrase = actionType.phrase;
         vm.exitActions[index].actionType = actionType;
@@ -159,9 +162,10 @@
 
         // RuleActionParams
         angular.forEach(exitAction.ruleActionParams, function(ruleActionParam, index) {
-          if(angular.isDefined(actionType.paramTypes[index])) {
-            ruleActionParam.unit = actionType.paramTypes[index].unit;
-          }
+          paramType = DSParamType.get(ruleActionParam.paramTypeId);
+
+          ruleActionParam.name = paramType.name;
+          ruleActionParam.unit = paramType.unit;
 
           if(angular.isUndefined(ruleActionParam.value)) {
             ruleActionParam.value = null;

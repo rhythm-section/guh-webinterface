@@ -25,7 +25,7 @@
   <guh-param-type async-status="action.executionStatus"
                   param-type="paramType"
                   on-required="paramTypeList.disableSubmit(paramComponent)"
-                  on-change="paramTypeList.updateParam(name, value)"
+                  on-change="paramTypeList.updateParam(id, value)"
                   ng-repeat="paramType in paramTypeList.paramTypes | orderBy: 'index' track by $index"></guh-param-type>
 
   <guh-button async-status="paramTypeList.asyncStatus"

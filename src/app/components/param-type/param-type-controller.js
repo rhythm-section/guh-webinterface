@@ -60,7 +60,7 @@
             paramTypeListCtrl: vm.paramTypeListCtrl,
             actionCtrl: vm.actionCtrl
           },
-          // ParenType
+          // ParamType
           vm.paramType
         );
       }
@@ -293,7 +293,7 @@
         return;
       } else {
         vm.onChange({
-          name: name,
+          id: vm.paramType.id,
           value: value
         });
       }
