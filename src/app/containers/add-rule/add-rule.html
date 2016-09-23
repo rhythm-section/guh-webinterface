@@ -43,7 +43,7 @@
       </div>
       <!-- Actions: List -->
       <div class="List__item List__item_hasDescription" ng-click="addRule.deleteAction(action)" ng-repeat="action in addRule.actions track by $index">
-        <div class="List__item-title">{{ action.actionType.name }} <span ng-repeat="param in action.enhancedParams track by $index">{{ $index === 0 ? '(' : '' }}{{ param.name }}={{ param.value }}{{ param.unit | unit }}{{ ($index === action.params.length - 1) ? '' : ', ' }}{{ $index === action.enhancedParams.length - 1 ? ')' : '' }}</span></div>
+        <div class="List__item-title">{{ action.actionType.name }} <span ng-repeat="enhancedParam in action.enhancedParams track by $index">{{ $index === 0 ? '(' : '' }}{{ enhancedParam.paramType.name }}={{ enhancedParam.param.value }}{{ enhancedParam.paramType.unit | unit }}{{ ($index === action.params.length - 1) ? '' : ', ' }}{{ $index === action.enhancedParams.length - 1 ? ')' : '' }}</span></div>
         <div class="List__item-description">{{ action.thing.name }}</div>
         <svg class="List__icon List__icon_right">
           <use xlink:href="./assets/svg/ui/ui.symbol.svg#minus"></use>
@@ -67,7 +67,7 @@
       <!-- ExitActions: List -->
       <div class="List__item List__item_warning" ng-show="addRule.exitActionsDisabled">When trigger were added the mood can only be turned on.</div>
       <div class="List__item List__item_hasDescription" ng-click="addRule.deleteExitAction(action)" ng-class="{ 'List__item_isDisabled': addRule.exitActionsDisabled }" ng-repeat="action in addRule.exitActions track by $index">
-        <div class="List__item-title">{{ action.actionType.name }} (<span ng-repeat="param in action.enhancedParams track by $index">{{ param.name }}={{ param.value }}{{ param.unit | unit }}{{ ($index === action.params.length - 1) ? '' : ', ' }}</span>)</div>
+        <div class="List__item-title">{{ action.actionType.name }} (<span ng-repeat="enhancedParam in action.enhancedParams track by $index">{{ enhancedParam.paramType.name }}={{ enhancedParam.param.value }}{{ enhancedParam.paramType.unit | unit }}{{ ($index === action.params.length - 1) ? '' : ', ' }}</span>)</div>
         <div class="List__item-description">{{ action.thing.name }}</div>
         <svg class="List__icon List__icon_right">
           <use xlink:href="./assets/svg/ui/ui.symbol.svg#minus"></use>

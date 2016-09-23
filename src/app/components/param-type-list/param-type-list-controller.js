@@ -60,8 +60,8 @@
 
       if(check) {
         angular.forEach(vm.paramTypes, function(paramType) {
-          vm.params[paramType.name] = {
-            name: paramType.name,
+          vm.params[paramType.id] = {
+            paramTypeId: paramType.id,
             value: _getDefaultValue(paramType)
           };
         });
@@ -73,8 +73,8 @@
         vm.params = {};
 
         angular.forEach(changesObj.paramTypes.currentValue, function(paramType) {
-          vm.params[paramType.name] = {
-            name: paramType.name,
+          vm.params[paramType.id] = {
+            paramTypeId: paramType.id,
             value: _getDefaultValue(paramType)
           };
         });
@@ -111,10 +111,10 @@
       vm.isDisabled = true;
     }
 
-    function updateParam(name, value) {
-      if(vm.params.hasOwnProperty(name)) {
-        vm.params[name] = {
-          name: name,
+    function updateParam(id, value) {
+      if(vm.params.hasOwnProperty(id)) {
+        vm.params[id] = {
+          paramTypeId: id,
           value: value
         };
       }
