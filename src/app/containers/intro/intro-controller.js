@@ -81,11 +81,12 @@
 
 
     function authenticateConnection() {
-      var host = 'proxy.guh.io';
-      var port = '1212';
-      var protocol = 'ws';
-      var url = protocol + '://' + host + ':' + port;
+      var host = 'proxy.guh.io/ws';
+      var protocol = 'wss';
+      var port = 433;
+      var url = protocol + '://' + host;
       var cloudConnection = {
+        id: 'proxy',
         host: host,
         name: host + ':' + port,
         protocol: protocol,
