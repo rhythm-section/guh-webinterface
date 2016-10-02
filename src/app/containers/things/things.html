@@ -28,7 +28,6 @@
   <guh-tile-item icon-url="{{ thing.deviceClass.deviceIcon ? './assets/svg/device-class/device-class.symbol.svg#' + thing.deviceClass.deviceIcon : './assets/svg/device-class/device-class.symbol.svg#DeviceIconDevice' }}"
                  description="{{ thing.getDescription('&nbsp;&middot;&nbsp;') }}"
                  title="{{ thing.name }}"
-                 is-disabled="thing.isDisabled"
                  ng-repeat="thing in things.configuredDevices | basicTags:things.filterItems | orderBy: 'name'" id="{{ thing.id }}"
                  ng-if="things.filterItems.length > 0"></guh-tile-item>
 </guh-tile-list>

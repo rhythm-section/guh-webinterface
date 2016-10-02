@@ -105,3 +105,11 @@
   @include rem(padding, 0.6);
   @include rem(width, 4);
 }
+
+.ThingDetails__critical {
+  background-color: #da5252;
+  color: $white;
+  text-align: center;
+  @include rem(padding, 0.35, 1.5);
+  @include rem(margin, 0.7, 0, 0.1);
+}
