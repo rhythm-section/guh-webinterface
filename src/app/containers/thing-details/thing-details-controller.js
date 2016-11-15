@@ -49,6 +49,7 @@
     vm.$onInit = $onInit;
     vm.back = back;
     vm.show = show;
+    vm.edit = edit;
     vm.remove = remove;
 
 
@@ -87,6 +88,12 @@
         },
         {
           position: 2,
+          iconUrl: './assets/svg/ui/ui.symbol.svg#edit',
+          label: 'Edit',
+          callback: edit
+        },
+        {
+          position: 3,
           iconUrl: './assets/svg/ui/ui.symbol.svg#trash-a',
           label: 'Remove',
           callback: remove
@@ -284,6 +291,25 @@
           vm.showSettings = false;
           break;
       }
+    }
+
+    function edit() {
+      ModalContainer
+        .add({
+          controller: ['modalInstance', function(modalInstance) {
+            this.modalInstance = modalInstance;
+            this.thing = device;
+          }],
+          controllerAs: 'modal',
+          data: null,
+          template: '<guh-edit-thing thing="modal.thing" modal-instance="modal.modalInstance"></guh-edit-thing>'
+        })
+        .then(function(modal) {
+          modal.open();
+        })
+        .catch(function(error) {
+          $log.error('error', error);
+        });
     }
 
     function remove() {

@@ -98,6 +98,15 @@
     justify-content: flex-start;
   }
 
+  li {
+    @include rem(width, 4.5);
+  }
+
+  li:nth-of-type(2) {
+    position: absolute;
+    @include rem(right, 4.5);
+  }
+
   li:last-of-type {
     position: absolute;
     right: 0;
