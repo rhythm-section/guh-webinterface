@@ -51,6 +51,7 @@
     vm.show = show;
     vm.edit = edit;
     vm.remove = remove;
+    vm.isCritical = isCritical;
 
 
     function $onInit() {
@@ -341,6 +342,26 @@
               $log.error('error', error);
             });
         });
+    }
+
+    function isCritical() {
+      if(angular.isDefined(vm.deviceClass.criticalStateTypeId)) {
+        var criticalStateTypes = vm.deviceClass.stateTypes.filter(function(stateType) {
+          return stateType.id === vm.deviceClass.criticalStateTypeId;
+        });
+
+        // Should be exactly one criticalStateType
+        if(angular.isDefined(criticalStateTypes[0])) {
+          var criticalStates = vm.device.states.filter(function(state) {
+            return state.stateType.id === criticalStateTypes[0].id;
+          });
+
+          // Should be exactly one state
+          return !criticalStates[0].value;
+        }
+      }
+
+      return false;
     }
 
 
