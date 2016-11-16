@@ -374,6 +374,10 @@
       });
     });
 
+    DSDevice.on('DS.change', function(DSDevice, newDevice) {
+      $log.log('Device changed', DSDevice, newDevice);
+    });
+
   }
 
 }());
