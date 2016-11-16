@@ -30,7 +30,7 @@
     .module('guh.containers')
     .controller('EditThingCtrl', EditThingCtrl);
 
-  EditThingCtrl.$inject = ['$log'];
+  EditThingCtrl.$inject = ['$log', 'DSDevice'];
 
   /**
    * @ngdoc controller
@@ -38,7 +38,7 @@
    * @description Container component for editting a new thing.
    *
    */
-  function EditThingCtrl($log) {
+  function EditThingCtrl($log, DSDevice) {
     
     var vm = this;
     vm.name;
@@ -51,9 +51,13 @@
 
     function $onInit() {
       $log.log('guh.containers.controller:EditThingCtrl', vm);
+
+      vm.name = vm.thing.name;
     }
 
     function $onChanges(changesObj) {
+      $log.log('$onChanges', changesObj);
+
       if(angular.isDefined(changesObj) &&
          angular.isDefined(changesObj.name)) {
 
@@ -65,8 +69,15 @@
       vm.name = name;
     }
 
-    function save(isValid, params) {
-      $log.log('Save changes', isValid, params);
+    function save(isValid, name) {
+      $log.log('Save changes', isValid, name);
+      vm.thing.edit(vm.thing.id, name)
+        .then(function(response) {
+          vm.modalInstance.close();
+        })
+        .catch(function(error) {
+          console.error(error);
+        });
     }
 
   }
