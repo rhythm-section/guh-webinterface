@@ -54,7 +54,6 @@ module.exports = {
     }
 
     return gulp.src(mainBowerFiles(mainBowerFilesConfig))
-      .pipe(ignore.exclude('*.map'))
       .pipe(gulp.dest(pathConfig.libs.development));
   }
 };

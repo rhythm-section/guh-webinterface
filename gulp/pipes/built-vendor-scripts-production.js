@@ -63,7 +63,6 @@ module.exports = {
     }
 
     return gulp.src(mainBowerFiles(mainBowerFilesConfig))
-      .pipe(ignore.exclude('*.map'))
       .pipe(sourcemaps.init())
         .pipe(concat('vendor.js', concatConfig))
         .pipe(size(sizeConfig))
