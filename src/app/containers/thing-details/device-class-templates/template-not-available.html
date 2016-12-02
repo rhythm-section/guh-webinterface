@@ -37,11 +37,18 @@
 
 <div class="ThingDetails__content" ng-show="thingDetails.showSettings">
   <p ng-if="thingDetails.enhancedParam.length === 0">This thing doesn't have any settings to show you.</p>
-  <div class="Param__item" ng-switch="enhancedParam.paramType.inputType" ng-repeat="enhancedParam in thingDetails.enhancedParams track by $index">
-    <div class="Param__value" ng-switch-when="InputTypePassword">
+  <div ng-repeat="enhancedParam in thingDetails.enhancedParams | orderBy: 'paramType.index' track by $index">
+    <guh-param param="enhancedParam.param" corresponding-param-type="enhancedParam.paramType" edit="thingDetails.showConfiguration"></guh-param>
+  </div>
+
+  <!-- <div class="Param__item" ng-switch="enhancedParam.paramType.inputType" ng-repeat="enhancedParam in thingDetails.enhancedParams | orderBy: 'paramType.index' track by $index"> -->
+    <!-- <div class="Param__value" ng-switch-when="InputTypePassword">
       <input class="input--type--readonly" ng-model="enhancedParam.param.value" type="password" disabled />
     </div>
     <div class="Param__value" ng-switch-default>{{ enhancedParam.param.value }}</div>
-    <div class="Param__name">{{ enhancedParam.paramType.name }}</div>
-  </div>
+    <div class="Param__name">{{ enhancedParam.paramType.name }}</div> -->
+  <!-- </div> -->
+
+  <!-- Reconfigure -->
+  <button ng-click="thingDetails.reconfigure()">Edit configuration</button>
 </div>
