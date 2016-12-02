@@ -28,38 +28,27 @@
 
   angular
     .module('guh.containers')
-    .controller('EditThingCtrl', EditThingCtrl);
+    .controller('ReconfigureThingCtrl', ReconfigureThingCtrl);
 
-  EditThingCtrl.$inject = ['$log', '$rootScope', 'DSDevice', 'ModalContainer'];
+  ReconfigureThingCtrl.$inject = ['$log', 'DSDevice'];
 
   /**
    * @ngdoc controller
-   * @name guh.containers.controller:EditThingCtrl
+   * @name guh.containers.controller:ReconfigureThingCtrl
    * @description Container component for editting a new thing.
    *
    */
-  function EditThingCtrl($log, $rootScope, DSDevice, ModalContainer) {
+  function ReconfigureThingCtrl($log, DSDevice) {
     
     var vm = this;
-    vm.isConfigureable = false;
-    vm.name = '';
-    vm.selectedDeviceClass = null;
-    vm.createMethod = '';
-    vm.setupMethod = '';
-    vm.params = [];
-    vm.discoveredDevices = [];
-    vm.deviceDescriptorId = '';
-    vm.deviceParams = [];
 
     vm.$onInit = $onInit;
 
-    vm.editConfiguration = editConfiguration;
-    vm.setName = setName;
-    vm.save = save;
+    vm.saveConfiguration = saveConfiguration;
 
 
     function $onInit() {
-      $log.log('guh.containers.controller:EditThingCtrl', vm);
+      $log.log('guh.containers.controller:ReconfigureThingCtrl', vm);
 
       vm.name = vm.thing.name;
       vm.deviceClass = vm.thing.deviceClass;
@@ -67,78 +56,19 @@
       vm.setupMethod = vm.thing.deviceClass.getSetupMethod();
       vm.deviceClassId = vm.thing.deviceClass.id;
 
-      if(angular.isDefined(vm.createMethod) && vm.createMethod.title !== 'Auto') {
-        vm.isConfigureable = true;
-      }
-
       $log.log('vm.createMethod', vm.createMethod);
       $log.log('vm.setupMethod', vm.setupMethod);
     }
 
-    function $onChanges(changesObj) {
-      $log.log('$onChanges', changesObj);
 
-      if(angular.isDefined(changesObj) &&
-         angular.isDefined(changesObj.name)) {
-
-      }
-    }
-
-
-    function editConfiguration(deviceDescriptorId, deviceParams) {
-      // vm.deviceDescriptorId = deviceDescriptorId;
-      // vm.deviceParams = deviceParams;
-
-      // $log.log(deviceDescriptorId, deviceParams);
-
-      // $rootScope.$broadcast('wizard.next', 'editThing');
-
-      ModalContainer
-        .add({
-          controller: ['modalInstance', function(modalInstance) {
-            this.modalInstance = modalInstance;
-            this.thing = vm.thing;
-          }],
-          controllerAs: 'modal',
-          data: null,
-          template: '<guh-reconfigure-thing thing="modal.thing" modal-instance="modal.modalInstance"></guh-reconfigure-thing>'
-        })
-        .then(function(modal) {
-          modal.open();
+    function saveConfiguration(deviceDescriptorId, deviceParams) {
+      DSDevice.reconfigure(vm.thing.id, deviceDescriptorId, deviceParams, vm.thing.name)
+        .then(function() {
+          vm.modalInstance.close();
         })
         .catch(function(error) {
-          $log.error('error', error);
+          $log.error(error);
         });
-    }
-
-    function setName(name) {
-      $log.log('setName', name);
-      vm.name = name;
-    }
-
-    function save(isValid, name) {
-      $log.log('save', isValid, name);
-
-      // Without setupMethod the device can be saved directly
-      // if(vm.setupMethod) {
-      //   $log.log('Go to setup method step.');
-      //   // _pairDevice();
-      // } else {
-        // DSDevice.reconfigure(vm.thing.id, vm.deviceDescriptorId, vm.deviceParams, vm.thing.name)
-        //   .then(function() {
-        //     vm.modalInstance.close();
-            vm.thing.edit(name)
-              .then(function(response) {
-                vm.modalInstance.close();
-              })
-              .catch(function(error) {
-                $log.error(error);
-              });
-          // })
-          // .catch(function(error) {
-          //   $log.error(error);
-          // });
-      // }
     }
 
   }

@@ -45,6 +45,7 @@
     vm.showActions = true;
     vm.showStates = false;
     vm.showSettings = false;
+    vm.showConfiguration = false;
 
     vm.$onInit = $onInit;
     vm.back = back;
@@ -52,6 +53,7 @@
     vm.edit = edit;
     vm.remove = remove;
     vm.isCritical = isCritical;
+    vm.reconfigure = reconfigure;
 
 
     function $onInit() {
@@ -364,6 +366,30 @@
       return false;
     }
 
+    function reconfigure() {
+      $log.log('vm.deviceClass', vm.deviceClass);
+
+      vm.showConfiguration = !vm.showConfiguration;
+
+      // Without setupMethod the device can be saved directly
+      // ModalContainer
+      //   .add({
+      //     controller: ['modalInstance', function(modalInstance) {
+      //       this.modalInstance = modalInstance;
+      //       this.thing = vm.device;
+      //     }],
+      //     controllerAs: 'modal',
+      //     data: null,
+      //     template: '<guh-reconfigure-thing thing="modal.thing" modal-instance="modal.modalInstance"></guh-reconfigure-thing>'
+      //   })
+      //   .then(function(modal) {
+      //     modal.open();
+      //   })
+      //   .catch(function(error) {
+      //     $log.error('error', error);
+      //   });
+    }
+
 
     DSState.on('DS.change', function(DSState, newState) {
       // States
@@ -377,7 +403,6 @@
     DSDevice.on('DS.change', function(DSDevice, newDevice) {
       $log.log('Device changed', DSDevice, newDevice);
     });
-
   }
 
 }());

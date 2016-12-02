@@ -1,0 +1,60 @@
+<!-- 
+  Copyright (C) 2015 Lukas Mayerhofer <lukas.mayerhofer@guh.guru>
+  
+  Permission is hereby granted, free of charge, to any person obtaining a copy
+  of this software and associated documentation files (the "Software"), to deal
+  in the Software without restriction, including without limitation the rights
+  to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+  copies of the Software, and to permit persons to whom the Software is
+  furnished to do so, subject to the following conditions:
+  
+  The above copyright notice and this permission notice shall be included in all
+  copies or substantial portions of the Software.
+  
+  THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+  IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+  FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+  AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+  LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+  OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+  SOFTWARE.
+-->
+
+
+<button class="Wizard__close" ng-click="reconfigureThing.modalInstance.close()">
+  <svg class="Wizard__icon">
+    <use xlink:href="./assets/svg/ui/ui.symbol.svg#close"></use>
+  </svg>
+</button>
+
+<div class="inner-content" ng-if="reconfigureThing.createMethod">
+  <guh-create-thing on-create-thing="reconfigureThing.saveConfiguration(deviceDescriptorId, deviceParams)" device-class="reconfigureThing.deviceClass" template="{{ reconfigureThing.createMethod.template }}"></guh-create-thing>
+</div>
+
+<div class="inner-content" ng-if="reconfigureThing.setupMethod">
+  <guh-setup-thing on-setup-thing="reconfigureThing.setupThing()" template="{{ reconfigureThing.setupMethod.template }}" display-message="{{ reconfigureThing.displayMessage }}" pairing-transaction-id="{{ reconfigureThing.pairingTransactionId }}"></guh-setup-thing>
+</div>
+
+<!-- <div guh-wizard handle="reconfigureThing"> -->
+  <!-- 1. Create-Method (Optional) -->
+  <!-- <div guh-wizard-step ng-show="reconfigureThing.createMethod" title="Edit device configuration">
+    <guh-create-thing on-create-thing="reconfigureThing.editConfiguration(deviceDescriptorId, deviceParams)" device-class="reconfigureThing.deviceClass" template="{{ reconfigureThing.createMethod.template }}"></guh-create-thing>
+  </div> -->
+
+  <!-- 2. Device information -->
+  <!-- <div guh-wizard-step title="Edit device information">
+    <form name="deviceMetadata" ng-submit="reconfigureThing.save()">
+      <label for="name">Name</label>
+      <input id="name" name="name" type="text" ng-model="reconfigureThing.name" />
+
+      <footer>
+        <button type="submit" ng-disabled="reconfigureThing.name.length === 0" class="full">Edit {{ reconfigureThing.deviceClass.name }}</button>
+      </footer>
+    </form>
+  </div> -->
+
+  <!-- 3. Setup-Method (Optional) -->
+  <!-- <div guh-wizard-step ng-show="reconfigureThing.setupMethod" title="Pair device">
+    <guh-setup-thing on-setup-thing="reconfigureThing.setupThing()" template="{{ reconfigureThing.setupMethod.template }}" display-message="{{ reconfigureThing.displayMessage }}" pairing-transaction-id="{{ reconfigureThing.pairingTransactionId }}"></guh-setup-thing>
+  </div>
+</div> -->

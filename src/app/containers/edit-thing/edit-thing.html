@@ -27,6 +27,31 @@
   </svg>
 </button>
 
+<!-- <div guh-wizard handle="editThing"> -->
+  <!-- 1. Create-Method (Optional) -->
+  <!-- <div guh-wizard-step ng-show="editThing.createMethod" title="Edit device configuration">
+    <guh-create-thing on-create-thing="editThing.editConfiguration(deviceDescriptorId, deviceParams)" device-class="editThing.deviceClass" template="{{ editThing.createMethod.template }}"></guh-create-thing>
+  </div> -->
+
+  <!-- 2. Device information -->
+  <!-- <div guh-wizard-step title="Edit device information">
+    <form name="deviceMetadata" ng-submit="editThing.save()">
+      <label for="name">Name</label>
+      <input id="name" name="name" type="text" ng-model="editThing.name" />
+
+      <footer>
+        <button type="submit" ng-disabled="editThing.name.length === 0" class="full">Edit {{ editThing.deviceClass.name }}</button>
+      </footer>
+    </form>
+  </div> -->
+
+  <!-- 3. Setup-Method (Optional) -->
+  <!-- <div guh-wizard-step ng-show="editThing.setupMethod" title="Pair device">
+    <guh-setup-thing on-setup-thing="editThing.setupThing()" template="{{ editThing.setupMethod.template }}" display-message="{{ editThing.displayMessage }}" pairing-transaction-id="{{ editThing.pairingTransactionId }}"></guh-setup-thing>
+  </div>
+</div> -->
+
+
 <div class="inner-content">
   <h3>Edit thing</h3>
 
@@ -34,6 +59,9 @@
                        label="Save changes"
                        param-types="editThing.thing.deviceClass.paramTypes"
                        on-submit="editThing.save(params)"></guh-param-type-list> -->
+
+  <!-- Reconfigure -->
+  <!-- <button ng-click="editThing.editConfiguration()">Edit configuration</button> -->
 
   <!-- Name -->
   <form name="editThingForm" novalidate>
