@@ -200,6 +200,7 @@
           UnitGram: 'g',
           UnitKiloGram: 'kg',
           UnitDezibel: 'dB',
+          UnitBpm: 'bpm',
           UnitKiloByte: 'kB',
           UnitMegaByte: 'MB',
           UnitGigaByte: 'GB',
@@ -211,8 +212,17 @@
           UnitEuroPerMegaWattHour: '€ / MWh',
           UnitEuroCentPerKiloWattHour: '€-Cent / kWh',
           UnitPercentage: '%',
+          UnitPartsPerMillion: 'ppm',
           UnitEuro: '€',
-          UnitDollar: '$'
+          UnitDollar: '$',
+          UnitHerz: 'Hz',
+          UnitAmpere: 'A',
+          UnitMilliAmpere: 'mA',
+          UnitVolt: 'V',
+          UnitMilliVolt: 'mV',
+          UnitVoltAmpere: 'VA',
+          UnitVoltAmpereReactive: 'var',
+          UnitAmpereHour: 'Ah'
         },
 
         basicTag: {
